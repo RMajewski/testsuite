@@ -25,7 +25,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -52,10 +51,6 @@ import org.testsuite.data.TestSuite;
  * @version 0.1
  */
 public class TestCore {
-	/**
-	 * Saves the GUI tests
-	 */
-	private List<TestSuite> _gui;
 	
 	/**
 	 * Saves the result directory for Fit Tests
@@ -81,9 +76,6 @@ public class TestCore {
 	 * Initialize the test management
 	 */
 	public TestCore() {
-		// Listen initalisieren
-		_gui = new ArrayList<TestSuite>();
-		
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.setTime(new Date());
 		DecimalFormat df = new DecimalFormat("00");
@@ -199,7 +191,8 @@ public class TestCore {
 						// Suite
 						case "testSuite":
 							if (type == 1)
-								_gui.add(suite);
+								//_gui.add(suite);
+								System.out.println("jemmy");
 							else if (type == 2)
 								//JUNIT
 								System.out.println("Junit");
@@ -259,7 +252,6 @@ public class TestCore {
 	 * Checks if the files exist
 	 */
 	public void checkFileExists() {
-		listCheckFiles(_gui);
 	}
 
 	/**
@@ -322,57 +314,6 @@ public class TestCore {
 	 * Executes the individual tests
 	 */
 	public void run() {
-		runGui();
-	}
-	
-	/**
-	 * Executes the individual GUI tests
-	 */
-	private void runGui() {
-		for (int suite = 0; suite < _gui.size(); suite++) {
-			// Test-Suite Name
-			System.out.println(_gui.get(suite).getName());
-			
-			// gui-Tests ausführen
-			for (int test = 0; test < _gui.get(suite).testCount(); test++) {
-				String name = _gui.get(suite).getPackage() + "." +
-						_gui.get(suite).getTest(test).getName();
-				try {
-					_gui.get(suite).getTest(test).setStart(
-							new Date().getTime());
-
-					System.out.print(name + ": ");
-					Process p = Runtime.getRuntime().exec("java -cp " +
-							System.getProperty("java.class.path")+
-							" -Dtesting=true " + name);
-					int exit = p.waitFor();
-					
-					// Ausgabe wie der Test verlaufen ist
-					_gui.get(suite).getTest(test).setEnd(new Date().getTime());
-					_gui.get(suite).getTest(test).setExitStatus(exit);
-					if (exit == 0)
-						System.out.print("wurde erfolgreich ausgeführt");
-					else
-						System.out.print("weißt Fehler auf");
-					
-					System.out.print(" (Dauer des Tests: ");
-					System.out.print(String.valueOf(
-							_gui.get(suite).getTest(test).getDurationTime()));
-					System.out.println(" ms)");
-					
-					// Console-Ausgabe und Error-Ausgabe speichern
-					_gui.get(suite).getTest(test).setError(p.getErrorStream());
-					_gui.get(suite).getTest(test).setIn(p.getInputStream());
-				} catch (IOException e) {
-					e.printStackTrace();
-					_gui.get(suite).getTest(test).setExitStatus(100);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					_gui.get(suite).getTest(test).setExitStatus(100);
-				}
-				
-			}
-		}
 	}
 	
 	/**
@@ -389,7 +330,6 @@ public class TestCore {
 			html.htmlHead();
 			
 			html.guiHead();
-			htmlGui(_gui, html);
 			
 			html.junitHead();
 			
@@ -399,52 +339,5 @@ public class TestCore {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * Creates the HTML output for GUI testing and junit tests.
-	 * 
-	 * @param list List of test suites, where the HTML output you want to
-	 * create.
-	 * 
-	 * @param html Class that generates HTML output.
-	 * 
-	 * @throws IOException
-	 */
-	private void htmlGui(List<TestSuite> list, HtmlOut html) 
-			throws IOException {
-		for (int suite = 0; suite < list.size(); suite++) {
-			int right = 0;
-			int exception = 0;
-			long time = 0;
-			
-			for (int test = 0; test < list.get(suite).testCount(); test++) {
-				int rightTest = 0;
-				int exceptionTest = 0;
-				long timeTest = list.get(suite).getTest(test).getDurationTime();
-				
-				// Überprüfen, ob der Test positiv abgelaufen ist.
-				if (list.get(suite).getTest(test).getExitStatus() == 0)
-					rightTest++;
-				else 
-					exceptionTest++;
-				
-				// Ausgabe des Tests
-				html.test( list.get(suite).getTest(test).getName(),
-						rightTest, exceptionTest, time,
-						list.get(suite).getTest(test).getIn(),
-						list.get(suite).getTest(test).getError());
-				
-				// Fehler bzw. Richtig für Test-Suite erhöhen
-				right += rightTest;
-				exception += exceptionTest;
-				time += timeTest;
-			} // for über alle Tests
-			
-			// Ausgabe für die Test-Suite
-			html.suiteHtml(list.get(suite).getName(),
-					list.get(suite).getPackage(), right, exception, time);
-		} // for über alle Test-Suits
-		
 	}
 }

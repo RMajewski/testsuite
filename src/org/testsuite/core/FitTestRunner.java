@@ -179,6 +179,13 @@ public class FitTestRunner extends TestRunner {
 		} // for über die Fit-Suites
 	}
 
+	/**
+	 * Generate the HTML code from the test results.
+	 * 
+	 * @param html Class, which helps to generate the HTML code.
+	 * 
+	 * @throws IOException 
+	 */
 	@Override
 	public void createHtml(HtmlOut html) throws IOException {
 		for (int suite = 0; suite < _suites.size(); suite++) {

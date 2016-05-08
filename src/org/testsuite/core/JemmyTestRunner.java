@@ -19,34 +19,29 @@
 
 package org.testsuite.core;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Date;
 
-import org.testsuite.data.Junit;
-
 /**
- * Executes the junit tests.
+ * Executes the jemmy tests.
  * 
  * @author René Majewski
  *
  * @version 0.1
  */
-public class JunitTestRunner extends TestRunner {
+public class JemmyTestRunner extends TestRunner {
 
 	/**
 	 * Initialis the data of the class.
 	 * 
 	 * @param extension Extension of the test files.
 	 */
-	public JunitTestRunner(String extension) {
+	public JemmyTestRunner(String extension) {
 		super(extension);
 	}
 
 	/**
-	 * Executes the junit tests.
+	 * Executes the jemmy tests
 	 */
 	@Override
 	public void run() {
@@ -54,11 +49,10 @@ public class JunitTestRunner extends TestRunner {
 			// Test-Suite Name
 			System.out.println(_suites.get(suite).getName());
 			
-			// juni-Tests ausführen
+			// gui-Tests ausführen
 			for (int test = 0; test < _suites.get(suite).testCount(); test++) {
 				String name = _suites.get(suite).getPackage() + "." +
 						_suites.get(suite).getTest(test).getName();
-				
 				try {
 					_suites.get(suite).getTest(test).setStart(
 							new Date().getTime());
@@ -66,21 +60,17 @@ public class JunitTestRunner extends TestRunner {
 					System.out.print(name + ": ");
 					Process p = Runtime.getRuntime().exec("java -cp " +
 							System.getProperty("java.class.path")+
-							" -Dtesting=true org.junit.runner.JUnitCore " +
-							name);
-					
+							" -Dtesting=true " + name);
 					int exit = p.waitFor();
-					_suites.get(suite).getTest(test).setExitStatus(exit);
 					
 					// Ausgabe wie der Test verlaufen ist
-					_suites.get(suite).getTest(test).setEnd(
-							new Date().getTime());
-
+					_suites.get(suite).getTest(test).setEnd(new Date().getTime());
+					_suites.get(suite).getTest(test).setExitStatus(exit);
 					if (exit == 0)
 						System.out.print("wurde erfolgreich ausgeführt");
 					else
 						System.out.print("weißt Fehler auf");
-
+					
 					System.out.print(" (Dauer des Tests: ");
 					System.out.print(String.valueOf(
 							_suites.get(suite).getTest(test).getDurationTime()));
@@ -89,35 +79,6 @@ public class JunitTestRunner extends TestRunner {
 					// Console-Ausgabe und Error-Ausgabe speichern
 					_suites.get(suite).getTest(test).setError(p.getErrorStream());
 					_suites.get(suite).getTest(test).setIn(p.getInputStream());
-
-					InputStream is = p.getInputStream();
-					is.mark(is.available());
-					BufferedReader br = new BufferedReader(new InputStreamReader(is));
-					String line;
-					while ((line = br.readLine()) != null) {
-						if (line.indexOf("OK (") > -1) {
-							String ok = new String("OK (");
-							
-							String tmp = line.substring(ok.length(),
-									line.indexOf(" tests)"));
-							((Junit)_suites.get(suite).getTest(test)).setOk(
-									Integer.valueOf(tmp));
-						} else if (line.indexOf("Tests run") > -1) {
-							String ok = new String("Tests run: ");
-							String fail = new String(",  Failures: ");
-							int indexOk = ok.length();
-							int indexFail = line.indexOf(fail);
-
-							((Junit)_suites.get(suite).getTest(test)).setOk(
-									Integer.valueOf(line.substring(indexOk, 
-											indexFail)));
-							
-							indexFail += fail.length();
-							((Junit)_suites.get(suite).getTest(test)).setFail(
-									Integer.valueOf(line.substring(indexFail)));
-						}
-					}
-					is.reset();
 				} catch (IOException e) {
 					e.printStackTrace();
 					_suites.get(suite).getTest(test).setExitStatus(100);
@@ -125,10 +86,9 @@ public class JunitTestRunner extends TestRunner {
 					e.printStackTrace();
 					_suites.get(suite).getTest(test).setExitStatus(100);
 				}
-			} // for über alle Tests
-			
-			System.out.println();
-		} // for über alle Test-Suites
+				
+			}
+		}
 	}
 
 	/**
@@ -141,30 +101,36 @@ public class JunitTestRunner extends TestRunner {
 	@Override
 	public void createHtml(HtmlOut html) throws IOException {
 		for (int suite = 0; suite < _suites.size(); suite++) {
-			int ok = 0;
-			int fail = 0;
+			int right = 0;
+			int exception = 0;
 			long time = 0;
 			
 			for (int test = 0; test < _suites.get(suite).testCount(); test++) {
-				int okTest = ((Junit)_suites.get(suite).getTest(test)).getOk();
-				int failTest = ((Junit)_suites.get(suite).getTest(test)).getFail();
+				int rightTest = 0;
+				int exceptionTest = 0;
 				long timeTest = _suites.get(suite).getTest(test).getDurationTime();
+				
+				// Überprüfen, ob der Test positiv abgelaufen ist.
+				if (_suites.get(suite).getTest(test).getExitStatus() == 0)
+					rightTest++;
+				else 
+					exceptionTest++;
 				
 				// Ausgabe des Tests
 				html.test( _suites.get(suite).getTest(test).getName(),
-						okTest, failTest, timeTest, 
+						rightTest, exceptionTest, time,
 						_suites.get(suite).getTest(test).getIn(),
 						_suites.get(suite).getTest(test).getError());
 				
 				// Fehler bzw. Richtig für Test-Suite erhöhen
-				ok += okTest;
-				fail += failTest;
+				right += rightTest;
+				exception += exceptionTest;
 				time += timeTest;
 			} // for über alle Tests
 			
 			// Ausgabe für die Test-Suite
 			html.suiteHtml(_suites.get(suite).getName(),
-					_suites.get(suite).getPackage(), ok, fail, time);
+					_suites.get(suite).getPackage(), right, exception, time);
 		} // for über alle Test-Suits
 	}
 

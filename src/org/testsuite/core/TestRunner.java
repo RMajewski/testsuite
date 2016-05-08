@@ -130,6 +130,7 @@ public abstract class TestRunner {
 	 * Called to generate the HTML code from the test results.
 	 * 
 	 * @param html Class, which helps to generate the HTML code.
+	 * 
 	 * @throws IOException 
 	 */
 	public abstract void createHtml(HtmlOut html) throws IOException;
