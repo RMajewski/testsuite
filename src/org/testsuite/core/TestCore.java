@@ -34,6 +34,7 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.testsuite.data.Config;
 import org.testsuite.data.Fit;
 import org.testsuite.data.Junit;
 import org.testsuite.data.Test;
@@ -51,40 +52,27 @@ import org.testsuite.data.TestSuite;
  * @version 0.1
  */
 public class TestCore {
-	
 	/**
-	 * Saves the result directory for Fit Tests
+	 * Saves the configuration.
 	 */
-	private String _fitResult;
-	
-	/**
-	 * Saves the path for the results
-	 */
-	private String _resultPath;
-	
-	/**
-	 * Saves the directory for the source code
-	 */
-	private String _srcPath;
-	
-	/**
-	 * Saves the directory to the libraries
-	 */
-	private String _bibPath;
+	private Config _config;
 
 	/**
 	 * Initialize the test management
 	 */
 	public TestCore() {
+		_config = new Config();
+		
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.setTime(new Date());
 		DecimalFormat df = new DecimalFormat("00");
-		_fitResult = df.format(gc.get(GregorianCalendar.YEAR)) +
+		_config.setPathSuitesResult(
+				df.format(gc.get(GregorianCalendar.YEAR)) +
 				df.format(gc.get(GregorianCalendar.MONTH) + 1) +
 				df.format(gc.get(GregorianCalendar.DAY_OF_MONTH)) +
 				df.format(gc.get(GregorianCalendar.HOUR_OF_DAY)) +
 				df.format(gc.get(GregorianCalendar.MINUTE)) +
-				df.format(gc.get(GregorianCalendar.SECOND));
+				df.format(gc.get(GregorianCalendar.SECOND)));
 	}
 
 	/**
@@ -219,17 +207,17 @@ public class TestCore {
 							
 						// Result-Pfad
 						case "resultPath":
-							_resultPath = str;
+							_config.setPathResult(str);
 							break;
 							
 						// Source-Pfad
 						case "srcPath":
-							_srcPath = str;
+							_config.setPathSrc(str);
 							break;
 							
 						// Bibliotheks-Pfad
 						case "bibPath":
-							_bibPath = str;
+							_config.setPathLibrary(str);
 							break;
 					}
 					break;
@@ -323,8 +311,8 @@ public class TestCore {
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.setTime(new Date());
 		
-		String htmlFile = _resultPath + File.separator + "Ergebnisse_" +
-				_fitResult + ".html";
+		String htmlFile = _config.getPathResult() + File.separator + 
+				"Ergebnisse_" + _config.getPathSuitesResult() + ".html";
 		try {
 			HtmlOut html = new HtmlOut(htmlFile);
 			html.htmlHead();

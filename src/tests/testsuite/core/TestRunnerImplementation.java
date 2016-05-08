@@ -21,6 +21,7 @@ package tests.testsuite.core;
 
 import org.testsuite.core.HtmlOut;
 import org.testsuite.core.TestRunner;
+import org.testsuite.data.Config;
 
 /**
  * Implements the class TestRunner for testing purposes.
@@ -30,8 +31,8 @@ import org.testsuite.core.TestRunner;
  * @version 0.1
  */
 class TestRunnerImplementation extends TestRunner {
-	public TestRunnerImplementation(String test) {
-		super(test);
+	public TestRunnerImplementation(String test, Config config) {
+		super(test, config);
 	}
 
 	@Override

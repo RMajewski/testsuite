@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Date;
 
+import org.testsuite.data.Config;
 import org.testsuite.data.Fit;
 
 /**
@@ -36,43 +37,15 @@ import org.testsuite.data.Fit;
  * @version 0.1
  */
 public class FitTestRunner extends TestRunner {
-	
-	/**
-	 * Holds the source path
-	 */
-	private String _srcPath;
-	
-	/**
-	 * Holds the result path
-	 */
-	private String _resultPath;
-	
-	/**
-	 * Holds the result path of fit files.
-	 */
-	private String _suitesResult;
-	
-	/**
-	 * Holds the path of libraries.
-	 */
-	private String _bibPath;
-
 	/**
 	 * Initialis the data of the class.
 	 * 
 	 * @param extension Extension of the test files.
 	 * 
-	 * @param src The source path.
-	 * 
-	 * @param result The result path.
+	 * @param config The configuration
 	 */
-	public FitTestRunner(String extension, String src, String result,
-			String suitesResult, String bibPath) {
-		super(extension);
-		_srcPath = src;
-		_resultPath = result;
-		_suitesResult = suitesResult;
-		_bibPath = bibPath;
+	public FitTestRunner(String extension, Config config) {
+		super(extension, config);
 	}
 
 	/**
@@ -86,7 +59,7 @@ public class FitTestRunner extends TestRunner {
 			
 			for (int test = 0; test < _suites.get(suite).testCount(); test++) {
 				// Name der Fit-Datei
-				String fit = composeFileName(_srcPath + "." + 
+				String fit = composeFileName(_config.getPathSrc() + "." + 
 						_suites.get(suite).getPackage(), 
 						_suites.get(suite).getTest(test).getName(), "fit");
 				
@@ -102,8 +75,8 @@ public class FitTestRunner extends TestRunner {
 				_suites.get(suite).getTest(test).setExists(true);
 				
 				// Überprüfen ob das Result-Verzeichnis existiert
-				String resultPath = _resultPath + File.separator + _suitesResult + 
-						File.separator + 
+				String resultPath = _config.getPathResult() + File.separator + 
+						_config.getPathSuitesResult() + File.separator + 
 						_suites.get(suite).getPackage().replaceAll("\\.", 
 								File.separator);
 				File r = new File(resultPath);
@@ -122,8 +95,9 @@ public class FitTestRunner extends TestRunner {
 
 					System.out.print(fit + ": ");
 					String exec = "java -cp " +
-							"bin:resource:" + _bibPath + "/fit.jar:" + _bibPath +
-							"/jemmy.jar:" + _bibPath +
+							"bin:resource:" + _config.getPathLibrary() +
+							"/fit.jar:" + _config.getPathLibrary() +
+							"/jemmy.jar:" + _config.getPathLibrary() +
 							"/sqlite-jdbc-3.8.11.2.jar -Dtesting=true " +
 							"fit.FileRunner " + fit + " " + resultFileName;
 					Process p = Runtime.getRuntime().exec(exec);
@@ -211,7 +185,7 @@ public class FitTestRunner extends TestRunner {
 						rightTest, wrongTest, ignoreTest, exceptionTest,
 						timeTest, _suites.get(suite).getTest(test).getIn(),
 						_suites.get(suite).getTest(test).getError(), true,
-						_suitesResult + File.separator + 
+						_config.getPathSuitesResult() + File.separator + 
 						_suites.get(suite).getPackage().replaceAll("\\.", 
 								File.separator));
 				

@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.testsuite.data.Config;
 import org.testsuite.data.TestSuite;
 
 /**
@@ -45,13 +46,19 @@ public abstract class TestRunner {
 	protected String _fileExtension;
 	
 	/**
+	 * Saves the configuration.
+	 */
+	protected Config _config;
+	
+	/**
 	 * Initialis the data of the class.
 	 * 
 	 * @param extension The extension of the test file.
 	 */
-	public TestRunner(String extension) {
+	public TestRunner(String extension, Config config) {
 		_suites = new ArrayList<TestSuite>();
 		_fileExtension = extension;
+		_config = config;
 	}
 	
 	/**
@@ -90,6 +97,26 @@ public abstract class TestRunner {
 		if ((extension == null) || extension.isEmpty())
 			throw new IllegalArgumentException();
 		_fileExtension = extension;
+	}
+	
+	/**
+	 * Returns the configuration.
+	 * 
+	 * @return Configuration
+	 */
+	public Config getConfig() {
+		return _config;
+	}
+	
+	/**
+	 * Sets the configuration.
+	 * 
+	 * @param config The new configuration.
+	 */
+	public void setConfig(Config config) {
+		if (config == null)
+			throw new IllegalArgumentException();
+		_config = config;
 	}
 	
 	/**

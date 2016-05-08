@@ -22,6 +22,8 @@ package org.testsuite.core;
 import java.io.IOException;
 import java.util.Date;
 
+import org.testsuite.data.Config;
+
 /**
  * Executes the jemmy tests.
  * 
@@ -35,9 +37,11 @@ public class JemmyTestRunner extends TestRunner {
 	 * Initialis the data of the class.
 	 * 
 	 * @param extension Extension of the test files.
+	 * 
+	 * @param config The configuration.
 	 */
-	public JemmyTestRunner(String extension) {
-		super(extension);
+	public JemmyTestRunner(String extension, Config config) {
+		super(extension, config);
 	}
 
 	/**

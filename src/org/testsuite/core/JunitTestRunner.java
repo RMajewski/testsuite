@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Date;
 
+import org.testsuite.data.Config;
 import org.testsuite.data.Junit;
 
 /**
@@ -40,9 +41,11 @@ public class JunitTestRunner extends TestRunner {
 	 * Initialis the data of the class.
 	 * 
 	 * @param extension Extension of the test files.
+	 * 
+	 * @param config The configuration.
 	 */
-	public JunitTestRunner(String extension) {
-		super(extension);
+	public JunitTestRunner(String extension, Config config) {
+		super(extension, config);
 	}
 
 	/**

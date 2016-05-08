@@ -34,6 +34,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.testsuite.core.TestRunner;
+import org.testsuite.data.Config;
 import org.testsuite.data.TestSuite;
 
 /**
@@ -56,6 +57,11 @@ public class TestTestRunner {
 	 * Save the file extension of test file.
 	 */
 	private String _fileExtension;
+	
+	/**
+	 * Save the mock of configuration
+	 */
+	private Config _config;
 
 	/**
 	 * Initialize the tests
@@ -63,7 +69,8 @@ public class TestTestRunner {
 	@Before
 	public void setUp() throws Exception {
 		_fileExtension = "test";
-		_runner = new TestRunnerImplementation(_fileExtension);
+		_config = mock(Config.class);
+		_runner = new TestRunnerImplementation(_fileExtension, _config);
 	}
 	
 	/**
@@ -73,6 +80,7 @@ public class TestTestRunner {
 	public void testTestRunner() {
 		assertEquals(0, _runner.testSuiteCount());
 		assertEquals(_fileExtension, _runner.getFileExtension());
+		assertEquals(_config, _runner.getConfig());
 	}
 	
 	/**
@@ -242,5 +250,32 @@ public class TestTestRunner {
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetFileExtensionWithEmptyStringAsParameter() {
 		_runner.setFileExtension(new String());
+	}
+	
+	/**
+	 * Tests if the configuration is returned.
+	 */
+	@Test
+	public void testGetConfig() {
+		assertEquals(_config, _runner.getConfig());
+	}
+	
+	/**
+	 * Tests if the configuration can be set.
+	 */
+	@Test
+	public void testSetConfig() {
+		_config = mock(Config.class);
+		_runner.setConfig(_config);
+		assertEquals(_config, _runner.getConfig());
+	}
+	
+	/**
+	 * Tests if the error occurs IllegalArgumentException if null is passed as a
+	 * parameter.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetConfigWithNullAsParameter() {
+		_runner.setConfig(null);
 	}
 }
