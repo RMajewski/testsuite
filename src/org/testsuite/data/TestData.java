@@ -17,7 +17,7 @@
 * sind dem Lizenztext zu entnehmen.
 */ 
 
-package org.testsuite.core;
+package org.testsuite.data;
 
 import java.io.InputStream;
 

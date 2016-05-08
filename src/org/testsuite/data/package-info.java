@@ -17,43 +17,10 @@
 * sind dem Lizenztext zu entnehmen.
 */ 
 
-package org.testsuite.core;
-
 /**
- * Saves the data for a Fit Test Suite.
+ * In this package the data classes are summarized.
  * 
  * @author René Majewski
  *
- * @version 0.1
  */
-public class FitSuiteData extends TestSuiteData {
-
-	/**
-	 * Initialized data.
-	 */
-	public FitSuiteData() {
-		super();
-	}
-	
-	/**
-	 * Adds the specified Fit Test the list of tests added.
-	 * 
-	 * @param test Fit-Test, which is to be added to the list.
-	 */
-	public void addTest(FitData test) {
-		super.addTest(test);
-	}
-	
-	/**
-	 * Returns the specified index on Fit Test.
-	 * 
-	 * @param index Point at which the fit test is to be returned.
-	 * 
-	 * @return Determined Fit Tests
-	 */
-	@Override
-	public FitData getTest(int index) {
-		return (FitData) super.getTest(index);
-	}
-
-}
+package org.testsuite.data;

@@ -17,21 +17,21 @@
 * sind dem Lizenztext zu entnehmen.
 */ 
 
-package org.testsuite.core;
+package org.testsuite.data;
 
 /**
- * Saves the data for a junit test suite.
+ * Saves the data for a Fit Test Suite.
  * 
  * @author René Majewski
  *
  * @version 0.1
  */
-public class JunitSuiteData extends TestSuiteData {
+public class FitSuiteData extends TestSuiteData {
 
 	/**
 	 * Initialized data.
 	 */
-	public JunitSuiteData() {
+	public FitSuiteData() {
 		super();
 	}
 	
@@ -40,7 +40,7 @@ public class JunitSuiteData extends TestSuiteData {
 	 * 
 	 * @param test Fit-Test, which is to be added to the list.
 	 */
-	public void addTest(JunitData test) {
+	public void addTest(FitData test) {
 		super.addTest(test);
 	}
 	
@@ -49,11 +49,11 @@ public class JunitSuiteData extends TestSuiteData {
 	 * 
 	 * @param index Point at which the fit test is to be returned.
 	 * 
-	 * @return Determined Fit Test
+	 * @return Determined Fit Tests
 	 */
 	@Override
-	public JunitData getTest(int index) {
-		return (JunitData) super.getTest(index);
+	public FitData getTest(int index) {
+		return (FitData) super.getTest(index);
 	}
 
 }

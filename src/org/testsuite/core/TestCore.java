@@ -35,6 +35,13 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.testsuite.data.FitData;
+import org.testsuite.data.FitSuiteData;
+import org.testsuite.data.JunitData;
+import org.testsuite.data.JunitSuiteData;
+import org.testsuite.data.TestData;
+import org.testsuite.data.TestSuiteData;
+
 /**
  * Implements the management of tests.
  * 
