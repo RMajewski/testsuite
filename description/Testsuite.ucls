@@ -12,7 +12,7 @@
   </class>  
   <class id="2" language="java" name="org.testsuite.data.FitSuite" project="Testsuite" 
     file="/Testsuite/src/org/testsuite/data/FitSuite.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="288" y="935"/>    
+    <position height="-1" width="-1" x="589" y="644"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -30,23 +30,14 @@
   </class>  
   <class id="4" language="java" name="org.testsuite.data.Junit" project="Testsuite" 
     file="/Testsuite/src/org/testsuite/data/Junit.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="896" y="1100"/>    
+    <position height="-1" width="-1" x="894" y="1097"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="org.testsuite.data.JunitSuite" project="Testsuite" 
-    file="/Testsuite/src/org/testsuite/data/JunitSuite.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="535" y="781"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="6" language="java" name="org.testsuite.core.TestCore" project="Testsuite" 
+  <class id="5" language="java" name="org.testsuite.core.TestCore" project="Testsuite" 
     file="/Testsuite/src/org/testsuite/core/TestCore.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="439" width="244" x="458" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
@@ -55,7 +46,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="org.testsuite.data.Test" project="Testsuite" 
+  <class id="6" language="java" name="org.testsuite.data.Test" project="Testsuite" 
     file="/Testsuite/src/org/testsuite/data/Test.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1133" y="839"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
@@ -64,7 +55,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="org.testsuite.data.TestSuite" project="Testsuite" 
+  <class id="7" language="java" name="org.testsuite.data.TestSuite" project="Testsuite" 
     file="/Testsuite/src/org/testsuite/data/TestSuite.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="931" y="726"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
@@ -73,7 +64,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="org.testsuite.data.Data" project="Testsuite" 
+  <class id="8" language="java" name="org.testsuite.data.Data" project="Testsuite" 
     file="/Testsuite/src/org/testsuite/data/Data.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1087" y="412"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
@@ -82,9 +73,18 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="10" language="java" name="org.testsuite.core.TestRunner" project="Testsuite" 
+  <class id="9" language="java" name="org.testsuite.core.TestRunner" project="Testsuite" 
     file="/Testsuite/src/org/testsuite/core/TestRunner.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="151" width="147" x="119" y="575"/>    
+    <position height="-1" width="-1" x="199" y="723"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="org.testsuite.core.JunitTestRunner" project="Testsuite" 
+    file="/Testsuite/src/org/testsuite/core/JunitTestRunner.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="199" y="970"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -92,7 +92,7 @@
     </display>  
   </class>  
   <association id="11">    
-    <end type="SOURCE" refId="6" navigable="false">      
+    <end type="SOURCE" refId="5" navigable="false">      
       <attribute id="12" name="_gui">        
         <position height="0" width="0" x="182" y="38"/>      
       </attribute>      
@@ -100,91 +100,86 @@
         <position height="0" width="0" x="182" y="38"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
+    <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <dependency id="14">    
-    <end type="SOURCE" refId="6"/>    
+    <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="3"/>  
   </dependency>  
   <generalization id="15">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="7"/>  
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="9"/>  
   </generalization>  
-  <dependency id="16">    
+  <generalization id="16">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="6"/>  
+  </generalization>  
+  <dependency id="17">    
     <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="4"/>  
   </dependency>  
-  <association id="17">    
-    <bendpoint x="488" y="552"/>    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="18" name="_junit">        
-        <position height="0" width="0" x="71" y="-19"/>      
-      </attribute>      
-      <multiplicity id="19" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="71" y="-19"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="20">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="4"/>  
-  </dependency>  
-  <association id="21">    
+  <association id="18">    
     <bendpoint x="587" y="517"/>    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="22" name="_fit">        
-        <position height="0" width="0" x="-284" y="286"/>      
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="19" name="_fit">        
+        <position height="0" width="0" x="17" y="-5"/>      
       </attribute>      
-      <multiplicity id="23" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="-284" y="286"/>      
+      <multiplicity id="20" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="17" y="-5"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <dependency id="24">    
+  <dependency id="21">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="1"/>  
   </dependency>  
-  <generalization id="25">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="9"/>  
-  </generalization>  
-  <generalization id="26">    
-    <end type="SOURCE" refId="2"/>    
+  <generalization id="22">    
+    <end type="SOURCE" refId="6"/>    
     <end type="TARGET" refId="8"/>  
   </generalization>  
-  <generalization id="27">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="9"/>  
+  <generalization id="23">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="7"/>  
   </generalization>  
-  <generalization id="28">    
+  <dependency id="24">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <generalization id="25">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="8"/>  
+  </generalization>  
+  <generalization id="26">    
     <end type="SOURCE" refId="1"/>    
     <end type="TARGET" refId="4"/>  
   </generalization>  
-  <generalization id="29">    
+  <dependency id="27">    
     <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="8"/>  
-  </generalization>  
-  <association id="30">    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="31" name="_tests">        
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <association id="28">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="29" name="_tests">        
         <position height="0" width="0" x="98" y="85"/>      
       </attribute>      
-      <multiplicity id="32" minimum="0" maximum="2147483647">        
+      <multiplicity id="30" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="98" y="85"/>      
       </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="31">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="32" name="_suites"/>      
+      <multiplicity id="33" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <dependency id="33">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="1"/>  
-  </dependency>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

@@ -40,7 +40,6 @@ import javax.xml.stream.XMLStreamReader;
 import org.testsuite.data.Fit;
 import org.testsuite.data.FitSuite;
 import org.testsuite.data.Junit;
-import org.testsuite.data.JunitSuite;
 import org.testsuite.data.Test;
 import org.testsuite.data.TestSuite;
 
@@ -60,11 +59,6 @@ public class TestCore {
 	 * Saves the GUI tests
 	 */
 	private List<TestSuite> _gui;
-	
-	/**
-	 * Saves the junit tests
-	 */
-	private List<JunitSuite> _junit;
 	
 	/**
 	 * Saves the Fit tests
@@ -97,7 +91,6 @@ public class TestCore {
 	public TestCore() {
 		// Listen initalisieren
 		_gui = new ArrayList<TestSuite>();
-		_junit = new ArrayList<JunitSuite>();
 		_fit = new ArrayList<FitSuite>();
 		
 		GregorianCalendar gc = new GregorianCalendar();
@@ -182,7 +175,8 @@ public class TestCore {
 							if (type == 1)
 								suite = new TestSuite();
 							else if (type == 2)
-								suite = new JunitSuite();
+								//Junit
+								System.out.println("Junit");
 							else if (type == 3)
 								suite = new FitSuite();
 							break;
@@ -215,7 +209,8 @@ public class TestCore {
 							if (type == 1)
 								_gui.add(suite);
 							else if (type == 2)
-								_junit.add((JunitSuite)suite);
+								//JUNIT
+								System.out.println("Junit");
 							else if (type == 3)
 								_fit.add((FitSuite)suite);
 							break;
@@ -272,7 +267,6 @@ public class TestCore {
 	 */
 	public void checkFileExists() {
 		listCheckFiles(_gui);
-		listCheckJunitFiles();
 		listCheckFitFiles();
 	}
 	
@@ -282,15 +276,6 @@ public class TestCore {
 	private void listCheckFitFiles() {
 		for (int i = 0; i < _fit.size(); i++)
 			suiteCheckFiles(_fit.get(i), "fit");
-	}
-	
-	/**
-	 * Cycles through junit suite list and checks whether the files exist.
-	 */
-	private void listCheckJunitFiles() {
-		for (int i = 0; i < _junit.size(); i++)
-			suiteCheckFiles(_junit.get(i), "java");
-		
 	}
 
 	/**
@@ -354,7 +339,6 @@ public class TestCore {
 	 */
 	public void run() {
 		runGui();
-		runJunit();
 		runFit();
 	}
 	
@@ -406,91 +390,6 @@ public class TestCore {
 				
 			}
 		}
-	}
-	
-	/**
-	 * Performs single junit test from
-	 */
-	private void runJunit() {
-		for (int suite = 0; suite < _junit.size(); suite++) {
-			// Test-Suite Name
-			System.out.println(_junit.get(suite).getName());
-			
-			// juni-Tests ausführen
-			for (int test = 0; test < _junit.get(suite).testCount(); test++) {
-				String name = _junit.get(suite).getPackage() + "." +
-						_junit.get(suite).getTest(test).getName();
-				
-				try {
-					_junit.get(suite).getTest(test).setStart(
-							new Date().getTime());
-
-					System.out.print(name + ": ");
-					Process p = Runtime.getRuntime().exec("java -cp " +
-							System.getProperty("java.class.path")+
-							" -Dtesting=true org.junit.runner.JUnitCore " +
-							name);
-					
-					int exit = p.waitFor();
-					_junit.get(suite).getTest(test).setExitStatus(exit);
-					
-					// Ausgabe wie der Test verlaufen ist
-					_junit.get(suite).getTest(test).setEnd(
-							new Date().getTime());
-
-					if (exit == 0)
-						System.out.print("wurde erfolgreich ausgeführt");
-					else
-						System.out.print("weißt Fehler auf");
-
-					System.out.print(" (Dauer des Tests: ");
-					System.out.print(String.valueOf(
-							_junit.get(suite).getTest(test).getDurationTime()));
-					System.out.println(" ms)");
-					
-					// Console-Ausgabe und Error-Ausgabe speichern
-					_junit.get(suite).getTest(test).setError(p.getErrorStream());
-					_junit.get(suite).getTest(test).setIn(p.getInputStream());
-
-					InputStream is = p.getInputStream();
-					is.mark(is.available());
-					BufferedReader br = new BufferedReader(new InputStreamReader(is));
-					String line;
-					while ((line = br.readLine()) != null) {
-						if (line.indexOf("OK (") > -1) {
-							String ok = new String("OK (");
-							
-							String tmp = line.substring(ok.length(),
-									line.indexOf(" tests)"));
-							_junit.get(suite).getTest(test).setOk(
-									Integer.valueOf(tmp));
-						} else if (line.indexOf("Tests run") > -1) {
-							String ok = new String("Tests run: ");
-							String fail = new String(",  Failures: ");
-							int indexOk = ok.length();
-							int indexFail = line.indexOf(fail);
-
-							_junit.get(suite).getTest(test).setOk(
-									Integer.valueOf(line.substring(indexOk, 
-											indexFail)));
-							
-							indexFail += fail.length();
-							_junit.get(suite).getTest(test).setFail(
-									Integer.valueOf(line.substring(indexFail)));
-						}
-					}
-					is.reset();
-				} catch (IOException e) {
-					e.printStackTrace();
-					_junit.get(suite).getTest(test).setExitStatus(100);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					_junit.get(suite).getTest(test).setExitStatus(100);
-				}
-			} // for über alle Tests
-			
-			System.out.println();
-		} // for über alle Test-Suites
 	}
 	
 	/**
@@ -613,7 +512,6 @@ public class TestCore {
 			htmlGui(_gui, html);
 			
 			html.junitHead();
-			htmlJunit(html);
 			
 			html.fitHead();
 			htmlFit(html);
@@ -622,42 +520,6 @@ public class TestCore {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * Creates the HTML output for the fit test.
-	 * 
-	 * @param html Class that generates HTML output.
-	 * 
-	 * @throws IOException
-	 */
-	private void htmlJunit(HtmlOut html) throws IOException {
-		for (int suite = 0; suite < _junit.size(); suite++) {
-			int ok = 0;
-			int fail = 0;
-			long time = 0;
-			
-			for (int test = 0; test < _junit.get(suite).testCount(); test++) {
-				int okTest = _junit.get(suite).getTest(test).getOk();
-				int failTest = _junit.get(suite).getTest(test).getFail();
-				long timeTest = _junit.get(suite).getTest(test).getDurationTime();
-				
-				// Ausgabe des Tests
-				html.test( _junit.get(suite).getTest(test).getName(),
-						okTest, failTest, timeTest, 
-						_junit.get(suite).getTest(test).getIn(),
-						_junit.get(suite).getTest(test).getError());
-				
-				// Fehler bzw. Richtig für Test-Suite erhöhen
-				ok += okTest;
-				fail += failTest;
-				time += timeTest;
-			} // for über alle Tests
-			
-			// Ausgabe für die Test-Suite
-			html.suiteHtml(_junit.get(suite).getName(),
-					_junit.get(suite).getPackage(), ok, fail, time);
-		} // for über alle Test-Suits
 	}
 
 	/**

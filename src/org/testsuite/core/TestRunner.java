@@ -20,6 +20,7 @@
 package org.testsuite.core;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,6 +130,7 @@ public abstract class TestRunner {
 	 * Called to generate the HTML code from the test results.
 	 * 
 	 * @param html Class, which helps to generate the HTML code.
+	 * @throws IOException 
 	 */
-	public abstract void createHtml(HtmlOut html);
+	public abstract void createHtml(HtmlOut html) throws IOException;
 }
