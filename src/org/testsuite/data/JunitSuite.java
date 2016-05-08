@@ -20,68 +20,40 @@
 package org.testsuite.data;
 
 /**
- * Saves the data for a junit test
+ * Saves the data for a junit test suite.
  * 
  * @author René Majewski
  *
  * @version 0.1
  */
-public class JunitData extends TestData {
+public class JunitSuite extends TestSuite {
+
 	/**
-	 * Stores the number of successful tests
+	 * Initialized data.
 	 */
-	private int _ok;
-	
-	/**
-	 * Stores the number of tests that failed.
-	 */
-	private int _fail;
-	
-	/**
-	 * Initializes the data of the class
-	 * 
-	 * @see TestData#TestData()
-	 */
-	public JunitData() {
+	public JunitSuite() {
 		super();
-		
-		_ok = 0;
-		_fail = 0;
 	}
 	
 	/**
-	 * Returns the number of successfully executed tests back
+	 * Adds the specified Fit Test the list of tests added.
 	 * 
-	 * @return Number of successful tests
+	 * @param test Fit-Test, which is to be added to the list.
 	 */
-	public int getOk() {
-		return _ok;
+	public void addTest(Junit test) {
+		super.addTest(test);
 	}
 	
 	/**
-	 * Stores the number of tests completed successfully
+	 * Returns the specified index on Fit Test.
 	 * 
-	 * @param ok Number of successful tests
-	 */
-	public void setOk(int ok) {
-		_ok = ok;
-	}
-	
-	/**
-	 * Returns the number of tests that failed.
+	 * @param index Point at which the fit test is to be returned.
 	 * 
-	 * @return Number of faulty tests
+	 * @return Determined Fit Test
 	 */
-	public int getFail() {
-		return _fail;
+	@Override
+	public Junit getTest(int index) {
+		return (Junit) super.getTest(index);
 	}
-	
-	/**
-	 * Stores the number of tests that failed.
-	 * 
-	 * @param fail Number of faulty tests
-	 */
-	public void setFail(int fail) {
-		_fail = fail;
-	}
+
 }

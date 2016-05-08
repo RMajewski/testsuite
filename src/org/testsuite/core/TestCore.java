@@ -37,12 +37,12 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import org.testsuite.data.FitData;
-import org.testsuite.data.FitSuiteData;
-import org.testsuite.data.JunitData;
-import org.testsuite.data.JunitSuiteData;
-import org.testsuite.data.TestData;
-import org.testsuite.data.TestSuiteData;
+import org.testsuite.data.Fit;
+import org.testsuite.data.FitSuite;
+import org.testsuite.data.Junit;
+import org.testsuite.data.JunitSuite;
+import org.testsuite.data.Test;
+import org.testsuite.data.TestSuite;
 
 /**
  * Implements the management of tests.
@@ -59,17 +59,17 @@ public class TestCore {
 	/**
 	 * Saves the GUI tests
 	 */
-	private List<TestSuiteData> _gui;
+	private List<TestSuite> _gui;
 	
 	/**
 	 * Saves the junit tests
 	 */
-	private List<JunitSuiteData> _junit;
+	private List<JunitSuite> _junit;
 	
 	/**
 	 * Saves the Fit tests
 	 */
-	private List<FitSuiteData> _fit;
+	private List<FitSuite> _fit;
 	
 	/**
 	 * Saves the result directory for Fit Tests
@@ -96,9 +96,9 @@ public class TestCore {
 	 */
 	public TestCore() {
 		// Listen initalisieren
-		_gui = new ArrayList<TestSuiteData>();
-		_junit = new ArrayList<JunitSuiteData>();
-		_fit = new ArrayList<FitSuiteData>();
+		_gui = new ArrayList<TestSuite>();
+		_junit = new ArrayList<JunitSuite>();
+		_fit = new ArrayList<FitSuite>();
 		
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.setTime(new Date());
@@ -140,8 +140,8 @@ public class TestCore {
 		XMLStreamReader parser = factory.createXMLStreamReader(stream);
 		
 		// Daten vorbereiten
-		TestData test = new TestData();
-		TestSuiteData suite = new TestSuiteData();
+		Test test = new Test();
+		TestSuite suite = new TestSuite();
 		int type = -1;
 		String str = new String();
 		
@@ -180,11 +180,11 @@ public class TestCore {
 						// Neue Test-Suite
 						case "testSuite":
 							if (type == 1)
-								suite = new TestSuiteData();
+								suite = new TestSuite();
 							else if (type == 2)
-								suite = new JunitSuiteData();
+								suite = new JunitSuite();
 							else if (type == 3)
-								suite = new FitSuiteData();
+								suite = new FitSuite();
 							break;
 							
 						// Name
@@ -198,11 +198,11 @@ public class TestCore {
 						// Neuer Test
 						case "test":
 							if (type == 1)
-								test = new TestData();
+								test = new Test();
 							else if (type == 2)
-								test = new JunitData();
+								test = new Junit();
 							else if (type == 3)
-								test = new FitData();
+								test = new Fit();
 							break;
 					}
 					break;
@@ -215,9 +215,9 @@ public class TestCore {
 							if (type == 1)
 								_gui.add(suite);
 							else if (type == 2)
-								_junit.add((JunitSuiteData)suite);
+								_junit.add((JunitSuite)suite);
 							else if (type == 3)
-								_fit.add((FitSuiteData)suite);
+								_fit.add((FitSuite)suite);
 							break;
 							
 						// Name
@@ -298,7 +298,7 @@ public class TestCore {
 	 * 
 	 * @param list List that is to be executed.
 	 */
-	private void listCheckFiles(List<TestSuiteData> list) {
+	private void listCheckFiles(List<TestSuite> list) {
 		for (int i = 0; i < list.size(); i++)
 			suiteCheckFiles(list.get(i), "java");
 	}
@@ -311,7 +311,7 @@ public class TestCore {
 	 * 
 	 * @param extension File extension of the file
 	 */
-	private void suiteCheckFiles(TestSuiteData suite, String extension) {
+	private void suiteCheckFiles(TestSuite suite, String extension) {
 		suite.setExists(fileExists(suite.getPackage().replaceAll("\\.", "/")));
 		String path = suite.getPackage();
 		for (int i = 0; i < suite.testCount(); i++)
@@ -716,7 +716,7 @@ public class TestCore {
 	 * 
 	 * @throws IOException
 	 */
-	private void htmlGui(List<TestSuiteData> list, HtmlOut html) 
+	private void htmlGui(List<TestSuite> list, HtmlOut html) 
 			throws IOException {
 		for (int suite = 0; suite < list.size(); suite++) {
 			int right = 0;

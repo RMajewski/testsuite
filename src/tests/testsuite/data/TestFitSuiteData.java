@@ -24,12 +24,12 @@ import static org.mockito.Mockito.mock;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.testsuite.data.FitData;
-import org.testsuite.data.FitSuiteData;
-import org.testsuite.data.TestSuiteData;
+import org.testsuite.data.Fit;
+import org.testsuite.data.FitSuite;
+import org.testsuite.data.TestSuite;
 
 /**
- * Test the class {@link org.testsuite.data.FitSuiteData}.
+ * Test the class {@link org.testsuite.data.FitSuite}.
  * 
  * @author René Majewski
  * 
@@ -40,14 +40,14 @@ public class TestFitSuiteData {
 	/**
 	 * Save the class TestJunitDataSuiteData
 	 */
-	private FitSuiteData _data;
+	private FitSuite _data;
 	
 	/**
 	 * Initialize the tests
 	 */
 	@Before
 	public void setUp() throws Exception {
-		_data = new FitSuiteData();
+		_data = new FitSuite();
 	}
 	
 	/**
@@ -55,18 +55,18 @@ public class TestFitSuiteData {
 	 */
 	@Test
 	public void testJunitDataDerivedFromTestData() {
-		assertEquals(TestSuiteData.class.getName(),
-				FitSuiteData.class.getSuperclass().getName());
+		assertEquals(TestSuite.class.getName(),
+				FitSuite.class.getSuperclass().getName());
 	}
 	
 	/**
 	 * Tests whether a test can be placed correctly in the list.
 	 * 
-	 * @see org.testsuite.data.TestSuiteData#addTest(org.testsuite.data.TestData)
+	 * @see org.testsuite.data.TestSuite#addTest(org.testsuite.data.TestData)
 	 */
 	@Test
 	public void testAddTest() {
-		FitData data = mock(FitData.class);
+		Fit data = mock(Fit.class);
 		_data.addTest(data);
 		assertEquals(1, _data.testCount());
 	}
@@ -74,11 +74,11 @@ public class TestFitSuiteData {
 	/**
 	 * Tests whether the test can be read correctly from the list.
 	 * 
-	 * @see org.testsuite.data.TestSuiteData#getTest(int)
+	 * @see org.testsuite.data.TestSuite#getTest(int)
 	 */
 	@Test
 	public void testGetTest() {
-		FitData data = mock(FitData.class);
+		Fit data = mock(Fit.class);
 		_data.addTest(data);
 		assertEquals(data, _data.getTest(0));
 	}

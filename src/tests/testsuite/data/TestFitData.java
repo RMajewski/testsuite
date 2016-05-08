@@ -23,10 +23,10 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.testsuite.data.FitData;
+import org.testsuite.data.Fit;
 
 /**
- * Test the class {@link org.testsuite.data.FitData}.
+ * Test the class {@link org.testsuite.data.Fit}.
  * 
  * @author René Majewski
  * 
@@ -37,14 +37,14 @@ public class TestFitData {
 	/**
 	 * Save the class FitData
 	 */
-	private FitData _data;
+	private Fit _data;
 	
 	/**
 	 * Initialize the tests
 	 */
 	@Before
 	public void setUp() throws Exception {
-		_data = new FitData();
+		_data = new Fit();
 	}
 	
 	/**
@@ -52,14 +52,14 @@ public class TestFitData {
 	 */
 	@Test
 	public void testFitDataDerivedFromTestData() {
-		assertEquals(org.testsuite.data.TestData.class.getName(),
-				FitData.class.getSuperclass().getName());
+		assertEquals(org.testsuite.data.Test.class.getName(),
+				Fit.class.getSuperclass().getName());
 	}
 	
 	/**
 	 * Tests whether the data has been correctly initialized.
 	 * 
-	 * @see org.testsuite.data.FitData#FitData()
+	 * @see org.testsuite.data.Fit#FitData()
 	 */
 	@Test
 	public void testFitData() {
@@ -72,7 +72,7 @@ public class TestFitData {
 	/**
 	 * Testing whether the number of correct test is returned correctly.
 	 * 
-	 * @see org.testsuite.data.FitData#getRight()
+	 * @see org.testsuite.data.Fit#getRight()
 	 */
 	@Test
 	public void testGetRight() {
@@ -82,7 +82,7 @@ public class TestFitData {
 	/**
 	 * Testing whether the number of correct tests can be set correctly.
 	 * 
-	 * @see org.testsuite.data.FitData#setRight(int)
+	 * @see org.testsuite.data.Fit#setRight(int)
 	 */
 	@Test
 	public void testSetRight() {
@@ -94,7 +94,7 @@ public class TestFitData {
 	/**
 	 * Testing whether the number of failed tests is returned correctly.
 	 * 
-	 * @see org.testsuite.data.FitData#getWrong()
+	 * @see org.testsuite.data.Fit#getWrong()
 	 */
 	@Test
 	public void testGetWrong() {
@@ -104,7 +104,7 @@ public class TestFitData {
 	/**
 	 * Testing whether the number of failed tests can be set correctly.
 	 * 
-	 * @see org.testsuite.data.FitData#setWrong(int)
+	 * @see org.testsuite.data.Fit#setWrong(int)
 	 */
 	@Test
 	public void testSetWrong() {
@@ -116,7 +116,7 @@ public class TestFitData {
 	/**
 	 * Testing whether the number of ignored tests is returned correctly.
 	 * 
-	 * @see org.testsuite.data.FitData#getIgnore()
+	 * @see org.testsuite.data.Fit#getIgnore()
 	 */
 	@Test
 	public void testGetIgnore() {
@@ -126,7 +126,7 @@ public class TestFitData {
 	/**
 	 * Testing whether the number of ignored tests can be set correctly.
 	 * 
-	 * @see org.testsuite.data.FitData#setIgnore(int)
+	 * @see org.testsuite.data.Fit#setIgnore(int)
 	 */
 	@Test
 	public void testSetIgnore() {
@@ -138,7 +138,7 @@ public class TestFitData {
 	/**
 	 * Testing whether the number of exception tests is returned correctly.
 	 * 
-	 * @see org.testsuite.data.FitData#getException()
+	 * @see org.testsuite.data.Fit#getException()
 	 */
 	@Test
 	public void testGetException() {
@@ -148,7 +148,7 @@ public class TestFitData {
 	/**
 	 * Testing whether the number of exception tests can be set correctly.
 	 * 
-	 * @see org.testsuite.data.FitData#setException(int)
+	 * @see org.testsuite.data.Fit#setException(int)
 	 */
 	@Test
 	public void testSetException() {

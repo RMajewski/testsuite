@@ -29,11 +29,11 @@ import java.util.List;
  *
  * @version 0.1
  */
-public class TestSuiteData {
+public class TestSuite {
 	/**
 	 * Saves the list with the corresponding tests
 	 */
-	private List<TestData> _tests;
+	private List<Test> _tests;
 	
 	/**
 	 * Stores the name of the test suite
@@ -53,9 +53,9 @@ public class TestSuiteData {
 	/**
 	 * Initialize the data 
 	 */
-	public TestSuiteData() {
+	public TestSuite() {
 		_name = new String();
-		_tests = new ArrayList<TestData>();
+		_tests = new ArrayList<Test>();
 		_package = new String();
 		_exists = false;
 	}
@@ -121,7 +121,7 @@ public class TestSuiteData {
 	 * 
 	 * @param test Test, which is to be added to the list of tests
 	 */
-	public void addTest(TestData test) {
+	public void addTest(Test test) {
 		_tests.add(test);
 	}
 	
@@ -132,7 +132,7 @@ public class TestSuiteData {
 	 * 
 	 * @return Of specified Test
 	 */
-	public TestData getTest(int index) {
+	public Test getTest(int index) {
 		return _tests.get(index);
 	}
 	

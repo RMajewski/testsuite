@@ -26,7 +26,7 @@ package org.testsuite.data;
  *
  * @version 0.1
  */
-public class FitData extends TestData {
+public class Fit extends Test {
 	/**
 	 * Stores the number of allegations properly executed.
 	 */
@@ -50,9 +50,9 @@ public class FitData extends TestData {
 	/**
 	 * Initializes the data of the class
 	 * 
-	 * @see TestData#TestData()
+	 * @see Test#TestData()
 	 */
-	public FitData() {
+	public Fit() {
 		super();
 		
 		_exception = 0;

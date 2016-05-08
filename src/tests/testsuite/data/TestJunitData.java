@@ -23,10 +23,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.testsuite.data.JunitData;
+import org.testsuite.data.Junit;
 
 /**
- * Test the class {@link org.testsuite.data.JunitData}.
+ * Test the class {@link org.testsuite.data.Junit}.
  * 
  * @author René Majewski
  * 
@@ -37,14 +37,14 @@ public class TestJunitData {
 	/**
 	 * Save the class JunitData
 	 */
-	private JunitData _data;
+	private Junit _data;
 	
 	/**
 	 * Initialize the tests
 	 */
 	@Before
 	public void setUp() throws Exception {
-		_data = new JunitData();
+		_data = new Junit();
 	}
 	
 	/**
@@ -52,14 +52,14 @@ public class TestJunitData {
 	 */
 	@Test
 	public void testJunitDataDerivedFromTestData() {
-		assertEquals(org.testsuite.data.TestData.class.getName(),
-				JunitData.class.getSuperclass().getName());
+		assertEquals(org.testsuite.data.Test.class.getName(),
+				Junit.class.getSuperclass().getName());
 	}
 	
 	/**
 	 * Tests whether the data has been correctly initialized.
 	 * 
-	 * @see org.testsuite.data.JunitData#JunitData()
+	 * @see org.testsuite.data.Junit#JunitData()
 	 */
 	@Test
 	public void testJunitData() {
@@ -70,7 +70,7 @@ public class TestJunitData {
 	/**
 	 * Testing whether the number of correct test is returned correctly.
 	 * 
-	 * @see org.testsuite.data.JunitData#getOk()
+	 * @see org.testsuite.data.Junit#getOk()
 	 */
 	@Test
 	public void testGetOk() {
@@ -80,7 +80,7 @@ public class TestJunitData {
 	/**
 	 * Testing whether the number of correct tests can be set correctly.
 	 * 
-	 * @see org.testsuite.data.JunitData#setOk(int)
+	 * @see org.testsuite.data.Junit#setOk(int)
 	 */
 	@Test
 	public void testSetOk() {
@@ -92,7 +92,7 @@ public class TestJunitData {
 	/**
 	 * Testing whether the number of failed tests is returned correctly.
 	 * 
-	 * @see org.testsuite.data.JunitData#getFail()
+	 * @see org.testsuite.data.Junit#getFail()
 	 */
 	@Test
 	public void testGetFail() {
@@ -102,7 +102,7 @@ public class TestJunitData {
 	/**
 	 * Testing whether the number of failed tests can be set correctly.
 	 * 
-	 * @see org.testsuite.data.JunitData#setFail(int)
+	 * @see org.testsuite.data.Junit#setFail(int)
 	 */
 	@Test
 	public void testSetFail() {

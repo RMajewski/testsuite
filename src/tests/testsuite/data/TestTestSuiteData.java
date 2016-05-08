@@ -24,10 +24,10 @@ import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.testsuite.data.TestSuiteData;
+import org.testsuite.data.TestSuite;
 
 /**
- * Test the class {@link org.testsuite.data.TestSuiteData}.
+ * Test the class {@link org.testsuite.data.TestSuite}.
  * 
  * @author René Majewski
  * 
@@ -38,20 +38,20 @@ public class TestTestSuiteData {
 	/**
 	 * Save the class TestSuiteData
 	 */
-	private TestSuiteData _data;
+	private TestSuite _data;
 	
 	/**
 	 * Initialize the tests
 	 */
 	@Before
 	public void setUp() throws Exception {
-		_data = new TestSuiteData();
+		_data = new TestSuite();
 	}
 	
 	/**
 	 * Tests whether the data has been correctly initialized.
 	 * 
-	 * @see org.testsuite.data.TestSuiteData#TestSuiteData()
+	 * @see org.testsuite.data.TestSuite#TestSuiteData()
 	 */
 	@Test
 	public void testJunitData() {
@@ -64,7 +64,7 @@ public class TestTestSuiteData {
 	/**
 	 * Tests if the name is returned correctly.
 	 * 
-	 * @see org.testsuite.data.TestSuiteData#getName()
+	 * @see org.testsuite.data.TestSuite#getName()
 	 */
 	@Test
 	public void testGetName() {
@@ -74,7 +74,7 @@ public class TestTestSuiteData {
 	/**
 	 * Tests whether the name can be set correctly.
 	 * 
-	 * @see org.testsuite.data.TestSuiteData#setName(String)
+	 * @see org.testsuite.data.TestSuite#setName(String)
 	 */
 	@Test
 	public void testSetName() {
@@ -86,7 +86,7 @@ public class TestTestSuiteData {
 	/**
 	 * Tests if the package name is returned correctly.
 	 * 
-	 * @see org.testsuite.data.TestSuiteData#getPackage()
+	 * @see org.testsuite.data.TestSuite#getPackage()
 	 */
 	@Test
 	public void testGetPackage() {
@@ -96,7 +96,7 @@ public class TestTestSuiteData {
 	/**
 	 * Tests whether the package name can be set correctly.
 	 * 
-	 * @see org.testsuite.data.TestSuiteData#setPackage(String)
+	 * @see org.testsuite.data.TestSuite#setPackage(String)
 	 */
 	@Test
 	public void testSetPackage() {
@@ -108,7 +108,7 @@ public class TestTestSuiteData {
 	/**
 	 * Tests if the path exists is returned correctly.
 	 * 
-	 * @see org.testsuite.data.TestSuiteData#getPackage()
+	 * @see org.testsuite.data.TestSuite#getPackage()
 	 */
 	@Test
 	public void testIsExists() {
@@ -118,7 +118,7 @@ public class TestTestSuiteData {
 	/**
 	 * Tests whether the path exists can be set correctly.
 	 * 
-	 * @see org.testsuite.data.TestSuiteData#setPackage(String)
+	 * @see org.testsuite.data.TestSuite#setPackage(String)
 	 */
 	@Test
 	public void testSetExists() {
@@ -130,7 +130,7 @@ public class TestTestSuiteData {
 	/**
 	 * Tests if the number of tests can be determined correctly.
 	 * 
-	 * @see org.testsuite.data.TestSuiteData#testCount()
+	 * @see org.testsuite.data.TestSuite#testCount()
 	 */
 	@Test
 	public void testTestCount() {
@@ -140,12 +140,12 @@ public class TestTestSuiteData {
 	/**
 	 * Tests whether a test can be placed correctly in the list.
 	 * 
-	 * @see org.testsuite.data.TestSuiteData#addTest(org.testsuite.data.TestData)
+	 * @see org.testsuite.data.TestSuite#addTest(org.testsuite.data.Test)
 	 */
 	@Test
 	public void testAddTest() {
-		org.testsuite.data.TestData data = 
-				mock(org.testsuite.data.TestData.class);
+		org.testsuite.data.Test data = 
+				mock(org.testsuite.data.Test.class);
 		_data.addTest(data);
 		assertEquals(1, _data.testCount());
 	}
@@ -153,12 +153,12 @@ public class TestTestSuiteData {
 	/**
 	 * Tests whether the test can be read correctly from the list.
 	 * 
-	 * @see org.testsuite.data.TestSuiteData#getTest(int)
+	 * @see org.testsuite.data.TestSuite#getTest(int)
 	 */
 	@Test
 	public void testGetTest() {
-		org.testsuite.data.TestData data = 
-				mock(org.testsuite.data.TestData.class);
+		org.testsuite.data.Test data = 
+				mock(org.testsuite.data.Test.class);
 		_data.addTest(data);
 		assertEquals(data, _data.getTest(0));
 	}

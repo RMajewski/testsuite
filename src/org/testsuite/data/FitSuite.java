@@ -20,18 +20,18 @@
 package org.testsuite.data;
 
 /**
- * Saves the data for a junit test suite.
+ * Saves the data for a Fit Test Suite.
  * 
  * @author René Majewski
  *
  * @version 0.1
  */
-public class JunitSuiteData extends TestSuiteData {
+public class FitSuite extends TestSuite {
 
 	/**
 	 * Initialized data.
 	 */
-	public JunitSuiteData() {
+	public FitSuite() {
 		super();
 	}
 	
@@ -40,7 +40,7 @@ public class JunitSuiteData extends TestSuiteData {
 	 * 
 	 * @param test Fit-Test, which is to be added to the list.
 	 */
-	public void addTest(JunitData test) {
+	public void addTest(Fit test) {
 		super.addTest(test);
 	}
 	
@@ -49,11 +49,11 @@ public class JunitSuiteData extends TestSuiteData {
 	 * 
 	 * @param index Point at which the fit test is to be returned.
 	 * 
-	 * @return Determined Fit Test
+	 * @return Determined Fit Tests
 	 */
 	@Override
-	public JunitData getTest(int index) {
-		return (JunitData) super.getTest(index);
+	public Fit getTest(int index) {
+		return (Fit) super.getTest(index);
 	}
 
 }

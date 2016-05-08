@@ -28,7 +28,7 @@ import java.io.InputStream;
  *
  * @version 0.1
  */
-public class TestData {
+public class Test {
 	/**
 	 * Stores the name of the test
 	 */
@@ -67,7 +67,7 @@ public class TestData {
 	/**
 	 * Initialize the data of this class
 	 */
-	public TestData() {
+	public Test() {
 		_name = new String();
 		_end = 0;
 		_start = 0;

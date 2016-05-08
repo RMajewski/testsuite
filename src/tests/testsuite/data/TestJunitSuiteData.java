@@ -24,12 +24,12 @@ import static org.mockito.Mockito.mock;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.testsuite.data.JunitData;
-import org.testsuite.data.JunitSuiteData;
-import org.testsuite.data.TestSuiteData;
+import org.testsuite.data.Junit;
+import org.testsuite.data.JunitSuite;
+import org.testsuite.data.TestSuite;
 
 /**
- * Test the class {@link org.testsuite.data.JunitSuiteData}.
+ * Test the class {@link org.testsuite.data.JunitSuite}.
  * 
  * @author René Majewski
  * 
@@ -40,14 +40,14 @@ public class TestJunitSuiteData {
 	/**
 	 * Save the class JunitDataSuiteData
 	 */
-	private JunitSuiteData _data;
+	private JunitSuite _data;
 	
 	/**
 	 * Initialize the tests
 	 */
 	@Before
 	public void setUp() throws Exception {
-		_data = new JunitSuiteData();
+		_data = new JunitSuite();
 	}
 	
 	/**
@@ -55,18 +55,18 @@ public class TestJunitSuiteData {
 	 */
 	@Test
 	public void testJunitDataDerivedFromTestData() {
-		assertEquals(TestSuiteData.class.getName(),
-				JunitSuiteData.class.getSuperclass().getName());
+		assertEquals(TestSuite.class.getName(),
+				JunitSuite.class.getSuperclass().getName());
 	}
 	
 	/**
 	 * Tests whether a test can be placed correctly in the list.
 	 * 
-	 * @see org.testsuite.data.TestSuiteData#addTest(org.testsuite.data.TestData)
+	 * @see org.testsuite.data.TestSuite#addTest(org.testsuite.data.TestData)
 	 */
 	@Test
 	public void testAddTest() {
-		JunitData data = mock(JunitData.class);
+		Junit data = mock(Junit.class);
 		_data.addTest(data);
 		assertEquals(1, _data.testCount());
 	}
@@ -74,11 +74,11 @@ public class TestJunitSuiteData {
 	/**
 	 * Tests whether the test can be read correctly from the list.
 	 * 
-	 * @see org.testsuite.data.TestSuiteData#getTest(int)
+	 * @see org.testsuite.data.TestSuite#getTest(int)
 	 */
 	@Test
 	public void testGetTest() {
-		JunitData data = mock(JunitData.class);
+		Junit data = mock(Junit.class);
 		_data.addTest(data);
 		assertEquals(data, _data.getTest(0));
 	}

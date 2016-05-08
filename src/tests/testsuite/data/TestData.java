@@ -27,7 +27,7 @@ import java.io.InputStream;
 import org.junit.Before;
 import org.junit.Test;
 /**
- * Tests the class {@link org.testsuite.data.TestData}.
+ * Tests the class {@link org.testsuite.data.Test}.
  * 
  * @author René Majewski
  *
@@ -37,20 +37,20 @@ public class TestData {
 	/**
 	 * Save the class TestData.
 	 */
-	private org.testsuite.data.TestData _data;
+	private org.testsuite.data.Test _data;
 
 	/**
 	 * Initialize the tests
 	 */
 	@Before
 	public void setUp() throws Exception {
-		_data = new org.testsuite.data.TestData();
+		_data = new org.testsuite.data.Test();
 	}
 	
 	/**
 	 * Verifies that was correctly initialized.
 	 * 
-	 * @see org.testsuite.data.TestData#TestData()
+	 * @see org.testsuite.data.Test#TestData()
 	 */
 	@Test
 	public void testTestData() {
@@ -66,7 +66,7 @@ public class TestData {
 	/**
 	 * Tests if the name is returned correctly.
 	 * 
-	 * @see org.testsuite.data.TestData#getName()
+	 * @see org.testsuite.data.Test#getName()
 	 */
 	@Test
 	public void testGetName() {
@@ -76,7 +76,7 @@ public class TestData {
 	/**
 	 * Tests whether the name can be set correctly.
 	 * 
-	 * @see org.testsuite.data.TestData#setName(String)
+	 * @see org.testsuite.data.Test#setName(String)
 	 */
 	@Test
 	public void testSetName() {
@@ -89,7 +89,7 @@ public class TestData {
 	 * Tests if the name of the error  occurs when null is passed as the
 	 * name.
 	 * 
-	 * @see org.testsuite.data.TestData#setName(String)
+	 * @see org.testsuite.data.Test#setName(String)
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetNameNullAsName() {
@@ -100,7 +100,7 @@ public class TestData {
 	 * Tests if the name of the error ... occurs when an empty string is passed
 	 * as the name.
 	 * 
-	 * @see org.testsuite.data.TestData#setName(String)
+	 * @see org.testsuite.data.Test#setName(String)
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetNameEmptyStringAsName() {
@@ -110,7 +110,7 @@ public class TestData {
 	/**
 	 * Tests if the end time returned correctly.
 	 * 
-	 * @see org.testsuite.data.TestData#getEnd()
+	 * @see org.testsuite.data.Test#getEnd()
 	 */
 	@Test
 	public void testGetEnd() {
@@ -120,7 +120,7 @@ public class TestData {
 	/**
 	 * Tests if the end time can be set correctly.
 	 * 
-	 * @see org.testsuite.data.TestData#setEnd(long)
+	 * @see org.testsuite.data.Test#setEnd(long)
 	 */
 	@Test
 	public void testSetEnd() {
@@ -132,7 +132,7 @@ public class TestData {
 	/**
 	 * Tests if the start time returned correctly.
 	 * 
-	 * @see org.testsuite.data.TestData#getStart()
+	 * @see org.testsuite.data.Test#getStart()
 	 */
 	@Test
 	public void testGetStart() {
@@ -142,7 +142,7 @@ public class TestData {
 	/**
 	 * Tests if the start time can be set correctly.
 	 * 
-	 * @see org.testsuite.data.TestData#setStart(long)
+	 * @see org.testsuite.data.Test#setStart(long)
 	 */
 	@Test
 	public void testSetStart() {
@@ -154,7 +154,7 @@ public class TestData {
 	/**
 	 * Tests if the exit status returned correctly.
 	 * 
-	 * @see org.testsuite.data.TestData#getExitStatus()
+	 * @see org.testsuite.data.Test#getExitStatus()
 	 */
 	@Test
 	public void testGetExitStatus() {
@@ -164,7 +164,7 @@ public class TestData {
 	/**
 	 * Tests if the exit status can be set correctly.
 	 * 
-	 * @see org.testsuite.data.TestData#setExitStatus(int)
+	 * @see org.testsuite.data.Test#setExitStatus(int)
 	 */
 	@Test
 	public void testSetExitStatus() {
@@ -176,7 +176,7 @@ public class TestData {
 	/**
 	 * Tests if the error stream returned correctly.
 	 * 
-	 * @see org.testsuite.data.TestData#getError()
+	 * @see org.testsuite.data.Test#getError()
 	 */
 	@Test
 	public void testGetError() {
@@ -186,7 +186,7 @@ public class TestData {
 	/**
 	 * Tests if the error stream can be set correctly.
 	 * 
-	 * @see org.testsuite.data.TestData#setError(InputStream)
+	 * @see org.testsuite.data.Test#setError(InputStream)
 	 */
 	@Test
 	public void testSetError() {
@@ -198,7 +198,7 @@ public class TestData {
 	/**
 	 * Tests if the console stream returned correctly.
 	 * 
-	 * @see org.testsuite.data.TestData#getIn()
+	 * @see org.testsuite.data.Test#getIn()
 	 */
 	@Test
 	public void testGetIn() {
@@ -208,7 +208,7 @@ public class TestData {
 	/**
 	 * Tests if the error stream can be set correctly.
 	 * 
-	 * @see org.testsuite.data.TestData#setIn(InputStream)
+	 * @see org.testsuite.data.Test#setIn(InputStream)
 	 */
 	@Test
 	public void testSetIn() {
@@ -228,7 +228,7 @@ public class TestData {
 	/**
 	 * Tests if the file exists can be set correctly.
 	 * 
-	 * @see org.testsuite.data.TestData#setExists(boolean)
+	 * @see org.testsuite.data.Test#setExists(boolean)
 	 */
 	@Test
 	public void testSetExists() {
