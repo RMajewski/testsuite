@@ -19,6 +19,7 @@
 
 package org.testsuite.core;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,20 +36,88 @@ public abstract class TestRunner {
 	/**
 	 * Hold an instance of the list of TestSuites.
 	 */
-	protected List<TestSuite> _suits;
+	protected List<TestSuite> _suites;
+	
+	/**
+	 * Saves the file extension.
+	 */
+	protected String _fileExtension;
 	
 	/**
 	 * Initialis the data of the class.
+	 * 
+	 * @param extension The extension of the test file.
 	 */
-	public TestRunner() {
-		_suits = new ArrayList<TestSuite>();
+	public TestRunner(String extension) {
+		_suites = new ArrayList<TestSuite>();
+		_fileExtension = extension;
+	}
+	
+	/**
+	 * Determines the number of test suites.
+	 * 
+	 * @return Number of test suites
+	 */
+	public int testSuiteCount() {
+		return _suites.size();
+	}
+	
+	/**
+	 * Adds a test suite to the list.
+	 * 
+	 * @param suite Test Suite, which is to be added to the list.
+	 */
+	public void addTestSuite(TestSuite suite) {
+		_suites.add(suite);
+	}
+	
+	/**
+	 * Returns the file extension.
+	 * 
+	 * @return The file extension.
+	 */
+	public String getFileExtension() {
+		return _fileExtension;
+	}
+	
+	/**
+	 * Sets the file extension
+	 * 
+	 * @param extension The new file extension
+	 */
+	public void setFileExtension(String extension) {
+		if ((extension == null) || extension.isEmpty())
+			throw new IllegalArgumentException();
+		_fileExtension = extension;
 	}
 	
 	/**
 	 * Verifies that the directories and files Test exist.
 	 */
 	public void checkFileExists() {
-		
+		for (int suite = 0; suite < _suites.size(); suite++) {
+			// Überprüft, ob das Verzeichnis existiert
+			File path = new File(_suites.get(suite).getPackage());
+			boolean pathExists = false;
+			if (path.exists())
+				pathExists = true;
+			_suites.get(suite).setExists(pathExists);
+			
+			for (int test = 0; test < _suites.get(suite).testCount(); test++) {
+				// Überprüft, ob das Verzeichnis existiert
+				boolean fileExists = false;
+				if (pathExists) {
+					String fileName = _suites.get(suite).getPackage() +
+							File.separator +
+							_suites.get(suite).getTest(test).getName() + "." +
+							_fileExtension;
+					File file = new File(fileName);
+					if (file.exists())
+						fileExists = true;
+				}
+				_suites.get(suite).getTest(test).setExists(fileExists);
+			}
+		}
 	}
 	
 	/**

@@ -30,8 +30,8 @@ import org.testsuite.core.TestRunner;
  * @version 0.1
  */
 class TestRunnerImplementation extends TestRunner {
-	public TestRunnerImplementation() {
-		super();
+	public TestRunnerImplementation(String test) {
+		super(test);
 	}
 
 	@Override
