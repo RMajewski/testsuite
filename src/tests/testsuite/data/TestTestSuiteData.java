@@ -24,6 +24,7 @@ import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.testsuite.data.Data;
 import org.testsuite.data.TestSuite;
 
 /**
@@ -49,6 +50,15 @@ public class TestTestSuiteData {
 	}
 	
 	/**
+	 * Checks if the class of Data has been derived.
+	 */
+	@Test
+	public void testJunitDataDerivedFromData() {
+		assertEquals(Data.class.getName(),
+				TestSuite.class.getSuperclass().getName());
+	}
+	
+	/**
 	 * Tests whether the data has been correctly initialized.
 	 * 
 	 * @see org.testsuite.data.TestSuite#TestSuiteData()
@@ -59,28 +69,6 @@ public class TestTestSuiteData {
 		assertEquals(new String(), _data.getPackage());
 		assertFalse(_data.isExists());
 		assertEquals(0, _data.testCount());
-	}
-
-	/**
-	 * Tests if the name is returned correctly.
-	 * 
-	 * @see org.testsuite.data.TestSuite#getName()
-	 */
-	@Test
-	public void testGetName() {
-		assertEquals(new String(), _data.getName());
-	}
-	
-	/**
-	 * Tests whether the name can be set correctly.
-	 * 
-	 * @see org.testsuite.data.TestSuite#setName(String)
-	 */
-	@Test
-	public void testSetName() {
-		String name = "Test";
-		_data.setName(name);
-		assertEquals(name, _data.getName());
 	}
 
 	/**
@@ -103,28 +91,6 @@ public class TestTestSuiteData {
 		String name = "Test";
 		_data.setPackage(name);
 		assertEquals(name, _data.getPackage());
-	}
-
-	/**
-	 * Tests if the path exists is returned correctly.
-	 * 
-	 * @see org.testsuite.data.TestSuite#getPackage()
-	 */
-	@Test
-	public void testIsExists() {
-		assertFalse(_data.isExists());
-	}
-	
-	/**
-	 * Tests whether the path exists can be set correctly.
-	 * 
-	 * @see org.testsuite.data.TestSuite#setPackage(String)
-	 */
-	@Test
-	public void testSetExists() {
-		boolean exists = true;
-		_data.setExists(exists);
-		assertEquals(exists, _data.isExists());
 	}
 
 	/**

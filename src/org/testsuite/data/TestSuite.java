@@ -29,16 +29,11 @@ import java.util.List;
  *
  * @version 0.1
  */
-public class TestSuite {
+public class TestSuite extends Data {
 	/**
 	 * Saves the list with the corresponding tests
 	 */
 	private List<Test> _tests;
-	
-	/**
-	 * Stores the name of the test suite
-	 */
-	private String _name;
 	
 	/**
 	 * Saves the package, which contains the Tests
@@ -46,36 +41,11 @@ public class TestSuite {
 	private String _package;
 	
 	/**
-	 * Saves whether the package exists or not.
-	 */
-	private boolean _exists;
-	
-	/**
 	 * Initialize the data 
 	 */
 	public TestSuite() {
-		_name = new String();
 		_tests = new ArrayList<Test>();
 		_package = new String();
-		_exists = false;
-	}
-	
-	/**
-	 * Sets the name
-	 * 
-	 * @param name New name of the test suite
-	 */
-	public void setName(String name) {
-		_name = name;
-	}
-	
-	/**
-	 * Returns the name of the test suite
-	 * 
-	 * @return Name of the test suite
-	 */
-	public String getName() {
-		return _name;
 	}
 	
 	/**
@@ -96,24 +66,6 @@ public class TestSuite {
 	 */
 	public String getPackage() {
 		return _package;
-	}
-	
-	/**
-	 * Specifies whether the package exists or not
-	 * 
-	 * @param exists In existence the package?
-	 */
-	public void setExists(boolean exists) {
-		_exists = exists;
-	}
-	
-	/**
-	 * Returns whether the package exists or not.
-	 * 
-	 * @return In existence the package?
-	 */
-	public boolean isExists() {
-		return _exists;
 	}
 	
 	/**

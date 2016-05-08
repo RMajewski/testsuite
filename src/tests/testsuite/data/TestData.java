@@ -20,14 +20,13 @@
 package tests.testsuite.data;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
-import java.io.InputStream;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.testsuite.data.Data;
+
 /**
- * Tests the class {@link org.testsuite.data.Test}.
+ * Tests the class {@link org.testsuite.data.Data}.
  * 
  * @author René Majewski
  *
@@ -37,30 +36,34 @@ public class TestData {
 	/**
 	 * Save the class TestData.
 	 */
-	private org.testsuite.data.Test _data;
+	private Data _data;
 
 	/**
 	 * Initialize the tests
 	 */
 	@Before
 	public void setUp() throws Exception {
-		_data = new org.testsuite.data.Test();
+		_data = new Data();
 	}
 	
 	/**
-	 * Verifies that was correctly initialized.
-	 * 
-	 * @see org.testsuite.data.Test#TestData()
+	 * Tests if the file exists returned correctly.
 	 */
 	@Test
-	public void testTestData() {
-		assertEquals(new String(), _data.getName());
-		assertEquals(0l, _data.getEnd());
-		assertEquals(0l, _data.getStart());
-		assertEquals(-1, _data.getExitStatus());
-		assertNull(_data.getError());
-		assertNull(_data.getIn());
+	public void testIsExists() {
 		assertFalse(_data.isExists());
+	}
+	
+	/**
+	 * Tests if the file exists can be set correctly.
+	 * 
+	 * @see org.testsuite.data.Test#setExists(boolean)
+	 */
+	@Test
+	public void testSetExists() {
+		boolean exists = true;
+		_data.setExists(exists);
+		assertEquals(exists, _data.isExists());
 	}
 	
 	/**
@@ -105,136 +108,6 @@ public class TestData {
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetNameEmptyStringAsName() {
 		_data.setName(new String());
-	}
-	
-	/**
-	 * Tests if the end time returned correctly.
-	 * 
-	 * @see org.testsuite.data.Test#getEnd()
-	 */
-	@Test
-	public void testGetEnd() {
-		assertEquals(0l, _data.getEnd());
-	}
-	
-	/**
-	 * Tests if the end time can be set correctly.
-	 * 
-	 * @see org.testsuite.data.Test#setEnd(long)
-	 */
-	@Test
-	public void testSetEnd() {
-		long l = 1879l;
-		_data.setEnd(l);
-		assertEquals(l, _data.getEnd());
-	}
-	
-	/**
-	 * Tests if the start time returned correctly.
-	 * 
-	 * @see org.testsuite.data.Test#getStart()
-	 */
-	@Test
-	public void testGetStart() {
-		assertEquals(0l, _data.getStart());
-	}
-	
-	/**
-	 * Tests if the start time can be set correctly.
-	 * 
-	 * @see org.testsuite.data.Test#setStart(long)
-	 */
-	@Test
-	public void testSetStart() {
-		long l = 1879l;
-		_data.setStart(l);
-		assertEquals(l, _data.getStart());
-	}
-	
-	/**
-	 * Tests if the exit status returned correctly.
-	 * 
-	 * @see org.testsuite.data.Test#getExitStatus()
-	 */
-	@Test
-	public void testGetExitStatus() {
-		assertEquals(-1, _data.getExitStatus());
-	}
-	
-	/**
-	 * Tests if the exit status can be set correctly.
-	 * 
-	 * @see org.testsuite.data.Test#setExitStatus(int)
-	 */
-	@Test
-	public void testSetExitStatus() {
-		int i = 10;
-		_data.setExitStatus(i);
-		assertEquals(i, _data.getExitStatus());
-	}
-	
-	/**
-	 * Tests if the error stream returned correctly.
-	 * 
-	 * @see org.testsuite.data.Test#getError()
-	 */
-	@Test
-	public void testGetError() {
-		assertNull(_data.getError());
-	}
-	
-	/**
-	 * Tests if the error stream can be set correctly.
-	 * 
-	 * @see org.testsuite.data.Test#setError(InputStream)
-	 */
-	@Test
-	public void testSetError() {
-		InputStream is = mock(InputStream.class);
-		_data.setError(is);
-		assertEquals(is, _data.getError());
-	}
-	
-	/**
-	 * Tests if the console stream returned correctly.
-	 * 
-	 * @see org.testsuite.data.Test#getIn()
-	 */
-	@Test
-	public void testGetIn() {
-		assertNull(_data.getIn());
-	}
-	
-	/**
-	 * Tests if the error stream can be set correctly.
-	 * 
-	 * @see org.testsuite.data.Test#setIn(InputStream)
-	 */
-	@Test
-	public void testSetIn() {
-		InputStream is = mock(InputStream.class);
-		_data.setIn(is);
-		assertEquals(is, _data.getIn());
-	}
-	
-	/**
-	 * Tests if the file exists returned correctly.
-	 */
-	@Test
-	public void testIsExists() {
-		assertFalse(_data.isExists());
-	}
-	
-	/**
-	 * Tests if the file exists can be set correctly.
-	 * 
-	 * @see org.testsuite.data.Test#setExists(boolean)
-	 */
-	@Test
-	public void testSetExists() {
-		boolean exists = true;
-		_data.setExists(exists);
-		assertEquals(exists, _data.isExists());
 	}
 
 }

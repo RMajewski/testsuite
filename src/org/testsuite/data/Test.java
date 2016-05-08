@@ -28,12 +28,7 @@ import java.io.InputStream;
  *
  * @version 0.1
  */
-public class Test {
-	/**
-	 * Stores the name of the test
-	 */
-	private String _name;
-	
+public class Test extends Data {
 	/**
 	 * Stores the start time
 	 */
@@ -60,21 +55,15 @@ public class Test {
 	private InputStream _error;
 	
 	/**
-	 * Saves whether the file exists.
-	 */
-	private boolean _exists;
-	
-	/**
 	 * Initialize the data of this class
 	 */
 	public Test() {
-		_name = new String();
+		super();
 		_end = 0;
 		_start = 0;
 		_error = null;
 		_exitStatus = -1;
 		_in = null;
-		_exists = false;
 	}
 	
 	/**
@@ -160,24 +149,6 @@ public class Test {
 	}
 	
 	/**
-	 * Specifies whether the file exists.
-	 * 
-	 * @param exists In existence Testfile?
-	 */
-	public void setExists(boolean exists) {
-		_exists = exists;
-	}
-	
-	/**
-	 * Returns exists in the test file.
-	 * 
-	 * @return In existence Testfile?
-	 */
-	public boolean isExists() {
-		return _exists;
-	}
-	
-	/**
 	 * Specifies the exit status of the test completes.
 	 * 
 	 * @param status Exit status of the tests
@@ -193,26 +164,5 @@ public class Test {
 	 */
 	public int getExitStatus() {
 		return _exitStatus;
-	}
-	
-	/**
-	 * Specifies the name of the tests requested.
-	 * 
-	 * @param name Name of the test
-	 */
-	public void setName(String name) {
-		if ((name == null) || name.isEmpty())
-			throw new IllegalArgumentException();
-		
-		_name = name;
-	}
-	
-	/**
-	 * Returns the name of the test.
-	 * 
-	 * @return Name of the test
-	 */
-	public String getName() {
-		return _name;
 	}
 }
