@@ -26,17 +26,7 @@ package org.testsuite.data;
  *
  * @version 0.1
  */
-public class Fit extends Test {
-	/**
-	 * Stores the number of allegations properly executed.
-	 */
-	private int _right;
-	
-	/**
-	 * Stores the number of claims that are false.
-	 */
-	private int _wrong;
-	
+public class Fit extends Junit {
 	/**
 	 * Stores the number of claims that have been ignored.
 	 */
@@ -57,8 +47,6 @@ public class Fit extends Test {
 		
 		_exception = 0;
 		_ignore = 0;
-		_right = 0;
-		_wrong = 0;
 	}
 	
 	/**
@@ -95,41 +83,5 @@ public class Fit extends Test {
 	 */
 	public int getIgnore() {
 		return _ignore;
-	}
-	
-	/**
-	 * Specifies the number of correct tests.
-	 * 
-	 * @param count Number of correct tests
-	 */
-	public void setRight(int count) {
-		_right = count;
-	}
-	
-	/**
-	 * Returns the number of correct tests.
-	 * 
-	 * @return Number of correct tests
-	 */
-	public int getRight() {
-		return _right;
-	}
-	
-	/**
-	 * Legt die Anzahl der falschen Tests fest.
-	 * 
-	 * @param count Number of false tests
-	 */
-	public void setWrong(int count) {
-		_wrong = count;
-	}
-	
-	/**
-	 * Returns the number of false tests.
-	 * 
-	 * @return Number of false tests
-	 */
-	public int getWrong() {
-		return _wrong;
 	}
 }

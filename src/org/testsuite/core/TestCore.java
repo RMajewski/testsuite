@@ -573,9 +573,9 @@ public class TestCore {
 						if ((line.indexOf("right") > -1) &&
 								(line.indexOf("wrong") > -1)) {
 							String[] tmp = line.split(" ");
-							_fit.get(suite).getTest(test).setRight(
+							_fit.get(suite).getTest(test).setOk(
 									Integer.valueOf(tmp[0]));
-							_fit.get(suite).getTest(test).setWrong(
+							_fit.get(suite).getTest(test).setFail(
 									Integer.valueOf(tmp[2]));
 							_fit.get(suite).getTest(test).setIgnore(
 									Integer.valueOf(tmp[4]));
@@ -676,8 +676,8 @@ public class TestCore {
 			long time = 0;
 			
 			for (int test = 0; test < _fit.get(suite).testCount(); test++) {
-				int rightTest = _fit.get(suite).getTest(test).getRight();
-				int wrongTest = _fit.get(suite).getTest(test).getWrong();
+				int rightTest = _fit.get(suite).getTest(test).getOk();
+				int wrongTest = _fit.get(suite).getTest(test).getFail();
 				int ignoreTest = _fit.get(suite).getTest(test).getIgnore();
 				int exceptionTest = _fit.get(suite).getTest(test).getException();
 				long timeTest = _fit.get(suite).getTest(test).getDurationTime();

@@ -30,12 +30,12 @@ public class Junit extends Test {
 	/**
 	 * Stores the number of successful tests
 	 */
-	private int _ok;
+	protected int _ok;
 	
 	/**
 	 * Stores the number of tests that failed.
 	 */
-	private int _fail;
+	protected int _fail;
 	
 	/**
 	 * Initializes the data of the class

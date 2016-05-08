@@ -24,6 +24,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.testsuite.data.Fit;
+import org.testsuite.data.Junit;
 
 /**
  * Test the class {@link org.testsuite.data.Fit}.
@@ -52,7 +53,7 @@ public class TestFitData {
 	 */
 	@Test
 	public void testFitDataDerivedFromTestData() {
-		assertEquals(org.testsuite.data.Test.class.getName(),
+		assertEquals(Junit.class.getName(),
 				Fit.class.getSuperclass().getName());
 	}
 	
@@ -63,54 +64,8 @@ public class TestFitData {
 	 */
 	@Test
 	public void testFitData() {
-		assertEquals(0, _data.getRight());
-		assertEquals(0, _data.getWrong());
 		assertEquals(0, _data.getIgnore());
 		assertEquals(0, _data.getException());
-	}
-	
-	/**
-	 * Testing whether the number of correct test is returned correctly.
-	 * 
-	 * @see org.testsuite.data.Fit#getRight()
-	 */
-	@Test
-	public void testGetRight() {
-		assertEquals(0, _data.getRight());
-	}
-	
-	/**
-	 * Testing whether the number of correct tests can be set correctly.
-	 * 
-	 * @see org.testsuite.data.Fit#setRight(int)
-	 */
-	@Test
-	public void testSetRight() {
-		int i = 10;
-		_data.setRight(i);
-		assertEquals(i, _data.getRight());
-	}
-	
-	/**
-	 * Testing whether the number of failed tests is returned correctly.
-	 * 
-	 * @see org.testsuite.data.Fit#getWrong()
-	 */
-	@Test
-	public void testGetWrong() {
-		assertEquals(0, _data.getWrong());
-	}
-	
-	/**
-	 * Testing whether the number of failed tests can be set correctly.
-	 * 
-	 * @see org.testsuite.data.Fit#setWrong(int)
-	 */
-	@Test
-	public void testSetWrong() {
-		int i = 10;
-		_data.setWrong(i);
-		assertEquals(i, _data.getWrong());
 	}
 	
 	/**
