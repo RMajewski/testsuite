@@ -41,7 +41,7 @@ import org.testsuite.core.HtmlOut;
 import org.testsuite.core.TestCore;
 
 /**
- * Tests the class {@link org.testsuite.TestCore}
+ * Tests the class {@link org.testsuite.core.TestCore}
  * 
  * @author René Majewski
  *
@@ -110,7 +110,7 @@ public class TestTestCore {
 	/**
 	 * Tests if the initialization of the class TestCore is correct.
 	 * 
-	 * @see org.testsuite.TestCore#TestCore()
+	 * @see org.testsuite.core.TestCore#TestCore()
 	 */
 	@Test
 	public void testTestCore() {

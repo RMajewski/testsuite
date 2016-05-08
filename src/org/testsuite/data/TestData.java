@@ -74,7 +74,6 @@ public class TestData {
 		_error = null;
 		_exitStatus = -1;
 		_in = null;
-		_start = 0;
 		_exists = false;
 	}
 	
@@ -202,6 +201,9 @@ public class TestData {
 	 * @param name Name of the test
 	 */
 	public void setName(String name) {
+		if ((name == null) || name.isEmpty())
+			throw new IllegalArgumentException();
+		
 		_name = name;
 	}
 	
