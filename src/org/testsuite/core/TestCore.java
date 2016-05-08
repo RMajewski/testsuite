@@ -21,6 +21,8 @@ package org.testsuite.core;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -116,14 +118,22 @@ public class TestCore {
 	 * 
 	 * @return Was the configuration file is read correctly?
 	 */
-	public boolean readConfig(String config) throws XMLStreamException{
+	public boolean readConfig(String config) 
+			throws XMLStreamException, FileNotFoundException{
+		// Überprüfen, ob eine Konfigurationsdatei angegeben wurde.
+		if ((config == null) || config.isEmpty())
+			throw new IllegalArgumentException();
+			
 		// Überprüfen, ob die config-Datei existiert
-		InputStream stream = getClass().getClassLoader().getResourceAsStream(config);
-		if (stream == null) {
+		File configFile = new File(config);
+		if (!configFile.exists()) {
 			System.out.println("Konfigurations-Datei (" + config + 
 					") existiert nicht.");
 			return false;
 		}
+	
+		// InputStream
+		InputStream stream = new FileInputStream(configFile);
 		
 		// XMl-Factory
 		XMLInputFactory factory = XMLInputFactory.newInstance();
