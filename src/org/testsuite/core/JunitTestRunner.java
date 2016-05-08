@@ -27,6 +27,13 @@ import java.util.Date;
 
 import org.testsuite.data.Junit;
 
+/**
+ * Executes the junit tests.
+ * 
+ * @author René Majewski
+ *
+ * @version 0.1
+ */
 public class JunitTestRunner extends TestRunner {
 
 	/**
@@ -39,7 +46,7 @@ public class JunitTestRunner extends TestRunner {
 	}
 
 	/**
-	 * Executes every tests.
+	 * Executes the junit tests.
 	 */
 	@Override
 	public void run() {

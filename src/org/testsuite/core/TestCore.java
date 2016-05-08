@@ -19,13 +19,11 @@
 
 package org.testsuite.core;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,7 +36,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import org.testsuite.data.Fit;
-import org.testsuite.data.FitSuite;
 import org.testsuite.data.Junit;
 import org.testsuite.data.Test;
 import org.testsuite.data.TestSuite;
@@ -59,11 +56,6 @@ public class TestCore {
 	 * Saves the GUI tests
 	 */
 	private List<TestSuite> _gui;
-	
-	/**
-	 * Saves the Fit tests
-	 */
-	private List<FitSuite> _fit;
 	
 	/**
 	 * Saves the result directory for Fit Tests
@@ -91,7 +83,6 @@ public class TestCore {
 	public TestCore() {
 		// Listen initalisieren
 		_gui = new ArrayList<TestSuite>();
-		_fit = new ArrayList<FitSuite>();
 		
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.setTime(new Date());
@@ -178,7 +169,8 @@ public class TestCore {
 								//Junit
 								System.out.println("Junit");
 							else if (type == 3)
-								suite = new FitSuite();
+								// Fit
+								System.out.println("Fit");
 							break;
 							
 						// Name
@@ -212,7 +204,8 @@ public class TestCore {
 								//JUNIT
 								System.out.println("Junit");
 							else if (type == 3)
-								_fit.add((FitSuite)suite);
+								//Fit
+								System.out.println("Fit");
 							break;
 							
 						// Name
@@ -267,15 +260,6 @@ public class TestCore {
 	 */
 	public void checkFileExists() {
 		listCheckFiles(_gui);
-		listCheckFitFiles();
-	}
-	
-	/**
-	 * Passes through the specified list and checks whether the files exist.
-	 */
-	private void listCheckFitFiles() {
-		for (int i = 0; i < _fit.size(); i++)
-			suiteCheckFiles(_fit.get(i), "fit");
 	}
 
 	/**
@@ -339,7 +323,6 @@ public class TestCore {
 	 */
 	public void run() {
 		runGui();
-		runFit();
 	}
 	
 	/**
@@ -393,109 +376,6 @@ public class TestCore {
 	}
 	
 	/**
-	 * Performs single Fit test from
-	 */
-	private void runFit() {
-		for (int suite = 0; suite < _fit.size(); suite++) {
-			// Test-Suite Name
-			System.out.println(_fit.get(suite).getName());
-			
-			for (int test = 0; test < _fit.get(suite).testCount(); test++) {
-				// Name der Fit-Datei
-				String fit = composeFileName(_srcPath + "." + 
-						_fit.get(suite).getPackage(), 
-						_fit.get(suite).getTest(test).getName(), "fit");
-				
-				// Überprüfen, ob die Datei existiert
-				File f = new File(fit);
-				if (!f.exists() || f.isDirectory()) {
-					_fit.get(suite).getTest(test).setExists(false);
-					_fit.get(suite).getTest(test).setExitStatus(100);
-					System.out.println("Die Fit-Datei: '" + fit +
-							"' existiert nicht oder ist ein Verzeichnis");
-					continue;
-				}
-				_fit.get(suite).getTest(test).setExists(true);
-				
-				// Überprüfen ob das Result-Verzeichnis existiert
-				String resultPath = _resultPath + File.separator + _fitResult + 
-						File.separator + 
-						_fit.get(suite).getPackage().replaceAll("\\.", 
-								File.separator);
-				File r = new File(resultPath);
-				if (!r.exists()) {
-					// Verzeichnis anlegen
-					r.mkdirs();
-				}
-				
-				// Name der Result-Datei ermitteln und als Endung html
-				String resultFileName = resultPath + File.separator + 
-						_fit.get(suite).getTest(test).getName() + ".html";
-				
-				// Ausführen
-				try {
-					_fit.get(suite).getTest(test).setStart(new Date().getTime());
-
-					System.out.print(fit + ": ");
-					String exec = "java -cp " +
-							"bin:resource:" + _bibPath + "/fit.jar:" + _bibPath +
-							"/jemmy.jar:" + _bibPath +
-							"/sqlite-jdbc-3.8.11.2.jar -Dtesting=true " +
-							"fit.FileRunner " + fit + " " + resultFileName;
-					Process p = Runtime.getRuntime().exec(exec);
-					int exit = p.waitFor();
-					
-					// Endzeit ermitteln
-					_fit.get(suite).getTest(test).setEnd(new Date().getTime());
-					
-					// Überpüfen ob Exit-Status 0 ist
-					_fit.get(suite).getTest(test).setExitStatus(exit);
-					if (exit == 0)
-						System.out.print("wurde erfolgreich ausgeführt.");
-					else
-						System.out.print("weißt einen Fehler auf.");
-					
-					
-					// Dauer ausgeben
-					System.out.println(" (Dauer des Tests: " + 
-							_fit.get(suite).getTest(test).getDurationTime() 
-							+ " ms)");
-					
-					// Console in Datei speichern
-					_fit.get(suite).getTest(test).setIn(p.getInputStream());
-
-					// Error auslesen
-					InputStream is = p.getErrorStream();
-					BufferedReader br = new BufferedReader(new InputStreamReader(is));
-					String line;
-					while ((line = br.readLine()) != null) {
-						if ((line.indexOf("right") > -1) &&
-								(line.indexOf("wrong") > -1)) {
-							String[] tmp = line.split(" ");
-							_fit.get(suite).getTest(test).setOk(
-									Integer.valueOf(tmp[0]));
-							_fit.get(suite).getTest(test).setFail(
-									Integer.valueOf(tmp[2]));
-							_fit.get(suite).getTest(test).setIgnore(
-									Integer.valueOf(tmp[4]));
-							_fit.get(suite).getTest(test).setException(
-									Integer.valueOf(tmp[6]));
-						}
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-					_fit.get(suite).getTest(test).setExitStatus(100);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					_fit.get(suite).getTest(test).setExitStatus(100);
-				}
-				
-			} // for über die Fit-Tests
-			
-		} // for über die Fit-Suites
-	}
-	
-	/**
 	 * Creates the HTML file containing the results
 	 */
 	public void createResultHtml()  {
@@ -514,58 +394,11 @@ public class TestCore {
 			html.junitHead();
 			
 			html.fitHead();
-			htmlFit(html);
 			
 			html.htmlEnd();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * Creates the HTML output for the fit test.
-	 * 
-	 * @param html Class that generates HTML output.
-	 * 
-	 * @throws IOException
-	 */
-	private void htmlFit(HtmlOut html) throws IOException {
-		for (int suite = 0; suite < _fit.size(); suite++) {
-			int right = 0;
-			int wrong = 0;
-			int ignore = 0;
-			int exception = 0;
-			long time = 0;
-			
-			for (int test = 0; test < _fit.get(suite).testCount(); test++) {
-				int rightTest = _fit.get(suite).getTest(test).getOk();
-				int wrongTest = _fit.get(suite).getTest(test).getFail();
-				int ignoreTest = _fit.get(suite).getTest(test).getIgnore();
-				int exceptionTest = _fit.get(suite).getTest(test).getException();
-				long timeTest = _fit.get(suite).getTest(test).getDurationTime();
-				
-				// Ausgabe des Tests
-				html.test( _fit.get(suite).getTest(test).getName(),
-						rightTest, wrongTest, ignoreTest, exceptionTest,
-						timeTest, _fit.get(suite).getTest(test).getIn(),
-						_fit.get(suite).getTest(test).getError(), true,
-						_fitResult + File.separator + 
-						_fit.get(suite).getPackage().replaceAll("\\.", 
-								File.separator));
-				
-				// Fehler bzw. Richtig für Test-Suite erhöhen
-				right += rightTest;
-				wrong += wrongTest;
-				ignore += ignoreTest;
-				exception += exceptionTest;
-				time += timeTest;
-			} // for über alle Tests
-			
-			// Ausgabe für die Test-Suite
-			html.suiteHtml(_fit.get(suite).getName(),
-					_fit.get(suite).getPackage(), right, wrong, ignore, 
-						exception, time);
-		} // for über alle Test-Suits
 	}
 
 	/**
