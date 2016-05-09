@@ -51,6 +51,11 @@ public class Config {
 	 * Saves the class path.
 	 */
 	private String _classpath;
+	
+	/**
+	 * Saves whether the HTML file to be created or not.
+	 */
+	private boolean _createHtml;
 
 	/**
 	 * Initialize the data of this class
@@ -61,6 +66,7 @@ public class Config {
 		_pathResult = new String();
 		_pathSrc = new String();
 		_pathSuitesResult = new String();
+		_createHtml = false;
 	}
 
 	public String getPathSrc() {
@@ -113,4 +119,11 @@ public class Config {
 		_classpath = classpath;
 	}
 
+	public boolean isCreateHtml() {
+		return _createHtml;
+	}
+	
+	public void setCreateHtml(boolean create) {
+		_createHtml = create;
+	}
 }

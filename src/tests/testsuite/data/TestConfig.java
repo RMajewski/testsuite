@@ -228,4 +228,21 @@ public class TestConfig {
 	public void testSetClasspathhWithEmptyStringAsParameter() {
 		_config.setClasspath(new String());
 	}
+	
+	/**
+	 * Tests if returned correctly if the HTML file to be created or not.
+	 */
+	@Test
+	public void testIsCreateHtml() {
+		assertFalse(_config.isCreateHtml());
+	}
+	
+	/**
+	 * Tests if can be set correctly if the HTML file to be created or not.
+	 */
+	@Test
+	public void testSetCreateHtml() {
+		_config.setCreateHtml(true);
+		assertTrue(_config.isCreateHtml());
+	}
 }
