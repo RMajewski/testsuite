@@ -139,9 +139,10 @@ public class JunitTestRunner extends TestRunner {
 	 * 
 	 * @param html Class, which helps to generate the HTML code.
 	 * 
-	 * @throws IOException 
+	 * @throws IOException
+	 * 
+	 * @deprecated
 	 */
-	@Override
 	public void createHtml(HtmlOut html) throws IOException {
 		for (int suite = 0; suite < _suites.size(); suite++) {
 			int ok = 0;
@@ -169,6 +170,18 @@ public class JunitTestRunner extends TestRunner {
 			html.suiteHtml(_suites.get(suite).getName(),
 					_suites.get(suite).getPackage(), ok, fail, time);
 		} // for über alle Test-Suits
+	}
+
+	@Override
+	protected String createHtmlTableHead(int suite) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected String createHtmlColumn(int suite, int test) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

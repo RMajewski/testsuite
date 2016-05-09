@@ -61,18 +61,15 @@ public class FitTestRunner extends TestRunner {
 				// Name der Fit-Datei
 				String fit = composeFileName(_config.getPathSrc() + "." + 
 						_suites.get(suite).getPackage(), 
-						_suites.get(suite).getTest(test).getName(), "fit");
+						_suites.get(suite).getTest(test).getName(),
+						_fileExtension);
 				
-				// Überprüfen, ob die Datei existiert
-				File f = new File(fit);
-				if (!f.exists() || f.isDirectory()) {
-					_suites.get(suite).getTest(test).setExists(false);
+				if (!_suites.get(suite).isExists() || 
+						!_suites.get(suite).getTest(test).isExists()) {
 					_suites.get(suite).getTest(test).setExitStatus(100);
-					System.out.println("Die Fit-Datei: '" + fit +
-							"' existiert nicht oder ist ein Verzeichnis");
+					System.out.println(fit + " konnte nicht gefunden werden.");
 					continue;
 				}
-				_suites.get(suite).getTest(test).setExists(true);
 				
 				// Überprüfen ob das Result-Verzeichnis existiert
 				String resultPath = _config.getPathResult() + File.separator + 
@@ -158,9 +155,10 @@ public class FitTestRunner extends TestRunner {
 	 * 
 	 * @param html Class, which helps to generate the HTML code.
 	 * 
-	 * @throws IOException 
+	 * @throws IOException
+	 * 
+	 * @deprecated
 	 */
-	@Override
 	public void createHtml(HtmlOut html) throws IOException {
 		for (int suite = 0; suite < _suites.size(); suite++) {
 			int right = 0;
@@ -218,5 +216,17 @@ public class FitTestRunner extends TestRunner {
 	private String composeFileName(String path, String name, String extension) {
 		return new String(path + "." + name).replaceAll("\\.", "/") + 
 				"." + extension;
+	}
+
+	@Override
+	protected String createHtmlTableHead(int suite) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected String createHtmlColumn(int suite, int test) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

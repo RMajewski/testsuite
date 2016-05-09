@@ -84,7 +84,7 @@
   </class>  
   <class id="10" language="java" name="org.testsuite.core.FitTestRunner" project="Testsuite" 
     file="/Testsuite/src/org/testsuite/core/FitTestRunner.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="450" y="947"/>    
+    <position height="-1" width="-1" x="455" y="1042"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      

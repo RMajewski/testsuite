@@ -49,7 +49,7 @@ import org.testsuite.data.TestSuite;
  * 
  * @author René Majewski
  *
- * @version 0.1
+ * @version 0.2
  */
 public class TestCore {
 	/**
@@ -240,62 +240,6 @@ public class TestCore {
 	 * Checks if the files exist
 	 */
 	public void checkFileExists() {
-	}
-
-	/**
-	 * Passes through the specified list and checks whether the files exist
-	 * 
-	 * @param list List that is to be executed.
-	 */
-	private void listCheckFiles(List<TestSuite> list) {
-		for (int i = 0; i < list.size(); i++)
-			suiteCheckFiles(list.get(i), "java");
-	}
-	
-	/**
-	 * Passes through the specified test suite and checks whether the files
-	 * exist.
-	 * 
-	 * @param suite Test suite, which is to be executed.
-	 * 
-	 * @param extension File extension of the file
-	 */
-	private void suiteCheckFiles(TestSuite suite, String extension) {
-		suite.setExists(fileExists(suite.getPackage().replaceAll("\\.", "/")));
-		String path = suite.getPackage();
-		for (int i = 0; i < suite.testCount(); i++)
-				suite.getTest(i).setExists(fileExists(composeFileName(path,
-						suite.getTest(i).getName(), extension)));
-	}
-	
-	/**
-	 * Sets the full file name with path together.
-	 * 
-	 * @param path Directory where the file is located
-	 * 
-	 * @param name Name of file
-	 * 
-	 * @param extension Extension of file
-	 * 
-	 * @return Directory and file as a string
-	 */
-	private String composeFileName(String path, String name, String extension) {
-		return new String(path + "." + name).replaceAll("\\.", "/") + 
-				"." + extension;
-	}
-	
-	/**
-	 * Checks whether the specified file exists.
-	 * 
-	 * @param file Name of File
-	 * 
-	 * @return If the file exists?
-	 */
-	private boolean fileExists(String file) {
-		File f = new File(file);
-		if (f.exists())
-			return true;
-		return false;
 	}
 	
 	/**
