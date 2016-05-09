@@ -64,21 +64,6 @@ public class HtmlOut {
 	private int _id;
 	
 	/**
-	 * There are libraries are issued for GUI testing.
-	 */
-	private static final short BIB_GUI = 1;
-	
-	/**
-	 * There are libraries are issued for junit tests.
-	 */
-	private static final short BIB_JUNIT = 2;
-	
-	/**
-	 * There are libraries to be spent on the Fit-test.
-	 */
-	private static final short BIB_FIT = 3;
-	
-	/**
 	 * Initialize the class
 	 * 
 	 * @param file File for output
@@ -96,52 +81,6 @@ public class HtmlOut {
 		// Writer zum ausgeben öffnen.
 		_writer = new FileWriter(new File(_htmlFile));
 		_bw = new BufferedWriter(_writer);
-	}
-	
-	/**
-	 * Returns the libraries used.
-	 * 
-	 * @param bib What libraries are to be issued?
-	 * 
-	 * @throws IOException
-	 */
-	private void bibs(short bib) throws IOException {
-		_bw.write("\t\t<p>Verwendete Bibliotheken:</p>"); _bw.newLine();
-		_bw.write("\t\t\t<ul>"); _bw.newLine();
-		
-		// Jemmy
-		if ((bib == BIB_GUI) || (bib == BIB_FIT)) {
-			_bw.write("\t\t\t\t<li>Jemmy Version ");
-			_bw.write(org.netbeans.jemmy.JemmyProperties.getFullVersion());
-			_bw.write("</li>");
-			_bw.newLine();
-		}
-		
-		// junit
-		if (bib == BIB_JUNIT) {
-			_bw.write("\t\t\t\t<li>junit 4.12</li>");
-			_bw.newLine();
-		}
-		
-		// mockito
-		if (bib == BIB_JUNIT) {
-			_bw.write("\t\t\t\t<li>mockito 1.10.19</li>");
-			_bw.newLine();
-		}
-		
-		// powermock
-		if (bib == BIB_JUNIT) {
-			_bw.write("\t\t\t\t<li>powermock 1.6.3</li>");
-			_bw.newLine();
-		}
-		
-		// Fit
-		if (bib == BIB_FIT) {
-			_bw.write("\t\t\t\t<li>fit 1.1</li>");
-			_bw.newLine();
-		}
-		
-		_bw.write("\t\t\t</ul>"); _bw.newLine();
 	}
 	
 	/**
@@ -237,7 +176,6 @@ public class HtmlOut {
 		_bw.write("\t\t<p>Die GUI-Tests beinhalten Test die die Oberfläche ");
 		_bw.write("testen ausgeführt mit Jemmy<p>");
 		_bw.newLine();
-		bibs(BIB_GUI);
 	}
 	
 	/**
@@ -252,7 +190,6 @@ public class HtmlOut {
 		_bw.write("\t\t<p>Die junit-Tests testen einzelne Klassen. Diese ");
 		_bw.write("Klassen sind in den Tests meist isoliert.<p>");
 		_bw.newLine();
-		bibs(BIB_JUNIT);
 	}
 	
 	/**
@@ -268,7 +205,6 @@ public class HtmlOut {
 		_bw.write("einzelnen Fenster. Dazu wurde die Fenster teilweise in");
 		_bw.write("einer Testumgebung geöffnet.<p>");
 		_bw.newLine();
-		bibs(BIB_FIT);
 	}
 
 	/**

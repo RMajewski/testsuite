@@ -109,5 +109,27 @@ public class TestData {
 	public void testSetNameEmptyStringAsName() {
 		_data.setName(new String());
 	}
+	
+	/**
+	 * Tests if the id is returned correctly.
+	 * 
+	 * @see org.testsuite.data.Test#getId()
+	 */
+	@Test
+	public void testGetId() {
+		assertEquals(-1, _data.getId());
+	}
+	
+	/**
+	 * Tests whether the id can be set correctly.
+	 * 
+	 * @see org.testsuite.data.Test#setId(int)
+	 */
+	@Test
+	public void testSetId() {
+		int id = 100;
+		_data.setId(id);
+		assertEquals(id, _data.getId());
+	}
 
 }

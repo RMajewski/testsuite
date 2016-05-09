@@ -92,6 +92,28 @@ public class TestTestSuiteData {
 		_data.setPackage(name);
 		assertEquals(name, _data.getPackage());
 	}
+	
+	/**
+	 * Tests if the name of the error IllegalArgumentException occurs when null
+	 * is passed as the package name.
+	 * 
+	 * @see org.testsuite.data.Test#setName(String)
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testsetPackageNullAsName() {
+		_data.setPackage(null);
+	}
+	
+	/**
+	 * Tests if the name of the error IllegalArgumentException occurs when an
+	 * empty string is passed as the package name.
+	 * 
+	 * @see org.testsuite.data.Test#setName(String)
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testsetPackageEmptyStringAsName() {
+		_data.setPackage(new String());
+	}
 
 	/**
 	 * Tests if the number of tests can be determined correctly.
@@ -127,6 +149,28 @@ public class TestTestSuiteData {
 				mock(org.testsuite.data.Test.class);
 		_data.addTest(data);
 		assertEquals(data, _data.getTest(0));
+	}
+
+	/**
+	 * Tests if the last test id is returned correctly.
+	 * 
+	 * @see org.testsuite.data.TestSuite#getPackage()
+	 */
+	@Test
+	public void testGetLastTestId() {
+		assertEquals(-1, _data.getLastTestId());
+	}
+	
+	/**
+	 * Tests whether the last test id can be set correctly.
+	 * 
+	 * @see org.testsuite.data.TestSuite#setPackage(String)
+	 */
+	@Test
+	public void testSetLastTestId() {
+		int id = 100;
+		_data.setLastTestId(id);
+		assertEquals(id, _data.getLastTestId());
 	}
 	
 }

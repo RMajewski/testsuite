@@ -37,6 +37,11 @@ public class Data {
 	 * Saves whether the file exists.
 	 */
 	protected boolean _exists;
+	
+	/**
+	 * Saves the id for the test
+	 */
+	protected int _id;
 
 	/**
 	 * Initialize the data of this class
@@ -44,6 +49,7 @@ public class Data {
 	public Data() {
 		_name = new String();
 		_exists = false;
+		_id = -1;
 	}
 	
 	/**
@@ -58,16 +64,16 @@ public class Data {
 	/**
 	 * Returns exists in the test file.
 	 * 
-	 * @return In existence Testfile?
+	 * @return In existence testfile?
 	 */
 	public boolean isExists() {
 		return _exists;
 	}
 	
 	/**
-	 * Specifies the name of the tests requested.
+	 * Specifies the name requested.
 	 * 
-	 * @param name Name of the test
+	 * @param name The new Name
 	 */
 	public void setName(String name) {
 		if ((name == null) || name.isEmpty())
@@ -77,11 +83,29 @@ public class Data {
 	}
 	
 	/**
-	 * Returns the name of the test.
+	 * Returns the name.
 	 * 
-	 * @return Name of the test
+	 * @return Name
 	 */
 	public String getName() {
 		return _name;
+	}
+	
+	/**
+	 * Returns the id
+	 * 
+	 * @return The id
+	 */
+	public int getId() {
+		return _id;
+	}
+	
+	/**
+	 * Specifies the name requested.
+	 * 
+	 * @param id The new id.
+	 */
+	public void setId(int id) {
+		_id = id;
 	}
 }

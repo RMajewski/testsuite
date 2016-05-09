@@ -19,7 +19,6 @@
 
 package tests.testsuite.core;
 
-import org.testsuite.core.HtmlOut;
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
 
@@ -40,6 +39,12 @@ class TestRunnerImplementation extends TestRunner {
 	}
 
 	@Override
-	public void createHtml(HtmlOut html) {
+	protected String createHtmlTableHead(int suite) {
+		return new String();
+	}
+
+	@Override
+	protected String createHtmlColumn(int suite, int test) {
+		return new String();
 	}
 }

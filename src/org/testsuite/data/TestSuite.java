@@ -41,11 +41,17 @@ public class TestSuite extends Data {
 	private String _package;
 	
 	/**
+	 * Saves the last used test id.
+	 */
+	private int _lastTestId;
+	
+	/**
 	 * Initialize the data 
 	 */
 	public TestSuite() {
 		_tests = new ArrayList<Test>();
 		_package = new String();
+		_lastTestId = -1;
 	}
 	
 	/**
@@ -54,7 +60,7 @@ public class TestSuite extends Data {
 	 * @param packname Name of the package
 	 */
 	public void setPackage(String packname) {
-		if (packname == null)
+		if ((packname == null) || packname.isEmpty())
 			throw new IllegalArgumentException("Where was null as parameter.");
 		_package = packname;
 	}
@@ -95,5 +101,23 @@ public class TestSuite extends Data {
 	 */
 	public int testCount() {
 		return _tests.size();
+	}
+	
+	/**
+	 * Specifies the last test id firmly.
+	 * 
+	 * @param test The new last test id
+	 */
+	public void setLastTestId(int last) {
+		_lastTestId = last;
+	}
+	
+	/**
+	 * Gets the last test id.
+	 * 
+	 * @return The last test id.
+	 */
+	public int getLastTestId() {
+		return _lastTestId;
 	}
 }

@@ -23,9 +23,6 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import java.io.File;
-import java.lang.reflect.Field;
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +32,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
+import org.testsuite.data.Library;
 import org.testsuite.data.TestSuite;
 
 /**
@@ -79,8 +77,10 @@ public class TestTestRunner {
 	@Test
 	public void testTestRunner() {
 		assertEquals(0, _runner.testSuiteCount());
+		assertEquals(0, _runner.libraryCount());
 		assertEquals(_fileExtension, _runner.getFileExtension());
 		assertEquals(_config, _runner.getConfig());
+		assertEquals(new String(), _runner.getDescription());
 	}
 	
 	/**
@@ -99,6 +99,24 @@ public class TestTestRunner {
 		TestSuite suite = mock(TestSuite.class);
 		_runner.addTestSuite(suite);
 		assertEquals(1, _runner.testSuiteCount());
+	}
+	
+	/**
+	 * Verifies that the correct number of libraries is returned.
+	 */
+	@Test
+	public void testLibraryCount() {
+		assertEquals(0, _runner.libraryCount());
+	}
+	
+	/**
+	 * Checks whether a library can be added to the list.
+	 */
+	@Test
+	public void testAddLibrary() {
+		Library library = mock(Library.class);
+		_runner.addLibrary(library);
+		assertEquals(1, _runner.libraryCount());
 	}
 	
 	/**
@@ -253,6 +271,42 @@ public class TestTestRunner {
 	}
 	
 	/**
+	 * Tests if the description is returned correctly.
+	 */
+	@Test
+	public void testGetDescription() {
+		assertEquals(new String(), _runner.getDescription());
+	}
+	
+	/**
+	 * Tests if the description can be set correctly.
+	 */
+	@Test
+	public void testSetDescription() {
+		String desc = "new_Test";
+		_runner.setDescription(desc);
+		assertEquals(desc, _runner.getDescription());
+	}
+	
+	/**
+	 * Tests whether the error IllegalArgumentException occurring when null is
+	 * passed as a parameter.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetDescriptionWithNullAsParameter() {
+		_runner.setDescription(null);
+	}
+	
+	/**
+	 * Tests whether the error IllegalArgumentException occurs when an empty
+	 * string is passed as a parameter.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetDescriptionWithEmptyStringAsParameter() {
+		_runner.setDescription(new String());
+	}
+	
+	/**
 	 * Tests if the configuration is returned.
 	 */
 	@Test
@@ -277,5 +331,181 @@ public class TestTestRunner {
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetConfigWithNullAsParameter() {
 		_runner.setConfig(null);
+	}
+	
+	@Test
+	public void testCreateHtmlListOfLibraries() {
+		String name1 = "Test";
+		String version1 = "1.1.1";
+		String name2 = "testen";
+		Library library1 = mock(Library.class);
+		when(library1.getName()).thenReturn(name1);
+		when(library1.getVersion()).thenReturn(version1);
+		_runner.addLibrary(library1);
+		
+		Library library2 = mock(Library.class);
+		when(library2.getName()).thenReturn(name2);
+		when(library2.getVersion()).thenReturn(new String());
+		_runner.addLibrary(library2);
+		
+		Library library3 = mock(Library.class);
+		when(library3.getName()).thenReturn(new String());
+		_runner.addLibrary(library3);
+		
+		String newLine = System.lineSeparator();
+		
+		String result = "\t\t<p>Verwendete Bibliotheken:</p>" + newLine +
+				"\t\t<ul>" + newLine + "\t\t\t<li>" + name1 + " " + version1 +
+				"</li>" + newLine + "\t\t\t<li>" + name2 + "</li>" + newLine +
+				"\t\t</ul>" + newLine;
+
+		assertEquals(result, _runner.createHtmlListOfLibraries());
+		
+		verify(library1).getName();
+		verify(library1).getVersion();
+		verify(library2).getName();
+		verify(library2).getVersion();
+		verify(library3).getName();
+		verify(library3, never()).getVersion();
+	}
+	
+	/**
+	 * Test whether the list of non-existing tests is created correctly.
+	 */
+	@Test
+	public void testCreateHtmlListOfNonExistsTests() {
+		org.testsuite.data.Test test1 = mock(org.testsuite.data.Test.class);
+		when(test1.isExists()).thenReturn(false);
+		when(test1.getName()).thenReturn("Test1");
+		
+		org.testsuite.data.Test test2 = mock(org.testsuite.data.Test.class);
+		when(test2.isExists()).thenReturn(true);
+		
+		org.testsuite.data.Test test3 = mock(org.testsuite.data.Test.class);
+		when(test3.isExists()).thenReturn(true);
+		
+		org.testsuite.data.Test test4 = mock(org.testsuite.data.Test.class);
+		when(test4.isExists()).thenReturn(false);
+		when(test4.getName()).thenReturn("Test4");
+		
+		TestSuite suite1 = mock(TestSuite.class);
+		when(suite1.testCount()).thenReturn(2);
+		when(suite1.getTest(0)).thenReturn(test1);
+		when(suite1.getTest(1)).thenReturn(test2);
+		_runner.addTestSuite(suite1);
+		
+		TestSuite suite2 = mock(TestSuite.class);
+		when(suite2.testCount()).thenReturn(2);
+		when(suite2.getTest(0)).thenReturn(test3);
+		when(suite2.getTest(1)).thenReturn(test4);
+		_runner.addTestSuite(suite2);
+		
+		String ret = "\t\t<div class=\"nonexists\">" + System.lineSeparator() +
+				"\t\t\t<p>Folgende Tests existieren nicht:</p>" + 
+				System.lineSeparator() + "\t\t\t<ul>" + System.lineSeparator() +
+				"\t\t\t\t<li>Test1</li>" + System.lineSeparator() +
+				"\t\t\t\t<li>Test4</li>" + System.lineSeparator() +
+				"\t\t\t</ul>" + System.lineSeparator() +
+				"\t\t</div>" + System.lineSeparator();
+		assertEquals(ret, _runner.createHtmlListOfNonExistsTests());
+	}
+	
+	/**
+	 * Tests if the description of the test is output correctly. As parameter
+	 * false is passed. It is not drawn horizontal line.
+	 */
+	@Test
+	public void testCreateHtmlHeadWithFalseAsParameter() {
+		String head = "[h2]Test[/h2][p]Dies ist ein Test[/p]";
+		_runner.setDescription(head);
+		String ret = "\t\t<div class=\"testhead\"><h2>Test</h2><p>Dies ist " +
+				"ein Test</p></div>" + System.lineSeparator();
+		assertEquals(ret, _runner.createHtmlHead(false));
+	}
+	
+	/**
+	 * Tests if the description of the test is output correctly. As parameter
+	 * true is passed. Plot a horizontal line.
+	 */
+	@Test
+	public void testCreateHtmlHeadWithTrueAsParameter() {
+		String head = "[h2]Test[/h2][p]Dies ist ein großer Test[/p]";
+		_runner.setDescription(head);
+		String ret = "\t\t<hr/>" + System.lineSeparator() +
+				"\t\t<div class=\"testhead\"><h2>Test</h2><p>Dies ist ein " +
+				"großer Test</p></div>" + System.lineSeparator();
+		assertEquals(ret, _runner.createHtmlHead(true));
+	}
+	
+	/**
+	 * Tests if the HTML code is generated correctly.
+	 */
+	@Test
+	public void testCreateHtml() {
+		org.testsuite.data.Test test1 = mock(org.testsuite.data.Test.class);
+		
+		org.testsuite.data.Test test2 = mock(org.testsuite.data.Test.class);
+		
+		org.testsuite.data.Test test3 = mock(org.testsuite.data.Test.class);
+		
+		org.testsuite.data.Test test4 = mock(org.testsuite.data.Test.class);
+		
+		TestSuite suite1 = mock(TestSuite.class);
+		when(suite1.testCount()).thenReturn(2);
+		when(suite1.getTest(0)).thenReturn(test1);
+		when(suite1.getTest(1)).thenReturn(test2);
+		_runner.addTestSuite(suite1);
+		
+		TestSuite suite2 = mock(TestSuite.class);
+		when(suite2.testCount()).thenReturn(2);
+		when(suite2.getTest(0)).thenReturn(test3);
+		when(suite2.getTest(1)).thenReturn(test4);
+		_runner.addTestSuite(suite2);
+
+		String ret = "\t\t<div class=\"testgroup\">" + System.lineSeparator() +
+				"\t\t\t<div class=\"testsuite\">" + System.lineSeparator() +
+				"\t\t\t\t<table>" + System.lineSeparator() +
+				"\t\t\t\t\t<tr>" + System.lineSeparator() +
+				"\t\t\t\t\t</tr>" + System.lineSeparator() +
+				"\t\t\t\t\t<tr>" + System.lineSeparator() +
+				"\t\t\t\t\t</tr>" + System.lineSeparator() +
+				"\t\t\t\t\t<tr>" + System.lineSeparator() +
+				"\t\t\t\t\t</tr>" + System.lineSeparator() +
+				"\t\t\t\t</table>" + System.lineSeparator() +
+				"\t\t\t</div>" + System.lineSeparator() +
+				"\t\t\t<div class=\"testsuite\">" + System.lineSeparator() +
+				"\t\t\t\t<table>" + System.lineSeparator() +
+				"\t\t\t\t\t<tr>" + System.lineSeparator() +
+				"\t\t\t\t\t</tr>" + System.lineSeparator() +
+				"\t\t\t\t\t<tr>" + System.lineSeparator() +
+				"\t\t\t\t\t</tr>" + System.lineSeparator() +
+				"\t\t\t\t\t<tr>" + System.lineSeparator() +
+				"\t\t\t\t\t</tr>" + System.lineSeparator() +
+				"\t\t\t\t</table>" + System.lineSeparator() +
+				"\t\t\t</div>" + System.lineSeparator() +
+				"\t\t</div>" + System.lineSeparator();
+		assertEquals(ret, _runner.createHtml());
+	}
+
+	/**
+	 * Tests if the last test suite id is returned correctly.
+	 * 
+	 * @see org.testsuite.core.TestRunner#getLastSuiteId()
+	 */
+	@Test
+	public void testGetLastSuiteId() {
+		assertEquals(-1, _runner.getLastSuiteId());
+	}
+	
+	/**
+	 * Tests whether the last test suite id can be set correctly.
+	 * 
+	 * @see org.testsuite.core.TestRunner#setLastSuiteId(int)
+	 */
+	@Test
+	public void testSetLastSuiteId() {
+		int id = 100;
+		_runner.setLastSuiteId(id);
+		assertEquals(id, _runner.getLastSuiteId());
 	}
 }
