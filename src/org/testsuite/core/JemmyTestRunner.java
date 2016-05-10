@@ -57,6 +57,15 @@ public class JemmyTestRunner extends TestRunner {
 			for (int test = 0; test < _suites.get(suite).testCount(); test++) {
 				String name = _suites.get(suite).getPackage() + "." +
 						_suites.get(suite).getTest(test).getName();
+				
+				// Überprüfen, ob Datei existiert
+				if (!_suites.get(suite).isExists() || 
+						!_suites.get(suite).getTest(test).isExists()) {
+					_suites.get(suite).getTest(test).setExitStatus(100);
+					System.out.println(name + " konnte nicht gefunden werden.");
+					continue;
+				}
+				
 				try {
 					_suites.get(suite).getTest(test).setStart(
 							new Date().getTime());
