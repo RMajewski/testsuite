@@ -23,6 +23,9 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,7 +47,7 @@ import org.testsuite.data.TestSuite;
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({TestRunner.class})
-public class TestTestRunner {
+public class TestTestRunner extends TestRunnerHelper {
 
 	/**
 	 * Hold an instance of the TestRunner
@@ -507,5 +510,47 @@ public class TestTestRunner {
 		int id = 100;
 		_runner.setLastSuiteId(id);
 		assertEquals(id, _runner.getLastSuiteId());
+	}
+	
+	/**
+	 * Tests if the library information is generated for the classpath properly. 
+	 */
+	@Test
+	public void testCreateLibraryAsString()
+			throws NoSuchMethodException, SecurityException, 
+			IllegalAccessException, IllegalArgumentException, 
+			InvocationTargetException {
+		Method createLibraryAsString = getProtectedMethod(TestRunner.class, 
+				"createLibraryAsString", null);
+		
+		String pathLibrary = "path";
+		String pathLib2 = "test";
+		String libName1 = "lib1";
+		String libName2 = "lib2";
+		
+		when(_config.getPathLibrary()).thenReturn(pathLibrary);
+		
+		Library lib1 = mock(Library.class);
+		when(lib1.getFileName()).thenReturn(libName1);
+		when(lib1.getPath()).thenReturn(new String());
+		_runner.addLibrary(lib1);
+		
+		Library lib2 = mock(Library.class);
+		when(lib2.getFileName()).thenReturn(libName2);
+		when(lib2.getPath()).thenReturn(pathLib2);
+		_runner.addLibrary(lib2);
+		
+		String ret = pathLibrary + File.separator + libName1 + 
+				File.pathSeparator +
+				pathLib2 + File.separator + libName2;
+		assertEquals(ret, createLibraryAsString.invoke(_runner, null));
+		
+		verify(_config).getPathLibrary();
+		
+		verify(lib1).getPath();
+		verify(lib1).getFileName();
+		
+		verify(lib2, times(2)).getPath();
+		verify(lib2).getFileName();
 	}
 }

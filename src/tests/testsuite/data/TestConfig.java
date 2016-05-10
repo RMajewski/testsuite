@@ -24,7 +24,6 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.testsuite.data.Config;
-import org.testsuite.data.Data;
 
 /**
  * Tests the class {@link org.testsuite.data.Config}.
@@ -195,6 +194,8 @@ public class TestConfig {
 
 	/**
 	 * Tests whether the classpath is returned correctly.
+	 * 
+	 * @deprecated
 	 */
 	@Test
 	public void testGetClassPath() {
@@ -203,6 +204,8 @@ public class TestConfig {
 
 	/**
 	 * Tests whether the classpath is correctly set.
+	 * 
+	 * @deprecated
 	 */
 	@Test
 	public void testSetClassPath() {
@@ -214,6 +217,8 @@ public class TestConfig {
 	/**
 	 * Tests whether the error IllegalArgumentException appears when zero is
 	 * passed as a parameter.
+	 * 
+	 * @deprecated
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetClasspathWithNullAsParameter() {
@@ -223,6 +228,8 @@ public class TestConfig {
 	/**
 	 * Tests whether the error IllegalArgumentException appears when empty 
 	 * string is passed as a parameter.
+	 * 
+	 * @deprecated
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetClasspathhWithEmptyStringAsParameter() {
@@ -244,5 +251,52 @@ public class TestConfig {
 	public void testSetCreateHtml() {
 		_config.setCreateHtml(true);
 		assertTrue(_config.isCreateHtml());
+	}
+	/**
+	 * Verifies that the correct number of libraries is returned.
+	 */
+	@Test
+	public void testProperyCount() {
+		assertEquals(0, _config.propertyCount());
+	}
+	
+	/**
+	 * Checks whether a library can be added to the list.
+	 */
+	@Test
+	public void testAddPropery() {
+		String name = "test";
+		_config.addProperty(name);
+		assertEquals(1, _config.propertyCount());
+	}
+	
+	/**
+	 * Tests whether the error IllegalArgumentException appears when zero is
+	 * passed as a parameter.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testAddPropertyWithNullAsParameter() {
+		_config.addProperty(null);
+		assertEquals(0, _config.propertyCount());
+	}
+	
+	/**
+	 * Tests whether the error IllegalArgumentException appears when empty 
+	 * string is passed as a parameter.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testAddPropertyhWithEmptyStringAsParameter() {
+		_config.addProperty(new String());
+		assertEquals(0, _config.propertyCount());
+	}
+	
+	/**
+	 * Tests if the property is returned correctly.
+	 */
+	@Test
+	public void testGetProperty() {
+		String name = "test";
+		_config.addProperty(name);
+		assertEquals(name, _config.getProperty(0));
 	}
 }

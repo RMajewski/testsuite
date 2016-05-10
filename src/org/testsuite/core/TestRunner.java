@@ -370,17 +370,43 @@ public abstract class TestRunner {
 	}
 	
 	/**
+	 * Creates the library information for the classpath.
+	 * 
+	 * @return Library informatiosn for the classpath
+	 */
+	protected String createLibraryAsString() {
+		StringBuilder ret = new StringBuilder();
+		boolean first = true;
+		
+		for (int lib = 0; lib < _library.size(); lib++) {
+			if (first)
+				first = false;
+			else
+				ret.append(File.pathSeparator);
+			
+			if (_library.get(lib).getPath().isEmpty())
+				ret.append(_config.getPathLibrary());
+			else
+				ret.append(_library.get(lib).getPath());
+			ret.append(File.separator);
+			ret.append(_library.get(lib).getFileName());
+		}
+		
+		return ret.toString();
+	}
+	
+	/**
 	 * Called to start the stored tests.
 	 */
 	public abstract void run();
 	
 	/**
-	 * 
+	 * Called to create the column headings for the HTML table.
 	 */
 	protected abstract String createHtmlTableHead(int suite);
 	
 	/**
-	 * 
+	 * Called to generate the columns for a row in the HTML table.
 	 */
 	protected abstract String createHtmlColumn(int suite, int test);
 }
