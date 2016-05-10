@@ -64,6 +64,7 @@ public class FitTestRunner extends TestRunner {
 						_suites.get(suite).getTest(test).getName(),
 						_fileExtension);
 				
+				// Überprüfen, ob Datei existiert
 				if (!_suites.get(suite).isExists() || 
 						!_suites.get(suite).getTest(test).isExists()) {
 					_suites.get(suite).getTest(test).setExitStatus(100);
