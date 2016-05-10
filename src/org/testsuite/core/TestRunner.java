@@ -47,6 +47,11 @@ public abstract class TestRunner {
 	protected List<Library> _library;
 	
 	/**
+	 * Hold a instance of the list of classpath.
+	 */
+	protected List<String> _classpath;
+	
+	/**
 	 * Saves the file extension.
 	 */
 	protected String _fileExtension;
@@ -74,6 +79,7 @@ public abstract class TestRunner {
 	public TestRunner(String extension, Config config) {
 		_suites = new ArrayList<TestSuite>();
 		_library = new ArrayList<Library>();
+		_classpath = new ArrayList<String>();
 		_fileExtension = extension;
 		_config = config;
 		_description = new String();
@@ -114,6 +120,26 @@ public abstract class TestRunner {
 	 */
 	public void addLibrary(Library library) {
 		_library.add(library);
+	}
+	
+	/**
+	 * Determines the number of paths for classpath.
+	 * 
+	 * @return Number of libraries.
+	 */
+	public int classPathCount() {
+		return _classpath.size();
+	}
+	
+	/**
+	 * Adds a path to the list.
+	 * 
+	 * @param library Path, which is to be added to the list.
+	 */
+	public void addClassPath(String path) {
+		if ((path == null) || path.isEmpty())
+			throw new IllegalArgumentException();
+		_classpath.add(path);
 	}
 	
 	/**
@@ -376,12 +402,9 @@ public abstract class TestRunner {
 	 */
 	protected String createLibraryAsString() {
 		StringBuilder ret = new StringBuilder();
-		boolean first = true;
 		
 		for (int lib = 0; lib < _library.size(); lib++) {
-			if (first)
-				first = false;
-			else
+			if (lib > 0)
 				ret.append(File.pathSeparator);
 			
 			if (_library.get(lib).getPath().isEmpty())
@@ -390,6 +413,18 @@ public abstract class TestRunner {
 				ret.append(_library.get(lib).getPath());
 			ret.append(File.separator);
 			ret.append(_library.get(lib).getFileName());
+		}
+		
+		return ret.toString();
+	}
+	
+	protected String createClasspath() {
+		StringBuilder ret = new StringBuilder();
+		
+		for (int path = 0; path < _classpath.size(); path++) {
+			if (path > 0)
+				ret.append(File.pathSeparator);
+			ret.append(_classpath.get(path));
 		}
 		
 		return ret.toString();

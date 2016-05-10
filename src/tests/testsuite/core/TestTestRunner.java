@@ -123,6 +123,44 @@ public class TestTestRunner extends TestRunnerHelper {
 	}
 	
 	/**
+	 * Verifies that the correct number of directories for classpath is
+	 * returned.
+	 */
+	@Test
+	public void testClasspathCount() {
+		assertEquals(0, _runner.classPathCount());
+	}
+	
+	/**
+	 * Checks whether a directory can be added to the list.
+	 */
+	@Test
+	public void testAddClasspath() {
+		_runner.addClassPath("test");
+		assertEquals(1, _runner.classPathCount());
+	}
+	
+	/**
+	 * Tests whether the error IllegalArgumentException appears when zero is
+	 * passed as a parameter.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testAddClassPathWithNullAsParameter() {
+		_runner.addClassPath(null);
+		assertEquals(0, _runner.classPathCount());
+	}
+	
+	/**
+	 * Tests whether the error IllegalArgumentException appears when empty 
+	 * string is passed as a parameter.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testAddPropertyhWithEmptyStringAsParameter() {
+		_runner.addClassPath(new String());
+		assertEquals(0, _runner.classPathCount());
+	}
+	
+	/**
 	 * Tests if a non-existent directory is detected.
 	 */
 	@Test
@@ -552,5 +590,29 @@ public class TestTestRunner extends TestRunnerHelper {
 		
 		verify(lib2, times(2)).getPath();
 		verify(lib2).getFileName();
+	}
+	
+	@Test
+	public void testCreateClasspath()
+			throws NoSuchMethodException, SecurityException, 
+			IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException {
+		Method createClasspath = getProtectedMethod(TestRunner.class, 
+		"createClasspath", null);
+		
+		String path1 = "path1";
+		_runner.addClassPath(path1);
+		
+		String path2 = "path2";
+		_runner.addClassPath(path2);
+		
+		String path3 = "path3";
+		_runner.addClassPath(path3);
+		
+		String ret = path1 + File.pathSeparator + path2 + File.pathSeparator +
+				path3;
+		
+		assertEquals(ret, createClasspath.invoke(_runner, null));
+		
 	}
 }
