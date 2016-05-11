@@ -23,6 +23,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.List;
 
 import javax.xml.stream.XMLInputFactory;
@@ -39,6 +40,7 @@ import org.testsuite.core.JunitTestRunner;
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
 import org.testsuite.data.Library;
+import org.testsuite.data.TestSuite;
 
 /**
  * Tests the class {@link org.testsuite.core.ConfigParser}
@@ -162,6 +164,9 @@ public class TestConfigParser {
 		
 		List<TestRunner> list = _parser.getTestRunnerList();
 		
+		int suiteId = 0;
+		int testId = 0;
+		
 		assertEquals(3, list.size());
 		
 		TestRunner runner = list.get(0);
@@ -171,6 +176,7 @@ public class TestConfigParser {
 		assertEquals("[h2]Test[/h2][p]This is a test.[/p]", 
 				runner.getDescription());
 		assertEquals(0, runner.libraryCount());
+		
 		
 		runner = list.get(1);
 		assertEquals(JunitTestRunner.class.getName(),
@@ -186,6 +192,39 @@ public class TestConfigParser {
 		assertEquals("path", lib.getPath());
 		assertEquals("lib1", lib.getFileName());
 		
+		assertEquals(2, runner.testSuiteCount());
+		
+		Field field = TestRunner.class.getDeclaredField("_suites");
+		field.setAccessible(true);
+		@SuppressWarnings("unchecked")
+		List<TestSuite> suites = (List<TestSuite>)field.get(runner);
+		
+		TestSuite suite = suites.get(0);
+		assertEquals(suiteId++, suite.getId());
+		assertEquals("Test 1", suite.getName());
+		assertEquals("test1", suite.getPackage());
+		assertEquals(1, suite.testCount());
+		
+		org.testsuite.data.Test test = suite.getTest(0);
+		assertEquals(testId++, test.getId());
+		assertEquals("Test1Class", test.getName());
+		
+		suite = suites.get(1);
+		assertEquals(suiteId++, suite.getId());
+		assertEquals("Test 2", suite.getName());
+		assertEquals("test2", suite.getPackage());
+		assertEquals(2, suite.testCount());
+		
+		testId = 0;
+		test = suite.getTest(0);
+		assertEquals(testId++, test.getId());
+		assertEquals("Test2Class", test.getName());
+		
+		test = suite.getTest(1);
+		assertEquals(testId++, test.getId());
+		assertEquals("Test3Class", test.getName());
+		
+		
 		lib = runner.getLibrary(1);
 		assertEquals("0.2", lib.getVersion());
 		assertEquals("name2", lib.getName());
@@ -199,5 +238,6 @@ public class TestConfigParser {
 		assertEquals("[h2]Test[/h2][p]This is a test.[/p]", 
 				runner.getDescription());
 		assertEquals(0, runner.libraryCount());
+		assertEquals(1, runner.classPathCount());
 	}
 }

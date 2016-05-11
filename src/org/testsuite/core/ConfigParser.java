@@ -99,6 +99,8 @@ public class ConfigParser {
 			Library library = null;
 			TestSuite suite = null;
 			Test test = null; 
+			int suiteId = 0;
+			int testId = 0;
 			
 			while(parser.hasNext()) {
 				XMLEvent event = parser.nextEvent();
@@ -144,13 +146,15 @@ public class ConfigParser {
 								}
 								break;
 								
-							case "classPath":
+							case "classpath":
 								classPath = true;
 								break;
 								
 							case "testSuite":
 								testSuite = true;
 								suite = new TestSuite();
+								suite.setId(suiteId++);
+								testId = 0;
 								break;
 						}
 						break;
@@ -273,6 +277,7 @@ public class ConfigParser {
 								if (testSuite && (suite != null)) {
 									test = new Test();
 									test.setName(data);
+									test.setId(testId++);
 									suite.addTest(test);
 									test = null;
 								}
