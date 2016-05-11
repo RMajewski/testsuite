@@ -132,11 +132,6 @@ public class TestCore {
 			HtmlOut html = new HtmlOut(htmlFile);
 			html.htmlHead();
 			
-			html.guiHead();
-			
-			html.junitHead();
-			
-			html.fitHead();
 			
 			html.htmlEnd();
 		} catch (IOException e) {

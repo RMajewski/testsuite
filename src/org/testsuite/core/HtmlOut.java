@@ -55,28 +55,31 @@ public class HtmlOut {
 	
 	/**
 	 * Saves the HTML code for the tests
+	 * 
+	 * @deprecated
 	 */
 	private StringBuilder _tests;
 	
 	/**
 	 * Saves the current ID of the test.
+	 * 
+	 * @deprecated
 	 */
 	private int _id;
 	
 	/**
 	 * Initialize the class
 	 * 
-	 * @param file File for output
+	 * @param fileName File for output
 	 * 
 	 * @throws IOException 
 	 */
-	public HtmlOut(String file) throws IOException {
-		// Daten speichern
-		_htmlFile = file;
+	public HtmlOut(String fileName) throws IOException {
+		if ((fileName == null) || fileName.isEmpty())
+			throw new IllegalArgumentException();
 		
-		// Daten initalisieren
-		_tests = new StringBuilder();
-		_id = 1;
+		// Daten speichern
+		_htmlFile = fileName;
 		
 		// Writer zum ausgeben öffnen.
 		_writer = new FileWriter(new File(_htmlFile));
@@ -166,188 +169,61 @@ public class HtmlOut {
 	}
 	
 	/**
-	 * Specifies the caption for the GUI tests
+	 * Write a string to BufferedWriter.
 	 * 
-	 * @throws IOException 
-	 */
-	public void guiHead() throws IOException {
-		_bw.write("\t\t<h2>GUI-Tests</h2>");
-		_bw.newLine();
-		_bw.write("\t\t<p>Die GUI-Tests beinhalten Test die die Oberfläche ");
-		_bw.write("testen ausgeführt mit Jemmy<p>");
-		_bw.newLine();
-	}
-	
-	/**
-	 * Specifies the caption for the junit tests from
+	 * @param html String to be written into the BufferedWriter.
 	 * 
 	 * @throws IOException
 	 */
-	public void junitHead() throws IOException {
-		_bw.write("\t\t<hr>"); _bw.newLine();
-		_bw.write("\t\t<h2>junit-Tests</h2>");
-		_bw.newLine();
-		_bw.write("\t\t<p>Die junit-Tests testen einzelne Klassen. Diese ");
-		_bw.write("Klassen sind in den Tests meist isoliert.<p>");
-		_bw.newLine();
+	public void writeHtml(String html) throws IOException {
+		if ((html == null) || html.isEmpty())
+			throw new IllegalArgumentException();
+		_bw.write(html);
 	}
 	
-	/**
-	 * Specifies the caption for the fit-tests
-	 * 
-	 * @throws IOException
-	 */
-	public void fitHead() throws IOException {
-		_bw.write("\t\t<hr>"); _bw.newLine();
-		_bw.write("\t\t<h2>Fit-Tests</h2>");
-		_bw.newLine();
-		_bw.write("\t\t<p>Die Fit-Tests testen die Funktionalität der ");
-		_bw.write("einzelnen Fenster. Dazu wurde die Fenster teilweise in");
-		_bw.write("einer Testumgebung geöffnet.<p>");
-		_bw.newLine();
+	public String generateTestOut(int id, InputStream console,
+			InputStream error) throws IOException {
+		if (id < 0)
+			return new String();
+		
+		StringBuilder ret = new StringBuilder("\t\t\t\t\t\t<div ");
+		ret.append("class=\"right\"><a href=\"javascript:togleDisplayId(");
+		ret.append(id);
+		ret.append(")\">Ausgabe</a></div>");
+		ret.append(System.lineSeparator());
+		
+		ret.append("\t\t\t\t\t\t<div class=\"testoutInvisible\" id=\"id_");
+		ret.append(id);
+		ret.append("\">");
+		ret.append(System.lineSeparator());
+		
+		ret.append("\t\t\t\t\t\t\t<div class=\"console\">");
+		
+		String tmp = streamOut(console);
+		if ((tmp == null) || tmp.isEmpty())
+			ret.append("Keine Ausgabe auf der Konsole");
+		else
+			ret.append(tmp);
+		
+		ret.append("</div>");
+		ret.append(System.lineSeparator());
+		
+		ret.append("\t\t\t\t\t\t\t<div class=\"error\">");
+		
+		tmp = streamOut(error);
+		if ((tmp == null) || tmp.isEmpty())
+			ret.append("Keine Fehler ausgegeben");
+		else
+			ret.append(tmp);
+		
+		ret.append("</div>");
+		ret.append(System.lineSeparator());
+		
+		ret.append("\t\t\t\t\t\t</div>");
+		ret.append(System.lineSeparator());
+		
+		return ret.toString();
 	}
-
-	/**
-	 * Returns the beginning of a table. In the table are the results of the
-	 * test suites.
-	 * 
-	 * @param name Name of the test suite
-	 * 
-	 * @param pack Name of the package
-	 * 
-	 * @param right Number of correct tests
-	 * 
-	 * @param wrong Number of false tests
-	 * 
-	 * @param ignore Number of ignored tests
-	 * 
-	 * @param exception Of Faulty tests
-	 * 
-	 * @param time Time, the suite has a total hand.
-	 */
-	public void suiteHtml(String name, String pack, int right, int wrong, 
-			int ignore, int exception, long time) throws IOException {
-		
-		String rightColspan = new String();
-		if (wrong == -1)
-			rightColspan = " colspan=\"2\"";
-		
-		String exceptionColspan = new String();
-		if (ignore == -1)
-			exceptionColspan = " colspan=\"2\"";
-		
-		_bw.write("\t\t<table width=\"100%\" border=\"1\">"); _bw.newLine();
-		_bw.write("\t\t\t<tr>"); _bw.newLine();
-		
-		_bw.write("\t\t\t\t<td>");
-		_bw.write(name);
-		_bw.write("</td>");
-		_bw.newLine();
-		
-		_bw.write("\t\t\t\t<td");
-		_bw.write(testClass(right, "pass"));
-		_bw.write(rightColspan);
-		_bw.write(">");
-		_bw.write(String.valueOf(right));
-		_bw.write("</td>");
-		_bw.newLine();
-		
-		if (wrong > -1) {		
-			_bw.write("\t\t\t\t<td");
-			_bw.write(testClass(wrong, "wrong"));
-			_bw.write(">");
-			_bw.write(String.valueOf(wrong));
-			_bw.write("</td>");
-			_bw.newLine();
-		}
-		
-		if (ignore > -1) {
-			_bw.write("\t\t\t\t<td");
-			_bw.write(testClass(ignore, "ignore"));
-			_bw.write(">");
-			_bw.write(String.valueOf(ignore));
-			_bw.write("</td>");
-			_bw.newLine();
-		}
-		
-		_bw.write("\t\t\t\t<td");
-		_bw.write(testClass(exception, "exception"));
-		_bw.write(exceptionColspan);
-		_bw.write(">");
-		_bw.write(String.valueOf(exception));
-		_bw.write("</td>"); _bw.newLine();
-		
-		// Zeit
-		_bw.write("\t\t\t\t<td>");
-		_bw.write(String.valueOf(time));
-		_bw.write("</td>"); _bw.newLine();
-
-		_bw.write("\t\t\t</tr>"); _bw.newLine();
-
-		_bw.write("\t\t\t<tr>"); _bw.newLine();
-		
-		// Ausgabe des Package-Namen
-		_bw.write("\t\t\t\t<td colspan=\"6\">Package: ");
-		_bw.write(pack);
-		_bw.write("</td>");
-		_bw.newLine();
-
-		_bw.write("\t\t\t</tr>"); _bw.newLine();
-		
-		// Tests ausgeben
-		_bw.write(_tests.toString());
-		_bw.newLine();
-		
-		// Tests neu initalisieren
-		_tests = new StringBuilder();
-		
-		// Ende der Tabelle
-		_bw.write("\t\t</table>");
-		_bw.newLine();
-	}
-	
-	/**
-	 * Checks if the specified test is greater 0th. If this is the case, then
-	 * the specified class is outputted.
-	 * 
-	 * @param test Test to be checked.
-	 * 
-	 * @param className Name of the class to be output.
-	 * 
-	 * @return Class if test > 0. Otherwise, an empty string.
-	 */
-	private String testClass(int test, String className) {
-		String ret = new String();
-		
-		if (test > 0)
-			ret = " class=\"" + className + "\"";
-		
-		return ret;
-	}
-	
-	/**
-	 * Returns the beginning of a table. In the table are the results of the
-	 * test of the Suites.
-	 * 
-	 * @param name Name of the test suite
-	 * 
-	 * @param pack Name of package
-	 * 
-	 * @param right Number of correct tests
-	 * 
-	 * @param exception Number of Faulty tests
-	 * 
-	 * @param time Time that the test suite has a total hand
-	 * 
-	 * @throws IOException
-	 */
-	public void suiteHtml(String name, String pack, int right, int exception,
-			long time)
-		throws IOException {
-		suiteHtml(name, pack, right, -1, -1, exception, time);
-	}
-	
-	// XXX Ausgabe der Zeit in Stunden, Minuten und Sekunden
 	
 	/**
 	 * Generates the HTML code for a test
@@ -374,6 +250,8 @@ public class HtmlOut {
 	 * @param path Specifies the directory where are the Fit-output files.
 	 * 
 	 * @throws IOExcetption
+	 * 
+	 * @deprecated
 	 */
 	public void test(String name, int right, int wrong, int ignore,
 			int exception, long time, InputStream console, InputStream error,
@@ -476,6 +354,27 @@ public class HtmlOut {
 	}
 	
 	/**
+	 * Checks if the specified test is greater 0th. If this is the case, then
+	 * the specified class is outputted.
+	 * 
+	 * @param test Test to be checked.
+	 * 
+	 * @param className Name of the class to be output.
+	 * 
+	 * @return Class if test > 0. Otherwise, an empty string.
+	 * 
+	 * @deprecated
+	 */
+	private String testClass(int test, String className) {
+		String ret = new String();
+		
+		if (test > 0)
+			ret = " class=\"" + className + "\"";
+		
+		return ret;
+	}
+	
+	/**
 	 * Reads the given stream and returns it as a string. The characters "new
 	 * line" will be replaced by a "<br/>".
 	 * 
@@ -493,9 +392,13 @@ public class HtmlOut {
 			if (isr.ready()) {
 				BufferedReader br = new BufferedReader(isr);
 				String line;
+				boolean first = true;
 				while ((line = br.readLine()) != null) {
+					if (first)
+						first = false;
+					else
+						buffer.append("<br/>");
 					buffer.append(line);
-					buffer.append("<br/>");
 				}
 			}
 		}
@@ -520,9 +423,136 @@ public class HtmlOut {
 	 * @param error Output of the error
 	 * 
 	 * @throws IOExcetption
+	 * 
+	 * @deprecated
 	 */
 	public void test(String name, int right, int exception, long time,
 			InputStream console, InputStream error) throws IOException {
 		test(name, right, -1, -1, exception, time, console, error, false, null);
+	}
+
+	/**
+	 * Returns the beginning of a table. In the table are the results of the
+	 * test suites.
+	 * 
+	 * @param name Name of the test suite
+	 * 
+	 * @param pack Name of the package
+	 * 
+	 * @param right Number of correct tests
+	 * 
+	 * @param wrong Number of false tests
+	 * 
+	 * @param ignore Number of ignored tests
+	 * 
+	 * @param exception Of Faulty tests
+	 * 
+	 * @param time Time, the suite has a total hand.
+	 * 
+	 * @deprecated
+	 */
+	public void suiteHtml(String name, String pack, int right, int wrong, 
+			int ignore, int exception, long time) throws IOException {
+		
+		String rightColspan = new String();
+		if (wrong == -1)
+			rightColspan = " colspan=\"2\"";
+		
+		String exceptionColspan = new String();
+		if (ignore == -1)
+			exceptionColspan = " colspan=\"2\"";
+		
+		_bw.write("\t\t<table width=\"100%\" border=\"1\">"); _bw.newLine();
+		_bw.write("\t\t\t<tr>"); _bw.newLine();
+		
+		_bw.write("\t\t\t\t<td>");
+		_bw.write(name);
+		_bw.write("</td>");
+		_bw.newLine();
+		
+		_bw.write("\t\t\t\t<td");
+		_bw.write(testClass(right, "pass"));
+		_bw.write(rightColspan);
+		_bw.write(">");
+		_bw.write(String.valueOf(right));
+		_bw.write("</td>");
+		_bw.newLine();
+		
+		if (wrong > -1) {		
+			_bw.write("\t\t\t\t<td");
+			_bw.write(testClass(wrong, "wrong"));
+			_bw.write(">");
+			_bw.write(String.valueOf(wrong));
+			_bw.write("</td>");
+			_bw.newLine();
+		}
+		
+		if (ignore > -1) {
+			_bw.write("\t\t\t\t<td");
+			_bw.write(testClass(ignore, "ignore"));
+			_bw.write(">");
+			_bw.write(String.valueOf(ignore));
+			_bw.write("</td>");
+			_bw.newLine();
+		}
+		
+		_bw.write("\t\t\t\t<td");
+		_bw.write(testClass(exception, "exception"));
+		_bw.write(exceptionColspan);
+		_bw.write(">");
+		_bw.write(String.valueOf(exception));
+		_bw.write("</td>"); _bw.newLine();
+		
+		// Zeit
+		_bw.write("\t\t\t\t<td>");
+		_bw.write(String.valueOf(time));
+		_bw.write("</td>"); _bw.newLine();
+
+		_bw.write("\t\t\t</tr>"); _bw.newLine();
+
+		_bw.write("\t\t\t<tr>"); _bw.newLine();
+		
+		// Ausgabe des Package-Namen
+		_bw.write("\t\t\t\t<td colspan=\"6\">Package: ");
+		_bw.write(pack);
+		_bw.write("</td>");
+		_bw.newLine();
+
+		_bw.write("\t\t\t</tr>"); _bw.newLine();
+		
+		// Tests ausgeben
+		_bw.write(_tests.toString());
+		_bw.newLine();
+		
+		// Tests neu initalisieren
+		_tests = new StringBuilder();
+		
+		// Ende der Tabelle
+		_bw.write("\t\t</table>");
+		_bw.newLine();
+	}
+	
+	/**
+	 * Returns the beginning of a table. In the table are the results of the
+	 * test of the Suites.
+	 * 
+	 * @param name Name of the test suite
+	 * 
+	 * @param pack Name of package
+	 * 
+	 * @param right Number of correct tests
+	 * 
+	 * @param exception Number of Faulty tests
+	 * 
+	 * @param time Time that the test suite has a total hand
+	 * 
+	 * @throws IOException
+	 * 
+	 * @deprecated
+	 */
+	public void suiteHtml(String name, String pack, int right, int exception,
+			long time)
+		throws IOException {
+		suiteHtml(name, pack, right, -1, -1, exception, time);
 	}
 }
