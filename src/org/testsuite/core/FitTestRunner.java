@@ -150,58 +150,6 @@ public class FitTestRunner extends TestRunner {
 			
 		} // for über die Fit-Suites
 	}
-
-	/**
-	 * Generate the HTML code from the test results.
-	 * 
-	 * @param html Class, which helps to generate the HTML code.
-	 * 
-	 * @throws IOException
-	 * 
-	 * @deprecated
-	 */
-	public void createHtml(HtmlOut html) throws IOException {
-		for (int suite = 0; suite < _suites.size(); suite++) {
-			int right = 0;
-			int wrong = 0;
-			int ignore = 0;
-			int exception = 0;
-			long time = 0;
-			
-			for (int test = 0; test < _suites.get(suite).testCount(); test++) {
-				int rightTest = ((Fit)_suites.get(suite).getTest(test)).getOk();
-				int wrongTest = 
-						((Fit)_suites.get(suite).getTest(test)).getFail();
-				int ignoreTest = 
-						((Fit)_suites.get(suite).getTest(test)).getIgnore();
-				int exceptionTest = 
-						((Fit)_suites.get(suite).getTest(test)).getException();
-				long timeTest = 
-						((Fit)_suites.get(suite).getTest(test)).getDurationTime();
-				
-				// Ausgabe des Tests
-				html.test( _suites.get(suite).getTest(test).getName(),
-						rightTest, wrongTest, ignoreTest, exceptionTest,
-						timeTest, _suites.get(suite).getTest(test).getIn(),
-						_suites.get(suite).getTest(test).getError(), true,
-						_config.getPathSuitesResult() + File.separator + 
-						_suites.get(suite).getPackage().replaceAll("\\.", 
-								File.separator));
-				
-				// Fehler bzw. Richtig für Test-Suite erhöhen
-				right += rightTest;
-				wrong += wrongTest;
-				ignore += ignoreTest;
-				exception += exceptionTest;
-				time += timeTest;
-			} // for über alle Tests
-			
-			// Ausgabe für die Test-Suite
-			html.suiteHtml(_suites.get(suite).getName(),
-					_suites.get(suite).getPackage(), right, wrong, ignore, 
-						exception, time);
-		} // for über alle Test-Suits
-	}
 	
 	/**
 	 * Sets the full file name with path together.
@@ -221,13 +169,102 @@ public class FitTestRunner extends TestRunner {
 
 	@Override
 	protected String createHtmlTableHead(int suite) {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder ret = new StringBuilder("\t\t\t\t\t\t<th>");
+		ret.append(_suites.get(suite).getName());
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+
+		ret.append("\t\t\t\t\t\t<th>Erfolgreich</th>");
+		ret.append(System.lineSeparator());
+
+		ret.append("\t\t\t\t\t\t<th>Falsch</th>");
+		ret.append(System.lineSeparator());
+
+		ret.append("\t\t\t\t\t\t<th>Ignoriert</th>");
+		ret.append(System.lineSeparator());
+
+		ret.append("\t\t\t\t\t\t<th>Fehlerhaft</th>");
+		ret.append(System.lineSeparator());
+
+		ret.append("\t\t\t\t\t\t<th>Zeit</th>");
+		ret.append(System.lineSeparator());
+
+		ret.append("\t\t\t\t\t</tr>");
+		ret.append(System.lineSeparator());
+
+		ret.append("\t\t\t\t\t<tr>");
+		ret.append(System.lineSeparator());
+
+		ret.append("\t\t\t\t\t\t<th colspan=\"6\">");
+		ret.append(_suites.get(suite).getPackage());
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		return ret.toString();
 	}
 
 	@Override
-	protected String createHtmlColumn(int suite, int test) {
-		// TODO Auto-generated method stub
-		return null;
+	protected String createHtmlColumn(int suite, int test, HtmlOut html)
+			throws IOException {
+		StringBuilder ret = new StringBuilder("\t\t\t\t\t\t<td>");
+		
+		if (_suites.get(suite).getTest(test).isExists()) {
+			ret.append("<a href=\"");
+			ret.append(_config.getPathSuitesResult());
+			ret.append(File.separator);
+			ret.append(_suites.get(suite).getTest(test).getName());
+			ret.append(".html\">");
+			ret.append(_suites.get(suite).getTest(test).getName());
+			ret.append("</a>");
+			ret.append(html.generateTestOut(_suites.get(suite).getId(), 
+						_suites.get(suite).getTest(test).getId(), 
+						_suites.get(suite).getTest(test).getIn(),
+						_suites.get(suite).getTest(test).getError()));
+			ret.append("\t\t\t\t\t\t</td>");
+			ret.append(System.lineSeparator());
+			
+			ret.append("\t\t\t\t\t\t<td>");
+			ret.append(((Fit)_suites.get(suite).getTest(test)).getOk());
+			ret.append("</td>");
+			ret.append(System.lineSeparator());
+			
+			ret.append("\t\t\t\t\t\t<td>");
+			ret.append(((Fit)_suites.get(suite).getTest(test)).getFail());
+			ret.append("</td>");
+			ret.append(System.lineSeparator());
+			
+			ret.append("\t\t\t\t\t\t<td>");
+			ret.append(((Fit)_suites.get(suite).getTest(test)).getIgnore());
+			ret.append("</td>");
+			ret.append(System.lineSeparator());
+			
+			ret.append("\t\t\t\t\t\t<td>");
+			ret.append(((Fit)_suites.get(suite).getTest(test)).getException());
+			ret.append("</td>");
+			ret.append(System.lineSeparator());
+			
+			ret.append("\t\t\t\t\t\t<td>");
+			ret.append(
+					((Fit)_suites.get(suite).getTest(test)).getDurationTime());
+		} else {
+			ret.append(_config.getPathSrc());
+			ret.append(File.separator);
+			ret.append(_suites.get(suite).getPackage().replaceAll("\\.", 
+					File.separator));
+			ret.append(File.separator);
+			ret.append(_suites.get(suite).getTest(test).getName());
+			ret.append(".");
+			ret.append(_fileExtension);
+			ret.append("</td>");
+			ret.append(System.lineSeparator());
+			
+			ret.append("\t\t\t\t\t\t<td colspan=\"5\">");
+			ret.append("Test existiert nicht");
+		}
+		
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		return ret.toString();
 	}
 }

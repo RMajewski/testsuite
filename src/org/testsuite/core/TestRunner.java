@@ -364,7 +364,7 @@ public abstract class TestRunner {
 	 * 
 	 * @throws IOException 
 	 */
-	public String createHtml() {
+	public String createHtml(HtmlOut html) throws IOException {
 		StringBuilder ret = new StringBuilder("\t\t<div class=\"testgroup\">");
 		ret.append(System.lineSeparator());
 		
@@ -383,7 +383,7 @@ public abstract class TestRunner {
 			for (int test = 0; test < _suites.get(suite).testCount(); test++) {
 				ret.append("\t\t\t\t\t<tr>");
 				ret.append(System.lineSeparator());
-				ret.append(createHtmlColumn(suite, test));
+				ret.append(createHtmlColumn(suite, test, html));
 				ret.append("\t\t\t\t\t</tr>");
 				ret.append(System.lineSeparator());
 			}
@@ -447,6 +447,8 @@ public abstract class TestRunner {
 	
 	/**
 	 * Called to generate the columns for a row in the HTML table.
+	 * @throws IOException 
 	 */
-	protected abstract String createHtmlColumn(int suite, int test);
+	protected abstract String createHtmlColumn(int suite, int test,
+			HtmlOut html) throws IOException;
 }

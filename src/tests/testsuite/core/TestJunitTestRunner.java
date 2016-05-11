@@ -300,4 +300,14 @@ public class TestJunitTestRunner {
 		verify(suite, atLeastOnce()).getPackage();
 		verify(suite).isExists();
 	}
+	
+	@Test
+	public void testCreateHtmlTableHead() {
+		fail("Test not yet implemented.");
+	}
+	
+	@Test
+	public void testCreateHtmlColumn() {
+		fail("Test not yet implemented.");
+	}
 }

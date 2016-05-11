@@ -27,15 +27,19 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.mockito.Matchers;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.testsuite.core.FitTestRunner;
+import org.testsuite.core.HtmlOut;
 import org.testsuite.data.Config;
 import org.testsuite.data.Fit;
 import org.testsuite.data.TestSuite;
@@ -245,5 +249,171 @@ public class TestFitTestRunner {
 		verify(suite, atLeastOnce()).getTest(0);
 		verify(suite, atLeastOnce()).getPackage();
 		verify(suite).isExists();
+	}
+	
+	@Test
+	public void testCreateHtmlTableHead() throws Exception {
+		String suiteName = "TestSuite";
+		String packageName = "package";
+		
+		String ret = "\t\t\t\t\t\t<th>" + suiteName + "</th>" + 
+				System.lineSeparator() + "\t\t\t\t\t\t<th>Erfolgreich</th>" +
+				System.lineSeparator() + "\t\t\t\t\t\t<th>Falsch</th>" +
+				System.lineSeparator() + "\t\t\t\t\t\t<th>Ignoriert</th>" +
+				System.lineSeparator() + "\t\t\t\t\t\t<th>Fehlerhaft</th>" +
+				System.lineSeparator() + "\t\t\t\t\t\t<th>Zeit</th>" +
+				System.lineSeparator() + "\t\t\t\t\t</tr>" + 
+				System.lineSeparator() + "\t\t\t\t\t<tr>" + 
+				System.lineSeparator() + "\t\t\t\t\t\t<th colspan=\"6\">" +
+				packageName + "</th>" + System.lineSeparator();
+		
+		Method method = 
+				FitTestRunner.class.getDeclaredMethod("createHtmlTableHead",
+						int.class);
+		method.setAccessible(true);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getName()).thenReturn(suiteName);
+		when(suite.getPackage()).thenReturn(packageName);
+		_runner.addTestSuite(suite);
+		
+		assertEquals(ret, method.invoke(_runner, 0));
+		
+		verify(suite).getName();
+		verify(suite).getPackage();
+	}
+	
+	@Test
+	public void testCreateHtmlColumn() throws Exception {
+		String testName = "Test1";
+		String testOut = "\t\t\t\t\t\t<div class=\"right\"><a " +
+				"href=\"javascript:togleDisplayId(0, 0)\"> Ausgabe</a></div>" +
+				System.lineSeparator() + "\t\t\t\t\t\t<div " +
+				"class=\"testoutInvisible\" id=\"id_0_0\">" + 
+				System.lineSeparator() + "\t\t\t\t\t\t\t<div " +
+				"class=\"console\">Console</div>" + System.lineSeparator() +
+				"\t\t\t\t\t\t\t<div class=\"error\">Fehler</div>" +
+				System.lineSeparator() + "\t\t\t\t\t\t</div>" + 
+				System.lineSeparator();
+		String resultSuite = "1";
+		int ok = 1;
+		int fail = 2;
+		int ignore = 0;
+		int exception = 4;
+		long duration = 1000;
+		int suiteId = 0;
+		int testId = 0;
+		
+		String ret = "\t\t\t\t\t\t<td><a href=\"" + resultSuite + 
+				File.separator + testName + ".html\">" + 
+				testName + "</a>" + testOut + "\t\t\t\t\t\t</td>" + System.lineSeparator() + 
+				"\t\t\t\t\t\t<td>" + ok + "</td>" + System.lineSeparator() + 
+				"\t\t\t\t\t\t<td>" + fail + "</td>" + System.lineSeparator() +
+				"\t\t\t\t\t\t<td>" + ignore + "</td>" + System.lineSeparator() +
+				"\t\t\t\t\t\t<td>" + exception + "</td>" + 
+				System.lineSeparator() + "\t\t\t\t\t\t<td>" + duration + 
+				"</td>" + System.lineSeparator();
+		
+		when(_config.getPathSuitesResult()).thenReturn(resultSuite);
+		
+		InputStream console = mock(InputStream.class);
+		InputStream error = mock(InputStream.class);
+		
+		HtmlOut html = mock(HtmlOut.class);
+		when(html.generateTestOut(suiteId, testId, console, error))
+			.thenReturn(testOut);
+		
+		Method method = 
+				FitTestRunner.class.getDeclaredMethod("createHtmlColumn", 
+						int.class, int.class, HtmlOut.class);
+		method.setAccessible(true);
+		
+		Fit test = mock(Fit.class);
+		when(test.isExists()).thenReturn(true);
+		when(test.getName()).thenReturn(testName);
+		when(test.getError()).thenReturn(error);
+		when(test.getIn()).thenReturn(console);
+		when(test.getOk()).thenReturn(ok);
+		when(test.getFail()).thenReturn(fail);
+		when(test.getIgnore()).thenReturn(ignore);
+		when(test.getException()).thenReturn(exception);
+		when(test.getDurationTime()).thenReturn(duration);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getTest(0)).thenReturn(test);
+		_runner.addTestSuite(suite);
+		
+		assertEquals(ret, method.invoke(_runner, 0, 0, html));
+		
+		InOrder order = inOrder(test, suite);
+		order.verify(test).isExists();
+		order.verify(test, times(2)).getName();
+		order.verify(suite).getId();
+		order.verify(test).getId();
+		order.verify(test).getIn();
+		order.verify(test).getError();
+		order.verify(test).getOk();
+		order.verify(test).getFail();
+		order.verify(test).getIgnore();
+		order.verify(test).getException();
+		order.verify(test).getDurationTime();
+		
+		verify(suite, times(11)).getTest(0);
+	}
+	
+	@Test
+	public void testCreateHtmlColumnWithNoneExistingTest() throws Exception {
+		String testName = "Test1";
+		String packageName = "tests.test";
+		String srcName = "src";
+		String extension = "fit";
+		int suiteId = 0;
+		int testId = 0;
+		
+		String ret = "\t\t\t\t\t\t<td>" + srcName + File.separator + 
+				packageName.replaceAll("\\.", File.separator) + File.separator +
+				testName + "." + extension + "</td>" + System.lineSeparator() + 
+				"\t\t\t\t\t\t<td colspan=\"5\">Test existiert nicht</td>" + 
+				System.lineSeparator();
+		
+		_runner.setFileExtension(extension);
+		
+		InputStream console = mock(InputStream.class);
+		InputStream error = mock(InputStream.class);
+		
+		HtmlOut html = mock(HtmlOut.class);
+		when(html.generateTestOut(suiteId, testId, console, error))
+			.thenReturn(new String());
+		
+		Method method = 
+				FitTestRunner.class.getDeclaredMethod("createHtmlColumn", 
+						int.class, int.class, HtmlOut.class);
+		method.setAccessible(true);
+		
+		Fit test = mock(Fit.class);
+		when(test.isExists()).thenReturn(false);
+		when(test.getName()).thenReturn(testName);
+		when(test.getError()).thenReturn(error);
+		when(test.getIn()).thenReturn(console);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getTest(0)).thenReturn(test);
+		when(suite.getPackage()).thenReturn(packageName);
+		_runner.addTestSuite(suite);
+		
+		when(_config.getPathSrc()).thenReturn(srcName);
+		
+		assertEquals(ret, method.invoke(_runner, 0, 0, html));
+		
+		InOrder order = inOrder(test);
+		order.verify(test).isExists();
+		order.verify(test).getName();
+		order.verify(test, never()).getOk();
+		order.verify(test, never()).getFail();
+		order.verify(test, never()).getIgnore();
+		order.verify(test, never()).getException();
+		order.verify(test, never()).getDurationTime();
+		
+		verify(suite, times(2)).getTest(0);
 	}
 }
