@@ -25,6 +25,7 @@ import static org.mockito.Mockito.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.lang.reflect.Field;
+import java.util.List;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -37,17 +38,25 @@ import org.mockito.Matchers;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.testsuite.core.ConfigParser;
+import org.testsuite.core.FitTestRunner;
 import org.testsuite.core.HtmlOut;
+import org.testsuite.core.JunitTestRunner;
 import org.testsuite.core.TestCore;
+import org.testsuite.core.TestRunner;
+import org.testsuite.data.Config;
+
+import junit.framework.TestSuite;
 
 /**
  * Tests the class {@link org.testsuite.core.TestCore}
  * 
  * @author René Majewski
  *
+ * @version 0.2
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({TestCore.class, XMLInputFactory.class})
+@PrepareForTest({TestCore.class})
 public class TestTestCore {
 
 	/**
@@ -56,45 +65,9 @@ public class TestTestCore {
 	private TestCore _core;
 	
 	/**
-	 * Save the result path
+	 * Save the mock object of Config
 	 */
-	private String _resultPath;
-	
-	/**
-	 * Save the result path für fit tests
-	 */
-	private String _fitResult;
-	
-	/**
-	 * Save the path for library
-	 */
-	private String _bibPath;
-	
-	/**
-	 * Save the path to source code
-	 */
-	private String _srcPath;
-	
-	/**
-	 * Read the path from the TestCore class.
-	 */
-	private void readPaths() throws Exception {
-		Field field = TestCore.class.getDeclaredField("_bibPath");
-		field.setAccessible(true);
-		_bibPath = (String)field.get(_core);
-		
-		field = TestCore.class.getDeclaredField("_fitResult");
-		field.setAccessible(true);
-		_fitResult = (String)field.get(_core);
-		
-		field = TestCore.class.getDeclaredField("_resultPath");
-		field.setAccessible(true);
-		_resultPath = (String)field.get(_core);
-		
-		field = TestCore.class.getDeclaredField("_srcPath");
-		field.setAccessible(true);
-		_srcPath = (String)field.get(_core);
-	}
+	private Config _config;
 	
 	/**
 	 * Initialize the tests
@@ -103,23 +76,22 @@ public class TestTestCore {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		_config = mock(Config.class);
+		PowerMockito.whenNew(Config.class).withNoArguments().thenReturn(_config);
+		
 		_core = new TestCore();
-		readPaths();
 	}
 
 	/**
 	 * Tests if the initialization of the class TestCore is correct.
+	 * @throws Exception 
 	 * 
 	 * @see org.testsuite.core.TestCore#TestCore()
 	 */
 	@Test
-	public void testTestCore() {
-		assertNotNull(_fitResult);
-		assertFalse(_fitResult.isEmpty());
-		assertEquals(14, _fitResult.length());
-		assertNull(_bibPath);
-		assertNull(_resultPath);
-		assertNull(_srcPath);
+	public void testTestCore() throws Exception {
+		PowerMockito.verifyNew(Config.class).withNoArguments();
+		verify(_config).setPathSuitesResult(Matchers.anyString());
 	}
 
 	/**
@@ -141,115 +113,91 @@ public class TestTestCore {
 	}
 	
 	/**
-	 * Tests if false is returned if the specified configuration file does not
-	 * exist.
-	 */
-	@Test
-	public void testReadConfigReturnFalseConfigFileNotExists()
-			throws Exception {
-		String config = "test.xml";
-		File file = mock(File.class);
-		when(file.exists()).thenReturn(false);
-		
-		PowerMockito.whenNew(File.class)
-			.withParameterTypes(String.class)
-			.withArguments(config)
-			.thenReturn(file);
-		
-		assertFalse(_core.readConfig(config));
-		
-		PowerMockito.verifyNew(File.class).withArguments(config);
-		verify(file, times(1)).exists();
-	}
-	
-	/**
 	 * Tests if the configuration file is read correctly.
 	 */
 	@Test
 	public void testReadConfig() throws Exception {
-		String config = "test.xml";
-		File file = mock(File.class);
-		when(file.exists()).thenReturn(true);
+		String name = "test.xml";
 		
-		PowerMockito.whenNew(File.class)
-			.withParameterTypes(String.class)
-			.withArguments(config)
-			.thenReturn(file);
+		ConfigParser parser = mock(ConfigParser.class);
+		when(parser.parse()).thenReturn(true);
 		
-		FileInputStream fis = mock(FileInputStream.class);
+		PowerMockito.whenNew(ConfigParser.class)
+			.withArguments(_config, name)
+			.thenReturn(parser);
 		
+		assertTrue(_core.readConfig(name));
 		
-		PowerMockito.whenNew(FileInputStream.class)
-			.withParameterTypes(File.class)
-			.withArguments(file)
-			.thenReturn(fis);
+		PowerMockito.verifyNew(ConfigParser.class)
+			.withArguments(_config, name);
 		
-		XMLStreamReader parser = mock(XMLStreamReader.class);
-		when(parser.hasNext()).thenReturn(false);
-		
-		XMLInputFactory factory = mock(XMLInputFactory.class);
-		when(factory.createXMLStreamReader(fis)).thenReturn(parser);
-		
-		PowerMockito.mockStatic(XMLInputFactory.class);
-		PowerMockito.when(XMLInputFactory.newInstance()).thenReturn(factory);
-		
-		assertTrue(_core.readConfig(config));
+		verify(parser).parse();
+		verify(parser).getTestRunnerList();
 	}
 	
 	/**
-	 * Tests if the preferences were retrieved from the configuration file.
+	 * Tests if false is returned if an error occurs while parsing occurred.
 	 */
 	@Test
-	public void testReadConfigReadRightPreferences() throws Exception {
-		String config = "test.xml";
-		File file = mock(File.class);
-		when(file.exists()).thenReturn(true);
+	public void testReadConfigReturnFalse() throws Exception {
+		String name = "test.xml";
 		
-		PowerMockito.whenNew(File.class)
-			.withParameterTypes(String.class)
-			.withArguments(config)
-			.thenReturn(file);
+		ConfigParser parser = mock(ConfigParser.class);
+		when(parser.parse()).thenReturn(false);
 		
-		FileInputStream fis = mock(FileInputStream.class);
+		PowerMockito.whenNew(ConfigParser.class)
+			.withArguments(_config, name)
+			.thenReturn(parser);
 		
+		assertFalse(_core.readConfig(name));
 		
-		PowerMockito.whenNew(FileInputStream.class)
-			.withParameterTypes(File.class)
-			.withArguments(file)
-			.thenReturn(fis);
+		PowerMockito.verifyNew(ConfigParser.class)
+			.withArguments(_config, name);
 		
-		String srcPath = "srcPath";
-		String bibPath = "bibPath";
-		String resultPath = "resultPath";
+		verify(parser).parse();
+		verify(parser, never()).getTestRunnerList();
+	}
+	
+	/**
+	 * Tests whether all text files exist.
+	 */
+	@Test
+	public void testCheckFilesExists() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		JunitTestRunner runner1 = mock(JunitTestRunner.class);
+		FitTestRunner runner2 = mock(FitTestRunner.class);
 		
-		XMLStreamReader parser = mock(XMLStreamReader.class);
-		when(parser.hasNext()).thenReturn(true, true, true, true, true, true,
-				true, false);
-		when(parser.getEventType()).thenReturn(
-				XMLStreamConstants.START_ELEMENT,
-				XMLStreamConstants.CHARACTERS,
-				XMLStreamConstants.END_ELEMENT,
-				XMLStreamConstants.CHARACTERS,
-				XMLStreamConstants.END_ELEMENT,
-				XMLStreamConstants.CHARACTERS,
-				XMLStreamConstants.END_ELEMENT);
-		when(parser.getLocalName()).thenReturn("config", "bibPath",
-				"resultPath", "srcPath");
-		when(parser.getText()).thenReturn(bibPath, resultPath, srcPath);
+		Field field = TestCore.class.getDeclaredField("_testRunner");
+		field.setAccessible(true);
+		@SuppressWarnings("unchecked")
+		List<TestRunner> list = (List<TestRunner>)field.get(_core);
+		list.add(runner1);
+		list.add(runner2);
 		
-		XMLInputFactory factory = mock(XMLInputFactory.class);
-		when(factory.createXMLStreamReader(fis)).thenReturn(parser);
+		_core.checkFileExists();
 		
-		PowerMockito.mockStatic(XMLInputFactory.class);
-		PowerMockito.when(XMLInputFactory.newInstance()).thenReturn(factory);
+		verify(runner1).checkFileExists();
+		verify(runner2).checkFileExists();
+	}
+	
+	/**
+	 * Tests if the tests are run.
+	 */
+	@Test
+	public void testRun() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		JunitTestRunner runner1 = mock(JunitTestRunner.class);
+		FitTestRunner runner2 = mock(FitTestRunner.class);
 		
-		assertTrue(_core.readConfig(config));
+		Field field = TestCore.class.getDeclaredField("_testRunner");
+		field.setAccessible(true);
+		@SuppressWarnings("unchecked")
+		List<TestRunner> list = (List<TestRunner>)field.get(_core);
+		list.add(runner1);
+		list.add(runner2);
 		
-		readPaths();
+		_core.run();
 		
-		assertEquals(srcPath, _srcPath);
-		assertEquals(resultPath, _resultPath);
-		assertEquals(bibPath, _bibPath);
+		verify(runner1).run();
+		verify(runner2).run();
 	}
 
 	/**
@@ -257,22 +205,7 @@ public class TestTestCore {
 	 */
 	@Test
 	public void testCreateResultHtml() throws Exception{
-		HtmlOut html = mock(HtmlOut.class);
-		
-		PowerMockito.whenNew(HtmlOut.class)
-			.withParameterTypes(String.class)
-			.withArguments(Matchers.anyString())
-			.thenReturn(html);
-		
-		_core.createResultHtml();
-		
-		PowerMockito.verifyNew(HtmlOut.class).withArguments(Matchers.anyString());
-		verify(html, times(1)).htmlHead();
-		verify(html, times(1)).guiHead();
-		verify(html, times(1)).junitHead();
-		verify(html, times(1)).fitHead();
-		verify(html, times(1)).htmlEnd();
-		
+		fail("Test not yet implemented.");
 	}
 
 }

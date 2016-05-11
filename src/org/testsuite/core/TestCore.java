@@ -25,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -56,12 +57,18 @@ public class TestCore {
 	 * Saves the configuration.
 	 */
 	private Config _config;
+	
+	/**
+	 * Saves the list of classes TestRunner.
+	 */
+	private List<TestRunner> _testRunner;
 
 	/**
 	 * Initialize the test management
 	 */
 	public TestCore() {
 		_config = new Config();
+		_testRunner = new ArrayList<TestRunner>();
 		
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.setTime(new Date());
@@ -78,174 +85,38 @@ public class TestCore {
 	/**
 	 * Reads the specified configuration file.
 	 * 
-	 * @param config Name of the configuration file
+	 * @param fileName Name of the configuration file
 	 * 
 	 * @return Was the configuration file is read correctly?
 	 */
-	public boolean readConfig(String config) 
-			throws XMLStreamException, FileNotFoundException{
-		// Überprüfen, ob eine Konfigurationsdatei angegeben wurde.
-		if ((config == null) || config.isEmpty())
+	public boolean readConfig(String fileName) 
+			throws XMLStreamException, FileNotFoundException {
+		if ((fileName == null) || fileName.isEmpty())
 			throw new IllegalArgumentException();
-			
-		// Überprüfen, ob die config-Datei existiert
-		File configFile = new File(config);
-		if (!configFile.exists()) {
-			System.out.println("Konfigurations-Datei (" + config + 
-					") existiert nicht.");
-			return false;
-		}
-	
-		// InputStream
-		InputStream stream = new FileInputStream(configFile);
 		
-		// XMl-Factory
-		XMLInputFactory factory = XMLInputFactory.newInstance();
-		XMLStreamReader parser = factory.createXMLStreamReader(stream);
+		ConfigParser parser = new ConfigParser(_config, fileName);
+		boolean ret = parser.parse();
 		
-		// Daten vorbereiten
-		Test test = new Test();
-		TestSuite suite = new TestSuite();
-		int type = -1;
-		String str = new String();
+		if (ret)
+			_testRunner = parser.getTestRunnerList();
 		
-		// XML-Dokument einlesen
-		while (parser.hasNext()) {
-			switch (parser.getEventType()) {
-				// Dokument ist zu Ende
-				case XMLStreamConstants.END_DOCUMENT:
-					parser.close();
-					break;
-					
-				// Start eines neuen Elementes
-				case XMLStreamConstants.START_ELEMENT:
-					// Welches Element?
-					switch (parser.getLocalName()) {
-						// Konfiguration
-						case "config":
-							type = 0;
-							break;
-							
-						// GUI-Tests
-						case "guiTests":
-							type = 1;
-							break;
-							
-						// junit-Tests
-						case "junitTests":
-							type = 2;
-							break;
-							
-						// Fit-Tests
-						case "fitTests":
-							type = 3;
-							break;
-							
-						// Neue Test-Suite
-						case "testSuite":
-							if (type == 1)
-								suite = new TestSuite();
-							else if (type == 2)
-								//Junit
-								System.out.println("Junit");
-							else if (type == 3)
-								// Fit
-								System.out.println("Fit");
-							break;
-							
-						// Name
-						case "name":
-							break;
-							
-						// Package
-						case "package":
-							break;
-							
-						// Neuer Test
-						case "test":
-							if (type == 1)
-								test = new Test();
-							else if (type == 2)
-								test = new Junit();
-							else if (type == 3)
-								test = new Fit();
-							break;
-					}
-					break;
-					
-				// Ende eines Elementes
-				case XMLStreamConstants.END_ELEMENT:
-					switch(parser.getLocalName()) {
-						// Suite
-						case "testSuite":
-							if (type == 1)
-								//_gui.add(suite);
-								System.out.println("jemmy");
-							else if (type == 2)
-								//JUNIT
-								System.out.println("Junit");
-							else if (type == 3)
-								//Fit
-								System.out.println("Fit");
-							break;
-							
-						// Name
-						case "name":
-							suite.setName(str);
-							break;
-							
-						// Package
-						case "package":
-							suite.setPackage(str);
-							break;
-							
-						// Test
-						case "test":
-							test.setName(str);
-							suite.addTest(test);
-							break;
-							
-						// Result-Pfad
-						case "resultPath":
-							_config.setPathResult(str);
-							break;
-							
-						// Source-Pfad
-						case "srcPath":
-							_config.setPathSrc(str);
-							break;
-							
-						// Bibliotheks-Pfad
-						case "bibPath":
-							_config.setPathLibrary(str);
-							break;
-					}
-					break;
-					
-				// Zeichen
-				case XMLStreamConstants.CHARACTERS:
-					str = parser.getText();
-					break;
-			}
-			
-			// Nextes Element
-			parser.next();
-		}
-		
-		// Wurde die Konfigurations-Datei richtig gelesen?
-		return true;
+		return ret;
 	}
 	
 	/**
 	 * Checks if the files exist
 	 */
 	public void checkFileExists() {
+		for (int runner = 0; runner < _testRunner.size(); runner++)
+			_testRunner.get(runner).checkFileExists();
 	}
 	
 	/**
 	 * Executes the individual tests
 	 */
 	public void run() {
+		for (int runner = 0; runner < _testRunner.size(); runner++)
+			_testRunner.get(runner).run();
 	}
 	
 	/**
