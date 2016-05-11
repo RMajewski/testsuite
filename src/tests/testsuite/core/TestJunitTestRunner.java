@@ -56,11 +56,6 @@ public class TestJunitTestRunner {
 	private JunitTestRunner _runner;
 	
 	/**
-	 * Save the file extension of test file.
-	 */
-	private String _fileExtension;
-	
-	/**
 	 * Save the mock of configuration
 	 */
 	private Config _config;
@@ -71,9 +66,8 @@ public class TestJunitTestRunner {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		_fileExtension = "test";
 		_config = mock(Config.class);
-		_runner = new JunitTestRunner(_fileExtension, _config);
+		_runner = new JunitTestRunner(_config);
 	}
 
 	/**

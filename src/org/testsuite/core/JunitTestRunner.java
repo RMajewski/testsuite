@@ -40,12 +40,10 @@ public class JunitTestRunner extends TestRunner {
 	/**
 	 * Initialis the data of the class.
 	 * 
-	 * @param extension Extension of the test files.
-	 * 
 	 * @param config The configuration.
 	 */
-	public JunitTestRunner(String extension, Config config) {
-		super(extension, config);
+	public JunitTestRunner(Config config) {
+		super(config);
 	}
 
 	/**

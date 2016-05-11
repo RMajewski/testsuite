@@ -55,12 +55,7 @@ public class TestFitTestRunner {
 	 * Holds the instance of the FitTestRunner
 	 */
 	private FitTestRunner _runner;
-	
-	/**
-	 * Save the file extension of test file.
-	 */
-	private String _fileExtension;
-	
+
 	/**
 	 * Save the mock of configuration
 	 */
@@ -72,9 +67,8 @@ public class TestFitTestRunner {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		_fileExtension = "test";
 		_config = mock(Config.class);
-		_runner = new FitTestRunner(_fileExtension, _config);
+		_runner = new FitTestRunner(_config);
 	}
 
 	/**

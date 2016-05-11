@@ -64,6 +64,11 @@ public class Config {
 	 * Saves the list of properties.
 	 */
 	private List<String> _property;
+	
+	/**
+	 * Saves the maximum duration for a test.
+	 */
+	private long _maxDuration;
 
 	/**
 	 * Initialize the data of this class
@@ -76,6 +81,7 @@ public class Config {
 		_pathSuitesResult = new String();
 		_createHtml = false;
 		_property = new ArrayList<String>();
+		_maxDuration = 0;
 	}
 
 	/**
@@ -229,5 +235,23 @@ public class Config {
 	 */
 	public String getProperty(int index) {
 		return _property.get(index);
+	}
+	
+	/**
+	 * Returns the maximum test duration.
+	 * 
+	 * @return The maximum test duration.
+	 */
+	public long getMaxDuration() {
+		return _maxDuration;
+	}
+	
+	/**
+	 * Sets the maximum test duration.
+	 * 
+	 * @param duration The new maximum test duration.
+	 */
+	public void setMaxDuration(long duration) {
+		_maxDuration = duration;
 	}
 }

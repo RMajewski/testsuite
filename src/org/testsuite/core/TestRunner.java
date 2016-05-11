@@ -74,13 +74,13 @@ public abstract class TestRunner {
 	/**
 	 * Initialis the data of the class.
 	 * 
-	 * @param extension The extension of the test file.
+	 * @param config The configuration
 	 */
-	public TestRunner(String extension, Config config) {
+	public TestRunner(Config config) {
 		_suites = new ArrayList<TestSuite>();
 		_library = new ArrayList<Library>();
 		_classpath = new ArrayList<String>();
-		_fileExtension = extension;
+		_fileExtension = new String();
 		_config = config;
 		_description = new String();
 		_lastSuiteId = -1;
@@ -120,6 +120,11 @@ public abstract class TestRunner {
 	 */
 	public void addLibrary(Library library) {
 		_library.add(library);
+	}
+	
+	public Library getLibrary(int index) {
+		return _library.get(index);
+		
 	}
 	
 	/**

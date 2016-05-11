@@ -55,11 +55,6 @@ public class TestTestRunner extends TestRunnerHelper {
 	private TestRunnerImplementation _runner;
 	
 	/**
-	 * Save the file extension of test file.
-	 */
-	private String _fileExtension;
-	
-	/**
 	 * Save the mock of configuration
 	 */
 	private Config _config;
@@ -69,9 +64,8 @@ public class TestTestRunner extends TestRunnerHelper {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		_fileExtension = "test";
 		_config = mock(Config.class);
-		_runner = new TestRunnerImplementation(_fileExtension, _config);
+		_runner = new TestRunnerImplementation(_config);
 	}
 	
 	/**
@@ -81,7 +75,7 @@ public class TestTestRunner extends TestRunnerHelper {
 	public void testTestRunner() {
 		assertEquals(0, _runner.testSuiteCount());
 		assertEquals(0, _runner.libraryCount());
-		assertEquals(_fileExtension, _runner.getFileExtension());
+		assertEquals(new String(), _runner.getFileExtension());
 		assertEquals(_config, _runner.getConfig());
 		assertEquals(new String(), _runner.getDescription());
 	}
@@ -204,6 +198,9 @@ public class TestTestRunner extends TestRunnerHelper {
 	public void testCheckFileExistsWithNonExistsFile() throws Exception {
 		String path = "test";
 		String testName = "testen";
+		String fileExtension = "test";
+		
+		_runner.setFileExtension(fileExtension);
 		
 		File file = mock(File.class);
 		when(file.exists()).thenReturn(true, false);
@@ -226,7 +223,7 @@ public class TestTestRunner extends TestRunnerHelper {
 		
 		PowerMockito.verifyNew(File.class).withArguments(path);
 		PowerMockito.verifyNew(File.class).withArguments(path + File.separator +
-				testName + "." + _fileExtension);
+				testName + "." + fileExtension);
 		verify(file, times(2)).exists();
 		verify(test, times(1)).getName();
 		verify(test, times(1)).setExists(false);
@@ -243,6 +240,9 @@ public class TestTestRunner extends TestRunnerHelper {
 	public void testCheckFileExists() throws Exception{
 		String path = "test";
 		String testName = "testen";
+		String fileExtension = "test";
+		
+		_runner.setFileExtension(fileExtension);
 		
 		File file = mock(File.class);
 		when(file.exists()).thenReturn(true, true);
@@ -265,7 +265,7 @@ public class TestTestRunner extends TestRunnerHelper {
 		
 		PowerMockito.verifyNew(File.class).withArguments(path);
 		PowerMockito.verifyNew(File.class).withArguments(path + File.separator +
-				testName + "." + _fileExtension);
+				testName + "." + fileExtension);
 		verify(file, times(2)).exists();
 		verify(test, times(1)).getName();
 		verify(test, times(1)).setExists(true);
@@ -280,7 +280,7 @@ public class TestTestRunner extends TestRunnerHelper {
 	 */
 	@Test
 	public void testGetFileExtension() {
-		assertEquals(_fileExtension, _runner.getFileExtension());
+		assertEquals(new String(), _runner.getFileExtension());
 	}
 	
 	/**
@@ -288,9 +288,9 @@ public class TestTestRunner extends TestRunnerHelper {
 	 */
 	@Test
 	public void testSetFileExtension() {
-		_fileExtension = "new_Test";
-		_runner.setFileExtension(_fileExtension);
-		assertEquals(_fileExtension, _runner.getFileExtension());
+		String fileExtension = "new_Test";
+		_runner.setFileExtension(fileExtension);
+		assertEquals(fileExtension, _runner.getFileExtension());
 	}
 	
 	/**

@@ -1,0 +1,72 @@
+<tests>
+	<config>
+		<resultPath>result</resultPath>
+		<srcPath>src</srcPath>
+		<libPath>lib</libPath>
+		<maxDuration>30000</maxDuration>
+		<htmlOut>true</htmlOut>
+		<systemPoperty>
+			<property>testing="true"</property>
+		</systemPoperty>
+	</config>
+	
+	<testGroup>
+		<testRunner>org.testsuite.core.JemmyTestRunner</testRunner>
+		<extension>java</extension>
+		<description>[h2]Test with jemmy[/h2][p]This is are tests with jemmy framework.[/p]</description>
+		<libraries>
+			<library version="2.3.1.1" name="jemmy">jemmy.jar</library>
+		</libraries>
+		<classpath>
+			<path>resource</path>
+		</classpath>
+	</testGroup>
+	
+	<testGroup>
+		<testRunner>org.testsuite.core.JunitTestRunner</testRunner>
+		<extension>java</extension>
+		<description>[h2]Test with junit[/h2][p]This are tests with junit framework.[/p]</description>
+		<libraries>
+			<library version="4.12" name="junit" path="/usr/share/eclipse/plugins/org.junit_4.12.0.v201504281640">junit.jar</library>
+			<library version="1.10.19" name="Mockito">mockito-all-1.10.19.jar</library>
+			<library version="1.6.3" name="Powermock">powermock-mockito-1.6.3-full.jar</library>
+			<library version="2.2.2" name="cglib">cglib-nodep-2.2.2.jar</library>
+			<library version="3.20.0" name="javaassist">javaassist-3.20.0-GA.jar</library>
+			<library version="2.1" name="objenesis">objenesis-2.1.jar</library>
+		</libraries>
+		<classpath>
+			<path>resource</path>
+		</classpath>
+		<testSuite>
+			<name>Test org.testsuite.Core</name>
+			<package>tests.testsuite.core</package>
+			<test>TestTestCore</test>
+			<test>TestTestRunner</test>
+			<test>TestFitTestRunner</test>
+			<test>TestJemmyTestRunner</test>
+			<test>TestJunitFrameRunner</test>
+			<test>TestConfigParser</test>
+		</testSuite>
+		<testSuite>
+			<name>Test org.testsuite.Data</name>
+			<package>tests.testsuite.data</package>
+			<test>TestConfig</test>
+			<test>TestData</test>
+			<test>TestFitData</test>
+			<test>TestJunitData</test>
+			<test>TestLibrary</test>
+			<test>TestTest</test>
+			<test>TestTestSuiteData</test>
+		</testSuite>
+	</testGroup>
+	
+	<testGroup>
+		<testRunner>org.testsuite.core.FitTestRunner</testRunner>
+		<description>[h2]Tests with FIT[/h2][p]This are tests with fit framemwork.[/p]</description>
+		<extension>fit</extension>
+		<libraries>
+			<library version="2.3.1.1" name="jemmy">jemmy.jar</library>
+			<library version="1.1" name="fit">fit.jar</library>
+		</libraries>
+	</testGroup>
+</tests>

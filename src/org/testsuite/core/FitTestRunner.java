@@ -44,8 +44,8 @@ public class FitTestRunner extends TestRunner {
 	 * 
 	 * @param config The configuration
 	 */
-	public FitTestRunner(String extension, Config config) {
-		super(extension, config);
+	public FitTestRunner(Config config) {
+		super(config);
 	}
 
 	/**

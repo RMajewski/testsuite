@@ -299,4 +299,22 @@ public class TestConfig {
 		_config.addProperty(name);
 		assertEquals(name, _config.getProperty(0));
 	}
+	
+	/**
+	 * Tests if the maximum test duration is returned correctly.
+	 */
+	@Test
+	public void testGetMaxDuration() {
+		assertEquals(0, _config.getMaxDuration());
+	}
+	
+	/**
+	 * Tests if the maximum test duration can be set correctly.
+	 */
+	@Test
+	public void testSetMaxDuration() {
+		long duration = 100l;
+		_config.setMaxDuration(duration);
+		assertEquals(duration, _config.getMaxDuration());
+	}
 }

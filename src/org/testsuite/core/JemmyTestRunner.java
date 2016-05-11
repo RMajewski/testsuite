@@ -36,12 +36,10 @@ public class JemmyTestRunner extends TestRunner {
 	/**
 	 * Initialis the data of the class.
 	 * 
-	 * @param extension Extension of the test files.
-	 * 
 	 * @param config The configuration.
 	 */
-	public JemmyTestRunner(String extension, Config config) {
-		super(extension, config);
+	public JemmyTestRunner(Config config) {
+		super(config);
 	}
 
 	/**

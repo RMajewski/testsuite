@@ -56,11 +56,6 @@ public class TestJemmyTestRunner {
 	private JemmyTestRunner _runner;
 	
 	/**
-	 * Save the file extension of test file.
-	 */
-	private String _fileExtension;
-	
-	/**
 	 * Save the mock of configuration
 	 */
 	private Config _config;
@@ -71,9 +66,8 @@ public class TestJemmyTestRunner {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		_fileExtension = "test";
 		_config = mock(Config.class);
-		_runner = new JemmyTestRunner(_fileExtension, _config);
+		_runner = new JemmyTestRunner(_config);
 	}
 
 	/**

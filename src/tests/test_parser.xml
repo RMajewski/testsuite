@@ -1,0 +1,50 @@
+<tests>
+	<config>
+		<resultPath>result</resultPath>
+		<srcPath>src</srcPath>
+		<libPath>lib</libPath>
+		<maxDuration>30000</maxDuration>
+		<htmlOut>true</htmlOut>
+		<systemPoperty>
+			<property>testing="true"</property>
+		</systemPoperty>
+	</config>
+	
+	<testGroup>
+		<testRunner>org.testsuite.core.JemmyTestRunner</testRunner>
+		<extension>java</extension>
+		<description>[h2]Test[/h2][p]This is a test.[/p]</description>
+	</testGroup>
+	
+	<testGroup>
+		<testRunner>org.testsuite.core.JunitTestRunner</testRunner>
+		<extension>java</extension>
+		<description>[h2]Test[/h2][p]This is a test.[/p]</description>
+		<libraries>
+			<library version="0.1" name="name1" path="path">lib1</library>
+			<library version="0.2" name="name2">lib2</library>
+		</libraries>
+		<classpath>
+			<path>resource</path>
+		</classpath>
+		<testSuite>
+			<name>Test 1</name>
+			<package>test1</package>
+			<test>Test1Class</test>
+		</testSuite>
+		<testSuite>
+			<name>Test 2</name>
+			<package>test2</package>
+			<test>Test2Class</test>
+		</testSuite>
+	</testGroup>
+	
+	<testGroup>
+		<testRunner>org.testsuite.core.FitTestRunner</testRunner>
+		<description>[h2]Test[/h2][p]This is a test.[/p]</description>
+		<extension>fit</extension>
+		<classpath>
+			<path>resource</path>
+		</classpath>
+	</testGroup>
+</tests>

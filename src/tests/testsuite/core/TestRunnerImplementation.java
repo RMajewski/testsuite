@@ -30,8 +30,8 @@ import org.testsuite.data.Config;
  * @version 0.1
  */
 class TestRunnerImplementation extends TestRunner {
-	public TestRunnerImplementation(String test, Config config) {
-		super(test, config);
+	public TestRunnerImplementation(Config config) {
+		super(config);
 	}
 
 	@Override
