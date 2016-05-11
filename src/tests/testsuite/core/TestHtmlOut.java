@@ -173,7 +173,7 @@ public class TestHtmlOut {
 	}
 	
 	@Test
-	public void testGenerateTestOutWithMinusOneAsId() throws Exception {
+	public void testGenerateTestOutWithMinusOneAsSuiteId() throws Exception {
 		InputStream console = mock(InputStream.class);
 		InputStream error = mock(InputStream.class);
 
@@ -187,7 +187,30 @@ public class TestHtmlOut {
 			.withArguments(console)
 			.thenReturn(isrError);
 
-		assertEquals(new String(), _html.generateTestOut(-1, console, error));
+		assertEquals(new String(), _html.generateTestOut(-1, 0, console, error));
+		
+		PowerMockito.verifyNew(InputStreamReader.class, never())
+			.withArguments(console);
+		PowerMockito.verifyNew(InputStreamReader.class, never())
+		.withArguments(error);
+	}
+	
+	@Test
+	public void testGenerateTestOutWithMinusOneAsTestId() throws Exception {
+		InputStream console = mock(InputStream.class);
+		InputStream error = mock(InputStream.class);
+
+		InputStreamReader isrConsole = mock(InputStreamReader.class);
+		PowerMockito.whenNew(InputStreamReader.class)
+			.withArguments(console)
+			.thenReturn(isrConsole);
+		
+		InputStreamReader isrError = mock(InputStreamReader.class);
+		PowerMockito.whenNew(InputStreamReader.class)
+			.withArguments(console)
+			.thenReturn(isrError);
+
+		assertEquals(new String(), _html.generateTestOut(0, -1, console, error));
 		
 		PowerMockito.verifyNew(InputStreamReader.class, never())
 			.withArguments(console);
@@ -227,11 +250,11 @@ public class TestHtmlOut {
 		
 		StringBuilder builder = new StringBuilder();
 		builder.append("\t\t\t\t\t\t<div class=\"right\">");
-		builder.append("<a href=\"javascript:togleDisplayId(1)\">Ausgabe</a>");
-		builder.append("</div>");
+		builder.append("<a href=\"javascript:togleDisplayId(1, 1)\">");
+		builder.append("Ausgabe</a></div>");
 		builder.append(System.lineSeparator());
 		builder.append("\t\t\t\t\t\t<div class=\"testoutInvisible\"");
-		builder.append(" id=\"id_1\">");
+		builder.append(" id=\"id_1_1\">");
 		builder.append(System.lineSeparator());
 		builder.append("\t\t\t\t\t\t\t<div class=\"console\">");
 		builder.append("Keine Ausgabe auf der Konsole");
@@ -245,7 +268,7 @@ public class TestHtmlOut {
 		builder.append(System.lineSeparator());
 
 		assertEquals(builder.toString(), 
-				_html.generateTestOut(1, null, error));
+				_html.generateTestOut(1, 1, null, error));
 		
 		PowerMockito.verifyNew(InputStreamReader.class, never())
 			.withArguments(console);
@@ -296,11 +319,11 @@ public class TestHtmlOut {
 		
 		StringBuilder builder = new StringBuilder();
 		builder.append("\t\t\t\t\t\t<div class=\"right\">");
-		builder.append("<a href=\"javascript:togleDisplayId(1)\">Ausgabe</a>");
-		builder.append("</div>");
+		builder.append("<a href=\"javascript:togleDisplayId(1, 1)\">");
+		builder.append("Ausgabe</a></div>");
 		builder.append(System.lineSeparator());
 		builder.append("\t\t\t\t\t\t<div class=\"testoutInvisible\"");
-		builder.append(" id=\"id_1\">");
+		builder.append(" id=\"id_1_1\">");
 		builder.append(System.lineSeparator());
 		builder.append("\t\t\t\t\t\t\t<div class=\"console\">");
 		builder.append(consoleMessage);
@@ -314,7 +337,7 @@ public class TestHtmlOut {
 		builder.append(System.lineSeparator());
 
 		assertEquals(builder.toString(), 
-				_html.generateTestOut(1, console, null));
+				_html.generateTestOut(1, 1, console, null));
 		
 		PowerMockito.verifyNew(InputStreamReader.class)
 			.withArguments(console);
@@ -365,11 +388,11 @@ public class TestHtmlOut {
 		
 		StringBuilder builder = new StringBuilder();
 		builder.append("\t\t\t\t\t\t<div class=\"right\">");
-		builder.append("<a href=\"javascript:togleDisplayId(1)\">Ausgabe</a>");
-		builder.append("</div>");
+		builder.append("<a href=\"javascript:togleDisplayId(1, 1)\">");
+		builder.append("Ausgabe</a></div>");
 		builder.append(System.lineSeparator());
 		builder.append("\t\t\t\t\t\t<div class=\"testoutInvisible\"");
-		builder.append(" id=\"id_1\">");
+		builder.append(" id=\"id_1_1\">");
 		builder.append(System.lineSeparator());
 		builder.append("\t\t\t\t\t\t\t<div class=\"console\">");
 		builder.append(consoleMessage);
@@ -383,7 +406,7 @@ public class TestHtmlOut {
 		builder.append(System.lineSeparator());
 
 		assertEquals(builder.toString(), 
-				_html.generateTestOut(1, console, error));
+				_html.generateTestOut(1, 1, console, error));
 		
 		PowerMockito.verifyNew(InputStreamReader.class)
 			.withArguments(console);

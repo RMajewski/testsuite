@@ -205,7 +205,30 @@ public class TestTestCore {
 	 */
 	@Test
 	public void testCreateResultHtml() throws Exception{
-		fail("Test not yet implemented.");
+		HtmlOut html = mock(HtmlOut.class);
+		
+		PowerMockito.whenNew(HtmlOut.class)
+			.withAnyArguments().thenReturn(html);
+		
+		Field field = TestCore.class.getDeclaredField("_testRunner");
+		field.setAccessible(true);
+		@SuppressWarnings("unchecked")
+		List<TestRunner> list = (List<TestRunner>)field.get(_core);
+		
+		TestRunner runner = mock(TestRunner.class);
+		list.add(runner);
+		
+		runner = mock(TestRunner.class);
+		list.add(runner);
+		
+		_core.createResultHtml();
+		
+		PowerMockito.verifyNew(HtmlOut.class)
+			.withArguments(Matchers.anyString());
+		
+		verify(html).htmlHead();
+		verify(html, times(2)).writeHtml(Matchers.anyString());
+		verify(html).htmlEnd();
 	}
 
 }

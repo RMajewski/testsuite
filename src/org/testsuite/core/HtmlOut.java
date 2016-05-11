@@ -181,19 +181,23 @@ public class HtmlOut {
 		_bw.write(html);
 	}
 	
-	public String generateTestOut(int id, InputStream console,
+	public String generateTestOut(int suiteId, int testId, InputStream console,
 			InputStream error) throws IOException {
-		if (id < 0)
+		if ((suiteId < 0) || (testId <0))
 			return new String();
 		
 		StringBuilder ret = new StringBuilder("\t\t\t\t\t\t<div ");
 		ret.append("class=\"right\"><a href=\"javascript:togleDisplayId(");
-		ret.append(id);
+		ret.append(suiteId);
+		ret.append(", ");
+		ret.append(testId);
 		ret.append(")\">Ausgabe</a></div>");
 		ret.append(System.lineSeparator());
 		
 		ret.append("\t\t\t\t\t\t<div class=\"testoutInvisible\" id=\"id_");
-		ret.append(id);
+		ret.append(suiteId);
+		ret.append("_");
+		ret.append(testId);
 		ret.append("\">");
 		ret.append(System.lineSeparator());
 		

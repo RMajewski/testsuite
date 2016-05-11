@@ -132,6 +132,8 @@ public class TestCore {
 			HtmlOut html = new HtmlOut(htmlFile);
 			html.htmlHead();
 			
+			for (int runner = 0; runner < _testRunner.size(); runner++)
+				html.writeHtml(_testRunner.get(runner).createHtml());
 			
 			html.htmlEnd();
 		} catch (IOException e) {
