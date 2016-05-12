@@ -22,14 +22,8 @@ package tests.testsuite.core;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.lang.reflect.Field;
 import java.util.List;
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamReader;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -45,8 +39,6 @@ import org.testsuite.core.JunitTestRunner;
 import org.testsuite.core.TestCore;
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
-
-import junit.framework.TestSuite;
 
 /**
  * Tests the class {@link org.testsuite.core.TestCore}
@@ -210,6 +202,8 @@ public class TestTestCore {
 		PowerMockito.whenNew(HtmlOut.class)
 			.withAnyArguments().thenReturn(html);
 		
+		when(_config.isCreateHtml()).thenReturn(true);
+		
 		Field field = TestCore.class.getDeclaredField("_testRunner");
 		field.setAccessible(true);
 		@SuppressWarnings("unchecked")
@@ -231,4 +225,37 @@ public class TestTestCore {
 		verify(html).htmlEnd();
 	}
 
+	/**
+	 * Tests whether the HTML output is not generated when the configuration
+	 * that is not specified.
+	 */
+	@Test
+	public void testCreateResultHtmlWithNoCreateAtConfig() throws Exception {
+		HtmlOut html = mock(HtmlOut.class);
+		
+		PowerMockito.whenNew(HtmlOut.class)
+			.withAnyArguments().thenReturn(html);
+		
+		when(_config.isCreateHtml()).thenReturn(false);
+		
+		Field field = TestCore.class.getDeclaredField("_testRunner");
+		field.setAccessible(true);
+		@SuppressWarnings("unchecked")
+		List<TestRunner> list = (List<TestRunner>)field.get(_core);
+		
+		TestRunner runner = mock(TestRunner.class);
+		list.add(runner);
+		
+		runner = mock(TestRunner.class);
+		list.add(runner);
+		
+		_core.createResultHtml();
+		
+		PowerMockito.verifyNew(HtmlOut.class, never())
+			.withArguments(Matchers.anyString());
+		
+		verify(html, never()).htmlHead();
+		verify(html, never()).writeHtml(Matchers.anyString());
+		verify(html, never()).htmlEnd();
+	}
 }

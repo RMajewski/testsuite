@@ -40,12 +40,14 @@
 		<testSuite>
 			<name>Test org.testsuite.Core</name>
 			<package>tests.testsuite.core</package>
-			<test>TestTestCore</test>
+			<test>TestConfigParser</test>
 			<test>TestTestRunner</test>
 			<test>TestFitTestRunner</test>
 			<test>TestJemmyTestRunner</test>
 			<test>TestJunitFrameRunner</test>
-			<test>TestConfigParser</test>
+			<test>TestHtmlOut</test>
+			<test>TestTestCore</test>
+			<test>TestTestsRun</test>
 		</testSuite>
 		<testSuite>
 			<name>Test org.testsuite.Data</name>
@@ -57,6 +59,11 @@
 			<test>TestLibrary</test>
 			<test>TestTest</test>
 			<test>TestTestSuiteData</test>
+		</testSuite>
+		<testSuite>
+			<name>Test org.testsuite.helper</name>
+			<package>tests.testsuite.helper</package>
+			<test>TestHelperCalendar</test>
 		</testSuite>
 	</testGroup>
 	

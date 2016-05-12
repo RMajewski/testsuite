@@ -123,21 +123,27 @@ public class TestCore {
 	 * Creates the HTML file containing the results
 	 */
 	public void createResultHtml()  {
-		GregorianCalendar gc = new GregorianCalendar();
-		gc.setTime(new Date());
-		
-		String htmlFile = _config.getPathResult() + File.separator + 
-				"Ergebnisse_" + _config.getPathSuitesResult() + ".html";
-		try {
-			HtmlOut html = new HtmlOut(htmlFile);
-			html.htmlHead();
+		if (_config.isCreateHtml()) {
+			String htmlFile = _config.getPathResult() + File.separator;
 			
-			for (int runner = 0; runner < _testRunner.size(); runner++)
-				html.writeHtml(_testRunner.get(runner).createHtml(html));
+			// FIXME In Tests einbinden
+			File file = new File(htmlFile);
+			if (!file.exists())
+				file.mkdirs();
 			
-			html.htmlEnd();
-		} catch (IOException e) {
-			e.printStackTrace();
+			htmlFile += "Ergebnisse_" + _config.getPathSuitesResult() + ".html";
+			try {
+				
+				HtmlOut html = new HtmlOut(htmlFile);
+				html.htmlHead();
+				
+				for (int runner = 0; runner < _testRunner.size(); runner++)
+					html.writeHtml(_testRunner.get(runner).createHtml(html));
+				
+				html.htmlEnd();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

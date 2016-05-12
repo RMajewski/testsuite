@@ -423,6 +423,7 @@ public abstract class TestRunner {
 		return ret.toString();
 	}
 	
+	//FIXME Alle Einträge hier zusammenstellen (auch Bibliotheken, etc.)
 	protected String createClasspath() {
 		StringBuilder ret = new StringBuilder();
 		
