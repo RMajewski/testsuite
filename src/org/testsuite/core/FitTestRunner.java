@@ -167,6 +167,11 @@ public class FitTestRunner extends TestRunner {
 				"." + extension;
 	}
 
+	/**
+	 * Creates the column headers.
+	 * 
+	 * @param suite The index for des test suite.
+	 */
 	@Override
 	protected String createHtmlTableHead(int suite) {
 		StringBuilder ret = new StringBuilder("\t\t\t\t\t\t<th>");
@@ -203,9 +208,27 @@ public class FitTestRunner extends TestRunner {
 		return ret.toString();
 	}
 
+	/**
+	 * 
+	 * 
+	 * @param suite The index for the test suite.
+	 * 
+	 * @param test The index for the test.
+	 * 
+	 * @param html The instance of HtmlOut.
+	 */
 	@Override
 	protected String createHtmlColumn(int suite, int test, HtmlOut html)
 			throws IOException {
+		if (suite < 0)
+			throw new IllegalArgumentException();
+		
+		if (test < 0)
+			throw new IllegalArgumentException();
+		
+		if (html == null)
+			throw new IllegalArgumentException();
+		
 		StringBuilder ret = new StringBuilder("\t\t\t\t\t\t<td>");
 		
 		if (_suites.get(suite).getTest(test).isExists()) {

@@ -27,7 +27,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.junit.Before;
@@ -84,6 +83,9 @@ public class TestFitTestRunner {
 				FitTestRunner.class.getSuperclass().getName());
 	}
 	
+	/**
+	 * Tests if the will be canceled if the test file does not exist.
+	 */
 	@Test
 	public void testRunWithNonExistingTestFile() {
 		String suiteName = "suite";
@@ -122,6 +124,10 @@ public class TestFitTestRunner {
 		verify(suite).isExists();
 	}
 	
+	/**
+	 * Tests if the will be canceled when the directory of the test file does
+	 * not exist.
+	 */
 	@Test
 	public void testRunWithNonExistingPath() {
 		String suiteName = "suite";
@@ -160,6 +166,9 @@ public class TestFitTestRunner {
 		verify(suite).isExists();
 	}
 
+	/**
+	 * Tests if the test is performed correctly.
+	 */
 	@Test
 	public void testRun() throws Exception {
 		String suiteName = "suite";
@@ -251,6 +260,9 @@ public class TestFitTestRunner {
 		verify(suite).isExists();
 	}
 	
+	/**
+	 * Tests if the column headings are properly generated for the HTML output.
+	 */
 	@Test
 	public void testCreateHtmlTableHead() throws Exception {
 		String suiteName = "TestSuite";
@@ -283,6 +295,9 @@ public class TestFitTestRunner {
 		verify(suite).getPackage();
 	}
 	
+	/**
+	 * Tests if the line of HTML is generated correctly for a test.
+	 */
 	@Test
 	public void testCreateHtmlColumn() throws Exception {
 		String testName = "Test1";
@@ -361,6 +376,10 @@ public class TestFitTestRunner {
 		verify(suite, times(11)).getTest(0);
 	}
 	
+	/**
+	 * Testing whether the line of HTML is generated correctly for a test when
+	 * the test file does not exist.
+	 */
 	@Test
 	public void testCreateHtmlColumnWithNoneExistingTest() throws Exception {
 		String testName = "Test1";
@@ -415,5 +434,46 @@ public class TestFitTestRunner {
 		order.verify(test, never()).getDurationTime();
 		
 		verify(suite, times(2)).getTest(0);
+	}
+	
+	/**
+	 * Tests whether the error IllegalArgumentException will be canceled if no
+	 * valid test suite id is passed.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testCreateHtmlColumnWithNoSuiteId() throws Exception {
+		HtmlOut html = mock(HtmlOut.class);
+		Method method = 
+				FitTestRunner.class.getDeclaredMethod("createHtmlColumn", 
+						int.class, int.class, HtmlOut.class);
+		method.setAccessible(true);
+		method.invoke(_runner, -1, 0, html);
+	}
+	
+	/**
+	 * Tests whether the error IllegalArgumentException will be canceled if no
+	 * valid test ID is passed. 
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testCreateHtmlColumnWithNoTestId() throws Exception {
+		HtmlOut html = mock(HtmlOut.class);
+		Method method = 
+				FitTestRunner.class.getDeclaredMethod("createHtmlColumn", 
+						int.class, int.class, HtmlOut.class);
+		method.setAccessible(true);
+		method.invoke(_runner, 0, -1, html);
+	}
+	
+	/**
+	 * Tests whether the error IllegalArgumentException will be canceled if no
+	 * instance is passed by HtmlOut.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testCreateHtmlColumnWithNullAsHtmlOut() throws Exception {
+		Method method = 
+				FitTestRunner.class.getDeclaredMethod("createHtmlColumn", 
+						int.class, int.class, HtmlOut.class);
+		method.setAccessible(true);
+		method.invoke(_runner, 0, 0, null);
 	}
 }

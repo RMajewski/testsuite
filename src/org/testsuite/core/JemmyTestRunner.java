@@ -19,10 +19,12 @@
 
 package org.testsuite.core;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
 import org.testsuite.data.Config;
+import org.testsuite.data.Fit;
 
 /**
  * Executes the jemmy tests.
@@ -102,60 +104,94 @@ public class JemmyTestRunner extends TestRunner {
 		}
 	}
 
-	/**
-	 * Generate the HTML code from the test results.
-	 * 
-	 * @param html Class, which helps to generate the HTML code.
-	 * 
-	 * @throws IOException
-	 * 
-	 * @deprecated
-	 */
-	public void createHtml(HtmlOut html) throws IOException {
-		for (int suite = 0; suite < _suites.size(); suite++) {
-			int right = 0;
-			int exception = 0;
-			long time = 0;
-			
-			for (int test = 0; test < _suites.get(suite).testCount(); test++) {
-				int rightTest = 0;
-				int exceptionTest = 0;
-				long timeTest = _suites.get(suite).getTest(test).getDurationTime();
-				
-				// Überprüfen, ob der Test positiv abgelaufen ist.
-				if (_suites.get(suite).getTest(test).getExitStatus() == 0)
-					rightTest++;
-				else 
-					exceptionTest++;
-				
-				// Ausgabe des Tests
-				html.test( _suites.get(suite).getTest(test).getName(),
-						rightTest, exceptionTest, time,
-						_suites.get(suite).getTest(test).getIn(),
-						_suites.get(suite).getTest(test).getError());
-				
-				// Fehler bzw. Richtig für Test-Suite erhöhen
-				right += rightTest;
-				exception += exceptionTest;
-				time += timeTest;
-			} // for über alle Tests
-			
-			// Ausgabe für die Test-Suite
-			html.suiteHtml(_suites.get(suite).getName(),
-					_suites.get(suite).getPackage(), right, exception, time);
-		} // for über alle Test-Suits
-	}
-
 	@Override
 	protected String createHtmlTableHead(int suite) {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder ret = new StringBuilder("\t\t\t\t\t\t<th>");
+		ret.append(_suites.get(suite).getName());
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append("\t\t\t\t\t\t<th>");
+		ret.append("Erfolgreich?");
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append("\t\t\t\t\t\t<th>");
+		ret.append("Zeit");
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append("\t\t\t\t\t</tr>");
+		ret.append(System.lineSeparator());
+		ret.append("\t\t\t\t\t<tr>");
+		ret.append(System.lineSeparator());
+		
+		ret.append("\t\t\t\t\t\t<th colspan=\"3\">");
+		ret.append(_suites.get(suite).getPackage());
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		return ret.toString();
 	}
 
 	@Override
-	protected String createHtmlColumn(int suite, int test) {
-		// TODO Auto-generated method stub
-		return null;
+	protected String createHtmlColumn(int suite, int test, HtmlOut html) 
+			throws IOException{
+		if (suite < 0)
+			throw new IllegalArgumentException();
+		
+		if (test < 0)
+			throw new IllegalArgumentException();
+		
+		if (html == null)
+			throw new IllegalArgumentException();
+		
+		StringBuilder ret = new StringBuilder("\t\t\t\t\t\t<td>");
+		
+		if (_suites.get(suite).getTest(test).isExists()) {
+			ret.append(_suites.get(suite).getTest(test).getName());
+			ret.append(System.lineSeparator());
+			ret.append(html.generateTestOut(
+					_suites.get(suite).getId(),
+					_suites.get(suite).getTest(test).getId(), 
+					_suites.get(suite).getTest(test).getIn(), 
+					_suites.get(suite).getTest(test).getError()));
+			ret.append("\t\t\t\t\t\t</td>");
+			ret.append(System.lineSeparator());
+			
+			ret.append("\t\t\t\t\t\t<td>");
+			
+			if (_suites.get(suite).getTest(test).getExitStatus() == 0)
+				ret.append("Ja");
+			else
+				ret.append("Nein");
+			
+			ret.append("</td>");
+			ret.append(System.lineSeparator());
+			
+			ret.append("\t\t\t\t\t\t<td>");
+			ret.append(String.valueOf(
+					_suites.get(suite).getTest(test).getDurationTime()));
+		} else {
+			ret.append(_config.getPathSrc());
+			ret.append(File.separator);
+			ret.append(_suites.get(suite).getPackage().replaceAll("\\.", 
+					File.separator));
+			ret.append(File.separator);
+			ret.append(_suites.get(suite).getTest(test).getName());
+			ret.append(".");
+			ret.append(_fileExtension);
+			ret.append("</td>");
+			ret.append(System.lineSeparator());
+			
+			ret.append("\t\t\t\t\t\t<td colspan=\"2\">");
+			ret.append("Test existiert nicht");
+		}
+		
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		return ret.toString();
 	}
 
 }

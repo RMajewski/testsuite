@@ -23,6 +23,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -33,6 +34,7 @@ import org.mockito.Matchers;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.testsuite.core.HtmlOut;
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
 import org.testsuite.data.Library;
@@ -480,9 +482,10 @@ public class TestTestRunner extends TestRunnerHelper {
 	
 	/**
 	 * Tests if the HTML code is generated correctly.
+	 * @throws IOException 
 	 */
 	@Test
-	public void testCreateHtml() {
+	public void testCreateHtml() throws IOException {
 		org.testsuite.data.Test test1 = mock(org.testsuite.data.Test.class);
 		
 		org.testsuite.data.Test test2 = mock(org.testsuite.data.Test.class);
@@ -502,6 +505,8 @@ public class TestTestRunner extends TestRunnerHelper {
 		when(suite2.getTest(0)).thenReturn(test3);
 		when(suite2.getTest(1)).thenReturn(test4);
 		_runner.addTestSuite(suite2);
+		
+		HtmlOut html = mock(HtmlOut.class);
 
 		String ret = "\t\t<div class=\"testgroup\">" + System.lineSeparator() +
 				"\t\t\t<div class=\"testsuite\">" + System.lineSeparator() +
@@ -525,7 +530,7 @@ public class TestTestRunner extends TestRunnerHelper {
 				"\t\t\t\t</table>" + System.lineSeparator() +
 				"\t\t\t</div>" + System.lineSeparator() +
 				"\t\t</div>" + System.lineSeparator();
-		assertEquals(ret, _runner.createHtml());
+		assertEquals(ret, _runner.createHtml(html));
 	}
 
 	/**

@@ -23,20 +23,24 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.reflect.Method;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.mockito.Matchers;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.testsuite.core.HtmlOut;
 import org.testsuite.core.JunitTestRunner;
 import org.testsuite.data.Config;
-import org.testsuite.data.Fit;
+import org.testsuite.data.Junit;
 import org.testsuite.data.TestSuite;
 
 /**
@@ -71,7 +75,7 @@ public class TestJunitTestRunner {
 	}
 
 	/**
-	 * Tests if FitTestRunner has been derived from the TestRunner class.
+	 * Tests if JunitTestRunner has been derived from the TestRunner class.
 	 */
 	@Test
 	public void testDerivedFromTestRunner() {
@@ -86,24 +90,24 @@ public class TestJunitTestRunner {
 		String testName = "test";
 		
 
-		Fit fit = mock(Fit.class);
-		when(fit.isExists()).thenReturn(false);
-		when(fit.getName()).thenReturn(testName);
+		Junit junit = mock(Junit.class);
+		when(junit.isExists()).thenReturn(false);
+		when(junit.getName()).thenReturn(testName);
 		
 		TestSuite suite = mock(TestSuite.class);
 		when(suite.getName()).thenReturn(suiteName);
 		when(suite.testCount()).thenReturn(1);
-		when(suite.getTest(0)).thenReturn(fit);
+		when(suite.getTest(0)).thenReturn(junit);
 		when(suite.getPackage()).thenReturn(packageName);
 		when(suite.isExists()).thenReturn(true);
 		_runner.addTestSuite(suite);
 		
 		_runner.run();
 		
-		verify(fit).isExists();
-		verify(fit).setExitStatus(100);
-		verify(fit, never()).setExists(Matchers.anyBoolean());
-		verify(fit).getName();
+		verify(junit).isExists();
+		verify(junit).setExitStatus(100);
+		verify(junit, never()).setExists(Matchers.anyBoolean());
+		verify(junit).getName();
 		
 		verify(suite).getName();
 		verify(suite, atLeastOnce()).testCount();
@@ -121,14 +125,14 @@ public class TestJunitTestRunner {
 		
 		when(_config.getPathSrc()).thenReturn(pathSrc);
 
-		Fit fit = mock(Fit.class);
-		when(fit.isExists()).thenReturn(true);
-		when(fit.getName()).thenReturn(testName);
+		Junit junit = mock(Junit.class);
+		when(junit.isExists()).thenReturn(true);
+		when(junit.getName()).thenReturn(testName);
 		
 		TestSuite suite = mock(TestSuite.class);
 		when(suite.getName()).thenReturn(suiteName);
 		when(suite.testCount()).thenReturn(1);
-		when(suite.getTest(0)).thenReturn(fit);
+		when(suite.getTest(0)).thenReturn(junit);
 		when(suite.getPackage()).thenReturn(packageName);
 		when(suite.isExists()).thenReturn(false);
 		_runner.addTestSuite(suite);
@@ -138,10 +142,10 @@ public class TestJunitTestRunner {
 		verify(_config, never()).getPathSrc();
 		verify(_config, never()).getPathResult();
 		
-		verify(fit, never()).isExists();
-		verify(fit).setExitStatus(100);
-		verify(fit, never()).setExists(Matchers.anyBoolean());
-		verify(fit).getName();
+		verify(junit, never()).isExists();
+		verify(junit).setExitStatus(100);
+		verify(junit, never()).setExists(Matchers.anyBoolean());
+		verify(junit).getName();
 		
 		verify(suite).getName();
 		verify(suite, atLeastOnce()).testCount();
@@ -160,14 +164,14 @@ public class TestJunitTestRunner {
 		InputStream is = mock(InputStream.class);
 		when(is.available()).thenReturn(inputAvailable);
 
-		Fit fit = mock(Fit.class);
-		when(fit.isExists()).thenReturn(true);
-		when(fit.getName()).thenReturn(testName);
+		Junit junit = mock(Junit.class);
+		when(junit.isExists()).thenReturn(true);
+		when(junit.getName()).thenReturn(testName);
 		
 		TestSuite suite = mock(TestSuite.class);
 		when(suite.getName()).thenReturn(suiteName);
 		when(suite.testCount()).thenReturn(1);
-		when(suite.getTest(0)).thenReturn(fit);
+		when(suite.getTest(0)).thenReturn(junit);
 		when(suite.getPackage()).thenReturn(packageName);
 		when(suite.isExists()).thenReturn(true);
 		_runner.addTestSuite(suite);
@@ -206,15 +210,15 @@ public class TestJunitTestRunner {
 		verify(process, times(2)).getInputStream();
 		verify(process).getErrorStream();
 		
-		verify(fit).isExists();
-		verify(fit).setExitStatus(0);
-		verify(fit, never()).setExists(Matchers.anyBoolean());
-		verify(fit, atLeastOnce()).getName();
-		verify(fit).setStart(Matchers.anyLong());
-		verify(fit).setEnd(Matchers.anyLong());
-		verify(fit).getDurationTime();
-		verify(fit).setIn(Matchers.any(InputStream.class));
-		verify(fit).setOk(2);
+		verify(junit).isExists();
+		verify(junit).setExitStatus(0);
+		verify(junit, never()).setExists(Matchers.anyBoolean());
+		verify(junit, atLeastOnce()).getName();
+		verify(junit).setStart(Matchers.anyLong());
+		verify(junit).setEnd(Matchers.anyLong());
+		verify(junit).getDurationTime();
+		verify(junit).setIn(Matchers.any(InputStream.class));
+		verify(junit).setOk(2);
 		
 		verify(suite).getName();
 		verify(suite, atLeastOnce()).testCount();
@@ -233,14 +237,14 @@ public class TestJunitTestRunner {
 		InputStream is = mock(InputStream.class);
 		when(is.available()).thenReturn(inputAvailable);
 
-		Fit fit = mock(Fit.class);
-		when(fit.isExists()).thenReturn(true);
-		when(fit.getName()).thenReturn(testName);
+		Junit junit = mock(Junit.class);
+		when(junit.isExists()).thenReturn(true);
+		when(junit.getName()).thenReturn(testName);
 		
 		TestSuite suite = mock(TestSuite.class);
 		when(suite.getName()).thenReturn(suiteName);
 		when(suite.testCount()).thenReturn(1);
-		when(suite.getTest(0)).thenReturn(fit);
+		when(suite.getTest(0)).thenReturn(junit);
 		when(suite.getPackage()).thenReturn(packageName);
 		when(suite.isExists()).thenReturn(true);
 		_runner.addTestSuite(suite);
@@ -283,16 +287,16 @@ public class TestJunitTestRunner {
 		verify(process, times(2)).getInputStream();
 		verify(process).getErrorStream();
 		
-		verify(fit).isExists();
-		verify(fit).setExitStatus(0);
-		verify(fit, never()).setExists(Matchers.anyBoolean());
-		verify(fit, atLeastOnce()).getName();
-		verify(fit).setStart(Matchers.anyLong());
-		verify(fit).setEnd(Matchers.anyLong());
-		verify(fit).getDurationTime();
-		verify(fit).setIn(Matchers.any(InputStream.class));
-		verify(fit).setOk(1);
-		verify(fit).setFail(2);
+		verify(junit).isExists();
+		verify(junit).setExitStatus(0);
+		verify(junit, never()).setExists(Matchers.anyBoolean());
+		verify(junit, atLeastOnce()).getName();
+		verify(junit).setStart(Matchers.anyLong());
+		verify(junit).setEnd(Matchers.anyLong());
+		verify(junit).getDurationTime();
+		verify(junit).setIn(Matchers.any(InputStream.class));
+		verify(junit).setOk(1);
+		verify(junit).setFail(2);
 		
 		verify(suite).getName();
 		verify(suite, atLeastOnce()).testCount();
@@ -301,13 +305,210 @@ public class TestJunitTestRunner {
 		verify(suite).isExists();
 	}
 	
+	/**
+	 * Tests if the column headings are properly generated for the HTML output.
+	 */
 	@Test
-	public void testCreateHtmlTableHead() {
-		fail("Test not yet implemented.");
+	public void testCreateHtmlTableHead() throws Exception {
+		String suiteName = "TestSuite";
+		String packageName = "package";
+		
+		String ret = "\t\t\t\t\t\t<th>" + suiteName + "</th>" + 
+				System.lineSeparator() + "\t\t\t\t\t\t<th>Erfolgreich</th>" +
+				System.lineSeparator() + "\t\t\t\t\t\t<th>Fehlerhaft</th>" +
+				System.lineSeparator() + "\t\t\t\t\t\t<th>Zeit</th>" +
+				System.lineSeparator() + "\t\t\t\t\t</tr>" + 
+				System.lineSeparator() + "\t\t\t\t\t<tr>" + 
+				System.lineSeparator() + "\t\t\t\t\t\t<th colspan=\"4\">" +
+				packageName + "</th>" + System.lineSeparator();
+		
+		Method method = 
+				JunitTestRunner.class.getDeclaredMethod("createHtmlTableHead",
+						int.class);
+		method.setAccessible(true);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getName()).thenReturn(suiteName);
+		when(suite.getPackage()).thenReturn(packageName);
+		_runner.addTestSuite(suite);
+		
+		assertEquals(ret, method.invoke(_runner, 0));
+		
+		verify(suite).getName();
+		verify(suite).getPackage();
 	}
 	
+	/**
+	 * Tests if the line of HTML is generated correctly for a test.
+	 */
 	@Test
-	public void testCreateHtmlColumn() {
-		fail("Test not yet implemented.");
+	public void testCreateHtmlColumn() throws Exception{
+		String testName = "Test1";
+		String testOut = "\t\t\t\t\t\t<div class=\"right\"><a " +
+				"href=\"javascript:togleDisplayId(0, 0)\"> Ausgabe</a></div>" +
+				System.lineSeparator() + "\t\t\t\t\t\t<div " +
+				"class=\"testoutInvisible\" id=\"id_0_0\">" + 
+				System.lineSeparator() + "\t\t\t\t\t\t\t<div " +
+				"class=\"console\">Console</div>" + System.lineSeparator() +
+				"\t\t\t\t\t\t\t<div class=\"error\">Fehler</div>" +
+				System.lineSeparator() + "\t\t\t\t\t\t</div>" + 
+				System.lineSeparator();
+		String resultSuite = "1";
+		int ok = 1;
+		int fail = 2;
+		long duration = 1000;
+		int suiteId = 0;
+		int testId = 0;
+		
+		String ret = "\t\t\t\t\t\t<td>" + testName + System.lineSeparator() +
+				testOut + "\t\t\t\t\t\t</td>" + System.lineSeparator() + 
+				"\t\t\t\t\t\t<td>" + ok + "</td>" + System.lineSeparator() + 
+				"\t\t\t\t\t\t<td>" + fail + "</td>" + System.lineSeparator() +
+				"\t\t\t\t\t\t<td>" + duration + "</td>" + System.lineSeparator();
+		
+		when(_config.getPathSuitesResult()).thenReturn(resultSuite);
+		
+		InputStream console = mock(InputStream.class);
+		InputStream error = mock(InputStream.class);
+		
+		HtmlOut html = mock(HtmlOut.class);
+		when(html.generateTestOut(suiteId, testId, console, error))
+			.thenReturn(testOut);
+		
+		Method method = 
+				JunitTestRunner.class.getDeclaredMethod("createHtmlColumn", 
+						int.class, int.class, HtmlOut.class);
+		method.setAccessible(true);
+		
+		Junit test = mock(Junit.class);
+		when(test.isExists()).thenReturn(true);
+		when(test.getId()).thenReturn(testId);
+		when(test.getName()).thenReturn(testName);
+		when(test.getError()).thenReturn(error);
+		when(test.getIn()).thenReturn(console);
+		when(test.getOk()).thenReturn(ok);
+		when(test.getFail()).thenReturn(fail);
+		when(test.getDurationTime()).thenReturn(duration);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getTest(0)).thenReturn(test);
+		when(suite.getId()).thenReturn(suiteId);
+		_runner.addTestSuite(suite);
+		
+		assertEquals(ret, method.invoke(_runner, 0, 0, html));
+		
+		InOrder order = inOrder(test, suite);
+		order.verify(test).isExists();
+		order.verify(test).getName();
+		order.verify(suite).getId();
+		order.verify(test).getId();
+		order.verify(test).getIn();
+		order.verify(test).getError();
+		order.verify(test).getDurationTime();
+		
+		verify(suite, times(8)).getTest(0);
+	}
+	
+	/**
+	 * Testing whether the line of HTML is generated correctly for a test when
+	 * the test file does not exist.
+	 */
+	@Test
+	public void testCreateHtmlColumnWithNoneExistingTest() throws Exception {
+		String testName = "Test1";
+		String packageName = "tests.test";
+		String srcName = "src";
+		String extension = "java";
+		int ok = 1;
+		int fail = 2;
+		long duration = 1000;
+		
+		String ret = "\t\t\t\t\t\t<td>" + srcName + File.separator + 
+				packageName.replaceAll("\\.", File.separator) + File.separator +
+				testName + "." + extension + "</td>" + System.lineSeparator() + 
+				"\t\t\t\t\t\t<td colspan=\"3\">Test existiert nicht</td>" + 
+				System.lineSeparator();
+
+		_runner.setFileExtension(extension);
+		
+		when(_config.getPathSrc()).thenReturn(srcName);
+		
+		InputStream console = mock(InputStream.class);
+		InputStream error = mock(InputStream.class);
+		
+		HtmlOut html = mock(HtmlOut.class);
+		
+		Method method = 
+				JunitTestRunner.class.getDeclaredMethod("createHtmlColumn", 
+						int.class, int.class, HtmlOut.class);
+		method.setAccessible(true);
+		
+		Junit test = mock(Junit.class);
+		when(test.isExists()).thenReturn(false);
+		when(test.getName()).thenReturn(testName);
+		when(test.getError()).thenReturn(error);
+		when(test.getIn()).thenReturn(console);
+		when(test.getOk()).thenReturn(ok);
+		when(test.getFail()).thenReturn(fail);
+		when(test.getDurationTime()).thenReturn(duration);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getTest(0)).thenReturn(test);
+		when(suite.getPackage()).thenReturn(packageName);
+		_runner.addTestSuite(suite);
+		
+		assertEquals(ret, method.invoke(_runner, 0, 0, html));
+		
+		InOrder order = inOrder(test, suite);
+		order.verify(test).isExists();
+		order.verify(test).getName();
+		order.verify(suite, never()).getId();
+		order.verify(test, never()).getId();
+		order.verify(test, never()).getIn();
+		order.verify(test, never()).getError();
+		order.verify(test, never()).getDurationTime();
+		
+		verify(suite, times(2)).getTest(0);
+	}
+	
+	/**
+	 * Tests whether the error IllegalArgumentException will be canceled if no
+	 * valid test suite id is passed.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testCreateHtmlColumnWithNoSuiteId() throws Exception {
+		HtmlOut html = mock(HtmlOut.class);
+		Method method = 
+				JunitTestRunner.class.getDeclaredMethod("createHtmlColumn", 
+						int.class, int.class, HtmlOut.class);
+		method.setAccessible(true);
+		method.invoke(_runner, -1, 0, html);
+	}
+	
+	/**
+	 * Tests whether the error IllegalArgumentException will be canceled if no
+	 * valid test ID is passed. 
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testCreateHtmlColumnWithNoTestId() throws Exception {
+		HtmlOut html = mock(HtmlOut.class);
+		Method method = 
+				JunitTestRunner.class.getDeclaredMethod("createHtmlColumn", 
+						int.class, int.class, HtmlOut.class);
+		method.setAccessible(true);
+		method.invoke(_runner, 0, -1, html);
+	}
+	
+	/**
+	 * Tests whether the error IllegalArgumentException will be canceled if no
+	 * instance is passed by HtmlOut.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testCreateHtmlColumnWithNullAsHtmlOut() throws Exception {
+		Method method = 
+				JunitTestRunner.class.getDeclaredMethod("createHtmlColumn", 
+						int.class, int.class, HtmlOut.class);
+		method.setAccessible(true);
+		method.invoke(_runner, 0, 0, null);
 	}
 }

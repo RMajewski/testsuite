@@ -133,7 +133,7 @@ public class TestCore {
 			html.htmlHead();
 			
 			for (int runner = 0; runner < _testRunner.size(); runner++)
-				html.writeHtml(_testRunner.get(runner).createHtml());
+				html.writeHtml(_testRunner.get(runner).createHtml(html));
 			
 			html.htmlEnd();
 		} catch (IOException e) {
