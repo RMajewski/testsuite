@@ -174,83 +174,28 @@ public class TestHtmlOut {
 	
 	@Test
 	public void testGenerateTestOutWithMinusOneAsSuiteId() throws Exception {
-		InputStream console = mock(InputStream.class);
-		InputStream error = mock(InputStream.class);
-
-		InputStreamReader isrConsole = mock(InputStreamReader.class);
-		PowerMockito.whenNew(InputStreamReader.class)
-			.withArguments(console)
-			.thenReturn(isrConsole);
-		
-		InputStreamReader isrError = mock(InputStreamReader.class);
-		PowerMockito.whenNew(InputStreamReader.class)
-			.withArguments(console)
-			.thenReturn(isrError);
+		String console = "console";
+		String error = "error";
 
 		assertEquals(new String(), _html.generateTestOut(-1, 0, console, error));
-		
-		PowerMockito.verifyNew(InputStreamReader.class, never())
-			.withArguments(console);
-		PowerMockito.verifyNew(InputStreamReader.class, never())
-		.withArguments(error);
 	}
 	
 	@Test
 	public void testGenerateTestOutWithMinusOneAsTestId() throws Exception {
-		InputStream console = mock(InputStream.class);
-		InputStream error = mock(InputStream.class);
-
-		InputStreamReader isrConsole = mock(InputStreamReader.class);
-		PowerMockito.whenNew(InputStreamReader.class)
-			.withArguments(console)
-			.thenReturn(isrConsole);
-		
-		InputStreamReader isrError = mock(InputStreamReader.class);
-		PowerMockito.whenNew(InputStreamReader.class)
-			.withArguments(console)
-			.thenReturn(isrError);
+		String console = "console";
+		String error = "error";
 
 		assertEquals(new String(), _html.generateTestOut(0, -1, console, error));
-		
-		PowerMockito.verifyNew(InputStreamReader.class, never())
-			.withArguments(console);
-		PowerMockito.verifyNew(InputStreamReader.class, never())
-		.withArguments(error);
 	}
 	
 	@Test
-	public void testGenerateTestOutWithNullAsConsoleStream()
+	public void testGenerateTestOutWithNullAsConsole()
 			throws Exception {
-		InputStream console = mock(InputStream.class);
-		InputStream error = mock(InputStream.class);
-		
-		InputStreamReader isrConsole = mock(InputStreamReader.class);
-		PowerMockito.whenNew(InputStreamReader.class)
-			.withArguments(console)
-			.thenReturn(isrConsole);
-		
-		BufferedReader brConsole = mock(BufferedReader.class);
-		PowerMockito.whenNew(BufferedReader.class)
-			.withArguments(isrConsole)
-			.thenReturn(brConsole);
-		
-		InputStreamReader isrError = mock(InputStreamReader.class);
-		when(isrError.ready()).thenReturn(true);
-		
-		PowerMockito.whenNew(InputStreamReader.class)
-			.withArguments(error)
-			.thenReturn(isrError);
-		
-		String errorMessage = "Fehler";
-		BufferedReader brError = mock(BufferedReader.class);
-		when(brError.readLine()).thenReturn(errorMessage, null);
-		PowerMockito.whenNew(BufferedReader.class)
-			.withArguments(isrError)
-			.thenReturn(brError);
+		String error = "Fehler";
 		
 		StringBuilder builder = new StringBuilder();
 		builder.append("\t\t\t\t\t\t<div class=\"right\">");
-		builder.append("<a href=\"javascript:togleDisplayId(1, 1)\">");
+		builder.append("<a href=\"javascript:toogleDisplayId(1, 1)\">");
 		builder.append("Ausgabe</a></div>");
 		builder.append(System.lineSeparator());
 		builder.append("\t\t\t\t\t\t<div class=\"testoutInvisible\"");
@@ -261,7 +206,7 @@ public class TestHtmlOut {
 		builder.append("</div>");
 		builder.append(System.lineSeparator());
 		builder.append("\t\t\t\t\t\t\t<div class=\"error\">");
-		builder.append(errorMessage);
+		builder.append(error);
 		builder.append("</div>");
 		builder.append(System.lineSeparator());
 		builder.append("\t\t\t\t\t\t</div>");
@@ -269,64 +214,23 @@ public class TestHtmlOut {
 
 		assertEquals(builder.toString(), 
 				_html.generateTestOut(1, 1, null, error));
-		
-		PowerMockito.verifyNew(InputStreamReader.class, never())
-			.withArguments(console);
-		PowerMockito.verifyNew(BufferedReader.class, never())
-			.withArguments(isrConsole);
-		
-		PowerMockito.verifyNew(InputStreamReader.class)
-			.withArguments(error);
-		PowerMockito.verifyNew(BufferedReader.class)
-		.withArguments(isrError);
-		verify(isrError).ready();
 	}
 	
 	@Test
-	public void testGenerateTestOutWithNullAsErrorStream()
+	public void testGenerateTestOutWithNullAsError()
 			throws Exception {
-		InputStream console = mock(InputStream.class);
-		
-		InputStreamReader isrConsole = mock(InputStreamReader.class);
-		when(isrConsole.ready()).thenReturn(true);
-		
-		PowerMockito.whenNew(InputStreamReader.class)
-			.withArguments(console)
-			.thenReturn(isrConsole);
-		
-		String consoleMessage = "Ausgabe der Console";
-		BufferedReader brConsole = mock(BufferedReader.class);
-		when(brConsole.readLine()).thenReturn(consoleMessage, null);
-		PowerMockito.whenNew(BufferedReader.class)
-			.withArguments(isrConsole)
-			.thenReturn(brConsole);
-		
-		InputStream error = mock(InputStream.class);
-
-		InputStreamReader isrError = mock(InputStreamReader.class);
-		when(isrError.ready()).thenReturn(true);
-		
-		PowerMockito.whenNew(InputStreamReader.class)
-			.withArguments(error)
-			.thenReturn(isrError);
-		
-		String errorMessage = "Fehler";
-		BufferedReader brError = mock(BufferedReader.class);
-		when(brError.readLine()).thenReturn(errorMessage, null);
-		PowerMockito.whenNew(BufferedReader.class)
-			.withArguments(isrError)
-			.thenReturn(brError);
+		String console = "console";
 		
 		StringBuilder builder = new StringBuilder();
 		builder.append("\t\t\t\t\t\t<div class=\"right\">");
-		builder.append("<a href=\"javascript:togleDisplayId(1, 1)\">");
+		builder.append("<a href=\"javascript:toogleDisplayId(1, 1)\">");
 		builder.append("Ausgabe</a></div>");
 		builder.append(System.lineSeparator());
 		builder.append("\t\t\t\t\t\t<div class=\"testoutInvisible\"");
 		builder.append(" id=\"id_1_1\">");
 		builder.append(System.lineSeparator());
 		builder.append("\t\t\t\t\t\t\t<div class=\"console\">");
-		builder.append(consoleMessage);
+		builder.append(console);
 		builder.append("</div>");
 		builder.append(System.lineSeparator());
 		builder.append("\t\t\t\t\t\t\t<div class=\"error\">");
@@ -338,68 +242,27 @@ public class TestHtmlOut {
 
 		assertEquals(builder.toString(), 
 				_html.generateTestOut(1, 1, console, null));
-		
-		PowerMockito.verifyNew(InputStreamReader.class)
-			.withArguments(console);
-		PowerMockito.verifyNew(BufferedReader.class)
-			.withArguments(isrConsole);
-		verify(isrConsole).ready();
-		
-		PowerMockito.verifyNew(InputStreamReader.class, never())
-			.withArguments(error);
-		PowerMockito.verifyNew(BufferedReader.class, never())
-		.withArguments(isrError);
-		verify(isrError, never()).ready();
 	}
 	
 	@Test
 	public void testGenerateTestOut() throws Exception {
-		InputStream console = mock(InputStream.class);
-		
-		InputStreamReader isrConsole = mock(InputStreamReader.class);
-		when(isrConsole.ready()).thenReturn(true);
-		
-		PowerMockito.whenNew(InputStreamReader.class)
-			.withArguments(console)
-			.thenReturn(isrConsole);
-		
-		String consoleMessage = "Ausgabe der Console";
-		BufferedReader brConsole = mock(BufferedReader.class);
-		when(brConsole.readLine()).thenReturn(consoleMessage, null);
-		PowerMockito.whenNew(BufferedReader.class)
-			.withArguments(isrConsole)
-			.thenReturn(brConsole);
-		
-		InputStream error = mock(InputStream.class);
-
-		InputStreamReader isrError = mock(InputStreamReader.class);
-		when(isrError.ready()).thenReturn(true);
-		
-		PowerMockito.whenNew(InputStreamReader.class)
-			.withArguments(error)
-			.thenReturn(isrError);
-		
-		String errorMessage = "Fehler";
-		BufferedReader brError = mock(BufferedReader.class);
-		when(brError.readLine()).thenReturn(errorMessage, null);
-		PowerMockito.whenNew(BufferedReader.class)
-			.withArguments(isrError)
-			.thenReturn(brError);
+		String console = "console";
+		String error = "error";
 		
 		StringBuilder builder = new StringBuilder();
 		builder.append("\t\t\t\t\t\t<div class=\"right\">");
-		builder.append("<a href=\"javascript:togleDisplayId(1, 1)\">");
+		builder.append("<a href=\"javascript:toogleDisplayId(1, 1)\">");
 		builder.append("Ausgabe</a></div>");
 		builder.append(System.lineSeparator());
 		builder.append("\t\t\t\t\t\t<div class=\"testoutInvisible\"");
 		builder.append(" id=\"id_1_1\">");
 		builder.append(System.lineSeparator());
 		builder.append("\t\t\t\t\t\t\t<div class=\"console\">");
-		builder.append(consoleMessage);
+		builder.append(console);
 		builder.append("</div>");
 		builder.append(System.lineSeparator());
 		builder.append("\t\t\t\t\t\t\t<div class=\"error\">");
-		builder.append(errorMessage);
+		builder.append(error);
 		builder.append("</div>");
 		builder.append(System.lineSeparator());
 		builder.append("\t\t\t\t\t\t</div>");
@@ -407,17 +270,5 @@ public class TestHtmlOut {
 
 		assertEquals(builder.toString(), 
 				_html.generateTestOut(1, 1, console, error));
-		
-		PowerMockito.verifyNew(InputStreamReader.class)
-			.withArguments(console);
-		PowerMockito.verifyNew(BufferedReader.class)
-			.withArguments(isrConsole);
-		verify(isrConsole).ready();
-		
-		PowerMockito.verifyNew(InputStreamReader.class)
-			.withArguments(error);
-		PowerMockito.verifyNew(BufferedReader.class)
-		.withArguments(isrError);
-		verify(isrError).ready();
 	}
 }

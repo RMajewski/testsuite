@@ -96,15 +96,15 @@ public class HtmlOut {
 	 */
 	private void javaScript() throws IOException {
 		_bw.write("\t\t<script type=\"text/javascript\">"); _bw.newLine();
-		_bw.write("function toogleDisplayId(id) {"); _bw.newLine();
+		_bw.write("function toogleDisplayId(suite,test) {"); _bw.newLine();
 		
-		_bw.write("if (window.document.getElementById(\"id_\" + id ).className == ");
+		_bw.write("if (window.document.getElementById(\"id_\" + suite + \"_\" + test).className == ");
 		_bw.write("\"testoutInvisible\")"); _bw.newLine();
-		_bw.write("window.document.getElementById(\"id_\" + id).className = \"testoutVisible\";");
+		_bw.write("window.document.getElementById(\"id_\" + suite + \"_\" + test).className = \"testoutVisible\";");
 		_bw.newLine();
 		_bw.write("else");
 		_bw.newLine();
-		_bw.write("window.document.getElementById(\"id_\" + id).className = \"testoutInvisible\";");
+		_bw.write("window.document.getElementById(\"id_\" + suite + \"_\" + test).className = \"testoutInvisible\";");
 		_bw.write("}"); _bw.newLine();
 		_bw.write("\t\t</script>"); _bw.newLine();
 	}
@@ -167,13 +167,13 @@ public class HtmlOut {
 		_bw.write(html);
 	}
 	
-	public String generateTestOut(int suiteId, int testId, InputStream console,
-			InputStream error) throws IOException {
+	public String generateTestOut(int suiteId, int testId, String console,
+			String error) throws IOException {
 		if ((suiteId < 0) || (testId <0))
 			return new String();
 		
 		StringBuilder ret = new StringBuilder("\t\t\t\t\t\t<div ");
-		ret.append("class=\"right\"><a href=\"javascript:togleDisplayId(");
+		ret.append("class=\"right\"><a href=\"javascript:toogleDisplayId(");
 		ret.append(suiteId);
 		ret.append(", ");
 		ret.append(testId);
@@ -189,22 +189,20 @@ public class HtmlOut {
 		
 		ret.append("\t\t\t\t\t\t\t<div class=\"console\">");
 		
-		String tmp = streamOut(console);
-		if ((tmp == null) || tmp.isEmpty())
+		if ((console == null) || console.isEmpty())
 			ret.append("Keine Ausgabe auf der Konsole");
 		else
-			ret.append(tmp);
+			ret.append(console);
 		
 		ret.append("</div>");
 		ret.append(System.lineSeparator());
 		
 		ret.append("\t\t\t\t\t\t\t<div class=\"error\">");
 		
-		tmp = streamOut(error);
-		if ((tmp == null) || tmp.isEmpty())
+		if ((error == null) || error.isEmpty())
 			ret.append("Keine Fehler ausgegeben");
 		else
-			ret.append(tmp);
+			ret.append(error);
 		
 		ret.append("</div>");
 		ret.append(System.lineSeparator());

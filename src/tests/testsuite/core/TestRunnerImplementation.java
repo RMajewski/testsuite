@@ -24,6 +24,7 @@ import java.io.IOException;
 import org.testsuite.core.HtmlOut;
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
+import org.testsuite.data.Test;
 
 /**
  * Implements the class TestRunner for testing purposes.
@@ -50,5 +51,10 @@ class TestRunnerImplementation extends TestRunner {
 	protected String createHtmlColumn(int suite, int test, HtmlOut html)
 		throws IOException {
 		return new String();
+	}
+
+	@Override
+	public Test newTest(String name, int id) {
+		return null;
 	}
 }

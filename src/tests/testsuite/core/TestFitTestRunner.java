@@ -41,6 +41,7 @@ import org.testsuite.core.FitTestRunner;
 import org.testsuite.core.HtmlOut;
 import org.testsuite.data.Config;
 import org.testsuite.data.Fit;
+import org.testsuite.data.Junit;
 import org.testsuite.data.TestSuite;
 
 /**
@@ -177,8 +178,15 @@ public class TestFitTestRunner {
 		String testName = "test";
 		String pathResult = "result";
 		String pathSuitesResult = "suites";
+		String extension = "fit";
 		String resultPath = pathResult + File.separator + pathSuitesResult +
-				File.separator + packageName;
+				File.separator + packageName.replaceAll("\\.", File.separator);
+
+		_runner.setFileExtension(extension);
+		
+		when(_config.getPathSrc()).thenReturn(pathSrc);
+		when(_config.getPathResult()).thenReturn(pathResult);
+		when(_config.getPathSuitesResult()).thenReturn(pathSuitesResult);
 		
 		File fResultPath = mock(File.class);
 		when(fResultPath.exists()).thenReturn(true);
@@ -186,9 +194,8 @@ public class TestFitTestRunner {
 			.withArguments(resultPath)
 			.thenReturn(fResultPath);
 		
-		when(_config.getPathSrc()).thenReturn(pathSrc);
-		when(_config.getPathResult()).thenReturn(pathResult);
-		when(_config.getPathSuitesResult()).thenReturn(pathSuitesResult);
+		InputStream isConsole = mock(InputStream.class);
+		InputStream isError = mock(InputStream.class);
 
 		Fit fit = mock(Fit.class);
 		when(fit.isExists()).thenReturn(true);
@@ -204,6 +211,8 @@ public class TestFitTestRunner {
 		
 		Process process = mock(Process.class);
 		when(process.waitFor()).thenReturn(0);
+		when(process.getInputStream()).thenReturn(isConsole);
+		when(process.getErrorStream()).thenReturn(isError);
 		
 		Runtime runtime = mock(Runtime.class);
 		when(runtime.exec(Matchers.anyString())).thenReturn(process);
@@ -211,19 +220,30 @@ public class TestFitTestRunner {
 		PowerMockito.mockStatic(Runtime.class);
 		PowerMockito.when(Runtime.getRuntime()).thenReturn(runtime);
 		
-		InputStreamReader isr = mock(InputStreamReader.class);
+		InputStreamReader isrConsole = mock(InputStreamReader.class);
+		InputStreamReader isrError = mock(InputStreamReader.class);
 		
 		PowerMockito.whenNew(InputStreamReader.class)
-			.withAnyArguments()
-			.thenReturn(isr);
+			.withArguments(isConsole)
+			.thenReturn(isrConsole);
+		
+		PowerMockito.whenNew(InputStreamReader.class)
+			.withArguments(isError)
+			.thenReturn(isrError);
+
+		BufferedReader console = mock(BufferedReader.class);
+		when(console.readLine()).thenReturn(null);
 		
 		BufferedReader error = mock(BufferedReader.class);
 		when(error.readLine())
 			.thenReturn("1 right 2 wrong 3 ignore 4 exception", null);
 		
 		PowerMockito.whenNew(BufferedReader.class)
-			.withParameterTypes(Reader.class)
-			.withArguments(isr)
+			.withArguments(isrConsole)
+			.thenReturn(console);
+		
+		PowerMockito.whenNew(BufferedReader.class)
+			.withArguments(isrError)
 			.thenReturn(error);
 		
 		_runner.run();
@@ -247,11 +267,12 @@ public class TestFitTestRunner {
 		verify(fit).setStart(Matchers.anyLong());
 		verify(fit).setEnd(Matchers.anyLong());
 		verify(fit).getDurationTime();
-		verify(fit).setIn(Matchers.any(InputStream.class));
+		verify(fit).setStringConsole(Matchers.anyString());
 		verify(fit).setOk(1);
 		verify(fit).setFail(2);
 		verify(fit).setIgnore(3);
 		verify(fit).setException(4);
+		verify(fit).setError(Matchers.anyString());
 		
 		verify(suite).getName();
 		verify(suite, atLeastOnce()).testCount();
@@ -310,6 +331,8 @@ public class TestFitTestRunner {
 				"\t\t\t\t\t\t\t<div class=\"error\">Fehler</div>" +
 				System.lineSeparator() + "\t\t\t\t\t\t</div>" + 
 				System.lineSeparator();
+		String console="console";
+		String error = "error";
 		String resultSuite = "1";
 		int ok = 1;
 		int fail = 2;
@@ -330,9 +353,6 @@ public class TestFitTestRunner {
 				"</td>" + System.lineSeparator();
 		
 		when(_config.getPathSuitesResult()).thenReturn(resultSuite);
-		
-		InputStream console = mock(InputStream.class);
-		InputStream error = mock(InputStream.class);
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(suiteId, testId, console, error))
@@ -386,6 +406,8 @@ public class TestFitTestRunner {
 		String packageName = "tests.test";
 		String srcName = "src";
 		String extension = "fit";
+		String console = "console";
+		String error = "error";
 		int suiteId = 0;
 		int testId = 0;
 		
@@ -396,9 +418,6 @@ public class TestFitTestRunner {
 				System.lineSeparator();
 		
 		_runner.setFileExtension(extension);
-		
-		InputStream console = mock(InputStream.class);
-		InputStream error = mock(InputStream.class);
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(suiteId, testId, console, error))

@@ -19,10 +19,6 @@
 
 package org.testsuite.core;
 
-import java.io.FileNotFoundException;
-
-import javax.xml.stream.XMLStreamException;
-
 /**
  * Lets run the tests.
  * 

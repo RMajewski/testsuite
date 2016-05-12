@@ -98,7 +98,6 @@ public class ConfigParser {
 			TestRunner runner = null;
 			Library library = null;
 			TestSuite suite = null;
-			Test test = null; 
 			int suiteId = 0;
 			int testId = 0;
 			
@@ -274,12 +273,10 @@ public class ConfigParser {
 								break;
 								
 							case "test":
-								if (testSuite && (suite != null)) {
-									test = new Test();
-									test.setName(data);
-									test.setId(testId++);
-									suite.addTest(test);
-									test = null;
+								if (testSuite && (suite != null) &&
+										(runner != null)) {
+									suite.addTest(runner.newTest(data,
+											testId++));
 								}
 								break;
 						}

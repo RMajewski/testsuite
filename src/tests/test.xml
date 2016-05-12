@@ -44,7 +44,7 @@
 			<test>TestTestRunner</test>
 			<test>TestFitTestRunner</test>
 			<test>TestJemmyTestRunner</test>
-			<test>TestJunitFrameRunner</test>
+			<test>TestJunitTestRunner</test>
 			<test>TestHtmlOut</test>
 			<test>TestTestCore</test>
 			<test>TestTestsRun</test>

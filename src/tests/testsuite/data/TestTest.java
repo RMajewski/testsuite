@@ -140,7 +140,7 @@ public class TestTest {
 	}
 	
 	/**
-	 * Tests if the error stream returned correctly.
+	 * Tests if the error string returned correctly.
 	 * 
 	 * @see org.testsuite.data.Test#getError()
 	 */
@@ -150,19 +150,19 @@ public class TestTest {
 	}
 	
 	/**
-	 * Tests if the error stream can be set correctly.
+	 * Tests if the error string can be set correctly.
 	 * 
 	 * @see org.testsuite.data.Test#setError(InputStream)
 	 */
 	@Test
 	public void testSetError() {
-		InputStream is = mock(InputStream.class);
-		_data.setError(is);
-		assertEquals(is, _data.getError());
+		String error = "Error";
+		_data.setError(error);
+		assertEquals(error, _data.getError());
 	}
 	
 	/**
-	 * Tests if the console stream returned correctly.
+	 * Tests if the console string returned correctly.
 	 * 
 	 * @see org.testsuite.data.Test#getIn()
 	 */
@@ -172,14 +172,14 @@ public class TestTest {
 	}
 	
 	/**
-	 * Tests if the error stream can be set correctly.
+	 * Tests if the console string can be set correctly.
 	 * 
-	 * @see org.testsuite.data.Test#setIn(InputStream)
+	 * @see org.testsuite.data.Test#setStringConsole(InputStream)
 	 */
 	@Test
 	public void testSetIn() {
-		InputStream is = mock(InputStream.class);
-		_data.setIn(is);
-		assertEquals(is, _data.getIn());
+		String console = "Console";
+		_data.setStringConsole(console);
+		assertEquals(console, _data.getIn());
 	}
 }

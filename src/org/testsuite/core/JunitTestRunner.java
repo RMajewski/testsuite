@@ -59,7 +59,7 @@ public class JunitTestRunner extends TestRunner {
 			// juni-Tests ausführen
 			for (int test = 0; test < _suites.get(suite).testCount(); test++) {
 				String name = _suites.get(suite).getPackage() + "." +
-						_suites.get(suite).getTest(test).getName();
+							_suites.get(suite).getTest(test).getName();
 				
 				// Überprüfen, ob Datei existiert
 				if (!_suites.get(suite).isExists() || 
@@ -97,14 +97,16 @@ public class JunitTestRunner extends TestRunner {
 					System.out.println(" ms)");
 					
 					// Console-Ausgabe und Error-Ausgabe speichern
-					_suites.get(suite).getTest(test).setError(p.getErrorStream());
-					_suites.get(suite).getTest(test).setIn(p.getInputStream());
+					_suites.get(suite).getTest(test).setError(
+							inputStreamToString(p.getErrorStream()));
 
 					InputStream is = p.getInputStream();
-					is.mark(is.available());
 					BufferedReader br = new BufferedReader(new InputStreamReader(is));
 					String line;
+					StringBuilder console = new StringBuilder();
 					while ((line = br.readLine()) != null) {
+						console.append(line);
+						console.append("<br/>");
 						if (line.indexOf("OK (") > -1) {
 							String ok = new String("OK (");
 							
@@ -127,7 +129,8 @@ public class JunitTestRunner extends TestRunner {
 									Integer.valueOf(line.substring(indexFail)));
 						}
 					}
-					is.reset();
+					_suites.get(suite).getTest(test).setStringConsole(
+							console.toString());
 				} catch (IOException e) {
 					e.printStackTrace();
 					_suites.get(suite).getTest(test).setExitStatus(100);
@@ -238,4 +241,18 @@ public class JunitTestRunner extends TestRunner {
 		return ret.toString();
 	}
 
+	/**
+	 * Creates a new test and gives him the name and its id.
+	 * 
+	 * @param name Name of the new test
+	 * 
+	 * @param id Id of the new test
+	 */
+	@Override
+	public org.testsuite.data.Test newTest(String name, int id) {
+		Junit ret = new Junit();
+		ret.setName(name);
+		ret.setId(id);
+		return ret;
+	}
 }

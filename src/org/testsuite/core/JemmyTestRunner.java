@@ -25,6 +25,7 @@ import java.util.Date;
 
 import org.testsuite.data.Config;
 import org.testsuite.data.Fit;
+import org.testsuite.data.Junit;
 
 /**
  * Executes the jemmy tests.
@@ -90,8 +91,10 @@ public class JemmyTestRunner extends TestRunner {
 					System.out.println(" ms)");
 					
 					// Console-Ausgabe und Error-Ausgabe speichern
-					_suites.get(suite).getTest(test).setError(p.getErrorStream());
-					_suites.get(suite).getTest(test).setIn(p.getInputStream());
+					_suites.get(suite).getTest(test).setError(
+							inputStreamToString(p.getErrorStream()));
+					_suites.get(suite).getTest(test).setStringConsole(
+							inputStreamToString(p.getInputStream()));
 				} catch (IOException e) {
 					e.printStackTrace();
 					_suites.get(suite).getTest(test).setExitStatus(100);
@@ -192,6 +195,21 @@ public class JemmyTestRunner extends TestRunner {
 		ret.append(System.lineSeparator());
 		
 		return ret.toString();
+	}
+
+	/**
+	 * Creates a new test and gives him the name and its id.
+	 * 
+	 * @param name Name of the new test
+	 * 
+	 * @param id Id of the new test
+	 */
+	@Override
+	public org.testsuite.data.Test newTest(String name, int id) {
+		org.testsuite.data.Test ret = new org.testsuite.data.Test();
+		ret.setName(name);
+		ret.setId(id);
+		return ret;
 	}
 
 }

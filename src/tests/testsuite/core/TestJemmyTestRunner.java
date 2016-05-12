@@ -28,8 +28,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 
 import org.junit.Before;
@@ -172,6 +174,9 @@ public class TestJemmyTestRunner {
 		String packageName = "package";
 		String testName = "test";
 		
+		InputStream isConsole = mock(InputStream.class);
+		InputStream isError = mock(InputStream.class);
+
 		org.testsuite.data.Test test = mock(org.testsuite.data.Test.class);
 		when(test.isExists()).thenReturn(true);
 		when(test.getName()).thenReturn(testName);
@@ -186,12 +191,39 @@ public class TestJemmyTestRunner {
 		
 		Process process = mock(Process.class);
 		when(process.waitFor()).thenReturn(0);
+		when(process.getInputStream()).thenReturn(isConsole);
+		when(process.getErrorStream()).thenReturn(isError);
 		
 		Runtime runtime = mock(Runtime.class);
 		when(runtime.exec(Matchers.anyString())).thenReturn(process);
 		
 		PowerMockito.mockStatic(Runtime.class);
 		PowerMockito.when(Runtime.getRuntime()).thenReturn(runtime);
+		
+		InputStreamReader isrConsole = mock(InputStreamReader.class);
+		InputStreamReader isrError = mock(InputStreamReader.class);
+		
+		PowerMockito.whenNew(InputStreamReader.class)
+			.withArguments(isConsole)
+			.thenReturn(isrConsole);
+		
+		PowerMockito.whenNew(InputStreamReader.class)
+			.withArguments(isError)
+			.thenReturn(isrError);
+		
+		BufferedReader console = mock(BufferedReader.class);
+		when(console.readLine()).thenReturn(null);
+		
+		BufferedReader error = mock(BufferedReader.class);
+		when(error.readLine()).thenReturn(null);
+		
+		PowerMockito.whenNew(BufferedReader.class)
+			.withArguments(isrConsole)
+			.thenReturn(console);
+		
+		PowerMockito.whenNew(BufferedReader.class)
+			.withArguments(isrError)
+			.thenReturn(error);
 		
 		_runner.run();
 		
@@ -209,7 +241,7 @@ public class TestJemmyTestRunner {
 		verify(test).setStart(Matchers.anyLong());
 		verify(test).setEnd(Matchers.anyLong());
 		verify(test).getDurationTime();
-		verify(test).setIn(Matchers.any(InputStream.class));
+		verify(test).setStringConsole(Matchers.anyString());
 		
 		verify(suite).getName();
 		verify(suite, atLeastOnce()).testCount();
@@ -264,6 +296,8 @@ public class TestJemmyTestRunner {
 				"\t\t\t\t\t\t\t<div class=\"error\">Fehler</div>" +
 				System.lineSeparator() + "\t\t\t\t\t\t</div>" + 
 				System.lineSeparator();
+		String console = "console";
+		String error = "error";
 		String testName = "Test1";
 		int suiteId = 0;
 		int testId = 0;
@@ -275,9 +309,6 @@ public class TestJemmyTestRunner {
 				"\t\t\t\t\t\t<td>Ja</td>" + System.lineSeparator() + 
 				"\t\t\t\t\t\t<td>" + duration + "</td>" + 
 				System.lineSeparator();
-		
-		InputStream console = mock(InputStream.class);
-		InputStream error = mock(InputStream.class);
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(suiteId, testId, console, error))
@@ -330,6 +361,8 @@ public class TestJemmyTestRunner {
 				"\t\t\t\t\t\t\t<div class=\"error\">Fehler</div>" +
 				System.lineSeparator() + "\t\t\t\t\t\t</div>" + 
 				System.lineSeparator();
+		String console = "console";
+		String error = "error";
 		String testName = "Test1";
 		int suiteId = 0;
 		int testId = 0;
@@ -341,9 +374,6 @@ public class TestJemmyTestRunner {
 				"\t\t\t\t\t\t<td>Nein</td>" + System.lineSeparator() + 
 				"\t\t\t\t\t\t<td>" + duration + "</td>" + 
 				System.lineSeparator();
-		
-		InputStream console = mock(InputStream.class);
-		InputStream error = mock(InputStream.class);
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(suiteId, testId, console, error))
@@ -391,6 +421,8 @@ public class TestJemmyTestRunner {
 		String packageName = "tests.test";
 		String srcName = "src";
 		String extension = "java";
+		String console = "console";
+		String error = "error";
 		int suiteId = 0;
 		int testId = 0;
 		
@@ -401,9 +433,6 @@ public class TestJemmyTestRunner {
 				System.lineSeparator();
 		
 		_runner.setFileExtension(extension);
-		
-		InputStream console = mock(InputStream.class);
-		InputStream error = mock(InputStream.class);
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(suiteId, testId, console, error))

@@ -28,6 +28,7 @@ import java.util.Date;
 
 import org.testsuite.data.Config;
 import org.testsuite.data.Fit;
+import org.testsuite.data.Junit;
 
 /**
  * Executes the Fit tests.
@@ -117,14 +118,18 @@ public class FitTestRunner extends TestRunner {
 							_suites.get(suite).getTest(test).getDurationTime() 
 							+ " ms)");
 					
-					// Console in Datei speichern
-					_suites.get(suite).getTest(test).setIn(p.getInputStream());
+					// Console speichern
+					_suites.get(suite).getTest(test).setStringConsole(
+							inputStreamToString(p.getInputStream()));
 
 					// Error auslesen
 					InputStream is = p.getErrorStream();
 					BufferedReader br = new BufferedReader(new InputStreamReader(is));
+					StringBuilder error = new StringBuilder();
 					String line;
 					while ((line = br.readLine()) != null) {
+						error.append(line);
+						error.append("<br/>");
 						if ((line.indexOf("right") > -1) &&
 								(line.indexOf("wrong") > -1)) {
 							String[] tmp = line.split(" ");
@@ -138,6 +143,8 @@ public class FitTestRunner extends TestRunner {
 									Integer.valueOf(tmp[6]));
 						}
 					}
+					_suites.get(suite).getTest(test).setError(
+							error.toString());
 				} catch (IOException e) {
 					e.printStackTrace();
 					_suites.get(suite).getTest(test).setExitStatus(100);
@@ -289,5 +296,20 @@ public class FitTestRunner extends TestRunner {
 		ret.append(System.lineSeparator());
 		
 		return ret.toString();
+	}
+
+	/**
+	 * Creates a new test and gives him the name and its id.
+	 * 
+	 * @param name Name of the new test
+	 * 
+	 * @param id Id of the new test
+	 */
+	@Override
+	public org.testsuite.data.Test newTest(String name, int id) {
+		Fit ret = new Fit();
+		ret.setName(name);
+		ret.setId(id);
+		return ret;
 	}
 }

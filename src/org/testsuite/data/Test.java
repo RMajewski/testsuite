@@ -47,12 +47,12 @@ public class Test extends Data {
 	/**
 	 * Saves the output of the console
 	 */
-	private InputStream _in;
+	private String _console;
 	
 	/**
 	 * Saves the output of the error
 	 */
-	private InputStream _error;
+	private String _error;
 	
 	/**
 	 * Initialize the data of this class
@@ -63,7 +63,7 @@ public class Test extends Data {
 		_start = 0;
 		_error = null;
 		_exitStatus = -1;
-		_in = null;
+		_console = null;
 	}
 	
 	/**
@@ -114,28 +114,28 @@ public class Test extends Data {
 	/**
 	 * Sets the input stream for the error.
 	 * 
-	 * @param stream InputStream, in which the errors have been posted
+	 * @param error String, in which the errors have been posted
 	 */
-	public void setError(InputStream stream) {
-		_error = stream;
+	public void setError(String error) {
+		_error = error;
 	}
 	
 	/**
 	 * Returns the stream in which the errors have been posted.
 	 * 
-	 * @return InputStream for error
+	 * @return String for error
 	 */
-	public InputStream getError() {
+	public String getError() {
 		return _error;
 	}
 	
 	/**
 	 * Sets the Steam, where the outputs of the console have been posted.
 	 * 
-	 * @param stream InputStream with the outputs of the console.
+	 * @param console String with the outputs of the console.
 	 */
-	public void setIn(InputStream stream) {
-		_in = stream;
+	public void setStringConsole(String console) {
+		_console = console;
 	}
 	
 	/**
@@ -144,8 +144,8 @@ public class Test extends Data {
 	 * 
 	 * @return InputStream with the outputs of the console.
 	 */
-	public InputStream getIn() {
-		return _in;
+	public String getIn() {
+		return _console;
 	}
 	
 	/**

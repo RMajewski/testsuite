@@ -159,10 +159,9 @@ public class TestJunitTestRunner {
 		String suiteName = "suite";
 		String packageName = "package";
 		String testName = "test";
-		int inputAvailable = 100;
 		
-		InputStream is = mock(InputStream.class);
-		when(is.available()).thenReturn(inputAvailable);
+		InputStream isConsole = mock(InputStream.class);
+		InputStream isError = mock(InputStream.class);
 
 		Junit junit = mock(Junit.class);
 		when(junit.isExists()).thenReturn(true);
@@ -178,7 +177,8 @@ public class TestJunitTestRunner {
 		
 		Process process = mock(Process.class);
 		when(process.waitFor()).thenReturn(0);
-		when(process.getInputStream()).thenReturn(is);
+		when(process.getInputStream()).thenReturn(isConsole);
+		when(process.getErrorStream()).thenReturn(isError);
 		
 		Runtime runtime = mock(Runtime.class);
 		when(runtime.exec(Matchers.anyString())).thenReturn(process);
@@ -186,20 +186,31 @@ public class TestJunitTestRunner {
 		PowerMockito.mockStatic(Runtime.class);
 		PowerMockito.when(Runtime.getRuntime()).thenReturn(runtime);
 		
-		InputStreamReader isr = mock(InputStreamReader.class);
+		InputStreamReader isrConsole = mock(InputStreamReader.class);
+		InputStreamReader isrError = mock(InputStreamReader.class);
 		
 		PowerMockito.whenNew(InputStreamReader.class)
-			.withAnyArguments()
-			.thenReturn(isr);
+			.withArguments(isConsole)
+			.thenReturn(isrConsole);
+		
+		PowerMockito.whenNew(InputStreamReader.class)
+			.withArguments(isError)
+			.thenReturn(isrError);
 		
 		BufferedReader console = mock(BufferedReader.class);
 		when(console.readLine())
 			.thenReturn("OK (2 tests)", null);
 		
+		BufferedReader error = mock(BufferedReader.class);
+		when(error.readLine()).thenReturn(null);
+		
 		PowerMockito.whenNew(BufferedReader.class)
-			.withParameterTypes(Reader.class)
-			.withArguments(isr)
+			.withArguments(isrConsole)
 			.thenReturn(console);
+		
+		PowerMockito.whenNew(BufferedReader.class)
+			.withArguments(isrError)
+			.thenReturn(error);
 		
 		_runner.run();
 		
@@ -207,7 +218,7 @@ public class TestJunitTestRunner {
 		verify(runtime).exec(Matchers.anyString());
 		
 		verify(process).waitFor();
-		verify(process, times(2)).getInputStream();
+		verify(process).getInputStream();
 		verify(process).getErrorStream();
 		
 		verify(junit).isExists();
@@ -217,7 +228,7 @@ public class TestJunitTestRunner {
 		verify(junit).setStart(Matchers.anyLong());
 		verify(junit).setEnd(Matchers.anyLong());
 		verify(junit).getDurationTime();
-		verify(junit).setIn(Matchers.any(InputStream.class));
+		verify(junit).setStringConsole(Matchers.anyString());
 		verify(junit).setOk(2);
 		
 		verify(suite).getName();
@@ -232,10 +243,9 @@ public class TestJunitTestRunner {
 		String suiteName = "suite";
 		String packageName = "package";
 		String testName = "test";
-		int inputAvailable = 100;
 		
-		InputStream is = mock(InputStream.class);
-		when(is.available()).thenReturn(inputAvailable);
+		InputStream isConsole = mock(InputStream.class);
+		InputStream isError = mock(InputStream.class);
 
 		Junit junit = mock(Junit.class);
 		when(junit.isExists()).thenReturn(true);
@@ -251,7 +261,8 @@ public class TestJunitTestRunner {
 		
 		Process process = mock(Process.class);
 		when(process.waitFor()).thenReturn(0);
-		when(process.getInputStream()).thenReturn(is);
+		when(process.getInputStream()).thenReturn(isConsole);
+		when(process.getErrorStream()).thenReturn(isError);
 		
 		Runtime runtime = mock(Runtime.class);
 		when(runtime.exec(Matchers.anyString())).thenReturn(process);
@@ -259,32 +270,39 @@ public class TestJunitTestRunner {
 		PowerMockito.mockStatic(Runtime.class);
 		PowerMockito.when(Runtime.getRuntime()).thenReturn(runtime);
 		
-		InputStreamReader isr = mock(InputStreamReader.class);
+		InputStreamReader isrConsole = mock(InputStreamReader.class);
+		InputStreamReader isrError = mock(InputStreamReader.class);
 		
 		PowerMockito.whenNew(InputStreamReader.class)
-			.withAnyArguments()
-			.thenReturn(isr);
+			.withArguments(isConsole)
+			.thenReturn(isrConsole);
+		
+		PowerMockito.whenNew(InputStreamReader.class)
+			.withArguments(isError)
+			.thenReturn(isrError);
 		
 		BufferedReader console = mock(BufferedReader.class);
 		when(console.readLine())
 			.thenReturn("Tests run: 1,  Failures: 2", null);
 		
+		BufferedReader error = mock(BufferedReader.class);
+		when(error.readLine()).thenReturn(null);
+		
 		PowerMockito.whenNew(BufferedReader.class)
-			.withParameterTypes(Reader.class)
-			.withArguments(isr)
+			.withArguments(isrConsole)
 			.thenReturn(console);
 		
-		_runner.run();
+		PowerMockito.whenNew(BufferedReader.class)
+			.withArguments(isrError)
+			.thenReturn(error);
 		
-		verify(is).mark(inputAvailable);
-		verify(is).available();
-		verify(is).reset();
+		_runner.run();
 		
 		// FIXME exec überprüfen
 		verify(runtime).exec(Matchers.anyString());
 		
 		verify(process).waitFor();
-		verify(process, times(2)).getInputStream();
+		verify(process).getInputStream();
 		verify(process).getErrorStream();
 		
 		verify(junit).isExists();
@@ -294,7 +312,7 @@ public class TestJunitTestRunner {
 		verify(junit).setStart(Matchers.anyLong());
 		verify(junit).setEnd(Matchers.anyLong());
 		verify(junit).getDurationTime();
-		verify(junit).setIn(Matchers.any(InputStream.class));
+		verify(junit).setStringConsole(Matchers.anyString());
 		verify(junit).setOk(1);
 		verify(junit).setFail(2);
 		
@@ -354,6 +372,8 @@ public class TestJunitTestRunner {
 				System.lineSeparator() + "\t\t\t\t\t\t</div>" + 
 				System.lineSeparator();
 		String resultSuite = "1";
+		String console = "console";
+		String error = "error";
 		int ok = 1;
 		int fail = 2;
 		long duration = 1000;
@@ -367,9 +387,6 @@ public class TestJunitTestRunner {
 				"\t\t\t\t\t\t<td>" + duration + "</td>" + System.lineSeparator();
 		
 		when(_config.getPathSuitesResult()).thenReturn(resultSuite);
-		
-		InputStream console = mock(InputStream.class);
-		InputStream error = mock(InputStream.class);
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(suiteId, testId, console, error))
@@ -419,6 +436,8 @@ public class TestJunitTestRunner {
 		String packageName = "tests.test";
 		String srcName = "src";
 		String extension = "java";
+		String console = "console";
+		String error = "error";
 		int ok = 1;
 		int fail = 2;
 		long duration = 1000;
@@ -432,9 +451,6 @@ public class TestJunitTestRunner {
 		_runner.setFileExtension(extension);
 		
 		when(_config.getPathSrc()).thenReturn(srcName);
-		
-		InputStream console = mock(InputStream.class);
-		InputStream error = mock(InputStream.class);
 		
 		HtmlOut html = mock(HtmlOut.class);
 		

@@ -161,8 +161,13 @@ public class TestTestRunner extends TestRunnerHelper {
 	 */
 	@Test
 	public void testCheckFileExistsWithNonExistsPath() throws Exception {
-		String path = "test";
+		String src = "src";
+		String path = "tests.path";
 		String testName = "test";
+		String testPath = src + File.separator + 
+				path.replaceAll("\\.", File.separator);
+		
+		when(_config.getPathSrc()).thenReturn(src);
 		
 		File file = mock(File.class);
 		when(file.exists()).thenReturn(false);
@@ -183,7 +188,7 @@ public class TestTestRunner extends TestRunnerHelper {
 		
 		_runner.checkFileExists();
 		
-		PowerMockito.verifyNew(File.class).withArguments(path);
+		PowerMockito.verifyNew(File.class).withArguments(testPath);
 		verify(file, times(1)).exists();
 		verify(test, times(0)).getName();
 		verify(test, times(1)).setExists(false);
@@ -198,9 +203,14 @@ public class TestTestRunner extends TestRunnerHelper {
 	 */
 	@Test
 	public void testCheckFileExistsWithNonExistsFile() throws Exception {
-		String path = "test";
+		String src = "src";
+		String path = "tests.path";
 		String testName = "testen";
 		String fileExtension = "test";
+		String testPath = src + File.separator + 
+				path.replaceAll("\\.", File.separator);
+		
+		when(_config.getPathSrc()).thenReturn(src);
 		
 		_runner.setFileExtension(fileExtension);
 		
@@ -223,16 +233,16 @@ public class TestTestRunner extends TestRunnerHelper {
 		
 		_runner.checkFileExists();
 		
-		PowerMockito.verifyNew(File.class).withArguments(path);
-		PowerMockito.verifyNew(File.class).withArguments(path + File.separator +
-				testName + "." + fileExtension);
+		PowerMockito.verifyNew(File.class).withArguments(testPath);
+		PowerMockito.verifyNew(File.class).withArguments(testPath + 
+				File.separator + testName + "." + fileExtension);
 		verify(file, times(2)).exists();
 		verify(test, times(1)).getName();
 		verify(test, times(1)).setExists(false);
 		verify(suite, atLeastOnce()).getTest(0);
-		verify(suite, times(2)).getPackage();
+		verify(suite).getPackage();
 		verify(suite, atLeastOnce()).testCount();
-		verify(suite, times(1)).setExists(true);
+		verify(suite).setExists(true);
 	}
 	
 	/**
@@ -240,9 +250,14 @@ public class TestTestRunner extends TestRunnerHelper {
 	 */
 	@Test
 	public void testCheckFileExists() throws Exception{
-		String path = "test";
+		String src = "src";
+		String path = "tests.path";
 		String testName = "testen";
 		String fileExtension = "test";
+		String testPath = src + File.separator + 
+				path.replaceAll("\\.", File.separator);
+		
+		when(_config.getPathSrc()).thenReturn(src);
 		
 		_runner.setFileExtension(fileExtension);
 		
@@ -265,16 +280,16 @@ public class TestTestRunner extends TestRunnerHelper {
 		
 		_runner.checkFileExists();
 		
-		PowerMockito.verifyNew(File.class).withArguments(path);
-		PowerMockito.verifyNew(File.class).withArguments(path + File.separator +
-				testName + "." + fileExtension);
+		PowerMockito.verifyNew(File.class).withArguments(testPath);
+		PowerMockito.verifyNew(File.class).withArguments(testPath + 
+				File.separator + testName + "." + fileExtension);
 		verify(file, times(2)).exists();
-		verify(test, times(1)).getName();
-		verify(test, times(1)).setExists(true);
+		verify(test).getName();
+		verify(test).setExists(true);
 		verify(suite, atLeastOnce()).getTest(0);
-		verify(suite, times(2)).getPackage();
+		verify(suite).getPackage();
 		verify(suite, atLeastOnce()).testCount();
-		verify(suite, times(1)).setExists(true);
+		verify(suite).setExists(true);
 	}
 	
 	/**

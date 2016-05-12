@@ -19,8 +19,11 @@
 
 package org.testsuite.core;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -232,9 +235,11 @@ public abstract class TestRunner {
 	public void checkFileExists() {
 		for (int suite = 0; suite < _suites.size(); suite++) {
 			// Überprüft, ob das Verzeichnis existiert
-			File path = new File(_suites.get(suite).getPackage());
+			String path = _config.getPathSrc() +  File.separator +
+					_suites.get(suite).getPackage()
+					.replaceAll("\\.", File.separator);
 			boolean pathExists = false;
-			if (path.exists())
+			if (new File(path).exists())
 				pathExists = true;
 			_suites.get(suite).setExists(pathExists);
 			
@@ -242,8 +247,7 @@ public abstract class TestRunner {
 				// Überprüft, ob das Verzeichnis existiert
 				boolean fileExists = false;
 				if (pathExists) {
-					String fileName = _suites.get(suite).getPackage() +
-							File.separator +
+					String fileName = path + File.separator +
 							_suites.get(suite).getTest(test).getName() + "." +
 							_fileExtension;
 					File file = new File(fileName);
@@ -435,6 +439,32 @@ public abstract class TestRunner {
 		
 		return ret.toString();
 	}
+	
+	protected String inputStreamToString(InputStream stream) {
+		StringBuilder ret = new StringBuilder();
+		
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+			String line;
+			while ((line = br.readLine()) != null) {
+				ret.append(line);
+				ret.append("<br/>");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ret.toString();
+	}
+	
+	/**
+	 * Called to insert a new test class in the list.
+	 * 
+	 * @param name Name of the new test
+	 * 
+	 * @param id ID of the new test 
+	 */
+	public abstract org.testsuite.data.Test newTest(String name, int id);
 	
 	/**
 	 * Called to start the stored tests.
