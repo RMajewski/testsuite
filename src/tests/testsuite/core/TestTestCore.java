@@ -22,6 +22,7 @@ package tests.testsuite.core;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -199,10 +200,22 @@ public class TestTestCore {
 	 */
 	@Test
 	public void testCreateResultHtml() throws Exception{
+		String pathResult = "result";
+		
+		when(_config.getPathResult()).thenReturn(pathResult);
+		
 		HtmlOut html = mock(HtmlOut.class);
 		
 		PowerMockito.whenNew(HtmlOut.class)
-			.withAnyArguments().thenReturn(html);
+			.withAnyArguments()
+			.thenReturn(html);
+		
+		File file = mock(File.class);
+		when(file.exists()).thenReturn(true);
+		
+		PowerMockito.whenNew(File.class)
+			.withArguments(pathResult + File.separator)
+			.thenReturn(file);
 		
 		when(_config.isCreateHtml()).thenReturn(true);
 		
