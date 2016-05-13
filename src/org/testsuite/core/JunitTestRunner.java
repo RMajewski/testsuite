@@ -231,7 +231,8 @@ public class JunitTestRunner extends TestRunner {
 			
 			ret.append(td);
 			ret.append(String.valueOf(
-					_suites.get(suite).getTest(test).getDurationTime()));
+					_suites.get(suite).getTest(test)
+						.getDurationTimeFormattedString()));
 		} else {
 			ret.append(_config.getPathSrc());
 			ret.append(File.separator);

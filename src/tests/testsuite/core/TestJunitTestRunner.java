@@ -413,7 +413,7 @@ public class TestJunitTestRunner {
 		String error = "error";
 		int ok = 1;
 		int fail = 2;
-		long duration = 1000;
+		String duration = "00:00:01.897";
 		int suiteId = 0;
 		int testId = 0;
 		
@@ -446,7 +446,7 @@ public class TestJunitTestRunner {
 		when(test.getIn()).thenReturn(console);
 		when(test.getOk()).thenReturn(ok);
 		when(test.getFail()).thenReturn(fail);
-		when(test.getDurationTime()).thenReturn(duration);
+		when(test.getDurationTimeFormattedString()).thenReturn(duration);
 		
 		TestSuite suite = mock(TestSuite.class);
 		when(suite.getTest(0)).thenReturn(test);
@@ -462,7 +462,7 @@ public class TestJunitTestRunner {
 		order.verify(test).getId();
 		order.verify(test).getIn();
 		order.verify(test).getError();
-		order.verify(test).getDurationTime();
+		order.verify(test).getDurationTimeFormattedString();
 		
 		verify(suite, times(10)).getTest(0);
 	}
@@ -481,7 +481,7 @@ public class TestJunitTestRunner {
 		String error = "error";
 		int ok = 1;
 		int fail = 2;
-		long duration = 1000;
+		String duration = "00:00:01.897";
 		
 		String ret = "\t\t\t\t\t\t<td class=\"wrong\">" + srcName +
 				File.separator + 
@@ -508,7 +508,7 @@ public class TestJunitTestRunner {
 		when(test.getIn()).thenReturn(console);
 		when(test.getOk()).thenReturn(ok);
 		when(test.getFail()).thenReturn(fail);
-		when(test.getDurationTime()).thenReturn(duration);
+		when(test.getDurationTimeFormattedString()).thenReturn(duration);
 		
 		TestSuite suite = mock(TestSuite.class);
 		when(suite.getTest(0)).thenReturn(test);

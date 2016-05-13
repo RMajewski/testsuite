@@ -232,37 +232,4 @@ public class HtmlOut {
 		
 		return ret.toString();
 	}
-
-	/**
-	 * Reads the given stream and returns it as a string. The characters "new
-	 * line" will be replaced by a "<br/>".
-	 * 
-	 * @param is Stream, which is to be read.
-	 * 
-	 * @return Scraped Stream.
-	 */
-	private String streamOut(InputStream is) throws IOException {
-		// Rückgabe vorbereiten
-		StringBuilder buffer = new StringBuilder();
-		
-		// Stream auslesen
-		if (is != null) {
-			InputStreamReader isr = new InputStreamReader(is);
-			if (isr.ready()) {
-				BufferedReader br = new BufferedReader(isr);
-				String line;
-				boolean first = true;
-				while ((line = br.readLine()) != null) {
-					if (first)
-						first = false;
-					else
-						buffer.append("<br/>");
-					buffer.append(line);
-				}
-			}
-		}
-		
-		// Rückgabe
-		return buffer.toString();
-	}
 }

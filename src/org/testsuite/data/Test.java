@@ -20,6 +20,9 @@
 package org.testsuite.data;
 
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * In this class, the data are stored into a text.
@@ -164,5 +167,15 @@ public class Test extends Data {
 	 */
 	public int getExitStatus() {
 		return _exitStatus;
+	}
+
+	/**
+	 * Return the duration time as formatted string.
+	 * 
+	 * @return Duration time as formatted string.
+	 */
+	public String getDurationTimeFormattedString() {
+		DateFormat df = new SimpleDateFormat("HH:mm:ss.SSS");
+		return df.format(new Date(getDurationTime() - 3600000));
 	}
 }

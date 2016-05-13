@@ -320,7 +320,7 @@ public class TestJemmyTestRunner {
 		String testName = "Test1";
 		int suiteId = 0;
 		int testId = 0;
-		long duration = 1000;
+		String duration = "00:00:01.897";
 		int exit = 0;
 		
 		String ret = "\t\t\t\t\t\t<td>" + testName + System.lineSeparator() + 
@@ -343,7 +343,7 @@ public class TestJemmyTestRunner {
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
 		when(test.getIn()).thenReturn(console);
-		when(test.getDurationTime()).thenReturn(duration);
+		when(test.getDurationTimeFormattedString()).thenReturn(duration);
 		when(test.getExitStatus()).thenReturn(exit);
 		
 		TestSuite suite = mock(TestSuite.class);
@@ -360,7 +360,7 @@ public class TestJemmyTestRunner {
 		order.verify(test).getIn();
 		order.verify(test).getError();
 		order.verify(test).getExitStatus();
-		order.verify(test).getDurationTime();
+		order.verify(test).getDurationTimeFormattedString();
 		
 		verify(suite, times(7)).getTest(0);
 	}
@@ -385,7 +385,7 @@ public class TestJemmyTestRunner {
 		String testName = "Test1";
 		int suiteId = 0;
 		int testId = 0;
-		long duration = 1000;
+		String duration = "00:00:01.897";
 		int exit = 100;
 		
 		String ret = "\t\t\t\t\t\t<td>" + testName + System.lineSeparator() + 
@@ -408,7 +408,7 @@ public class TestJemmyTestRunner {
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
 		when(test.getIn()).thenReturn(console);
-		when(test.getDurationTime()).thenReturn(duration);
+		when(test.getDurationTimeFormattedString()).thenReturn(duration);
 		when(test.getExitStatus()).thenReturn(exit);
 		
 		TestSuite suite = mock(TestSuite.class);
@@ -425,7 +425,7 @@ public class TestJemmyTestRunner {
 		order.verify(test).getIn();
 		order.verify(test).getError();
 		order.verify(test).getExitStatus();
-		order.verify(test).getDurationTime();
+		order.verify(test).getDurationTimeFormattedString();
 		
 		verify(suite, times(7)).getTest(0);
 	}

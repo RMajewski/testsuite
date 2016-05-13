@@ -285,7 +285,8 @@ public class FitTestRunner extends TestRunner {
 			
 			ret.append("\t\t\t\t\t\t<td>");
 			ret.append(
-					((Fit)_suites.get(suite).getTest(test)).getDurationTime());
+					((Fit)_suites.get(suite).getTest(test))
+						.getDurationTimeFormattedString());
 		} else {
 			ret.append(_config.getPathSrc());
 			ret.append(File.separator);

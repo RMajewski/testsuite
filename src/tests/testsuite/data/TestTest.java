@@ -23,6 +23,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import java.io.InputStream;
+import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -46,15 +47,6 @@ public class TestTest {
 	@Before
 	public void setUp() throws Exception {
 		_data = new org.testsuite.data.Test();
-	}
-	
-	/**
-	 * Checks if the class of Data has been derived.
-	 */
-	@Test
-	public void testJunitDataDerivedFromData() {
-		assertEquals(Data.class.getName(),
-				org.testsuite.data.Test.class.getSuperclass().getName());
 	}
 	
 	/**
@@ -181,5 +173,37 @@ public class TestTest {
 		String console = "Console";
 		_data.setStringConsole(console);
 		assertEquals(console, _data.getIn());
+	}
+	
+	/**
+	 * Tests if the duration is calculated correctly.
+	 * 
+	 * @see org.testsuite.data.Test#getDurationTime()
+	 */
+	@Test
+	public void testGetDurationTime() {
+		long start = 80000l;
+		long end = 90000l;
+		
+		_data.setEnd(end);
+		_data.setStart(start);
+		
+		assertEquals(end - start, _data.getDurationTime());
+	}
+	
+	/**
+	 * Tests if the time has been properly formatted.
+	 * 
+	 * @see org.testsuite.data.Test#getDurationTimeString()
+	 */
+	@Test
+	public void testGetDurationTimeFormattedString() {
+		long start = 80000;
+		long end = 90000;
+		
+		_data.setEnd(end);
+		_data.setStart(start);
+		
+		assertEquals("00:00:10.000", _data.getDurationTimeFormattedString());
 	}
 }

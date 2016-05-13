@@ -175,7 +175,7 @@ public class JemmyTestRunner extends TestRunner {
 			
 			ret.append("\t\t\t\t\t\t<td>");
 			ret.append(String.valueOf(
-					_suites.get(suite).getTest(test).getDurationTime()));
+					_suites.get(suite).getTest(test).getDurationTimeFormattedString()));
 		} else {
 			ret.append(_config.getPathSrc());
 			ret.append(File.separator);

@@ -362,7 +362,7 @@ public class TestFitTestRunner {
 		int fail = 2;
 		int ignore = 0;
 		int exception = 4;
-		long duration = 1000;
+		String duration = "00:00:01.897";
 		int suiteId = 0;
 		int testId = 0;
 		
@@ -396,7 +396,7 @@ public class TestFitTestRunner {
 		when(test.getFail()).thenReturn(fail);
 		when(test.getIgnore()).thenReturn(ignore);
 		when(test.getException()).thenReturn(exception);
-		when(test.getDurationTime()).thenReturn(duration);
+		when(test.getDurationTimeFormattedString()).thenReturn(duration);
 		
 		TestSuite suite = mock(TestSuite.class);
 		when(suite.getTest(0)).thenReturn(test);
@@ -415,7 +415,7 @@ public class TestFitTestRunner {
 		order.verify(test).getFail();
 		order.verify(test).getIgnore();
 		order.verify(test).getException();
-		order.verify(test).getDurationTime();
+		order.verify(test).getDurationTimeFormattedString();
 		
 		verify(suite, times(11)).getTest(0);
 	}
@@ -474,7 +474,7 @@ public class TestFitTestRunner {
 		order.verify(test, never()).getFail();
 		order.verify(test, never()).getIgnore();
 		order.verify(test, never()).getException();
-		order.verify(test, never()).getDurationTime();
+		order.verify(test, never()).getDurationTimeFormattedString();
 		
 		verify(suite, times(2)).getTest(0);
 	}
