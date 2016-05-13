@@ -267,15 +267,12 @@ public abstract class TestRunner {
 	public String createHtmlListOfLibraries() {
 		StringBuilder ret = new StringBuilder();
 		
-		ret.append("\t\t<p>Verwendete Bibliotheken:</p>");
-		ret.append(System.lineSeparator());
-		ret.append("\t\t<ul>");
-		ret.append(System.lineSeparator());
+		boolean library = false;
 		
 		for (int i = 0; i < _library.size(); i++) {
 			String name = _library.get(i).getName();
 			if (!name.isEmpty()) {
-				ret.append("\t\t\t<li>");
+				ret.append("\t\t\t\t\t<li>");
 				ret.append(name);
 				
 				String version = _library.get(i).getVersion();
@@ -286,11 +283,29 @@ public abstract class TestRunner {
 				
 				ret.append("</li>");
 				ret.append(System.lineSeparator());
+				
+				library = true;
 			}
 		}
 		
-		ret.append("\t\t</ul>");
-		ret.append(System.lineSeparator());
+		if (library) {
+			StringBuilder t = new StringBuilder();
+			t.append("\t\t\t<div class=\"libraries\">");
+			t.append(System.lineSeparator());
+			
+			t.append("\t\t\t\t<p>Verwendete Bibliotheken:</p>");
+			t.append(System.lineSeparator());
+			
+			t.append("\t\t\t\t<ul>");
+			t.append(System.lineSeparator());
+			ret.insert(0, t);
+			
+			ret.append("\t\t\t\t</ul>");
+			ret.append(System.lineSeparator());
+			
+			ret.append("\t\t\t</div>");
+			ret.append(System.lineSeparator());
+		}
 		
 		return ret.toString();
 	}
@@ -305,25 +320,27 @@ public abstract class TestRunner {
 	 */
 	public String createHtmlHead(boolean line) {
 		StringBuilder ret = new StringBuilder();
-		
-		if (line) {
-			ret.append("\t\t<hr/>");
+
+		if (!_description.isEmpty()) {
+			if (line) {
+				ret.append("\t\t\t<hr/>");
+				ret.append(System.lineSeparator());
+			}
+			
+			ret.append("\t\t\t<div class=\"testdescription\">");
+	
+			for (int i = 0; i < _description.length(); i++) {
+				char c = _description.charAt(i);
+				if (c == '[')
+					c = '<';
+				else if (c == ']')
+					c = '>';
+				ret.append(c);
+			}
+			
+			ret.append("</div>");
 			ret.append(System.lineSeparator());
 		}
-		
-		ret.append("\t\t<div class=\"testhead\">");
-
-		for (int i = 0; i < _description.length(); i++) {
-			char c = _description.charAt(i);
-			if (c == '[')
-				c = '<';
-			else if (c == ']')
-				c = '>';
-			ret.append(c);
-		}
-		
-		ret.append("</div>");
-		ret.append(System.lineSeparator());
 		
 		return ret.toString();
 	}
@@ -334,29 +351,39 @@ public abstract class TestRunner {
 	 * @return List with nonexistent tests.
 	 */
 	public String createHtmlListOfNonExistsTests() {
-		StringBuilder ret = new StringBuilder("\t\t<div class=\"nonexists\">");
-		ret.append(System.lineSeparator());
-		ret.append("\t\t\t<p>Folgende Tests existieren nicht:</p>");
-		ret.append(System.lineSeparator());
-		ret.append("\t\t\t<ul>");
-		ret.append(System.lineSeparator());
+		StringBuilder ret = new StringBuilder();
+		
+		boolean nonExists = false;
 		
 		for (int suite = 0; suite < _suites.size(); suite++) {
 			for (int test = 0; test < _suites.get(suite).testCount(); test++) {
-				if (!_suites.get(suite).getTest(test).isExists()) {
-					ret.append("\t\t\t\t<li>");
+				if (!_suites.get(suite).getTest(test).isExists() && 
+						(_suites.get(suite).getTest(test).getName() != null) &&
+						!_suites.get(suite).getTest(test).getName().isEmpty()) {
+					ret.append("\t\t\t\t\t<li>");
 					ret.append(_suites.get(suite).getTest(test).getName());
 					ret.append("</li>");
 					ret.append(System.lineSeparator());
+					nonExists = true;
 				}
 					
 			}
 		}
 		
-		ret.append("\t\t\t</ul>");
-		ret.append(System.lineSeparator());
-		ret.append("\t\t</div>");
-		ret.append(System.lineSeparator());
+		if (nonExists) {
+			StringBuilder t = new StringBuilder("\t\t\t<div class=\"nonexists\">");
+			t.append(System.lineSeparator());
+			t.append("\t\t\t\t<p>Folgende Tests existieren nicht:</p>");
+			t.append(System.lineSeparator());
+			t.append("\t\t\t\t<ul>");
+			t.append(System.lineSeparator());
+			ret.insert(0, t);
+			
+			ret.append("\t\t\t\t</ul>");
+			ret.append(System.lineSeparator());
+			ret.append("\t\t\t</div>");
+			ret.append(System.lineSeparator());
+		}
 		
 		return ret.toString();
 	}
@@ -368,9 +395,13 @@ public abstract class TestRunner {
 	 * 
 	 * @throws IOException 
 	 */
-	public String createHtml(HtmlOut html) throws IOException {
+	public String createHtml(HtmlOut html, boolean line) throws IOException {
 		StringBuilder ret = new StringBuilder("\t\t<div class=\"testgroup\">");
 		ret.append(System.lineSeparator());
+		
+		ret.append(createHtmlHead(line));
+		ret.append(createHtmlListOfLibraries());
+		ret.append(createHtmlListOfNonExistsTests());
 		
 		for (int suite = 0; suite < _suites.size(); suite++) {
 			ret.append("\t\t\t<div class=\"testsuite\">");

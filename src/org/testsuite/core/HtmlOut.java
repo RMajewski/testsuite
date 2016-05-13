@@ -86,6 +86,14 @@ public class HtmlOut {
 		_bw.write(".testoutInvisible {display: none;}"); _bw.newLine();
 		_bw.write(".testoutVisible {display: block;}"); _bw.newLine();
 		_bw.write(".right {float: right;}"); _bw.newLine();
+		_bw.write(".testsuite {margin-bottom: 25px;}"); _bw.newLine();
+		_bw.write("table {width: 100%; border-collapse: collapse; ");
+		_bw.write("border: 2px solid #000; table-layout:fixed;}"); 
+		_bw.newLine();
+		_bw.write("td {text-align: left; vertical-align: text-top;}");
+		_bw.newLine();
+		_bw.write("th {text-align: left;}"); _bw.newLine();
+		_bw.write("tr {border: 1px solid #000;}"); _bw.newLine();
 		_bw.write("\t\t</style>"); _bw.newLine();
 	}
 	

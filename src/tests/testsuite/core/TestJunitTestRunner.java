@@ -26,7 +26,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.lang.reflect.Method;
 
 import org.junit.Before;
@@ -331,8 +330,9 @@ public class TestJunitTestRunner {
 		String suiteName = "TestSuite";
 		String packageName = "package";
 		
-		String ret = "\t\t\t\t\t\t<th>" + suiteName + "</th>" + 
-				System.lineSeparator() + "\t\t\t\t\t\t<th>Erfolgreich</th>" +
+		String ret = "\t\t\t\t\t\t<th style=\"width: 50%;\">" + suiteName + 
+				"</th>" + System.lineSeparator() + 
+				"\t\t\t\t\t\t<th>Erfolgreich</th>" +
 				System.lineSeparator() + "\t\t\t\t\t\t<th>Fehlerhaft</th>" +
 				System.lineSeparator() + "\t\t\t\t\t\t<th>Zeit</th>" +
 				System.lineSeparator() + "\t\t\t\t\t</tr>" + 
@@ -380,11 +380,15 @@ public class TestJunitTestRunner {
 		int suiteId = 0;
 		int testId = 0;
 		
-		String ret = "\t\t\t\t\t\t<td>" + testName + System.lineSeparator() +
+		String ret = "\t\t\t\t\t\t<td class=\"wrong\">" + testName +
+				System.lineSeparator() +
 				testOut + "\t\t\t\t\t\t</td>" + System.lineSeparator() + 
-				"\t\t\t\t\t\t<td>" + ok + "</td>" + System.lineSeparator() + 
-				"\t\t\t\t\t\t<td>" + fail + "</td>" + System.lineSeparator() +
-				"\t\t\t\t\t\t<td>" + duration + "</td>" + System.lineSeparator();
+				"\t\t\t\t\t\t<td class=\"wrong\">" + ok + "</td>" + 
+				System.lineSeparator() + 
+				"\t\t\t\t\t\t<td class=\"wrong\">" + fail + "</td>" + 
+				System.lineSeparator() +
+				"\t\t\t\t\t\t<td class=\"wrong\">" + duration + "</td>" + 
+				System.lineSeparator();
 		
 		when(_config.getPathSuitesResult()).thenReturn(resultSuite);
 		
@@ -423,7 +427,7 @@ public class TestJunitTestRunner {
 		order.verify(test).getError();
 		order.verify(test).getDurationTime();
 		
-		verify(suite, times(8)).getTest(0);
+		verify(suite, times(10)).getTest(0);
 	}
 	
 	/**
@@ -442,11 +446,12 @@ public class TestJunitTestRunner {
 		int fail = 2;
 		long duration = 1000;
 		
-		String ret = "\t\t\t\t\t\t<td>" + srcName + File.separator + 
+		String ret = "\t\t\t\t\t\t<td class=\"wrong\">" + srcName +
+				File.separator + 
 				packageName.replaceAll("\\.", File.separator) + File.separator +
 				testName + "." + extension + "</td>" + System.lineSeparator() + 
-				"\t\t\t\t\t\t<td colspan=\"3\">Test existiert nicht</td>" + 
-				System.lineSeparator();
+				"\t\t\t\t\t\t<td colspan=\"3\" class=\"wrong\">Test " +
+				"existiert nicht</td>" + System.lineSeparator();
 
 		_runner.setFileExtension(extension);
 		
@@ -484,7 +489,7 @@ public class TestJunitTestRunner {
 		order.verify(test, never()).getError();
 		order.verify(test, never()).getDurationTime();
 		
-		verify(suite, times(2)).getTest(0);
+		verify(suite, times(4)).getTest(0);
 	}
 	
 	/**

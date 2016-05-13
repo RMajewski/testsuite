@@ -412,10 +412,12 @@ public class TestTestRunner extends TestRunnerHelper {
 		
 		String newLine = System.lineSeparator();
 		
-		String result = "\t\t<p>Verwendete Bibliotheken:</p>" + newLine +
-				"\t\t<ul>" + newLine + "\t\t\t<li>" + name1 + " " + version1 +
-				"</li>" + newLine + "\t\t\t<li>" + name2 + "</li>" + newLine +
-				"\t\t</ul>" + newLine;
+		String result = "\t\t\t<div class=\"libraries\">" + newLine + 
+				"\t\t\t\t<p>Verwendete Bibliotheken:</p>" + newLine +
+				"\t\t\t\t<ul>" + newLine + "\t\t\t\t\t<li>" + name1 + " " + 
+				version1 + "</li>" + newLine + "\t\t\t\t\t<li>" + name2 + 
+				"</li>" + newLine + "\t\t\t\t</ul>" + newLine + "\t\t\t</div>" +
+				newLine;
 
 		assertEquals(result, _runner.createHtmlListOfLibraries());
 		
@@ -458,13 +460,13 @@ public class TestTestRunner extends TestRunnerHelper {
 		when(suite2.getTest(1)).thenReturn(test4);
 		_runner.addTestSuite(suite2);
 		
-		String ret = "\t\t<div class=\"nonexists\">" + System.lineSeparator() +
-				"\t\t\t<p>Folgende Tests existieren nicht:</p>" + 
-				System.lineSeparator() + "\t\t\t<ul>" + System.lineSeparator() +
-				"\t\t\t\t<li>Test1</li>" + System.lineSeparator() +
-				"\t\t\t\t<li>Test4</li>" + System.lineSeparator() +
-				"\t\t\t</ul>" + System.lineSeparator() +
-				"\t\t</div>" + System.lineSeparator();
+		String ret = "\t\t\t<div class=\"nonexists\">" + System.lineSeparator() +
+				"\t\t\t\t<p>Folgende Tests existieren nicht:</p>" + 
+				System.lineSeparator() + "\t\t\t\t<ul>" + System.lineSeparator() +
+				"\t\t\t\t\t<li>Test1</li>" + System.lineSeparator() +
+				"\t\t\t\t\t<li>Test4</li>" + System.lineSeparator() +
+				"\t\t\t\t</ul>" + System.lineSeparator() +
+				"\t\t\t</div>" + System.lineSeparator();
 		assertEquals(ret, _runner.createHtmlListOfNonExistsTests());
 	}
 	
@@ -476,8 +478,8 @@ public class TestTestRunner extends TestRunnerHelper {
 	public void testCreateHtmlHeadWithFalseAsParameter() {
 		String head = "[h2]Test[/h2][p]Dies ist ein Test[/p]";
 		_runner.setDescription(head);
-		String ret = "\t\t<div class=\"testhead\"><h2>Test</h2><p>Dies ist " +
-				"ein Test</p></div>" + System.lineSeparator();
+		String ret = "\t\t\t<div class=\"testdescription\"><h2>Test</h2><p>" +
+				"Dies ist ein Test</p></div>" + System.lineSeparator();
 		assertEquals(ret, _runner.createHtmlHead(false));
 	}
 	
@@ -489,9 +491,9 @@ public class TestTestRunner extends TestRunnerHelper {
 	public void testCreateHtmlHeadWithTrueAsParameter() {
 		String head = "[h2]Test[/h2][p]Dies ist ein großer Test[/p]";
 		_runner.setDescription(head);
-		String ret = "\t\t<hr/>" + System.lineSeparator() +
-				"\t\t<div class=\"testhead\"><h2>Test</h2><p>Dies ist ein " +
-				"großer Test</p></div>" + System.lineSeparator();
+		String ret = "\t\t\t<hr/>" + System.lineSeparator() +
+				"\t\t\t<div class=\"testdescription\"><h2>Test</h2><p>Dies " +
+				"ist ein großer Test</p></div>" + System.lineSeparator();
 		assertEquals(ret, _runner.createHtmlHead(true));
 	}
 	
@@ -545,7 +547,7 @@ public class TestTestRunner extends TestRunnerHelper {
 				"\t\t\t\t</table>" + System.lineSeparator() +
 				"\t\t\t</div>" + System.lineSeparator() +
 				"\t\t</div>" + System.lineSeparator();
-		assertEquals(ret, _runner.createHtml(html));
+		assertEquals(ret, _runner.createHtml(html, false));
 	}
 
 	/**

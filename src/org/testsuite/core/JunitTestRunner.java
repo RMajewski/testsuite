@@ -146,7 +146,8 @@ public class JunitTestRunner extends TestRunner {
 
 	@Override
 	protected String createHtmlTableHead(int suite) {
-		StringBuilder ret = new StringBuilder("\t\t\t\t\t\t<th>");
+		StringBuilder ret = new StringBuilder("\t\t\t\t\t\t<th style=\"");
+		ret.append("width: 50%;\">");
 		ret.append(_suites.get(suite).getName());
 		ret.append("</th>");
 		ret.append(System.lineSeparator());
@@ -190,8 +191,17 @@ public class JunitTestRunner extends TestRunner {
 		
 		if (html == null)
 			throw new IllegalArgumentException();
+
+		String cl = new String();
+		if (((Junit)_suites.get(suite).getTest(test)).getOk() > 0)
+			cl = " class=\"pass\"";
+
+		if (((Junit)_suites.get(suite).getTest(test)).getFail() > 0)
+			cl = " class=\"wrong\"";
 		
-		StringBuilder ret = new StringBuilder("\t\t\t\t\t\t<td>");
+		String td = "\t\t\t\t\t\t<td" + cl + ">";
+
+		StringBuilder ret = new StringBuilder(td);
 		
 		if (_suites.get(suite).getTest(test).isExists()) {
 			ret.append(_suites.get(suite).getTest(test).getName());
@@ -204,19 +214,19 @@ public class JunitTestRunner extends TestRunner {
 			ret.append("\t\t\t\t\t\t</td>");
 			ret.append(System.lineSeparator());
 			
-			ret.append("\t\t\t\t\t\t<td>");
+			ret.append(td);
 			ret.append(String.valueOf(
 					((Junit)_suites.get(suite).getTest(test)).getOk()));
 			ret.append("</td>");
 			ret.append(System.lineSeparator());
 			
-			ret.append("\t\t\t\t\t\t<td>");
+			ret.append(td);
 			ret.append(String.valueOf(
 					((Junit)_suites.get(suite).getTest(test)).getFail()));
 			ret.append("</td>");
 			ret.append(System.lineSeparator());
 			
-			ret.append("\t\t\t\t\t\t<td>");
+			ret.append(td);
 			ret.append(String.valueOf(
 					_suites.get(suite).getTest(test).getDurationTime()));
 		} else {
@@ -231,7 +241,7 @@ public class JunitTestRunner extends TestRunner {
 			ret.append("</td>");
 			ret.append(System.lineSeparator());
 			
-			ret.append("\t\t\t\t\t\t<td colspan=\"3\">");
+			ret.append("\t\t\t\t\t\t<td colspan=\"3\" class=\"wrong\">");
 			ret.append("Test existiert nicht");
 		}
 		
