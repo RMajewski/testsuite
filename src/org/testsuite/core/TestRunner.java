@@ -558,7 +558,7 @@ public abstract class TestRunner {
 			e.printStackTrace();
 		}
 		
-		return ret.toString();
+		return ret.toString().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 	}
 	
 	/**

@@ -22,8 +22,11 @@ package tests.testsuite.core;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -697,5 +700,32 @@ public class TestTestRunner extends TestRunnerHelper {
 		verify(_config).getProperty(0);
 		verify(_config).getProperty(1);
 		verify(_config).getProperty(2);
+	}
+	
+	@Test
+	public void testInputStreamToString() throws Exception{
+		Method inputStreamToString = getProtectedMethod(TestRunner.class, 
+				"inputStreamToString", InputStream.class);
+		
+		String line = "<h1>Test</h1><p>Dies ist ein Test!</p>";
+		
+		InputStream is = mock(InputStream.class);
+		
+		InputStreamReader isr = mock(InputStreamReader.class);
+		
+		PowerMockito.whenNew(InputStreamReader.class)
+			.withArguments(is)
+			.thenReturn(isr);
+		
+		BufferedReader bf = mock(BufferedReader.class);
+		when(bf.readLine()).thenReturn(line, null);
+		
+		PowerMockito.whenNew(BufferedReader.class)
+			.withArguments(isr)
+			.thenReturn(bf);
+		
+		String ret = "&lt;h1&gt;Test&lt;/h1&gt;&lt;p&gt;Dies ist ein " +
+				"Test!&lt;/p&gt;&lt;br/&gt;";
+		assertEquals(ret, inputStreamToString.invoke(_runner, is));
 	}
 }
