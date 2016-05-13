@@ -42,6 +42,7 @@ import org.testsuite.core.HtmlOut;
 import org.testsuite.data.Config;
 import org.testsuite.data.Fit;
 import org.testsuite.data.Junit;
+import org.testsuite.data.Library;
 import org.testsuite.data.TestSuite;
 
 /**
@@ -176,13 +177,28 @@ public class TestFitTestRunner {
 	public void testRun() throws Exception {
 		String suiteName = "suite";
 		String pathSrc = "src";
-		String packageName = "package";
+		String packageName = "package.package2";
 		String testName = "test";
 		String pathResult = "result";
 		String pathSuitesResult = "suites";
 		String extension = "fit";
 		String resultPath = pathResult + File.separator + pathSuitesResult +
 				File.separator + packageName.replaceAll("\\.", File.separator);
+		String pathLib = "lib";
+		String pathClass = "bin";
+		String lib = "lib1.jar";
+		String prop = "test1=\"1\"";
+
+		when(_config.getPathLibrary()).thenReturn(pathLib);
+		when(_config.propertyCount()).thenReturn(1);
+		when(_config.getProperty(0)).thenReturn(prop);
+		
+		Library library = mock(Library.class);
+		when(library.getFileName()).thenReturn(lib);
+		when(library.getPath()).thenReturn(new String());
+		_runner.addLibrary(library);
+		
+		_runner.addClassPath(pathClass);
 
 		_runner.setFileExtension(extension);
 		
@@ -253,8 +269,14 @@ public class TestFitTestRunner {
 		PowerMockito.verifyNew(File.class).withArguments(resultPath);
 		verify(fResultPath).exists();
 		
-		// FIXME exec überprüfen
-		verify(runtime).exec(Matchers.anyString());
+		String exec = "java -cp " + pathClass + ":" + pathLib + "/" + lib +
+				" -D" + prop + " fit.FileRunner " + pathSrc + File.separator +
+				packageName.replaceAll("\\.", File.separator) + File.separator + 
+				testName + "." + extension + " " + pathResult + File.separator +
+				pathSuitesResult + File.separator + 
+				packageName.replaceAll("\\.", File.separator) + File.separator +
+				testName + ".html";
+		verify(runtime).exec(exec);
 		
 		verify(process).waitFor();
 		

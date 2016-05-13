@@ -475,19 +475,75 @@ public abstract class TestRunner {
 		return ret.toString();
 	}
 	
-	//FIXME Alle Einträge hier zusammenstellen (auch Bibliotheken, etc.)
+	/**
+	 * Creates from all necessary information to the classpath.
+	 * 
+	 * @return The created classpath.
+	 */
 	protected String createClasspath() {
 		StringBuilder ret = new StringBuilder();
+		
+		boolean sep = false;
+		boolean space = false;
 		
 		for (int path = 0; path < _classpath.size(); path++) {
 			if (path > 0)
 				ret.append(File.pathSeparator);
 			ret.append(_classpath.get(path));
+			sep = true;
+			space = true;
 		}
+		
+		for (int lib = 0; lib < _library.size(); lib++) {
+			if (sep || (lib > 0))
+				ret.append(File.pathSeparator);
+			
+			if (!_library.get(lib).getPath().isEmpty()) {
+				ret.append(_library.get(lib).getPath());
+				ret.append(File.separator);
+			} else if(!_config.getPathLibrary().isEmpty()) {
+				ret.append(_config.getPathLibrary());
+				ret.append(File.separator);
+			}
+			
+			ret.append(_library.get(lib).getFileName());
+			space = true;
+		}
+		
+		if (space)
+			ret.append(" ");
 		
 		return ret.toString();
 	}
 	
+	/**
+	 * Creates the properties as string
+	 * 
+	 * @return Created property string
+	 */
+	protected String createProperty() {
+		StringBuilder ret = new StringBuilder();
+		
+		for (int property = 0; property < _config.propertyCount(); property++) {
+			if (property > 0)
+				ret.append(" ");
+			ret.append("-D");
+			ret.append(_config.getProperty(property));
+		}
+		
+		if (_config.propertyCount() > 0)
+			ret.append(" ");
+		
+		return ret.toString();
+	}
+	
+	/**
+	 * Writes the lines from InputStream into a string.
+	 * 
+	 * @param stream InputStream to be returned as a string.
+	 * 
+	 * @return Then lines from InputStream.
+	 */
 	protected String inputStreamToString(InputStream stream) {
 		StringBuilder ret = new StringBuilder();
 		

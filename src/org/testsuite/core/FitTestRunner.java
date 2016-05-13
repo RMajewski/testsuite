@@ -28,7 +28,6 @@ import java.util.Date;
 
 import org.testsuite.data.Config;
 import org.testsuite.data.Fit;
-import org.testsuite.data.Junit;
 
 /**
  * Executes the Fit tests.
@@ -93,14 +92,10 @@ public class FitTestRunner extends TestRunner {
 				try {
 					_suites.get(suite).getTest(test).setStart(new Date().getTime());
 
-					// FIXME classpath anpassen
 					System.out.print(fit + ": ");
-					String exec = "java -cp " +
-							"bin:resource:" + _config.getPathLibrary() +
-							"/fit.jar:" + _config.getPathLibrary() +
-							"/jemmy.jar:" + _config.getPathLibrary() +
-							"/sqlite-jdbc-3.8.11.2.jar -Dtesting=true " +
-							"fit.FileRunner " + fit + " " + resultFileName;
+					String exec = "java -cp " + createClasspath() +
+							createProperty() + "fit.FileRunner " + fit + " " +
+							resultFileName;
 					Process p = Runtime.getRuntime().exec(exec);
 					int exit = p.waitFor();
 					
@@ -202,7 +197,7 @@ public class FitTestRunner extends TestRunner {
 		ret.append(System.lineSeparator());
 
 		ret.append("\t\t\t\t\t\t<th>");
-		ret.append(_bundle.getString("createHtmlTableHead_irgnore"));
+		ret.append(_bundle.getString("createHtmlTableHead_ignore"));
 		ret.append("</th>");
 		ret.append(System.lineSeparator());
 

@@ -40,6 +40,7 @@ import org.testsuite.core.HtmlOut;
 import org.testsuite.core.JunitTestRunner;
 import org.testsuite.data.Config;
 import org.testsuite.data.Junit;
+import org.testsuite.data.Library;
 import org.testsuite.data.TestSuite;
 
 /**
@@ -160,6 +161,21 @@ public class TestJunitTestRunner {
 		String suiteName = "suite";
 		String packageName = "package";
 		String testName = "test";
+		String pathLib = "lib";
+		String pathClass = "bin";
+		String lib = "lib1.jar";
+		String prop = "test1=\"1\"";
+		
+		when(_config.getPathLibrary()).thenReturn(pathLib);
+		when(_config.propertyCount()).thenReturn(1);
+		when(_config.getProperty(0)).thenReturn(prop);
+		
+		Library library = mock(Library.class);
+		when(library.getFileName()).thenReturn(lib);
+		when(library.getPath()).thenReturn(new String());
+		_runner.addLibrary(library);
+		
+		_runner.addClassPath(pathClass);
 		
 		InputStream isConsole = mock(InputStream.class);
 		InputStream isError = mock(InputStream.class);
@@ -215,8 +231,10 @@ public class TestJunitTestRunner {
 		
 		_runner.run();
 		
-		// FIXME exec überprüfen
-		verify(runtime).exec(Matchers.anyString());
+		String exec = "java -cp " + pathClass + ":" + pathLib + "/" + lib +
+				" -D" + prop + " org.junit.runner.JUnitCore " + packageName + 
+				"." + testName;
+		verify(runtime).exec(exec);
 		
 		verify(process).waitFor();
 		verify(process).getInputStream();
@@ -244,6 +262,21 @@ public class TestJunitTestRunner {
 		String suiteName = "suite";
 		String packageName = "package";
 		String testName = "test";
+		String pathLib = "lib";
+		String pathClass = "bin";
+		String lib = "lib1.jar";
+		String prop = "test1=\"1\"";
+
+		when(_config.getPathLibrary()).thenReturn(pathLib);
+		when(_config.propertyCount()).thenReturn(1);
+		when(_config.getProperty(0)).thenReturn(prop);
+		
+		Library library = mock(Library.class);
+		when(library.getFileName()).thenReturn(lib);
+		when(library.getPath()).thenReturn(new String());
+		_runner.addLibrary(library);
+		
+		_runner.addClassPath(pathClass);
 		
 		InputStream isConsole = mock(InputStream.class);
 		InputStream isError = mock(InputStream.class);
@@ -299,8 +332,10 @@ public class TestJunitTestRunner {
 		
 		_runner.run();
 		
-		// FIXME exec überprüfen
-		verify(runtime).exec(Matchers.anyString());
+		String exec = "java -cp " + pathClass + ":" + pathLib + "/" + lib +
+				" -D" + prop + " org.junit.runner.JUnitCore " + packageName + 
+				"." + testName;
+		verify(runtime).exec(exec);
 		
 		verify(process).waitFor();
 		verify(process).getInputStream();

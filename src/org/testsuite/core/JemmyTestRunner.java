@@ -24,8 +24,6 @@ import java.io.IOException;
 import java.util.Date;
 
 import org.testsuite.data.Config;
-import org.testsuite.data.Fit;
-import org.testsuite.data.Junit;
 
 /**
  * Executes the jemmy tests.
@@ -74,8 +72,7 @@ public class JemmyTestRunner extends TestRunner {
 
 					System.out.print(name + ": ");
 					Process p = Runtime.getRuntime().exec("java -cp " +
-							System.getProperty("java.class.path")+
-							" -Dtesting=true " + name);
+							createClasspath() + createProperty() + name);
 					int exit = p.waitFor();
 					
 					// Ausgabe wie der Test verlaufen ist

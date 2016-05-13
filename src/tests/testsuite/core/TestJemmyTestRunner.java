@@ -45,6 +45,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.testsuite.core.HtmlOut;
 import org.testsuite.core.JemmyTestRunner;
 import org.testsuite.data.Config;
+import org.testsuite.data.Library;
 import org.testsuite.data.TestSuite;
 
 /**
@@ -175,6 +176,21 @@ public class TestJemmyTestRunner {
 		String suiteName = "suite";
 		String packageName = "package";
 		String testName = "test";
+		String pathLib = "lib";
+		String pathClass = "bin";
+		String lib = "lib1.jar";
+		String prop = "test1=\"1\"";
+
+		when(_config.getPathLibrary()).thenReturn(pathLib);
+		when(_config.propertyCount()).thenReturn(1);
+		when(_config.getProperty(0)).thenReturn(prop);
+		
+		Library library = mock(Library.class);
+		when(library.getFileName()).thenReturn(lib);
+		when(library.getPath()).thenReturn(new String());
+		_runner.addLibrary(library);
+		
+		_runner.addClassPath(pathClass);
 		
 		InputStream isConsole = mock(InputStream.class);
 		InputStream isError = mock(InputStream.class);
@@ -229,8 +245,9 @@ public class TestJemmyTestRunner {
 		
 		_runner.run();
 		
-		// FIXME exec überprüfen
-		verify(runtime).exec(Matchers.anyString());
+		String exec = "java -cp " + pathClass + ":" + pathLib + "/" + lib +
+				" -D" + prop + " " + packageName + "." + testName;
+		verify(runtime).exec(exec);
 		
 		verify(process).waitFor();
 		verify(process).getInputStream();

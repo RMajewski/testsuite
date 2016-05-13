@@ -74,11 +74,10 @@ public class JunitTestRunner extends TestRunner {
 					_suites.get(suite).getTest(test).setStart(
 							new Date().getTime());
 
-					// FIXME classpath anpassen
 					System.out.print(name + ": ");
 					Process p = Runtime.getRuntime().exec("java -cp " +
-							System.getProperty("java.class.path")+
-							" -Dtesting=true org.junit.runner.JUnitCore " +
+							createClasspath() + createProperty() +
+							"org.junit.runner.JUnitCore " +
 							name);
 					
 					int exit = p.waitFor();

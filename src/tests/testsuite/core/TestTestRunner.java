@@ -616,6 +616,9 @@ public class TestTestRunner extends TestRunnerHelper {
 		verify(lib2).getFileName();
 	}
 	
+	/**
+	 * Tests if the generated classpath properly. 
+	 */
 	@Test
 	public void testCreateClasspath()
 			throws NoSuchMethodException, SecurityException, 
@@ -633,10 +636,66 @@ public class TestTestRunner extends TestRunnerHelper {
 		String path3 = "path3";
 		_runner.addClassPath(path3);
 		
+		String pathLib1 = "lib1";
+		String name1 = "test1.jar";
+		String pathLib2 = "lib2";
+		String name2 = "test2.jar";
+		
+		when(_config.getPathLibrary()).thenReturn(pathLib1);
+		
+		Library lib1 = mock(Library.class);
+		when(lib1.getFileName()).thenReturn(name1);
+		when(lib1.getPath()).thenReturn(new String());
+		_runner.addLibrary(lib1);
+		
+		Library lib2 = mock(Library.class);
+		when(lib2.getFileName()).thenReturn(name2);
+		when(lib2.getPath()).thenReturn(pathLib2);
+		_runner.addLibrary(lib2);
+		
 		String ret = path1 + File.pathSeparator + path2 + File.pathSeparator +
-				path3;
+				path3 + File.pathSeparator + pathLib1 + File.separator + name1 +
+				File.pathSeparator + pathLib2 + File.separator + name2 + " ";
 		
 		assertEquals(ret, createClasspath.invoke(_runner, null));
 		
+		verify(_config, times(2)).getPathLibrary();
+		
+		verify(lib1).getFileName();
+		verify(lib1).getPath();
+		
+		verify(lib2).getFileName();
+		verify(lib2, times(2)).getPath();
+	}
+	
+	/**
+	 * Tests if the system settings are generated correctly.
+	 */
+	@Test
+	public void testCreateProperty()
+			throws NoSuchMethodException, SecurityException, 
+			IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException {
+		Method createProperty = getProtectedMethod(TestRunner.class, 
+		"createProperty", null);
+		
+		String prop1 = "test1=\"1\"";
+		when(_config.getProperty(0)).thenReturn(prop1);
+		
+		String prop2 = "test2=\"true\"";
+		when(_config.getProperty(1)).thenReturn(prop2);
+		
+		String prop3 = "test3=\"false\"";
+		when(_config.getProperty(2)).thenReturn(prop3);
+		when(_config.propertyCount()).thenReturn(3);
+		
+		String ret = "-D" + prop1 + " -D" + prop2 + " -D" + prop3 + " ";
+
+		assertEquals(ret, createProperty.invoke(_runner, null));
+		
+		verify(_config, times(5)).propertyCount();
+		verify(_config).getProperty(0);
+		verify(_config).getProperty(1);
+		verify(_config).getProperty(2);
 	}
 }
