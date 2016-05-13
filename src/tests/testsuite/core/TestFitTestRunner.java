@@ -47,6 +47,8 @@ import org.testsuite.data.TestSuite;
 /**
  * Tests the class {org.testsuite.core.FitTestRunner}.
  * 
+ * $java -Duser.language=de -Duser.country=DE
+ * 
  * @author René Majewski
  *
  * @version 0.1

@@ -26,6 +26,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import org.testsuite.data.Config;
 import org.testsuite.data.Library;
@@ -75,11 +77,22 @@ public abstract class TestRunner {
 	protected int _lastSuiteId;
 	
 	/**
+	 * Saves the instance of resource bundle
+	 */
+	protected ResourceBundle _bundle;
+	
+	/**
 	 * Initialis the data of the class.
 	 * 
 	 * @param config The configuration
 	 */
 	public TestRunner(Config config) {
+		try {
+			_bundle = ResourceBundle.getBundle(
+					"resources.lang.org.testsuite.core.TestRunner");
+		} catch (MissingResourceException e) {
+			e.printStackTrace();
+		}
 		_suites = new ArrayList<TestSuite>();
 		_library = new ArrayList<Library>();
 		_classpath = new ArrayList<String>();
@@ -119,7 +132,7 @@ public abstract class TestRunner {
 	/**
 	 * Adds a library to the list.
 	 * 
-	 * @param library Library, which is ti be added to the list.
+	 * @param library Library, which is to be added to the list.
 	 */
 	public void addLibrary(Library library) {
 		_library.add(library);
@@ -293,7 +306,9 @@ public abstract class TestRunner {
 			t.append("\t\t\t<div class=\"libraries\">");
 			t.append(System.lineSeparator());
 			
-			t.append("\t\t\t\t<p>Verwendete Bibliotheken:</p>");
+			t.append("\t\t\t\t<p>");
+			t.append(_bundle.getString("createHtmlListOfLibraries_libraries"));
+			t.append(":</p>");
 			t.append(System.lineSeparator());
 			
 			t.append("\t\t\t\t<ul>");
@@ -373,7 +388,9 @@ public abstract class TestRunner {
 		if (nonExists) {
 			StringBuilder t = new StringBuilder("\t\t\t<div class=\"nonexists\">");
 			t.append(System.lineSeparator());
-			t.append("\t\t\t\t<p>Folgende Tests existieren nicht:</p>");
+			t.append("\t\t\t\t<p>");
+			t.append(_bundle.getString("createHtmlListOfNonExistsTests_tests"));
+			t.append(":</p>");
 			t.append(System.lineSeparator());
 			t.append("\t\t\t\t<ul>");
 			t.append(System.lineSeparator());

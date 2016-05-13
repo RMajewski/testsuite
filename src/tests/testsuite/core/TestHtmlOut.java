@@ -42,6 +42,8 @@ import org.testsuite.core.HtmlOut;
 /**
  * Test for the class {@link org.testsuite.core.HtmlOut}.
  * 
+ * $java -Duser.language=de -Duser.country=DE
+ * 
  * @author René Majewski
  *
  * @version 0.1

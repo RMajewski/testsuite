@@ -29,6 +29,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -62,11 +65,23 @@ public class TestCore {
 	 * Saves the list of classes TestRunner.
 	 */
 	private List<TestRunner> _testRunner;
+	
+	/**
+	 * Saves the instance of resource bundle
+	 */
+	private ResourceBundle _bundle;
 
 	/**
 	 * Initialize the test management
 	 */
 	public TestCore() {
+		try {
+			_bundle = ResourceBundle.getBundle(
+					"resources.lang.org.testsuite.core.TestCore");
+		} catch (MissingResourceException e) {
+			e.printStackTrace();
+		}
+		
 		_config = new Config();
 		_testRunner = new ArrayList<TestRunner>();
 		
@@ -131,7 +146,8 @@ public class TestCore {
 			if (!file.exists())
 				file.mkdirs();
 			
-			htmlFile += "Ergebnisse_" + _config.getPathSuitesResult() + ".html";
+			htmlFile += _bundle.getString("html_result") + "_" +
+					_config.getPathSuitesResult() + ".html";
 			try {
 				
 				HtmlOut html = new HtmlOut(htmlFile);

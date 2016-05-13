@@ -50,6 +50,8 @@ import org.testsuite.data.TestSuite;
 /**
  * Tests the class {@link org.testsuite.core.JemmyTestRunner}.
  * 
+ * $java -Duser.language=de -Duser.country=DE
+ * 
  * @author René Majewski
  *
  * @version 0.1

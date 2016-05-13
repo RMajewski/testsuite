@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Date;
+import java.util.ResourceBundle;
 
 import org.testsuite.helper.HelperCalendar;
 
@@ -54,6 +55,11 @@ public class HtmlOut {
 	private BufferedWriter _bw;
 	
 	/**
+	 * Saves the object of the resource bundle
+	 */
+	private ResourceBundle _bundle;
+	
+	/**
 	 * Initialize the class
 	 * 
 	 * @param fileName File for output
@@ -63,6 +69,9 @@ public class HtmlOut {
 	public HtmlOut(String fileName) throws IOException {
 		if ((fileName == null) || fileName.isEmpty())
 			throw new IllegalArgumentException();
+		
+		_bundle = ResourceBundle.getBundle(
+				"resources.lang.org.testsuite.core.HtmlOut");
 		
 		// Daten speichern
 		_htmlFile = fileName;
@@ -141,11 +150,14 @@ public class HtmlOut {
 		javaScript();
 		_bw.write("\t</head>"); _bw.newLine();
 		_bw.write("\t<body>"); _bw.newLine();
-		_bw.write("\t\t<h1>Ergebniss der Tests vom ");
+		_bw.write("\t\t<h1>");
+		_bw.write(_bundle.getString("htmlHead_head"));
+		_bw.write(" ");
 		_bw.write(date);
 		_bw.write("</h1>"); _bw.newLine();
-		_bw.write("\t\t<p>Dies ist eine automatisch erzeugte HTML-Datei mit ");
-		_bw.write("dem Ergebnissen der ausgeführten Tests.</p>");
+		_bw.write("\t\t<p>");
+		_bw.write(_bundle.getString("htmlHead_description"));
+		_bw.write("</p>");
 		_bw.newLine();
 	}
 	
@@ -198,7 +210,7 @@ public class HtmlOut {
 		ret.append("\t\t\t\t\t\t\t<div class=\"console\">");
 		
 		if ((console == null) || console.isEmpty())
-			ret.append("Keine Ausgabe auf der Konsole");
+			ret.append(_bundle.getString("generateTestOut_noConsoleOut"));
 		else
 			ret.append(console);
 		
@@ -208,7 +220,7 @@ public class HtmlOut {
 		ret.append("\t\t\t\t\t\t\t<div class=\"error\">");
 		
 		if ((error == null) || error.isEmpty())
-			ret.append("Keine Fehler ausgegeben");
+			ret.append(_bundle.getString("generateTestOut_noErrorOut"));
 		else
 			ret.append(error);
 		

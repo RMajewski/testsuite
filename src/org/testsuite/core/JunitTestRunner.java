@@ -65,7 +65,8 @@ public class JunitTestRunner extends TestRunner {
 				if (!_suites.get(suite).isExists() || 
 						!_suites.get(suite).getTest(test).isExists()) {
 					_suites.get(suite).getTest(test).setExitStatus(100);
-					System.out.println(name + " konnte nicht gefunden werden.");
+					System.out.print(name + " ");
+					System.out.println(_bundle.getString("run_notFound"));
 					continue;
 				}
 			
@@ -73,6 +74,7 @@ public class JunitTestRunner extends TestRunner {
 					_suites.get(suite).getTest(test).setStart(
 							new Date().getTime());
 
+					// FIXME classpath anpassen
 					System.out.print(name + ": ");
 					Process p = Runtime.getRuntime().exec("java -cp " +
 							System.getProperty("java.class.path")+
@@ -87,11 +89,13 @@ public class JunitTestRunner extends TestRunner {
 							new Date().getTime());
 
 					if (exit == 0)
-						System.out.print("wurde erfolgreich ausgeführt");
+						System.out.print(_bundle.getString("run_pass"));
 					else
-						System.out.print("weißt Fehler auf");
+						System.out.print(_bundle.getString("run_failure"));
 
-					System.out.print(" (Dauer des Tests: ");
+					System.out.print(" (");
+					System.out.print(_bundle.getString("run_duration"));
+					System.out.print(" ");
 					System.out.print(String.valueOf(
 							_suites.get(suite).getTest(test).getDurationTime()));
 					System.out.println(" ms)");
@@ -153,17 +157,17 @@ public class JunitTestRunner extends TestRunner {
 		ret.append(System.lineSeparator());
 		
 		ret.append("\t\t\t\t\t\t<th>");
-		ret.append("Erfolgreich");
+		ret.append(_bundle.getString("createHtmlTableHead_ok"));
 		ret.append("</th>");
 		ret.append(System.lineSeparator());
 		
 		ret.append("\t\t\t\t\t\t<th>");
-		ret.append("Fehlerhaft");
+		ret.append(_bundle.getString("createHtmlTableHead_exception"));
 		ret.append("</th>");
 		ret.append(System.lineSeparator());
 		
 		ret.append("\t\t\t\t\t\t<th>");
-		ret.append("Zeit");
+		ret.append(_bundle.getString("createHtmlTableHead_time"));
 		ret.append("</th>");
 		ret.append(System.lineSeparator());
 		
@@ -242,7 +246,7 @@ public class JunitTestRunner extends TestRunner {
 			ret.append(System.lineSeparator());
 			
 			ret.append("\t\t\t\t\t\t<td colspan=\"3\" class=\"wrong\">");
-			ret.append("Test existiert nicht");
+			ret.append(_bundle.getString("createHtmlColumn_noneExistingTest"));
 		}
 		
 		ret.append("</td>");

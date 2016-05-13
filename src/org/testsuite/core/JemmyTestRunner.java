@@ -63,7 +63,8 @@ public class JemmyTestRunner extends TestRunner {
 				if (!_suites.get(suite).isExists() || 
 						!_suites.get(suite).getTest(test).isExists()) {
 					_suites.get(suite).getTest(test).setExitStatus(100);
-					System.out.println(name + " konnte nicht gefunden werden.");
+					System.out.print(name + " ");
+					System.out.println(_bundle.getString("run_notFound"));
 					continue;
 				}
 				
@@ -81,11 +82,13 @@ public class JemmyTestRunner extends TestRunner {
 					_suites.get(suite).getTest(test).setEnd(new Date().getTime());
 					_suites.get(suite).getTest(test).setExitStatus(exit);
 					if (exit == 0)
-						System.out.print("wurde erfolgreich ausgeführt");
+						System.out.print(_bundle.getString("run_pass"));
 					else
-						System.out.print("weißt Fehler auf");
+						System.out.print(_bundle.getString("run_failure"));
 					
-					System.out.print(" (Dauer des Tests: ");
+					System.out.print(" (");
+					System.out.print(_bundle.getString("run_duration"));
+					System.out.print(" ");
 					System.out.print(String.valueOf(
 							_suites.get(suite).getTest(test).getDurationTime()));
 					System.out.println(" ms)");
@@ -115,12 +118,13 @@ public class JemmyTestRunner extends TestRunner {
 		ret.append(System.lineSeparator());
 		
 		ret.append("\t\t\t\t\t\t<th>");
-		ret.append("Erfolgreich?");
+		ret.append(_bundle.getString("createHtmlTableHead_ok"));
+		ret.append("?");
 		ret.append("</th>");
 		ret.append(System.lineSeparator());
 		
 		ret.append("\t\t\t\t\t\t<th>");
-		ret.append("Zeit");
+		ret.append(_bundle.getString("createHtmlTableHead_time"));
 		ret.append("</th>");
 		ret.append(System.lineSeparator());
 		
@@ -165,9 +169,9 @@ public class JemmyTestRunner extends TestRunner {
 			ret.append("\t\t\t\t\t\t<td>");
 			
 			if (_suites.get(suite).getTest(test).getExitStatus() == 0)
-				ret.append("Ja");
+				ret.append(_bundle.getString("createHtmlColumn_yes"));
 			else
-				ret.append("Nein");
+				ret.append(_bundle.getString("createHtmlColumn_no"));
 			
 			ret.append("</td>");
 			ret.append(System.lineSeparator());
@@ -188,7 +192,7 @@ public class JemmyTestRunner extends TestRunner {
 			ret.append(System.lineSeparator());
 			
 			ret.append("\t\t\t\t\t\t<td colspan=\"2\">");
-			ret.append("Test existiert nicht");
+			ret.append(_bundle.getString("createHtmlColumn_noneExistingTest"));
 		}
 		
 		ret.append("</td>");

@@ -45,6 +45,8 @@ import org.testsuite.data.TestSuite;
 /**
  * Tests the class {@link org.testsuite.JunitTestRunner}.
  * 
+ * $java -Duser.language=de -Duser.country=DE
+ * 
  * @author René Majewski
  *
  * @version 0.1

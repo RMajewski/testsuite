@@ -69,7 +69,8 @@ public class FitTestRunner extends TestRunner {
 				if (!_suites.get(suite).isExists() || 
 						!_suites.get(suite).getTest(test).isExists()) {
 					_suites.get(suite).getTest(test).setExitStatus(100);
-					System.out.println(fit + " konnte nicht gefunden werden.");
+					System.out.print(fit + " ");
+					System.out.println(_bundle.getString("run_notFound"));
 					continue;
 				}
 				
@@ -92,6 +93,7 @@ public class FitTestRunner extends TestRunner {
 				try {
 					_suites.get(suite).getTest(test).setStart(new Date().getTime());
 
+					// FIXME classpath anpassen
 					System.out.print(fit + ": ");
 					String exec = "java -cp " +
 							"bin:resource:" + _config.getPathLibrary() +
@@ -108,15 +110,18 @@ public class FitTestRunner extends TestRunner {
 					// Überpüfen ob Exit-Status 0 ist
 					_suites.get(suite).getTest(test).setExitStatus(exit);
 					if (exit == 0)
-						System.out.print("wurde erfolgreich ausgeführt.");
+						System.out.print(_bundle.getString("run_pass"));
 					else
-						System.out.print("weißt einen Fehler auf.");
+						System.out.print(_bundle.getString("run_failure"));
 					
 					
 					// Dauer ausgeben
-					System.out.println(" (Dauer des Tests: " + 
-							_suites.get(suite).getTest(test).getDurationTime() 
-							+ " ms)");
+					System.out.print(" (");
+					System.out.print(_bundle.getString("run_duration"));
+					System.out.print(" ");
+					System.out.print(
+							_suites.get(suite).getTest(test).getDurationTime()); 
+					System.out.println(" ms)");
 					
 					// Console speichern
 					_suites.get(suite).getTest(test).setStringConsole(
@@ -186,19 +191,29 @@ public class FitTestRunner extends TestRunner {
 		ret.append("</th>");
 		ret.append(System.lineSeparator());
 
-		ret.append("\t\t\t\t\t\t<th>Erfolgreich</th>");
+		ret.append("\t\t\t\t\t\t<th>");
+		ret.append(_bundle.getString("createHtmlTableHead_ok"));
+		ret.append("</th>");
 		ret.append(System.lineSeparator());
 
-		ret.append("\t\t\t\t\t\t<th>Falsch</th>");
+		ret.append("\t\t\t\t\t\t<th>");
+		ret.append(_bundle.getString("createHtmlTableHead_wrong"));
+		ret.append("</th>");
 		ret.append(System.lineSeparator());
 
-		ret.append("\t\t\t\t\t\t<th>Ignoriert</th>");
+		ret.append("\t\t\t\t\t\t<th>");
+		ret.append(_bundle.getString("createHtmlTableHead_irgnore"));
+		ret.append("</th>");
 		ret.append(System.lineSeparator());
 
-		ret.append("\t\t\t\t\t\t<th>Fehlerhaft</th>");
+		ret.append("\t\t\t\t\t\t<th>");
+		ret.append(_bundle.getString("createHtmlTableHead_exception"));
+		ret.append("</th>");
 		ret.append(System.lineSeparator());
 
-		ret.append("\t\t\t\t\t\t<th>Zeit</th>");
+		ret.append("\t\t\t\t\t\t<th>");
+		ret.append(_bundle.getString("createHtmlTableHead_time"));
+		ret.append("</th>");
 		ret.append(System.lineSeparator());
 
 		ret.append("\t\t\t\t\t</tr>");
@@ -289,7 +304,7 @@ public class FitTestRunner extends TestRunner {
 			ret.append(System.lineSeparator());
 			
 			ret.append("\t\t\t\t\t\t<td colspan=\"5\">");
-			ret.append("Test existiert nicht");
+			ret.append(_bundle.getString("createHtmlColumn_noneExistingTest"));
 		}
 		
 		ret.append("</td>");

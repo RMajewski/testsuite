@@ -41,7 +41,9 @@ import org.testsuite.data.Library;
 import org.testsuite.data.TestSuite;
 
 /**
- * Tests the class {@link org.testsuite.core.TestRunner}
+ * Tests the class {@link org.testsuite.core.TestRunner}.
+ * 
+ * $java -Duser.language=de -Duser.country=DE
  * 
  * @author René Majewski
  * 
