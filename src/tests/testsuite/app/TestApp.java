@@ -19,14 +19,18 @@
 
 package tests.testsuite.app;
 
-import java.lang.reflect.InvocationTargetException;
+import java.io.File;
 import java.util.ResourceBundle;
+
+import javax.swing.JFileChooser;
 
 import org.netbeans.jemmy.ClassReference;
 import org.netbeans.jemmy.Scenario;
 import org.netbeans.jemmy.operators.JButtonOperator;
+import org.netbeans.jemmy.operators.JFileChooserOperator;
 import org.netbeans.jemmy.operators.JFrameOperator;
 import org.netbeans.jemmy.operators.JProgressBarOperator;
+import org.netbeans.jemmy.operators.JTextFieldOperator;
 import org.netbeans.jemmy.operators.JTextPaneOperator;
 import org.netbeans.jemmy.operators.JTreeOperator;
 import org.testsuite.app.App;
@@ -39,6 +43,11 @@ import org.testsuite.app.App;
  * @version 0.1
  */
 public class TestApp implements Scenario {
+	/**
+	 * Saves the type for configuration file open dialog.
+	 */
+	public static final int DIALOG_CONFIG_FILE_OPEN = 1;
+	
 	/**
 	 * Saves the instance of the main window.
 	 */
@@ -83,6 +92,11 @@ public class TestApp implements Scenario {
 	 * Saves the instance of button for exit the app.
 	 */
 	private JButtonOperator _btnExit;
+	
+	/**
+	 * Saves the instance of open configuration file dialog.
+	 */
+	private JFileChooserOperator _fileChooser;
 
 	/**
 	 * Initializes the tests.
@@ -190,21 +204,110 @@ public class TestApp implements Scenario {
 	}
 	
 	/**
-	 * Determines whether the main window is visible.
+	 * Click on the exit button
 	 */
 	public void pushExitButton() {
 		_btnExit.push();
 	}
 	
 	/**
-	 * Click on the exit button.
+	 * Determines whether the main window is visible.
 	 */
 	public boolean isMainWindowVisible() {
 		return _wnd.isVisible();
 	}
+	
+	/**
+	 * Click on load configuration file button.
+	 */
+	public void pushNoBlockButtonLoadConfigurationFile() {
+		_btnLoad.pushNoBlock();
+	}
+	
+	/**
+	 * Gets the specified dialog.
+	 * 
+	 * @param type Type of the dialog.
+	 */
+	public void determineDialog(int type) {
+		switch (type) {
+			case DIALOG_CONFIG_FILE_OPEN:
+				_fileChooser = new JFileChooserOperator();
+			break;
+		}
+	}
+	
+	/**
+	 * Returns is the dialog showing or not.
+	 * 
+	 * @return Is the dialog showing?
+	 */
+	public boolean isDialogShowing() {
+		if (_fileChooser != null) {
+			return _fileChooser.isShowing();
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Click on the cancel button on dialog.
+	 * 
+	 * @param index The button index
+	 */
+	public void pushDialogButton(int index) {
+		JButtonOperator btn;
+		if (_fileChooser != null) {
+			btn = new JButtonOperator(_fileChooser, index);
+			btn.push();
+		}
+	}
+	
+	/**
+	 * Sets the text in text field in the dialog.
+	 * 
+	 * @param text Text to sets into the text field.
+	 */
+	public void dialogTextFieldSetText(String text) {
+		if (_fileChooser != null) {
+			JTextFieldOperator tf = new JTextFieldOperator(_fileChooser);
+			tf.setText(text);
+		}
+	}
+	
+	/**
+	 * Returns the number of nodes in the tree.
+	 * 
+	 * @return Number of nodes in the tree.
+	 */
+	public int getTreeRootItemCount() {
+		return _tree.getModel().getChildCount(_tree.getModel().getRoot());
+	}
+	
+	/**
+	 * Returns the the name selected configuration file.
+	 * 
+	 * @return File name of configuration file.
+	 */
+	public String getConfigurationFileName() {
+		File file = _fileChooser.getSelectedFile();
+		String[] tmp = file.getPath().split("/");
+		int length = tmp.length - 1;
+		return tmp[length - 2] + "/" + tmp[length - 1] + "/" + tmp[length];
+	}
+	
+	/**
+	 * Returns whether the selected configuration file exists.
+	 * 
+	 * @return Exists the configuration file?
+	 */
+	public boolean existsConfigurationFile() {
+		File file = _fileChooser.getSelectedFile();
+		return file.exists();
+	}
 
 	/**
-	 * Starts tests.
+	 * Start the jemmy tests.
 	 */
 	@Override
 	public int runIt(Object arg0) {

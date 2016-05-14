@@ -1,0 +1,96 @@
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Test the TestSuiteApp (load configuration file)</title>
+	</head>
+	<body>
+		<h2>Tests for the TestSuiteApp (load configuration file)</h2>
+		<p>Tests if the configuration file is loaded. If "Load configuration
+		File" is clicked on the button, an open file dialog box should be opened
+		by the user can select the configuration file. Should he open the button
+		click, the configuration file should be opened. If he can click the
+		cancel button, the dialogue will just close and nothing happens.</p>
+		<table border="1" cellpadding="1" cellspacing="1" style="width: *;">
+			<tbody>
+				<tr>
+					<td colspan="3">fit.ActionFixture</td>
+				</tr>
+				<tr>
+					<td>start</td>
+					<td>tests.fixtures.app.FixtureApp</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getTreeRootItemCount</td>
+					<td>0</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushButtonLoadConfigurationFile</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isDialogVisible</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushDialogCancel</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isDialogVisible</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushButtonLoadConfigurationFile</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isDialogVisible</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>enter</td>
+					<td>enterFileName</td>
+					<td>src/tests/test.xml</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushDialogOpen</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isDialogVisible</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getConfigurationFileName</td>
+					<td>src/tests/test.xml</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>existsConfigurationFile</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getTreeRootItemCount</td>
+					<td>3</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isButtonForRunTestsEnable</td>
+					<td>true</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>

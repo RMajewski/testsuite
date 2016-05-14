@@ -81,5 +81,11 @@
 		<classpath>
 			<path>bin</path>
 		</classpath>
+		<testSuite>
+			<name>Test the class org.testsuite.app.App</name>
+			<package>tests.fit.app</package>
+			<test>AppElementsCreated</test>
+			<test>AppLoadConfiguration</test>
+		</testSuite>
 	</testGroup>
 </tests>

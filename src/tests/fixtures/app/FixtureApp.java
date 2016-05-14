@@ -140,4 +140,63 @@ public class FixtureApp extends ActionFixture {
 	public void pushExitButton() {
 		_tests.pushExitButton();
 	}
+	
+	/**
+	 * Click on the load configuration file button and determined the dialog.
+	 */
+	public void pushButtonLoadConfigurationFile() {
+		_tests.pushNoBlockButtonLoadConfigurationFile();
+		_tests.determineDialog(TestApp.DIALOG_CONFIG_FILE_OPEN);
+	}
+	
+	/**
+	 * Showing der dialog?
+	 */
+	public boolean isDialogVisible() {
+		return _tests.isDialogShowing();
+	}
+
+	/**
+	 * Click an the cancel button into the dialog.
+	 */
+	public void pushDialogCancel() {
+		_tests.pushDialogButton(6);
+	}
+	
+	/**
+	 * Sets the file name of configuration file.
+	 * 
+	 * @param name The name of the configuration file.
+	 */
+	public void enterFileName(String name) {
+		_tests.dialogTextFieldSetText(name);
+	}
+	
+	/**
+	 * Click on the open button into the dialog.
+	 */
+	public void pushDialogOpen() {
+		_tests.pushDialogButton(5);
+	}
+	
+	/**
+	 * Returns the number of nodes in the tree.
+	 */
+	public int getTreeRootItemCount() {
+		return _tests.getTreeRootItemCount();
+	}
+
+	/**
+	 * Return the name of selected configuration file.
+	 */
+	public String getConfigurationFileName() {
+		return _tests.getConfigurationFileName();
+	}
+	
+	/**
+	 * Exists the selected configuration file?
+	 */
+	public boolean existsConfigurationFile() {
+		return _tests.existsConfigurationFile();
+	}
 }

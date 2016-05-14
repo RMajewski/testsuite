@@ -120,6 +120,11 @@ public abstract class TestRunner {
 		_suites.add(suite);
 	}
 	
+	// FIXME Test hinzufügen und javadoc erstellen
+	public TestSuite getTestSuite(int index) {
+		return _suites.get(index);
+	}
+	
 	/**
 	 * Determines the number of libraries.
 	 * 

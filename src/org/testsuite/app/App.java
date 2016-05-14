@@ -21,6 +21,11 @@ package org.testsuite.app;
 
 import javax.swing.JFrame;
 import javax.swing.JTree;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.testsuite.core.ConfigParser;
+import org.testsuite.data.Config;
+
 import javax.swing.JTextPane;
 import java.awt.BorderLayout;
 import javax.swing.JScrollPane;
@@ -29,10 +34,12 @@ import javax.swing.JPanel;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ResourceBundle;
 
 import javax.swing.JProgressBar;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 
 /**
  * Window that the test app displays.
@@ -70,9 +77,34 @@ public class App extends JFrame implements ActionListener {
 			"resources.lang.org.testsuite.app.App";
 	
 	/**
+	 * Saves the button for run tests.
+	 */
+	private JButton _btnRun;
+	
+	/**
+	 * Saves the button for cancel run tests.
+	 */
+	private JButton _btnCancel;
+	
+	/**
+	 * Saves the button for load the configuration file
+	 */
+	private JButton _btnLoad;
+	
+	/**
 	 * Saves the instance of resource bundle
 	 */
 	private ResourceBundle _bundle;
+	
+	/**
+	 * Saves the instance of the configuration.
+	 */
+	private Config _config;
+	
+	/**
+	 * Saves the instance of the JTree.
+	 */
+	private JTree _tree;
 	
 	/**
 	 * Initializes the main window.
@@ -81,6 +113,8 @@ public class App extends JFrame implements ActionListener {
 		super();
 		
 		_bundle = ResourceBundle.getBundle(BUNDLE_FILE);
+		
+		_config = new Config();
 		
 		setTitle(WND_TITLE);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -94,8 +128,10 @@ public class App extends JFrame implements ActionListener {
 		splitPane.setResizeWeight(0.25);
 		getContentPane().add(splitPane, BorderLayout.CENTER);
 		
-		JTree tree = new JTree();
-		splitPane.setLeftComponent(tree);
+		_tree = new JTree();
+		_tree.setModel(new TestRunnerModel());
+		_tree.setCellRenderer(new TestRunnerRenderer());
+		splitPane.setLeftComponent(_tree);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		splitPane.setRightComponent(scrollPane);
@@ -115,25 +151,25 @@ public class App extends JFrame implements ActionListener {
 		panel.add(panButtons, BorderLayout.SOUTH);
 		panButtons.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JButton btnRun = new JButton(_bundle.getString("btnRun"));
-		btnRun.setEnabled(false);
-		btnRun.addActionListener(this);
-		btnRun.setActionCommand(AC_RUN);
-		btnRun.setName(AC_RUN);
-		panButtons.add(btnRun);
+		_btnRun = new JButton(_bundle.getString("btnRun"));
+		_btnRun.setEnabled(false);
+		_btnRun.addActionListener(this);
+		_btnRun.setActionCommand(AC_RUN);
+		_btnRun.setName(AC_RUN);
+		panButtons.add(_btnRun);
 		
-		JButton btnCancel = new JButton(_bundle.getString("btnCancel"));
-		btnCancel.setEnabled(false);
-		btnCancel.addActionListener(this);
-		btnCancel.setActionCommand(AC_CANCEL);
-		btnCancel.setName(AC_CANCEL);
-		panButtons.add(btnCancel);
+		_btnCancel = new JButton(_bundle.getString("btnCancel"));
+		_btnCancel.setEnabled(false);
+		_btnCancel.addActionListener(this);
+		_btnCancel.setActionCommand(AC_CANCEL);
+		_btnCancel.setName(AC_CANCEL);
+		panButtons.add(_btnCancel);
 		
-		JButton btnLoad = new JButton(_bundle.getString("btnLoad"));
-		btnLoad.addActionListener(this);
-		btnLoad.setActionCommand(AC_LOAD);
-		btnLoad.setName(AC_LOAD);
-		panButtons.add(btnLoad);
+		_btnLoad = new JButton(_bundle.getString("btnLoad"));
+		_btnLoad.addActionListener(this);
+		_btnLoad.setActionCommand(AC_LOAD);
+		_btnLoad.setName(AC_LOAD);
+		panButtons.add(_btnLoad);
 		
 		JButton btnExit = new JButton(_bundle.getString("btnExit"));
 		btnExit.addActionListener(new ActionListener() {
@@ -159,6 +195,26 @@ public class App extends JFrame implements ActionListener {
 				break;
 				
 			case AC_LOAD:
+				JFileChooser fc = new JFileChooser();
+				fc.setDialogTitle(_bundle.getString("configFileOpenTitle"));
+				fc.setFileFilter(new FileNameExtensionFilter(
+						"Konfigurationsdatei", "xml"));
+				fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+				int state = fc.showOpenDialog(this);
+				File file = fc.getSelectedFile();
+				
+				if ((state == JFileChooser.APPROVE_OPTION) && (file != null) && 
+						(file.exists())) {
+					ConfigParser parser = new ConfigParser(_config, 
+							file.getPath());
+					
+					if (parser.parse()) {
+						((TestRunnerModel)_tree.getModel()).setListOfTestRunner(
+								parser.getTestRunnerList());
+						_btnRun.setEnabled(true);
+					}
+				}
+				
 				break;
 				
 			case AC_RUN:
