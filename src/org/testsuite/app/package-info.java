@@ -18,10 +18,10 @@
 */ 
 
 /**
- * In this package all test files are reserved.
+ * In this package, all classes will summarized, indicating the test app.
  * 
  * @author René Majewski
  *
  * @version 0.1
  */
-package tests;
+package org.testsuite.app;
