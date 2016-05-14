@@ -59,6 +59,17 @@ public class App extends JFrame implements ActionListener {
 	private static final String AC_RUN = "App.btnRun";
 	
 	/**
+	 * Saves the title of the main window
+	 */
+	public static final String WND_TITLE = "TestSuiteApp";
+	
+	/**
+	 * Saves the name of the bundle file
+	 */
+	public static final String BUNDLE_FILE = 
+			"resources.lang.org.testsuite.app.App";
+	
+	/**
 	 * Saves the instance of resource bundle
 	 */
 	private ResourceBundle _bundle;
@@ -69,10 +80,9 @@ public class App extends JFrame implements ActionListener {
 	public App() {
 		super();
 		
-		_bundle = ResourceBundle.getBundle(
-				"resources.lang.org.testsuite.app.App");
+		_bundle = ResourceBundle.getBundle(BUNDLE_FILE);
 		
-		setTitle("TestSuiteApp");
+		setTitle(WND_TITLE);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		setSize(600, 400);
