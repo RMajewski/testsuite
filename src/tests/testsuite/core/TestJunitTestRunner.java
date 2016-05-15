@@ -41,6 +41,8 @@ import org.testsuite.core.JunitTestRunner;
 import org.testsuite.data.Config;
 import org.testsuite.data.Junit;
 import org.testsuite.data.Library;
+import org.testsuite.data.TestEvent;
+import org.testsuite.data.TestEventListener;
 import org.testsuite.data.TestSuite;
 
 /**
@@ -66,6 +68,10 @@ public class TestJunitTestRunner {
 	 */
 	private Config _config;
 	
+	/**
+	 * Saves the count of run tests.
+	 */
+	private int _runCount;
 
 	/**
 	 * Initialize the tests
@@ -74,6 +80,7 @@ public class TestJunitTestRunner {
 	public void setUp() throws Exception {
 		_config = mock(Config.class);
 		_runner = new JunitTestRunner(_config);
+		_runCount = 0;
 	}
 
 	/**
@@ -112,12 +119,12 @@ public class TestJunitTestRunner {
 		verify(junit).isExists();
 		verify(junit).setExitStatus(100);
 		verify(junit, never()).setExists(Matchers.anyBoolean());
-		verify(junit).getName();
+		verify(junit, times(2)).getName();
 		
 		verify(suite).getName();
 		verify(suite, atLeastOnce()).testCount();
 		verify(suite, atLeastOnce()).getTest(0);
-		verify(suite).getPackage();
+		verify(suite, times(2)).getPackage();
 		verify(suite).isExists();
 	}
 	
@@ -154,12 +161,12 @@ public class TestJunitTestRunner {
 		verify(junit, never()).isExists();
 		verify(junit).setExitStatus(100);
 		verify(junit, never()).setExists(Matchers.anyBoolean());
-		verify(junit).getName();
+		verify(junit, times(2)).getName();
 		
 		verify(suite).getName();
 		verify(suite, atLeastOnce()).testCount();
 		verify(suite, atLeastOnce()).getTest(0);
-		verify(suite).getPackage();
+		verify(suite, times(2)).getPackage();
 		verify(suite).isExists();
 	}
 	
@@ -192,12 +199,12 @@ public class TestJunitTestRunner {
 		verify(junit).isExecuted();
 		verify(junit, never()).setExitStatus(100);
 		verify(junit, never()).setExists(Matchers.anyBoolean());
-		verify(junit).getName();
+		verify(junit, times(2)).getName();
 		
 		verify(suite).getName();
 		verify(suite, atLeastOnce()).testCount();
 		verify(suite, atLeastOnce()).getTest(0);
-		verify(suite).getPackage();
+		verify(suite, times(2)).getPackage();
 		verify(suite).isExists();
 	}
 
@@ -278,7 +285,16 @@ public class TestJunitTestRunner {
 			.withArguments(isrError)
 			.thenReturn(error);
 		
+		_runner.addTestEventListener(new TestEventListener() {
+			@Override
+			public void testExecutedCompleted(TestEvent te) {
+				_runCount++;
+			}
+		});
+		
 		_runner.run();
+		
+		assertEquals(1, _runCount);
 		
 		String exec = "java -cp " + pathClass + ":" + pathLib + "/" + lib +
 				" -D" + prop + " org.junit.runner.JUnitCore " + packageName + 

@@ -60,22 +60,35 @@ public class JunitTestRunner extends TestRunner {
 			for (int test = 0; test < _suites.get(suite).testCount(); test++) {
 				String name = _suites.get(suite).getPackage() + "." +
 							_suites.get(suite).getTest(test).getName();
+				String result = new String();
 				
 				// Überprüfen, ob Datei existiert
 				if (!_suites.get(suite).isExists() || 
 						!_suites.get(suite).getTest(test).isExists()) {
 					_suites.get(suite).getTest(test).setExitStatus(100);
+					result = _bundle.getString("run_notFound");
 					System.out.print(name + " ");
-					System.out.println(_bundle.getString("run_notFound"));
+					System.out.println(result);
+					fireTestExecutedCompleted(this, 
+							_suites.get(suite).getPackage(),
+							_suites.get(suite).getTest(test).getName(),
+							_suites.get(suite).getId(),
+							_suites.get(suite).getTest(test).getId(), result);
 					continue;
 				}
 				
 				// Überprüfen, ob der Test nicht ausgeführt werden soll
 				if (!_suites.get(suite).getTest(test).isExecuted()) {
 					System.out.print(name + " ");
-					System.out.println(_bundle.getString(
-							"createHtmlColumn_noneExecuted"));
-					continue;
+					result = _bundle.getString(
+							"createHtmlColumn_noneExecuted");
+					System.out.println(result);
+					fireTestExecutedCompleted(this, 
+							_suites.get(suite).getPackage(),
+							_suites.get(suite).getTest(test).getName(),
+							_suites.get(suite).getId(),
+							_suites.get(suite).getTest(test).getId(), result);
+				continue;
 				}
 			
 				try {
@@ -96,16 +109,15 @@ public class JunitTestRunner extends TestRunner {
 							new Date().getTime());
 
 					if (exit == 0)
-						System.out.print(_bundle.getString("run_pass"));
+						result = _bundle.getString("run_pass");
 					else
-						System.out.print(_bundle.getString("run_failure"));
+						result = _bundle.getString("run_failure");
 
-					System.out.print(" (");
-					System.out.print(_bundle.getString("run_duration"));
-					System.out.print(" ");
-					System.out.print(String.valueOf(
-							_suites.get(suite).getTest(test).getDurationTime()));
-					System.out.println(" ms)");
+					result += " (" + _bundle.getString("run_duration") +" " + 
+							String.valueOf(
+									_suites.get(suite).getTest(test)
+									.getDurationTime()) + " ms)";
+					System.out.println(result);
 					
 					// Console-Ausgabe und Error-Ausgabe speichern
 					_suites.get(suite).getTest(test).setError(
@@ -122,7 +134,7 @@ public class JunitTestRunner extends TestRunner {
 							String ok = new String("OK (");
 							
 							String tmp = line.substring(ok.length(),
-									line.indexOf(" tests)"));
+									line.indexOf(" test"));
 							((Junit)_suites.get(suite).getTest(test)).setOk(
 									Integer.valueOf(tmp));
 						} else if (line.indexOf("Tests run") > -1) {
@@ -149,6 +161,12 @@ public class JunitTestRunner extends TestRunner {
 					e.printStackTrace();
 					_suites.get(suite).getTest(test).setExitStatus(100);
 				}
+				
+				fireTestExecutedCompleted(this, 
+						_suites.get(suite).getPackage(),
+						_suites.get(suite).getTest(test).getName(),
+						_suites.get(suite).getId(),
+						_suites.get(suite).getTest(test).getId(), result);
 			} // for über alle Tests
 			
 			System.out.println();

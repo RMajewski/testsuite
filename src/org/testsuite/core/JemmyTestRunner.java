@@ -56,21 +56,32 @@ public class JemmyTestRunner extends TestRunner {
 			for (int test = 0; test < _suites.get(suite).testCount(); test++) {
 				String name = _suites.get(suite).getPackage() + "." +
 						_suites.get(suite).getTest(test).getName();
+				String result = new String();
 				
 				// Überprüfen, ob Datei existiert
 				if (!_suites.get(suite).isExists() || 
 						!_suites.get(suite).getTest(test).isExists()) {
 					_suites.get(suite).getTest(test).setExitStatus(100);
 					System.out.print(name + " ");
-					System.out.println(_bundle.getString("run_notFound"));
+					System.out.println(result = _bundle.getString("run_notFound"));
+					fireTestExecutedCompleted(this, 
+							_suites.get(suite).getPackage(),
+							_suites.get(suite).getTest(test).getName(),
+							_suites.get(suite).getId(),
+							_suites.get(suite).getTest(test).getId(), result);
 					continue;
 				}
 				
 				// Überprüft, ob der Test nicht ausgeführt werden soll
 				if (!_suites.get(suite).getTest(test).isExecuted()) {
 					System.out.print(name + " ");
-					System.out.println(_bundle.getString(
+					System.out.println(result = _bundle.getString(
 							"createHtmlColumn_noneExecuted"));
+					fireTestExecutedCompleted(this, 
+							_suites.get(suite).getPackage(),
+							_suites.get(suite).getTest(test).getName(),
+							_suites.get(suite).getId(),
+							_suites.get(suite).getTest(test).getId(), result);
 					continue;
 				}
 				
@@ -87,16 +98,15 @@ public class JemmyTestRunner extends TestRunner {
 					_suites.get(suite).getTest(test).setEnd(new Date().getTime());
 					_suites.get(suite).getTest(test).setExitStatus(exit);
 					if (exit == 0)
-						System.out.print(_bundle.getString("run_pass"));
+						result = _bundle.getString("run_pass");
 					else
-						System.out.print(_bundle.getString("run_failure"));
+						result = _bundle.getString("run_failure");
 					
-					System.out.print(" (");
-					System.out.print(_bundle.getString("run_duration"));
-					System.out.print(" ");
-					System.out.print(String.valueOf(
-							_suites.get(suite).getTest(test).getDurationTime()));
-					System.out.println(" ms)");
+					result += " (" + _bundle.getString("run_duration") + " " +
+							String.valueOf(
+									_suites.get(suite).getTest(test)
+									.getDurationTime()) + " ms)";
+					System.out.println(result);
 					
 					// Console-Ausgabe und Error-Ausgabe speichern
 					_suites.get(suite).getTest(test).setError(
@@ -111,6 +121,11 @@ public class JemmyTestRunner extends TestRunner {
 					_suites.get(suite).getTest(test).setExitStatus(100);
 				}
 				
+				fireTestExecutedCompleted(this, 
+						_suites.get(suite).getPackage(),
+						_suites.get(suite).getTest(test).getName(),
+						_suites.get(suite).getId(),
+						_suites.get(suite).getTest(test).getId(), result);
 			}
 		}
 	}

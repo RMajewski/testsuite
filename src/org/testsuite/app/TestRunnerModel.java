@@ -147,5 +147,9 @@ public class TestRunnerModel implements TreeModel {
 							new int[] {index}, 
 							new Object[] {path.getLastPathComponent()}));
 	}
+	
+	public List<TestRunner> getTestRunnerList() {
+		return _testRunner;
+	}
 
 }

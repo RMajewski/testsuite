@@ -56,6 +56,8 @@
 			<name>Test org.testsuite.Data</name>
 			<package>tests.testsuite.data</package>
 			<test>TestConfig</test>
+			<test>TestTestEvent</test>
+			<test>TestTestEventListener</test>
 			<test>TestData</test>
 			<test>TestFitData</test>
 			<test>TestJunitData</test>
@@ -86,6 +88,7 @@
 			<package>tests.fit.app</package>
 			<test>AppElementsCreated</test>
 			<test>AppLoadConfiguration</test>
+			<test>AppTree</test>
 			<test>AppTree</test>
 		</testSuite>
 	</testGroup>

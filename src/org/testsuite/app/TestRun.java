@@ -17,49 +17,52 @@
 * sind dem Lizenztext zu entnehmen.
 */ 
 
-package tests.testsuite.core;
+package org.testsuite.app;
 
-import java.io.IOException;
+import java.util.List;
 
-import org.testsuite.core.HtmlOut;
 import org.testsuite.core.TestRunner;
-import org.testsuite.data.Config;
-import org.testsuite.data.Test;
 import org.testsuite.data.TestEventListener;
 
 /**
- * Implements the class TestRunner for testing purposes.
+ * Thread in which the tests are run.
  * 
  * @author René Majewski
- * 
+ *
  * @version 0.1
  */
-class TestRunnerImplementation extends TestRunner {
-	public TestRunnerImplementation(Config config) {
-		super(config);
+public class TestRun implements Runnable {
+	/**
+	 * Saves the list of classes TestRunner;
+	 */
+	private List<TestRunner> _testRunner;
+	
+	/**
+	 * Saves the TestEventListener
+	 */
+	private TestEventListener _listener;
+	
+	/**
+	 * Initialize the thread.
+	 * 
+	 * @param testRunner List of TestRunners.
+	 * 
+	 * @param listener TestEventListener
+	 */
+	public TestRun(List<TestRunner> testRunner, TestEventListener listener) {
+		_testRunner = testRunner;
+		_listener = listener;
 	}
 
+	/**
+	 * Runs the tests.
+	 */
 	@Override
 	public void run() {
+		for (int i = 0; i < _testRunner.size(); i++) {
+			_testRunner.get(i).addTestEventListener(_listener);
+			_testRunner.get(i).run();
+		}
 	}
 
-	@Override
-	protected String createHtmlTableHead(int suite) {
-		return new String();
-	}
-
-	@Override
-	protected String createHtmlColumn(int suite, int test, HtmlOut html)
-		throws IOException {
-		return new String();
-	}
-
-	@Override
-	public Test newTest(String name, int id) {
-		return null;
-	}
-	
-	public int getTestEventListenerCount() {
-		return _testEventListeners.size();
-	}
 }

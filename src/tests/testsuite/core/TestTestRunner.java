@@ -27,12 +27,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Vector;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.mockito.Matchers;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -41,6 +45,8 @@ import org.testsuite.core.HtmlOut;
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
 import org.testsuite.data.Library;
+import org.testsuite.data.TestEvent;
+import org.testsuite.data.TestEventListener;
 import org.testsuite.data.TestSuite;
 
 /**
@@ -727,5 +733,91 @@ public class TestTestRunner extends TestRunnerHelper {
 		String ret = "&lt;h1&gt;Test&lt;/h1&gt;&lt;p&gt;Dies ist ein " +
 				"Test!&lt;/p&gt;&lt;br/&gt;";
 		assertEquals(ret, inputStreamToString.invoke(_runner, is));
+	}
+	
+	/**
+	 * Testing whether the number of all included tests was determined
+	 * correctly.
+	 */
+	@Test
+	public void testGetTestsCount() {
+		int testCount1 = 10;
+		int testCount2 = 5;
+		int testCount3 = 2;
+		int testCount4 = 2;
+		int testCount5 = 0;
+		
+		TestSuite suite1 = mock(TestSuite.class);
+		when(suite1.testCount()).thenReturn(testCount1);
+		_runner.addTestSuite(suite1);
+		
+		TestSuite suite2 = mock(TestSuite.class);
+		when(suite2.testCount()).thenReturn(testCount2);
+		_runner.addTestSuite(suite2);
+		
+		TestSuite suite3 = mock(TestSuite.class);
+		when(suite3.testCount()).thenReturn(testCount3);
+		_runner.addTestSuite(suite3);
+		
+		TestSuite suite4 = mock(TestSuite.class);
+		when(suite4.testCount()).thenReturn(testCount4);
+		_runner.addTestSuite(suite4);
+		
+		TestSuite suite5 = mock(TestSuite.class);
+		when(suite5.testCount()).thenReturn(testCount5);
+		_runner.addTestSuite(suite5);
+		
+		assertEquals(testCount1 + testCount2 + testCount3 + testCount4 + 
+				testCount5, _runner.getTestsCount());
+		
+		InOrder order = inOrder(suite1, suite2, suite3, suite4, suite5);
+		order.verify(suite1).testCount();
+		order.verify(suite2).testCount();
+		order.verify(suite3).testCount();
+		order.verify(suite4).testCount();
+		order.verify(suite5).testCount();
+	}
+	
+	@Test
+	public void testAddTestListener() throws Exception {
+		assertEquals(0, _runner.getTestEventListenerCount());
+		
+		TestEventListener listener = mock(TestEventListener.class);
+		
+		_runner.addTestEventListener(listener);
+		assertEquals(1, _runner.getTestEventListenerCount());
+	}
+	
+	@Test
+	public void testRemoveTestListener() throws Exception {
+		TestEventListener listener1 = mock(TestEventListener.class);
+		_runner.addTestEventListener(listener1);
+		TestEventListener listener2 = mock(TestEventListener.class);
+		_runner.addTestEventListener(listener2);
+		
+		assertEquals(2, _runner.getTestEventListenerCount());
+		
+		_runner.removeTestEventListener(listener1);
+		assertEquals(1, _runner.getTestEventListenerCount());
+	}
+	
+	@Test
+	public void testFireTestExecutedCompleted() {
+		TestEventListener listener1 = mock(TestEventListener.class);
+		_runner.addTestEventListener(listener1);
+		TestEventListener listener2 = mock(TestEventListener.class);
+		_runner.addTestEventListener(listener2);
+		
+		String pName = "package";
+		String tName = "Test";
+		int suiteId = 1;
+		int testId = 19;
+		String result = "ausgeführt";
+		
+		_runner.fireTestExecutedCompleted(this, pName, tName, suiteId, testId,
+				result);
+		
+		verify(listener1).testExecutedCompleted(Matchers.any(TestEvent.class));
+		verify(listener2).testExecutedCompleted(Matchers.any(TestEvent.class));
 	}
 }

@@ -234,4 +234,20 @@ public class FixtureApp extends ActionFixture {
 	public void doubleClickOnCheckBox1() {
 		_tests.doubleClickOnCheckBoxFromTree(3);
 	}
+	
+	public int getMaximumOfProgressBar() {
+		return _tests.getMaximumOfProgressBar();
+	}
+	
+	public int getMinimumOfProgressBar() {
+		return _tests.getMinimumOfProgressBar();
+	}
+	
+	public int getValueOfProgressBar() {
+		return _tests.getValueOfProgressBar();
+	}
+	
+	public void pushButtonRun() {
+		_tests.pushButtonRun();
+	}
 }

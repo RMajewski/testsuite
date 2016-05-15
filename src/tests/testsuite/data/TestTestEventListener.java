@@ -17,49 +17,31 @@
 * sind dem Lizenztext zu entnehmen.
 */ 
 
-package tests.testsuite.core;
+package tests.testsuite.data;
 
-import java.io.IOException;
+import static org.junit.Assert.*;
 
-import org.testsuite.core.HtmlOut;
-import org.testsuite.core.TestRunner;
-import org.testsuite.data.Config;
-import org.testsuite.data.Test;
+import org.junit.Test;
+import org.testsuite.data.TestEvent;
 import org.testsuite.data.TestEventListener;
 
 /**
- * Implements the class TestRunner for testing purposes.
+ * Tests the interface {@link org.testsuite.data.TestEventListener}
  * 
  * @author René Majewski
- * 
+ *
  * @version 0.1
  */
-class TestRunnerImplementation extends TestRunner {
-	public TestRunnerImplementation(Config config) {
-		super(config);
+public class TestTestEventListener {
+
+	/**
+	 * Verifies that test event has the testExecuteCompleted method.
+	 */
+	@Test
+	public void testHasEventTestExecutedCompleted() throws Exception {
+		assertEquals("testExecutedCompleted", 
+				TestEventListener.class.getDeclaredMethod(
+						"testExecutedCompleted", TestEvent.class).getName());
 	}
 
-	@Override
-	public void run() {
-	}
-
-	@Override
-	protected String createHtmlTableHead(int suite) {
-		return new String();
-	}
-
-	@Override
-	protected String createHtmlColumn(int suite, int test, HtmlOut html)
-		throws IOException {
-		return new String();
-	}
-
-	@Override
-	public Test newTest(String name, int id) {
-		return null;
-	}
-	
-	public int getTestEventListenerCount() {
-		return _testEventListeners.size();
-	}
 }

@@ -46,6 +46,8 @@ import org.testsuite.core.HtmlOut;
 import org.testsuite.core.JemmyTestRunner;
 import org.testsuite.data.Config;
 import org.testsuite.data.Library;
+import org.testsuite.data.TestEvent;
+import org.testsuite.data.TestEventListener;
 import org.testsuite.data.TestSuite;
 
 /**
@@ -71,6 +73,11 @@ public class TestJemmyTestRunner {
 	 */
 	private Config _config;
 	
+	/**
+	 * Saves the count of run tests.
+	 */
+	private int _runCount;
+	
 
 	/**
 	 * Initialize the tests
@@ -79,6 +86,7 @@ public class TestJemmyTestRunner {
 	public void setUp() throws Exception {
 		_config = mock(Config.class);
 		_runner = new JemmyTestRunner(_config);
+		_runCount = 0;
 	}
 
 	/**
@@ -117,13 +125,13 @@ public class TestJemmyTestRunner {
 		verify(test).isExists();
 		verify(test).setExitStatus(100);
 		verify(test, never()).setExists(Matchers.anyBoolean());
-		verify(test).getName();
+		verify(test, times(2)).getName();
 		verify(test, never()).isExecuted();
 		
 		verify(suite).getName();
 		verify(suite, atLeastOnce()).testCount();
 		verify(suite, atLeastOnce()).getTest(0);
-		verify(suite).getPackage();
+		verify(suite, times(2)).getPackage();
 		verify(suite).isExists();
 	}
 	
@@ -155,13 +163,13 @@ public class TestJemmyTestRunner {
 		verify(test).isExists();
 		verify(test, never()).setExitStatus(100);
 		verify(test, never()).setExists(Matchers.anyBoolean());
-		verify(test).getName();
+		verify(test, times(2)).getName();
 		verify(test).isExecuted();
 		
 		verify(suite).getName();
 		verify(suite, atLeastOnce()).testCount();
 		verify(suite, atLeastOnce()).getTest(0);
-		verify(suite).getPackage();
+		verify(suite, times(2)).getPackage();
 		verify(suite).isExists();
 	}
 	
@@ -198,13 +206,13 @@ public class TestJemmyTestRunner {
 		verify(test, never()).isExists();
 		verify(test).setExitStatus(100);
 		verify(test, never()).setExists(Matchers.anyBoolean());
-		verify(test).getName();
+		verify(test, times(2)).getName();
 		verify(test, never()).isExecuted();
 		
 		verify(suite).getName();
 		verify(suite, atLeastOnce()).testCount();
 		verify(suite, atLeastOnce()).getTest(0);
-		verify(suite).getPackage();
+		verify(suite, times(2)).getPackage();
 		verify(suite).isExists();
 	}
 
@@ -284,7 +292,16 @@ public class TestJemmyTestRunner {
 			.withArguments(isrError)
 			.thenReturn(error);
 		
+		_runner.addTestEventListener(new TestEventListener() {
+			@Override
+			public void testExecutedCompleted(TestEvent te) {
+				_runCount++;
+			}
+		});
+		
 		_runner.run();
+		
+		assertEquals(1, _runCount);
 		
 		String exec = "java -cp " + pathClass + ":" + pathLib + "/" + lib +
 				" -D" + prop + " " + packageName + "." + testName;

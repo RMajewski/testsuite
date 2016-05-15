@@ -307,6 +307,13 @@ public class TestApp implements Scenario {
 		return file.exists();
 	}
 	
+	/**
+	 * Determines whether the specified check box from the tree is enabled.
+	 * 
+	 * @param index Specifying the check box.
+	 * 
+	 * @return If the check box is enabled?
+	 */
 	public boolean isCheckBoxFromTreeEnabled(int index) {
 		Component c = _tree.getRenderedComponent(_tree.getPathForRow(index));
 		if (c instanceof JCheckBox) {
@@ -317,6 +324,13 @@ public class TestApp implements Scenario {
 		return false;
 	}
 	
+	/**
+	 * Determines whether the specified check box from the tree is selected.
+	 * 
+	 * @param index Specifying the check box.
+	 * 
+	 * @return If the check box is selected?
+	 */
 	public boolean isCheckBoxFromTreeSelected(int index) {
 		Component c = _tree.getRenderedComponent(_tree.getPathForRow(index));
 		if (c instanceof JCheckBox) {
@@ -327,13 +341,37 @@ public class TestApp implements Scenario {
 		return false;
 	}
 	
+	/**
+	 * Tree expand.
+	 */
 	public void treeExpandAll() {
 		_tree.expandRow(1);
 		_tree.expandRow(2);
 	}
 	
+	/**
+	 * Performs a double click on the specified check box.
+	 * 
+	 * @param index Specifying the check box.
+	 */
 	public void doubleClickOnCheckBoxFromTree(int index) {
 		_tree.clickOnPath(_tree.getPathForRow(index), 2);
+	}
+	
+	public int getMaximumOfProgressBar() {
+		return _progress.getMaximum();
+	}
+	
+	public int getMinimumOfProgressBar() {
+		return _progress.getMinimum();
+	}
+	
+	public int getValueOfProgressBar() {
+		return _progress.getValue();
+	}
+	
+	public void pushButtonRun() {
+		_btnRun.push();
 	}
 
 	/**

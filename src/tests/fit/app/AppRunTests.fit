@@ -1,0 +1,78 @@
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Test the TestSuiteApp (run tests)</title>
+	</head>
+	<body>
+		<h2>Tests for the TestSuiteApp (run tests)</h2>
+		<p>It is tested whether prior to upload the configuration file the
+		maximum of the ProgressBar is 0. After loading the configuration file
+		should it be 3 (number of tests). Now it is checked whether the button
+		to start the test is enabled and the button to cancel the test is not
+		enabled. After clicking on the button to start the test, the button
+		should be enabled to cancel. Finally, it is checked whether to run the
+		tests is the value value 3 (tests carried out).</p>
+		<table border="1" cellpadding="1" cellspacing="1" style="width: *;">
+			<tbody>
+				<tr>
+					<td colspan="3">fit.ActionFixture</td>
+				</tr>
+				<tr>
+					<td>start</td>
+					<td>tests.fixtures.app.FixtureApp</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getMaximumOfProgressBar</td>
+					<td>0</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getMinimumOfProgressBar</td>
+					<td>0</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getValueOfProgressBar</td>
+					<td>0</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>loadConfigurationFile</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getMaximumOfProgressBar</td>
+					<td>3</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getValueOfProgressBar</td>
+					<td>0</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isButtonForRunTestsEnable</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isButtonForCancelTestsEnable</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushButtonRun</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getValueOfProgressBar</td>
+					<td>3</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>

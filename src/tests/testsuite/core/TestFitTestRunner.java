@@ -43,6 +43,8 @@ import org.testsuite.data.Config;
 import org.testsuite.data.Fit;
 import org.testsuite.data.Junit;
 import org.testsuite.data.Library;
+import org.testsuite.data.TestEvent;
+import org.testsuite.data.TestEventListener;
 import org.testsuite.data.TestSuite;
 
 /**
@@ -68,6 +70,10 @@ public class TestFitTestRunner {
 	 */
 	private Config _config;
 	
+	/**
+	 * Saves the count of run tests.
+	 */
+	private int _runCount;
 
 	/**
 	 * Initialize the tests
@@ -76,6 +82,7 @@ public class TestFitTestRunner {
 	public void setUp() throws Exception {
 		_config = mock(Config.class);
 		_runner = new FitTestRunner(_config);
+		_runCount = 0;
 	}
 
 	/**
@@ -120,12 +127,12 @@ public class TestFitTestRunner {
 		verify(fit, never()).isExecuted();
 		verify(fit).setExitStatus(100);
 		verify(fit, never()).setExists(Matchers.anyBoolean());
-		verify(fit).getName();
+		verify(fit, times(2)).getName();
 		
 		verify(suite).getName();
 		verify(suite, atLeastOnce()).testCount();
 		verify(suite, atLeastOnce()).getTest(0);
-		verify(suite).getPackage();
+		verify(suite, times(2)).getPackage();
 		verify(suite).isExists();
 	}
 	
@@ -163,12 +170,12 @@ public class TestFitTestRunner {
 		verify(fit).isExecuted();
 		verify(fit, never()).setExitStatus(100);
 		verify(fit, never()).setExists(Matchers.anyBoolean());
-		verify(fit).getName();
+		verify(fit, times(2)).getName();
 		
 		verify(suite).getName();
 		verify(suite, atLeastOnce()).testCount();
 		verify(suite, atLeastOnce()).getTest(0);
-		verify(suite).getPackage();
+		verify(suite, times(2)).getPackage();
 		verify(suite).isExists();
 	}
 	
@@ -206,12 +213,12 @@ public class TestFitTestRunner {
 		verify(fit, never()).isExecuted();
 		verify(fit).setExitStatus(100);
 		verify(fit, never()).setExists(Matchers.anyBoolean());
-		verify(fit).getName();
+		verify(fit, times(2)).getName();
 		
 		verify(suite).getName();
 		verify(suite, atLeastOnce()).testCount();
 		verify(suite, atLeastOnce()).getTest(0);
-		verify(suite).getPackage();
+		verify(suite, times(2)).getPackage();
 		verify(suite).isExists();
 	}
 
@@ -310,7 +317,16 @@ public class TestFitTestRunner {
 			.withArguments(isrError)
 			.thenReturn(error);
 		
+		_runner.addTestEventListener(new  TestEventListener() {
+			@Override
+			public void testExecutedCompleted(TestEvent te) {
+				_runCount++;
+			}
+		});
+		
 		_runner.run();
+		
+		assertEquals(1, _runCount);
 		
 		PowerMockito.verifyNew(File.class).withArguments(resultPath);
 		verify(fResultPath).exists();

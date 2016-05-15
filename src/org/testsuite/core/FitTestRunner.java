@@ -63,21 +63,32 @@ public class FitTestRunner extends TestRunner {
 						_suites.get(suite).getPackage(), 
 						_suites.get(suite).getTest(test).getName(),
 						_fileExtension);
+				String result = new String();
 				
 				// Überprüfen, ob Datei existiert
 				if (!_suites.get(suite).isExists() || 
 						!_suites.get(suite).getTest(test).isExists()) {
 					_suites.get(suite).getTest(test).setExitStatus(100);
 					System.out.print(fit + " ");
-					System.out.println(_bundle.getString("run_notFound"));
+					System.out.println(result = _bundle.getString("run_notFound"));
+					fireTestExecutedCompleted(this, 
+							_suites.get(suite).getPackage(),
+							_suites.get(suite).getTest(test).getName(),
+							_suites.get(suite).getId(),
+							_suites.get(suite).getTest(test).getId(), result);
 					continue;
 				}
 				
 				// Überprüfen, ob der Test nicht ausgeführt werden soll
 				if (!_suites.get(suite).getTest(test).isExecuted()) {
 					System.out.print(fit + " ");
-					System.out.println(_bundle.getString(
+					System.out.println(result = _bundle.getString(
 							"createHtmlColumn_noneExecuted"));
+					fireTestExecutedCompleted(this, 
+							_suites.get(suite).getPackage(),
+							_suites.get(suite).getTest(test).getName(),
+							_suites.get(suite).getId(),
+							_suites.get(suite).getTest(test).getId(), result);
 					continue;
 				}
 				
@@ -113,18 +124,16 @@ public class FitTestRunner extends TestRunner {
 					// Überpüfen ob Exit-Status 0 ist
 					_suites.get(suite).getTest(test).setExitStatus(exit);
 					if (exit == 0)
-						System.out.print(_bundle.getString("run_pass"));
+						result = _bundle.getString("run_pass");
 					else
-						System.out.print(_bundle.getString("run_failure"));
+						result = _bundle.getString("run_failure");
 					
 					
 					// Dauer ausgeben
-					System.out.print(" (");
-					System.out.print(_bundle.getString("run_duration"));
-					System.out.print(" ");
-					System.out.print(
-							_suites.get(suite).getTest(test).getDurationTime()); 
-					System.out.println(" ms)");
+					result += " (" + _bundle.getString("run_duration") + " " +
+							_suites.get(suite).getTest(test).getDurationTime() + 
+							" ms)";
+					System.out.println(result);
 					
 					// Console speichern
 					_suites.get(suite).getTest(test).setStringConsole(
@@ -160,6 +169,11 @@ public class FitTestRunner extends TestRunner {
 					e.printStackTrace();
 					_suites.get(suite).getTest(test).setExitStatus(100);
 				}
+				fireTestExecutedCompleted(this, 
+						_suites.get(suite).getPackage(),
+						_suites.get(suite).getTest(test).getName(),
+						_suites.get(suite).getId(),
+						_suites.get(suite).getTest(test).getId(), result);
 				
 			} // for über die Fit-Tests
 			

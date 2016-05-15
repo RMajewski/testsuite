@@ -24,12 +24,13 @@ import javax.swing.JTree;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.testsuite.core.ConfigParser;
+import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
+import org.testsuite.data.TestEvent;
+import org.testsuite.data.TestEventListener;
 
 import javax.swing.JTextPane;
 import java.awt.BorderLayout;
-import java.awt.Component;
-
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JPanel;
@@ -39,11 +40,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.text.DecimalFormat;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.swing.JProgressBar;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 
 /**
@@ -54,7 +58,7 @@ import javax.swing.JFileChooser;
  * @version 0.1
  */
 @SuppressWarnings("serial")
-public class App extends JFrame implements ActionListener {
+public class App extends JFrame implements ActionListener, TestEventListener {
 	/**
 	 * Saves the string of action command for the configuration load button.
 	 */
@@ -112,6 +116,16 @@ public class App extends JFrame implements ActionListener {
 	private JTree _tree;
 	
 	/**
+	 * Saves the instance of the JProgressBar.
+	 */
+	private JProgressBar _pBar;
+	
+	/**
+	 * Saves the thread of run tests.
+	 */
+	private Thread _thread;
+	
+	/**
 	 * Initializes the main window.
 	 */
 	public App() {
@@ -120,6 +134,17 @@ public class App extends JFrame implements ActionListener {
 		_bundle = ResourceBundle.getBundle(BUNDLE_FILE);
 		
 		_config = new Config();
+		
+		GregorianCalendar gc = new GregorianCalendar();
+		gc.setTime(new Date());
+		DecimalFormat df = new DecimalFormat("00");
+		_config.setPathSuitesResult(
+				df.format(gc.get(GregorianCalendar.YEAR)) +
+				df.format(gc.get(GregorianCalendar.MONTH) + 1) +
+				df.format(gc.get(GregorianCalendar.DAY_OF_MONTH)) +
+				df.format(gc.get(GregorianCalendar.HOUR_OF_DAY)) +
+				df.format(gc.get(GregorianCalendar.MINUTE)) +
+				df.format(gc.get(GregorianCalendar.SECOND)));
 		
 		setTitle(WND_TITLE);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -187,8 +212,6 @@ public class App extends JFrame implements ActionListener {
 			
 		});
 		
-		// FIXME Maus-Event bei click auf Test abfangen und JCheckBox tooglen
-		
 		splitPane.setLeftComponent(_tree);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -202,8 +225,9 @@ public class App extends JFrame implements ActionListener {
 		getContentPane().add(panel, BorderLayout.SOUTH);
 		panel.setLayout(new BorderLayout(0, 25));
 		
-		JProgressBar pBar = new JProgressBar();
-		panel.add(pBar, BorderLayout.NORTH);
+		_pBar = new JProgressBar();
+		_pBar.setMaximum(0);
+		panel.add(_pBar, BorderLayout.NORTH);
 		
 		JPanel panButtons = new JPanel();
 		panel.add(panButtons, BorderLayout.SOUTH);
@@ -270,14 +294,39 @@ public class App extends JFrame implements ActionListener {
 						((TestRunnerModel)_tree.getModel()).setListOfTestRunner(
 								parser.getTestRunnerList());
 						_btnRun.setEnabled(true);
+						
+						int tests = 0;
+						for (int index = 0; 
+								index < parser.getTestRunnerList().size(); 
+								index++)
+							tests += parser.getTestRunnerList().get(index)
+								.getTestsCount();
+						_pBar.setMaximum(tests);
+						_pBar.setValue(0);
 					}
 				}
 				
 				break;
 				
 			case AC_RUN:
+				TestRun run = new TestRun(((TestRunnerModel)_tree.getModel())
+					.getTestRunnerList(), this);
+				_thread = new Thread(run);
+				_btnRun.setEnabled(false);
+				_btnCancel.setEnabled(true);
+				_thread.start();
 				break;
 		}
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param te Data of the event.
+	 */
+	@Override
+	public void testExecutedCompleted(TestEvent te) {
+		_pBar.setValue(_pBar.getValue() + 1);
 	}
 
 	/**

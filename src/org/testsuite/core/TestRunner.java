@@ -28,9 +28,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.Vector;
 
 import org.testsuite.data.Config;
 import org.testsuite.data.Library;
+import org.testsuite.data.TestEvent;
+import org.testsuite.data.TestEventListener;
 import org.testsuite.data.TestSuite;
 
 /**
@@ -82,6 +85,11 @@ public abstract class TestRunner {
 	protected ResourceBundle _bundle;
 	
 	/**
+	 * Saves the list of TestEventListener.
+	 */
+	protected Vector<TestEventListener> _testEventListeners;
+	
+	/**
 	 * Initialis the data of the class.
 	 * 
 	 * @param config The configuration
@@ -96,6 +104,7 @@ public abstract class TestRunner {
 		_suites = new ArrayList<TestSuite>();
 		_library = new ArrayList<Library>();
 		_classpath = new ArrayList<String>();
+		_testEventListeners = new Vector<TestEventListener>();
 		_fileExtension = new String();
 		_config = config;
 		_description = new String();
@@ -109,6 +118,20 @@ public abstract class TestRunner {
 	 */
 	public int testSuiteCount() {
 		return _suites.size();
+	}
+	
+	/**
+	 * Determines the number of all include tests.
+	 * 
+	 * @return Number of all include tests.
+	 */
+	public int getTestsCount() {
+		int ret = 0;
+		
+		for (int suite = 0; suite < _suites.size(); suite++)
+			ret += _suites.get(suite).testCount();
+		
+		return ret;
 	}
 	
 	/**
@@ -564,6 +587,47 @@ public abstract class TestRunner {
 		}
 		
 		return ret.toString().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+	}
+
+	/**
+	 * Adds a TestEventListener to the list of TestEventListener.
+	 * 
+	 * @param listener The new TestEventListener.
+	 */
+	public void addTestEventListener(TestEventListener listener) {
+		_testEventListeners.add(listener);
+	}
+	
+	/**
+	 * Deletes a TestEventListener from the list of TestEventListener.
+	 * 
+	 * @param listener Listener to be deleted.
+	 */
+	public void removeTestEventListener(TestEventListener listener) {
+		_testEventListeners.remove(listener);
+	}
+
+	/**
+	 * Creates the event data with the given values and sends it to all listed
+	 * TestEventListeners.
+	 * 
+	 * @param source Object that the event triggered.
+	 * 
+	 * @param pName The name of test suite package.
+	 * 
+	 * @param tName The name of the test.
+	 * 
+	 * @param suiteId The test suite id.
+	 * 
+	 * @param testId The test id.
+	 * 
+	 * @param result The result string.
+	 */
+	public void fireTestExecutedCompleted(Object source, String pName, 
+			String tName, int suiteId, int testId, String result) {
+		for (int i = 0; i < _testEventListeners.size(); i++)
+			_testEventListeners.get(i).testExecutedCompleted(new TestEvent(
+					source, pName, tName, suiteId, testId, result));
 	}
 	
 	/**
