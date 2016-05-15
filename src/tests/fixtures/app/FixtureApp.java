@@ -199,4 +199,23 @@ public class FixtureApp extends ActionFixture {
 	public boolean existsConfigurationFile() {
 		return _tests.existsConfigurationFile();
 	}
+	
+	/**
+	 * Loads the configuration file for this fit test.
+	 */
+	public void loadConfigurationFile() {
+		_tests.pushNoBlockButtonLoadConfigurationFile();
+		_tests.determineDialog(TestApp.DIALOG_CONFIG_FILE_OPEN);
+		_tests.dialogTextFieldSetText("src/tests/fit_test.xml");
+		pushDialogOpen();
+		_tests.treeExpandAll();
+	}
+	
+	public boolean isCheckBox1Enabled() {
+		return _tests.isCheckBoxFromTreeEnabled(3);
+	}
+	
+	public boolean isCheckBox2Enabled() {
+		return _tests.isCheckBoxFromTreeEnabled(4);
+	}
 }

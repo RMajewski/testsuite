@@ -1,0 +1,48 @@
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Test the TestSuiteApp (tree enable checkboxes)</title>
+	</head>
+	<body>
+		<h2>Tests for the TestSuiteApp (tree enable checkboces)</h2>
+		<p>Tests if the tree, the checkboxes can be checked out. In addition, it
+		is tested whether at nonexistent tests the checkbox is not enabled.</p>
+		<table border="1" cellpadding="1" cellspacing="1" style="width: *;">
+			<tbody>
+				<tr>
+					<td colspan="3">fit.ActionFixture</td>
+				</tr>
+				<tr>
+					<td>start</td>
+					<td>tests.fixtures.app.FixtureApp</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getTreeRootItemCount</td>
+					<td>0</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>loadConfigurationFile</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getTreeRootItemCount</td>
+					<td>1</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isCheckBox1Enabled</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isCheckBox2Enabled</td>
+					<td>false</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>

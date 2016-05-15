@@ -131,6 +131,9 @@ public class App extends JFrame implements ActionListener {
 		_tree = new JTree();
 		_tree.setModel(new TestRunnerModel());
 		_tree.setCellRenderer(new TestRunnerRenderer());
+		
+		// FIXME Maus-Event bei click auf Test abfangen und JCheckBox tooglen
+		
 		splitPane.setLeftComponent(_tree);
 		
 		JScrollPane scrollPane = new JScrollPane();

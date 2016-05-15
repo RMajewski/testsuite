@@ -1,0 +1,35 @@
+<tests>
+	<config>
+		<resultPath>result</resultPath>
+		<srcPath>src</srcPath>
+		<libPath>..</libPath>
+		<maxDuration>30000</maxDuration>
+		<htmlOut>true</htmlOut>
+		<systemPoperty>
+			<property>testing="true"</property>
+			<property>user.language=de</property>
+			<property>user.country=DE</property>
+		</systemPoperty>
+	</config>
+	
+	<testGroup>
+		<testRunner>org.testsuite.core.FitTestRunner</testRunner>
+		<description>[h2]Tests with FIT[/h2][p]This are tests with fit framemwork.[/p]</description>
+		<extension>fit</extension>
+		<libraries>
+			<library version="2.3.1.1" name="jemmy">jemmy.jar</library>
+			<library version="1.1" name="fit">fit.jar</library>
+		</libraries>
+		<classpath>
+			<path>bin</path>
+		</classpath>
+		<testSuite>
+			<name>Fit tests</name>
+			<package>tests.fit.app</package>
+			<test>AppTree</test>
+			<test>NoneExististingTest</test>
+		</testSuite>
+	</testGroup>
+	
+
+</tests>

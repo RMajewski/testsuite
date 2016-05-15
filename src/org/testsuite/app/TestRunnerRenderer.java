@@ -23,20 +23,16 @@ import java.awt.Component;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.tree.TreeCellRenderer;
 
 import org.testsuite.core.FitTestRunner;
 import org.testsuite.core.JemmyTestRunner;
 import org.testsuite.core.JunitTestRunner;
-import org.testsuite.core.TestRunner;
 import org.testsuite.data.TestSuite;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 
 /**
@@ -69,14 +65,25 @@ public class TestRunnerRenderer implements TreeCellRenderer {
 			boolean selected, boolean expanded, boolean leaf,
 			int row, boolean hasFocus) {
 		if (value instanceof org.testsuite.data.Test) {
+			if (selected)
+				_check.setBackground(new Color(0xcf, 0xff, 0xcf));
+			else
+				_check.setBackground(tree.getBackground());
+			
+			if (((org.testsuite.data.Test)value).isExists())
+				_check.setEnabled(true);
+			else
+				_check.setEnabled(false);
+			
 			_check.setText(((org.testsuite.data.Test)value).getName());
 			// FIXME In Test-Klasse hinzufügen, ob Test ausgeführt werden soll oder nicht.
-			_check.setSelected(true);
-			_check.setBackground(tree.getBackground());
 			return _check;
 		}
 		
-		_label.setBackground(tree.getBackground());
+		if (selected)
+			_label.setBackground(new Color(0xcf, 0xff, 0xcf));
+		else
+			_label.setBackground(tree.getBackground());
 		
 		if (value instanceof TestSuite)
 			_label.setText(((TestSuite)value).getName());

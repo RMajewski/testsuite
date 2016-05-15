@@ -86,6 +86,7 @@
 			<package>tests.fit.app</package>
 			<test>AppElementsCreated</test>
 			<test>AppLoadConfiguration</test>
+			<test>AppTree</test>
 		</testSuite>
 	</testGroup>
 </tests>

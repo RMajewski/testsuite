@@ -19,14 +19,18 @@
 
 package tests.testsuite.app;
 
+import java.awt.Component;
 import java.io.File;
 import java.util.ResourceBundle;
 
-import javax.swing.JFileChooser;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.tree.TreePath;
 
 import org.netbeans.jemmy.ClassReference;
 import org.netbeans.jemmy.Scenario;
 import org.netbeans.jemmy.operators.JButtonOperator;
+import org.netbeans.jemmy.operators.JCheckBoxOperator;
 import org.netbeans.jemmy.operators.JFileChooserOperator;
 import org.netbeans.jemmy.operators.JFrameOperator;
 import org.netbeans.jemmy.operators.JProgressBarOperator;
@@ -304,6 +308,21 @@ public class TestApp implements Scenario {
 	public boolean existsConfigurationFile() {
 		File file = _fileChooser.getSelectedFile();
 		return file.exists();
+	}
+	
+	public boolean isCheckBoxFromTreeEnabled(int index) {
+		Component c = _tree.getRenderedComponent(_tree.getPathForRow(index));
+		if (c instanceof JCheckBox) {
+			JCheckBoxOperator checkbox = new JCheckBoxOperator((JCheckBox)c);
+			return checkbox.isEnabled();
+		}
+		
+		return false;
+	}
+	
+	public void treeExpandAll() {
+		_tree.expandRow(1);
+		_tree.expandRow(2);
 	}
 
 	/**
