@@ -28,6 +28,7 @@ import java.util.Date;
 
 import org.testsuite.data.Config;
 import org.testsuite.data.Fit;
+import org.testsuite.data.Junit;
 
 /**
  * Executes the Fit tests.
@@ -267,8 +268,20 @@ public class FitTestRunner extends TestRunner {
 		
 		if (html == null)
 			throw new IllegalArgumentException();
+
+		String cl = new String();
+		if (((Fit)_suites.get(suite).getTest(test)).getOk() > 0)
+			cl = " class=\"pass\"";
+
+		if (((Fit)_suites.get(suite).getTest(test)).getFail() > 0)
+			cl = " class=\"wrong\"";
 		
-		StringBuilder ret = new StringBuilder("\t\t\t\t\t\t<td>");
+		if (!_suites.get(suite).getTest(test).isExecuted())
+			cl = " class=\"ignore\"";
+		
+		String td = "\t\t\t\t\t\t<td" + cl + ">";
+		
+		StringBuilder ret = new StringBuilder(td);
 		
 		if (_suites.get(suite).getTest(test).isExists()) {
 			ret.append("<a href=\"");
@@ -286,32 +299,34 @@ public class FitTestRunner extends TestRunner {
 			ret.append(System.lineSeparator());
 			
 			if (_suites.get(suite).getTest(test).isExecuted()) {
-				ret.append("\t\t\t\t\t\t<td>");
+				ret.append(td);
 				ret.append(((Fit)_suites.get(suite).getTest(test)).getOk());
 				ret.append("</td>");
 				ret.append(System.lineSeparator());
 				
-				ret.append("\t\t\t\t\t\t<td>");
+				ret.append(td);
 				ret.append(((Fit)_suites.get(suite).getTest(test)).getFail());
 				ret.append("</td>");
 				ret.append(System.lineSeparator());
 				
-				ret.append("\t\t\t\t\t\t<td>");
+				ret.append(td);
 				ret.append(((Fit)_suites.get(suite).getTest(test)).getIgnore());
 				ret.append("</td>");
 				ret.append(System.lineSeparator());
 				
-				ret.append("\t\t\t\t\t\t<td>");
+				ret.append(td);
 				ret.append(((Fit)_suites.get(suite).getTest(test)).getException());
 				ret.append("</td>");
 				ret.append(System.lineSeparator());
 				
-				ret.append("\t\t\t\t\t\t<td>");
+				ret.append(td);
 				ret.append(
 						((Fit)_suites.get(suite).getTest(test))
 							.getDurationTimeFormattedString());
 			} else {
-				ret.append("\t\t\t\t\t\t<td colspan=\"4\">");
+				ret.append("\t\t\t\t\t\t<td");
+				ret.append(cl);
+				ret.append(" colspan=\"4\">");
 				ret.append(_bundle.getString("createHtmlColumn_noneExecuted"));
 			}
 		} else {

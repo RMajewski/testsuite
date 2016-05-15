@@ -422,21 +422,25 @@ public class TestFitTestRunner {
 		String error = "error";
 		String resultSuite = "1";
 		int ok = 1;
-		int fail = 2;
+		int fail = 0;
 		int ignore = 0;
-		int exception = 4;
+		int exception = 0;
 		String duration = "00:00:01.897";
 		int suiteId = 0;
 		int testId = 0;
 		
-		String ret = "\t\t\t\t\t\t<td><a href=\"" + resultSuite + 
+		String ret = "\t\t\t\t\t\t<td class=\"pass\"><a href=\"" + resultSuite + 
 				File.separator + testName + ".html\">" + 
-				testName + "</a>" + testOut + "\t\t\t\t\t\t</td>" + System.lineSeparator() + 
-				"\t\t\t\t\t\t<td>" + ok + "</td>" + System.lineSeparator() + 
-				"\t\t\t\t\t\t<td>" + fail + "</td>" + System.lineSeparator() +
-				"\t\t\t\t\t\t<td>" + ignore + "</td>" + System.lineSeparator() +
-				"\t\t\t\t\t\t<td>" + exception + "</td>" + 
-				System.lineSeparator() + "\t\t\t\t\t\t<td>" + duration + 
+				testName + "</a>" + testOut + "\t\t\t\t\t\t</td>" + 
+				System.lineSeparator() + 
+				"\t\t\t\t\t\t<td class=\"pass\">" + ok + "</td>" + 
+				System.lineSeparator() + 
+				"\t\t\t\t\t\t<td class=\"pass\">" + fail + "</td>" + 
+				System.lineSeparator() +
+				"\t\t\t\t\t\t<td class=\"pass\">" + ignore + "</td>" + 
+				System.lineSeparator() +
+				"\t\t\t\t\t\t<td class=\"pass\">" + exception + "</td>" + 
+				System.lineSeparator() + "\t\t\t\t\t\t<td class=\"pass\">" + duration + 
 				"</td>" + System.lineSeparator();
 		
 		when(_config.getPathSuitesResult()).thenReturn(resultSuite);
@@ -482,7 +486,7 @@ public class TestFitTestRunner {
 		order.verify(test).getException();
 		order.verify(test).getDurationTimeFormattedString();
 		
-		verify(suite, times(12)).getTest(0);
+		verify(suite, times(15)).getTest(0);
 	}
 	
 	/**
@@ -512,11 +516,11 @@ public class TestFitTestRunner {
 		int suiteId = 0;
 		int testId = 0;
 		
-		String ret = "\t\t\t\t\t\t<td><a href=\"" + resultSuite + 
+		String ret = "\t\t\t\t\t\t<td class=\"ignore\"><a href=\"" + resultSuite + 
 				File.separator + testName + ".html\">" + 
 				testName + "</a>" + testOut + "\t\t\t\t\t\t</td>" +
-				System.lineSeparator() + "\t\t\t\t\t\t<td colspan=\"4\">" +
-				"wurde nicht ausgeführt</td>" +
+				System.lineSeparator() + "\t\t\t\t\t\t<td class=\"ignore\" " +
+				"colspan=\"4\">wurde nicht ausgeführt</td>" +
 				System.lineSeparator();
 		
 		when(_config.getPathSuitesResult()).thenReturn(resultSuite);
@@ -562,7 +566,7 @@ public class TestFitTestRunner {
 		order.verify(test, never()).getException();
 		order.verify(test, never()).getDurationTimeFormattedString();
 		
-		verify(suite, times(7)).getTest(0);
+		verify(suite, times(10)).getTest(0);
 	}
 	
 	/**
@@ -599,6 +603,7 @@ public class TestFitTestRunner {
 		
 		Fit test = mock(Fit.class);
 		when(test.isExists()).thenReturn(false);
+		when(test.isExecuted()).thenReturn(true);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
 		when(test.getIn()).thenReturn(console);
@@ -622,7 +627,7 @@ public class TestFitTestRunner {
 		order.verify(test, never()).getException();
 		order.verify(test, never()).getDurationTimeFormattedString();
 		
-		verify(suite, times(2)).getTest(0);
+		verify(suite, times(5)).getTest(0);
 	}
 	
 	/**
