@@ -21,7 +21,6 @@ package tests.testsuite.app;
 
 import java.awt.Component;
 import java.io.File;
-import java.lang.reflect.Field;
 import java.util.ResourceBundle;
 
 import javax.swing.JCheckBox;
@@ -32,6 +31,7 @@ import org.netbeans.jemmy.operators.JCheckBoxOperator;
 import org.netbeans.jemmy.operators.JFileChooserOperator;
 import org.netbeans.jemmy.operators.JFrameOperator;
 import org.netbeans.jemmy.operators.JProgressBarOperator;
+import org.netbeans.jemmy.operators.JTextAreaOperator;
 import org.netbeans.jemmy.operators.JTextFieldOperator;
 import org.netbeans.jemmy.operators.JTextPaneOperator;
 import org.netbeans.jemmy.operators.JTreeOperator;
@@ -69,7 +69,7 @@ public class TestApp implements Scenario {
 	/**
 	 * Saves the instance of text pane.
 	 */
-	private JTextPaneOperator _textPane;
+	private JTextAreaOperator _txtHtml;
 	
 	/**
 	 * Saves the instance of progress bar.
@@ -120,7 +120,7 @@ public class TestApp implements Scenario {
 
 		_wnd = new JFrameOperator(App.WND_TITLE);
 		_tree = new JTreeOperator(_wnd);
-		_textPane = new JTextPaneOperator(_wnd);
+		_txtHtml = new JTextAreaOperator(_wnd, 0);
 		_progress = new JProgressBarOperator(_wnd);
 		_btnRun = new JButtonOperator(_wnd, _bundle.getString("btnRun"));
 		_btnCancel = new JButtonOperator(_wnd, _bundle.getString("btnCancel"));
@@ -139,14 +139,14 @@ public class TestApp implements Scenario {
 	 * Determines whether the text pane for html output is enabled.
 	 */
 	public boolean isTextPaneEnabled() {
-		return _textPane.isEnabled();
+		return _txtHtml.isEnabled();
 	}
 	
 	/**
 	 * Determines whether the text pane for html output is editable.
 	 */
 	public boolean isTextPaneEditable() {
-		return _textPane.isEditable();
+		return _txtHtml.isEditable();
 	}
 	
 	/**
@@ -395,6 +395,10 @@ public class TestApp implements Scenario {
 		System.out.println(html);
 		File file = new File(html);
 		return file.exists();
+	}
+	
+	public int rowsFromHtmlTextEditor() {
+		return _txtHtml.getRows();
 	}
 
 	/**

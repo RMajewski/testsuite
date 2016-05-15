@@ -261,6 +261,12 @@ public class FixtureApp extends ActionFixture {
 	}
 	
 	public boolean existsResultHtmlFile() throws Exception {
+		Thread.sleep(500);
 		return _tests.existsResultHtmlFile();
+	}
+	
+	public boolean drawsHtmlFileIntoApp() throws InterruptedException {
+		Thread.sleep(500);
+		return _tests.rowsFromHtmlTextEditor() > 0;
 	}
 }

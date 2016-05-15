@@ -89,7 +89,10 @@
 			<test>AppElementsCreated</test>
 			<test>AppLoadConfiguration</test>
 			<test>AppTree</test>
-			<test>AppTree</test>
+			<test>AppRunTests</test>
+			<test>AppCancelRunTests</test>
+			<test>AppCreateHtmlOut</test>
+			<test>AppReadHtmlOut</test>
 		</testSuite>
 	</testGroup>
 </tests>

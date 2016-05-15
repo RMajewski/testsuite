@@ -22,6 +22,7 @@ package org.testsuite.app;
 import javax.swing.JFrame;
 import javax.swing.JTree;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.html.HTMLEditorKit;
 
 import org.testsuite.core.ConfigParser;
 import org.testsuite.core.HtmlOut;
@@ -43,8 +44,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -53,6 +60,7 @@ import java.util.ResourceBundle;
 
 import javax.swing.JProgressBar;
 import javax.swing.JButton;
+import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JScrollBar;
 
@@ -132,9 +140,14 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 	private JProgressBar _pBar;
 	
 	/**
-	 * Saves the instance of the JTextPane for output messages.
+	 * Saves the instance of the JTextArea for html output.
 	 */
-	private JTextArea _tpMessage;
+	private JEditorPane _txtHtml;
+	
+	/**
+	 * Saves the instance of the JTextArea for output messages.
+	 */
+	private JTextArea _txtMessage;
 	
 	/**
 	 * Saves the instance of the JScrollPane for _tpMessage.
@@ -238,9 +251,11 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		JScrollPane scrollPane = new JScrollPane();
 		splitPane.setRightComponent(scrollPane);
 		
-		JTextPane txtHtml = new JTextPane();
-		txtHtml.setEditable(false);
-		scrollPane.setViewportView(txtHtml);
+		_txtHtml = new JEditorPane();
+		_txtHtml.setContentType("text/html");
+		_txtHtml.setEditorKit(new HTMLEditorKit());
+		_txtHtml.setEditable(false);
+		scrollPane.setViewportView(_txtHtml);
 		
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.SOUTH);
@@ -283,8 +298,9 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		});
 		panButtons.add(_btnExit);
 		
-		_tpMessage = new JTextArea();
-		_spMessage = new JScrollPane(_tpMessage);
+		_txtMessage = new JTextArea();
+		_txtMessage.setEditable(false);
+		_spMessage = new JScrollPane(_txtMessage);
 		Dimension d = new Dimension();
 		d.setSize(400, 75);
 		_spMessage.setPreferredSize(d);
@@ -371,6 +387,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 							}
 						}
 						
+						// Create HTML ouput
 						String htmlFile = _config.getPathResult() + File.separator;
 						File f = new File(htmlFile);
 						if (!f.exists())
@@ -399,6 +416,16 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 						} catch (IOException ex) {
 							ex.printStackTrace();
 						}
+						
+						// Read Html
+						try {
+							f = new File(htmlFile);
+							if (f.exists())
+								_txtHtml.setPage(f.toURI().toURL());
+						} catch (Exception er) {
+							er.printStackTrace();
+						}
+						
 					}
 				};
 				thread.start();
@@ -416,11 +443,11 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		_pBar.setValue(_pBar.getValue() + 1);
 		String tmp = te.getPackageName() + "." + te.getName() + ": " + 
 				te.getResult();
-		_tpMessage.setText(_tpMessage.getText() + System.lineSeparator() + tmp);
-		_tpMessage.setRows(_tpMessage.getRows() + 1);
+		_txtMessage.setText(_txtMessage.getText() + System.lineSeparator() + tmp);
+		_txtMessage.setRows(_txtMessage.getRows() + 1);
 		_spMessage.getVerticalScrollBar().getModel().setValue(
 				_spMessage.getVerticalScrollBar().getModel().getValue() +
-				_tpMessage.getRows());
+				_txtMessage.getRows());
 	}
 
 	/**
