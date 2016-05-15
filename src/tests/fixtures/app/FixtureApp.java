@@ -250,4 +250,17 @@ public class FixtureApp extends ActionFixture {
 	public void pushButtonRun() {
 		_tests.pushButtonRun();
 	}
+	
+	public void waitForTestsEnd() {
+		int end = _tests.getMaximumOfProgressBar();
+		while (_tests.getValueOfProgressBar() != end);
+	}
+	
+	public void pushButtonCancel() {
+		_tests.pushButtonCancel();
+	}
+	
+	public boolean existsResultHtmlFile() throws Exception {
+		return _tests.existsResultHtmlFile();
+	}
 }

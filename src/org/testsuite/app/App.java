@@ -24,6 +24,7 @@ import javax.swing.JTree;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.testsuite.core.ConfigParser;
+import org.testsuite.core.HtmlOut;
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
 import org.testsuite.data.TestEvent;
@@ -31,8 +32,11 @@ import org.testsuite.data.TestEventListener;
 
 import javax.swing.JTextPane;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
 import javax.swing.JPanel;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -40,6 +44,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -49,6 +54,7 @@ import java.util.ResourceBundle;
 import javax.swing.JProgressBar;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JScrollBar;
 
 /**
  * Window that the test app displays.
@@ -101,6 +107,11 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 	private JButton _btnLoad;
 	
 	/**
+	 * Saves the button for exit the app.
+	 */
+	private JButton _btnExit;
+	
+	/**
 	 * Saves the instance of resource bundle
 	 */
 	private ResourceBundle _bundle;
@@ -119,6 +130,16 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 	 * Saves the instance of the JProgressBar.
 	 */
 	private JProgressBar _pBar;
+	
+	/**
+	 * Saves the instance of the JTextPane for output messages.
+	 */
+	private JTextArea _tpMessage;
+	
+	/**
+	 * Saves the instance of the JScrollPane for _tpMessage.
+	 */
+	private JScrollPane _spMessage;
 	
 	/**
 	 * Saves the thread of run tests.
@@ -223,7 +244,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.SOUTH);
-		panel.setLayout(new BorderLayout(0, 25));
+		panel.setLayout(new BorderLayout(0, 10));
 		
 		_pBar = new JProgressBar();
 		_pBar.setMaximum(0);
@@ -253,16 +274,32 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		_btnLoad.setName(AC_LOAD);
 		panButtons.add(_btnLoad);
 		
-		JButton btnExit = new JButton(_bundle.getString("btnExit"));
-		btnExit.addActionListener(new ActionListener() {
+		_btnExit = new JButton(_bundle.getString("btnExit"));
+		_btnExit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				dispose();
 			}
 		});
-		panButtons.add(btnExit);
+		panButtons.add(_btnExit);
+		
+		_tpMessage = new JTextArea();
+		_spMessage = new JScrollPane(_tpMessage);
+		Dimension d = new Dimension();
+		d.setSize(400, 75);
+		_spMessage.setPreferredSize(d);
+		panel.add(_spMessage, BorderLayout.CENTER);
 		
 		setVisible(true);
+	}
+	
+	/**
+	 * Returns the configuration.
+	 * 
+	 * @return Configuration
+	 */
+	public Config getConfig() {
+		return _config;
 	}
 
 	/**
@@ -274,6 +311,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()) {
 			case AC_CANCEL:
+				_thread.stop();
 				break;
 				
 			case AC_LOAD:
@@ -312,9 +350,58 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				TestRun run = new TestRun(((TestRunnerModel)_tree.getModel())
 					.getTestRunnerList(), this);
 				_thread = new Thread(run);
+				_btnExit.setEnabled(false);
 				_btnRun.setEnabled(false);
 				_btnCancel.setEnabled(true);
+				_btnLoad.setEnabled(false);
 				_thread.start();
+				
+				Thread thread = new Thread() {
+					@Override
+					public void run() {
+						boolean loop = true;
+						while (loop) {
+							yield();
+							if (!_thread.isAlive()) {
+								loop = false;
+								_btnCancel.setEnabled(false);
+								_btnRun.setEnabled(true);
+								_btnLoad.setEnabled(true);
+								_btnExit.setEnabled(true);
+							}
+						}
+						
+						String htmlFile = _config.getPathResult() + File.separator;
+						File f = new File(htmlFile);
+						if (!f.exists())
+							f.mkdirs();
+						
+						htmlFile += _bundle.getString("html_result") + "_" +
+								_config.getPathSuitesResult() + ".html";
+						try {
+							
+							HtmlOut html = new HtmlOut(htmlFile);
+							html.htmlHead();
+							
+							List<TestRunner> testRunner = 
+									((TestRunnerModel)_tree.getModel())
+									.getTestRunnerList();
+							
+							for (int runner = 0; runner < testRunner.size(); runner++) {
+								boolean line = true;
+								if (runner == 0)
+									line = false;
+								html.writeHtml(testRunner.get(runner).createHtml(html, 
+										line));
+							}
+							
+							html.htmlEnd();
+						} catch (IOException ex) {
+							ex.printStackTrace();
+						}
+					}
+				};
+				thread.start();
 				break;
 		}
 	}
@@ -327,6 +414,13 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 	@Override
 	public void testExecutedCompleted(TestEvent te) {
 		_pBar.setValue(_pBar.getValue() + 1);
+		String tmp = te.getPackageName() + "." + te.getName() + ": " + 
+				te.getResult();
+		_tpMessage.setText(_tpMessage.getText() + System.lineSeparator() + tmp);
+		_tpMessage.setRows(_tpMessage.getRows() + 1);
+		_spMessage.getVerticalScrollBar().getModel().setValue(
+				_spMessage.getVerticalScrollBar().getModel().getValue() +
+				_tpMessage.getRows());
 	}
 
 	/**

@@ -1,0 +1,68 @@
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Test the TestSuiteApp (cancel tests)</title>
+	</head>
+	<body>
+		<h2>Tests for the TestSuiteApp (cancel tests)</h2>
+		<p>It is tested whether the test run can be aborted by pressing the
+		button to cancel the test.</p>
+		<table border="1" cellpadding="1" cellspacing="1" style="width: *;">
+			<tbody>
+				<tr>
+					<td colspan="3">fit.ActionFixture</td>
+				</tr>
+				<tr>
+					<td>start</td>
+					<td>tests.fixtures.app.FixtureApp</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>loadConfigurationFile</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getMaximumOfProgressBar</td>
+					<td>3</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getValueOfProgressBar</td>
+					<td>0</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushButtonRun</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushButtonCancel</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isButtonForRunTestsEnable</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isButtonForLoadTheConfigurationFileEnable</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isButtonForExitTheAppEnable</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isButtonForCancelTestsEnable</td>
+					<td>false</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>

@@ -21,6 +21,7 @@ package tests.testsuite.app;
 
 import java.awt.Component;
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.ResourceBundle;
 
 import javax.swing.JCheckBox;
@@ -35,6 +36,7 @@ import org.netbeans.jemmy.operators.JTextFieldOperator;
 import org.netbeans.jemmy.operators.JTextPaneOperator;
 import org.netbeans.jemmy.operators.JTreeOperator;
 import org.testsuite.app.App;
+import org.testsuite.data.Config;
 
 /**
  * Tests the test suite app.
@@ -98,13 +100,19 @@ public class TestApp implements Scenario {
 	 * Saves the instance of open configuration file dialog.
 	 */
 	private JFileChooserOperator _fileChooser;
+	
+	/**
+	 * Saves the instance of ClassReference.
+	 */
+	private ClassReference _cr;
 
 	/**
 	 * Initializes the tests.
 	 */
 	public TestApp() {
 		try {
-			(new ClassReference("org.testsuite.app.App")).startApplication();
+			_cr = (new ClassReference("org.testsuite.app.App"));
+			_cr.startApplication();
 			_bundle = ResourceBundle.getBundle(App.BUNDLE_FILE);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -372,6 +380,21 @@ public class TestApp implements Scenario {
 	
 	public void pushButtonRun() {
 		_btnRun.push();
+	}
+	
+	public void pushButtonCancel() {
+		_btnCancel.push();
+	}
+	
+	public boolean existsResultHtmlFile() throws Exception{
+		Config config = ((App)_wnd.getSource()).getConfig();
+		String html = config.getPathResult() + File.separator +
+				_bundle.getString("html_result") + "_" +
+				config.getPathSuitesResult() + ".html";
+		
+		System.out.println(html);
+		File file = new File(html);
+		return file.exists();
 	}
 
 	/**

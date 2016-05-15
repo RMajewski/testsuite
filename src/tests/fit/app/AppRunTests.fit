@@ -69,8 +69,53 @@
 				</tr>
 				<tr>
 					<td>check</td>
+					<td>isButtonForRunTestsEnable</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isButtonForLoadTheConfigurationFileEnable</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isButtonForExitTheAppEnable</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isButtonForCancelTestsEnable</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>waitForTestsEnd</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
 					<td>getValueOfProgressBar</td>
 					<td>3</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isButtonForRunTestsEnable</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isButtonForLoadTheConfigurationFileEnable</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isButtonForExitTheAppEnable</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isButtonForCancelTestsEnable</td>
+					<td>false</td>
 				</tr>
 			</tbody>
 		</table>
