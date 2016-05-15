@@ -28,7 +28,6 @@ import java.util.Date;
 
 import org.testsuite.data.Config;
 import org.testsuite.data.Fit;
-import org.testsuite.data.Junit;
 
 /**
  * Executes the Fit tests.

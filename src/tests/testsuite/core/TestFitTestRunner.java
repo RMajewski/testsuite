@@ -26,7 +26,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.lang.reflect.Method;
 
 import org.junit.Before;
@@ -41,7 +40,6 @@ import org.testsuite.core.FitTestRunner;
 import org.testsuite.core.HtmlOut;
 import org.testsuite.data.Config;
 import org.testsuite.data.Fit;
-import org.testsuite.data.Junit;
 import org.testsuite.data.Library;
 import org.testsuite.data.TestEvent;
 import org.testsuite.data.TestEventListener;

@@ -25,7 +25,6 @@ import org.testsuite.core.HtmlOut;
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
 import org.testsuite.data.Test;
-import org.testsuite.data.TestEventListener;
 
 /**
  * Implements the class TestRunner for testing purposes.

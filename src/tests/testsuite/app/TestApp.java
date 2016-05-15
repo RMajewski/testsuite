@@ -33,7 +33,6 @@ import org.netbeans.jemmy.operators.JFrameOperator;
 import org.netbeans.jemmy.operators.JProgressBarOperator;
 import org.netbeans.jemmy.operators.JTextAreaOperator;
 import org.netbeans.jemmy.operators.JTextFieldOperator;
-import org.netbeans.jemmy.operators.JTextPaneOperator;
 import org.netbeans.jemmy.operators.JTreeOperator;
 import org.testsuite.app.App;
 import org.testsuite.data.Config;

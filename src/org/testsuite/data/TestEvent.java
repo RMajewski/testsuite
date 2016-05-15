@@ -28,6 +28,7 @@ import java.util.EventObject;
  *
  * @version 0.1
  */
+@SuppressWarnings("serial")
 public class TestEvent extends EventObject {
 	/**
 	 * Saves the name of the test.

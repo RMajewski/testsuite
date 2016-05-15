@@ -20,29 +20,18 @@
 package org.testsuite.core;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import org.testsuite.data.Config;
-import org.testsuite.data.Fit;
-import org.testsuite.data.Junit;
-import org.testsuite.data.Test;
-import org.testsuite.data.TestSuite;
 
 /**
  * Implements the management of tests.
