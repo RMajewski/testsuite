@@ -218,4 +218,16 @@ public class FixtureApp extends ActionFixture {
 	public boolean isCheckBox2Enabled() {
 		return _tests.isCheckBoxFromTreeEnabled(4);
 	}
+	
+	public boolean isCheckBox3Enabled() {
+		return _tests.isCheckBoxFromTreeEnabled(5);
+	}
+	
+	public boolean isCheckBox1Selected() {
+		return _tests.isCheckBoxFromTreeSelected(3);
+	}
+	
+	public boolean isCheckBox2Selected() {
+		return _tests.isCheckBoxFromTreeSelected(4);
+	}
 }

@@ -19,7 +19,6 @@
 
 package org.testsuite.data;
 
-import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -58,6 +57,11 @@ public class Test extends Data {
 	private String _error;
 	
 	/**
+	 * Saves whether the test should be executed.
+	 */
+	private boolean _executed;
+	
+	/**
 	 * Initialize the data of this class
 	 */
 	public Test() {
@@ -67,6 +71,7 @@ public class Test extends Data {
 		_error = null;
 		_exitStatus = -1;
 		_console = null;
+		_executed = true;
 	}
 	
 	/**
@@ -177,5 +182,23 @@ public class Test extends Data {
 	public String getDurationTimeFormattedString() {
 		DateFormat df = new SimpleDateFormat("HH:mm:ss.SSS");
 		return df.format(new Date(getDurationTime() - 3600000));
+	}
+	
+	/**
+	 * Returns whether the test should be executed.
+	 * 
+	 * @return Should the test be executed?
+	 */
+	public boolean isExecuted() {
+		return _executed;
+	}
+	
+	/**
+	 * Saves whether the test should be executed.
+	 * 
+	 * @param executed Should the test be executed?
+	 */
+	public void setExecuted(boolean executed) {
+		_executed = executed;
 	}
 }

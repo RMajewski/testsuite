@@ -118,6 +118,45 @@ public class TestJemmyTestRunner {
 		verify(test).setExitStatus(100);
 		verify(test, never()).setExists(Matchers.anyBoolean());
 		verify(test).getName();
+		verify(test, never()).isExecuted();
+		
+		verify(suite).getName();
+		verify(suite, atLeastOnce()).testCount();
+		verify(suite, atLeastOnce()).getTest(0);
+		verify(suite).getPackage();
+		verify(suite).isExists();
+	}
+	
+	/**
+	 * Tests if the will be canceled if the test file does not exist.
+	 */
+	@Test
+	public void testRunWithNonExecutedTest() {
+		String suiteName = "suite";
+		String packageName = "package";
+		String testName = "test";
+		
+
+		org.testsuite.data.Test test = mock(org.testsuite.data.Test.class);
+		when(test.isExists()).thenReturn(true);
+		when(test.isExecuted()).thenReturn(false);
+		when(test.getName()).thenReturn(testName);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getName()).thenReturn(suiteName);
+		when(suite.testCount()).thenReturn(1);
+		when(suite.getTest(0)).thenReturn(test);
+		when(suite.getPackage()).thenReturn(packageName);
+		when(suite.isExists()).thenReturn(true);
+		_runner.addTestSuite(suite);
+		
+		_runner.run();
+		
+		verify(test).isExists();
+		verify(test, never()).setExitStatus(100);
+		verify(test, never()).setExists(Matchers.anyBoolean());
+		verify(test).getName();
+		verify(test).isExecuted();
 		
 		verify(suite).getName();
 		verify(suite, atLeastOnce()).testCount();
@@ -160,6 +199,7 @@ public class TestJemmyTestRunner {
 		verify(test).setExitStatus(100);
 		verify(test, never()).setExists(Matchers.anyBoolean());
 		verify(test).getName();
+		verify(test, never()).isExecuted();
 		
 		verify(suite).getName();
 		verify(suite, atLeastOnce()).testCount();
@@ -197,6 +237,7 @@ public class TestJemmyTestRunner {
 
 		org.testsuite.data.Test test = mock(org.testsuite.data.Test.class);
 		when(test.isExists()).thenReturn(true);
+		when(test.isExecuted()).thenReturn(true);
 		when(test.getName()).thenReturn(testName);
 		
 		TestSuite suite = mock(TestSuite.class);
@@ -254,6 +295,7 @@ public class TestJemmyTestRunner {
 		verify(process).getErrorStream();
 		
 		verify(test).isExists();
+		verify(test).isExecuted();
 		verify(test).setExitStatus(0);
 		verify(test, never()).setExists(Matchers.anyBoolean());
 		verify(test, atLeastOnce()).getName();
@@ -322,6 +364,7 @@ public class TestJemmyTestRunner {
 		int testId = 0;
 		String duration = "00:00:01.897";
 		int exit = 0;
+		boolean executed = true;
 		
 		String ret = "\t\t\t\t\t\t<td>" + testName + System.lineSeparator() + 
 				testOut + "\t\t\t\t\t\t</td>" + System.lineSeparator() +
@@ -345,6 +388,7 @@ public class TestJemmyTestRunner {
 		when(test.getIn()).thenReturn(console);
 		when(test.getDurationTimeFormattedString()).thenReturn(duration);
 		when(test.getExitStatus()).thenReturn(exit);
+		when(test.isExecuted()).thenReturn(executed);
 		
 		TestSuite suite = mock(TestSuite.class);
 		when(suite.getTest(0)).thenReturn(test);
@@ -359,10 +403,11 @@ public class TestJemmyTestRunner {
 		order.verify(test).getId();
 		order.verify(test).getIn();
 		order.verify(test).getError();
+		order.verify(test).isExecuted();
 		order.verify(test).getExitStatus();
 		order.verify(test).getDurationTimeFormattedString();
 		
-		verify(suite, times(7)).getTest(0);
+		verify(suite, times(8)).getTest(0);
 	}
 	
 	/**
@@ -387,6 +432,7 @@ public class TestJemmyTestRunner {
 		int testId = 0;
 		String duration = "00:00:01.897";
 		int exit = 100;
+		boolean executed = true;
 		
 		String ret = "\t\t\t\t\t\t<td>" + testName + System.lineSeparator() + 
 				testOut + "\t\t\t\t\t\t</td>" + System.lineSeparator() +
@@ -410,6 +456,7 @@ public class TestJemmyTestRunner {
 		when(test.getIn()).thenReturn(console);
 		when(test.getDurationTimeFormattedString()).thenReturn(duration);
 		when(test.getExitStatus()).thenReturn(exit);
+		when(test.isExecuted()).thenReturn(executed);
 		
 		TestSuite suite = mock(TestSuite.class);
 		when(suite.getTest(0)).thenReturn(test);
@@ -424,10 +471,11 @@ public class TestJemmyTestRunner {
 		order.verify(test).getId();
 		order.verify(test).getIn();
 		order.verify(test).getError();
+		order.verify(test).isExecuted();
 		order.verify(test).getExitStatus();
 		order.verify(test).getDurationTimeFormattedString();
 		
-		verify(suite, times(7)).getTest(0);
+		verify(suite, times(8)).getTest(0);
 	}
 
 	/**
@@ -444,6 +492,7 @@ public class TestJemmyTestRunner {
 		String error = "error";
 		int suiteId = 0;
 		int testId = 0;
+		boolean executed = true;
 		
 		String ret = "\t\t\t\t\t\t<td>" + srcName + File.separator + 
 				packageName.replaceAll("\\.", File.separator) + File.separator +
@@ -467,6 +516,7 @@ public class TestJemmyTestRunner {
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
 		when(test.getIn()).thenReturn(console);
+		when(test.isExecuted()).thenReturn(executed);
 		
 		TestSuite suite = mock(TestSuite.class);
 		when(suite.getTest(0)).thenReturn(test);
@@ -483,6 +533,66 @@ public class TestJemmyTestRunner {
 		
 		verify(suite, times(2)).getTest(0);
 		verify(suite).getPackage();
+	}
+	
+	/**
+	 * Testing whether the line of HTML is generated correctly for a test when
+	 * the test does not executed.
+	 */
+	@Test
+	public void testCreateHtmlColumnWithNoneExecutedTest() throws Exception {
+		String testName = "Test1";
+		String packageName = "tests.test";
+		String srcName = "src";
+		String extension = "java";
+		String console = "console";
+		String error = "error";
+		int suiteId = 0;
+		int testId = 0;
+		boolean executed = false; 
+		
+		String ret = "\t\t\t\t\t\t<td>" + testName + System.lineSeparator() +
+				"\t\t\t\t\t\t</td>" + System.lineSeparator() + 
+				"\t\t\t\t\t\t<td colspan=\"2\">wurde nicht ausgeführt</td>" + 
+				System.lineSeparator();
+		
+		_runner.setFileExtension(extension);
+		
+		HtmlOut html = mock(HtmlOut.class);
+		when(html.generateTestOut(suiteId, testId, console, error))
+			.thenReturn(new String());
+		
+		Method method = 
+				JemmyTestRunner.class.getDeclaredMethod("createHtmlColumn", 
+						int.class, int.class, HtmlOut.class);
+		method.setAccessible(true);
+		
+		org.testsuite.data.Test test = mock(org.testsuite.data.Test.class);
+		when(test.isExists()).thenReturn(true);
+		when(test.getName()).thenReturn(testName);
+		when(test.getError()).thenReturn(error);
+		when(test.getIn()).thenReturn(console);
+		when(test.isExecuted()).thenReturn(executed);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getTest(0)).thenReturn(test);
+		when(suite.getPackage()).thenReturn(packageName);
+		_runner.addTestSuite(suite);
+		
+		when(_config.getPathSrc()).thenReturn(srcName);
+		
+		assertEquals(ret, method.invoke(_runner, 0, 0, html));
+		
+		InOrder order = inOrder(test, suite);
+		order.verify(test).isExists();
+		order.verify(test).getName();
+		order.verify(suite).getId();
+		order.verify(test).getId();
+		order.verify(test).getIn();
+		order.verify(test).getError();
+		order.verify(test).isExecuted();
+		
+		verify(suite, times(6)).getTest(0);
 	}
 	
 	/**

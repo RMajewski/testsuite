@@ -320,6 +320,16 @@ public class TestApp implements Scenario {
 		return false;
 	}
 	
+	public boolean isCheckBoxFromTreeSelected(int index) {
+		Component c = _tree.getRenderedComponent(_tree.getPathForRow(index));
+		if (c instanceof JCheckBox) {
+			JCheckBoxOperator checkbox = new JCheckBoxOperator((JCheckBox)c);
+			return checkbox.isSelected();
+		}
+		
+		return false;
+	}
+	
 	public void treeExpandAll() {
 		_tree.expandRow(1);
 		_tree.expandRow(2);

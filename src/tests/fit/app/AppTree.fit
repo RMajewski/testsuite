@@ -40,7 +40,22 @@
 				<tr>
 					<td>check</td>
 					<td>isCheckBox2Enabled</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isCheckBox3Enabled</td>
 					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isCheckBox1Selected</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isCheckBox2Selected</td>
+					<td>true</td>
 				</tr>
 			</tbody>
 		</table>

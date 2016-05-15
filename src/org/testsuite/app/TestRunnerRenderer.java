@@ -70,13 +70,10 @@ public class TestRunnerRenderer implements TreeCellRenderer {
 			else
 				_check.setBackground(tree.getBackground());
 			
-			if (((org.testsuite.data.Test)value).isExists())
-				_check.setEnabled(true);
-			else
-				_check.setEnabled(false);
+			_check.setEnabled(((org.testsuite.data.Test)value).isExists());
+			_check.setSelected(((org.testsuite.data.Test)value).isExecuted());
 			
 			_check.setText(((org.testsuite.data.Test)value).getName());
-			// FIXME In Test-Klasse hinzufügen, ob Test ausgeführt werden soll oder nicht.
 			return _check;
 		}
 		

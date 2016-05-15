@@ -37,7 +37,6 @@ import javax.xml.stream.events.XMLEvent;
 
 import org.testsuite.data.Config;
 import org.testsuite.data.Library;
-import org.testsuite.data.Test;
 import org.testsuite.data.TestSuite;
 
 /**
@@ -100,6 +99,7 @@ public class ConfigParser {
 			TestSuite suite = null;
 			int suiteId = 0;
 			int testId = 0;
+			boolean executed = true;
 			
 			while(parser.hasNext()) {
 				XMLEvent event = parser.nextEvent();
@@ -154,6 +154,19 @@ public class ConfigParser {
 								suite = new TestSuite();
 								suite.setId(suiteId++);
 								testId = 0;
+								break;
+								
+							case "test":
+								Iterator<?> atrs = element.getAttributes();
+								if (atrs.hasNext()) {
+									Attribute atr = (Attribute) atrs.next();
+									if (atr.getName().toString().equals(
+											"executed"))
+										executed = Boolean.parseBoolean(
+												atr.getValue().toString());
+								}
+								else
+									executed = true;
 								break;
 						}
 						break;
@@ -275,8 +288,10 @@ public class ConfigParser {
 							case "test":
 								if (testSuite && (suite != null) &&
 										(runner != null)) {
-									suite.addTest(runner.newTest(data,
-											testId++));
+									org.testsuite.data.Test test = 
+											runner.newTest(data, testId++);
+									test.setExecuted(executed);
+									suite.addTest(test);
 								}
 								break;
 						}

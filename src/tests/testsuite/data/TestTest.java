@@ -20,14 +20,9 @@
 package tests.testsuite.data;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
 import java.io.InputStream;
-import java.util.Date;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.testsuite.data.Data;
 /**
  * Tests the class {@link org.testsuite.data.Test}.
  * 
@@ -205,5 +200,26 @@ public class TestTest {
 		_data.setStart(start);
 		
 		assertEquals("00:00:10.000", _data.getDurationTimeFormattedString());
+	}
+	
+	/**
+	 * Tests if returned correctly, whether the test should be executed or not.
+	 * 
+	 * @see org.testsuite.data.Test#isExecuted()
+	 */
+	@Test
+	public void testIsExecuted() {
+		assertTrue(_data.isExecuted());
+	}
+	
+	/**
+	 * Tests if the can be set correctly, the test should be executed or not.
+	 * 
+	 * @see org.testsuite.data.Test#setExecuted(boolean)
+	 */
+	@Test
+	public void testSetExecuted() {
+		_data.setExecuted(false);
+		assertFalse(_data.isExecuted());
 	}
 }

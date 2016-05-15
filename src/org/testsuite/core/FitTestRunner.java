@@ -73,6 +73,14 @@ public class FitTestRunner extends TestRunner {
 					continue;
 				}
 				
+				// Überprüfen, ob der Test nicht ausgeführt werden soll
+				if (!_suites.get(suite).getTest(test).isExecuted()) {
+					System.out.print(fit + " ");
+					System.out.println(_bundle.getString(
+							"createHtmlColumn_noneExecuted"));
+					continue;
+				}
+				
 				// Überprüfen ob das Result-Verzeichnis existiert
 				String resultPath = _config.getPathResult() + File.separator + 
 						_config.getPathSuitesResult() + File.separator + 
@@ -263,30 +271,35 @@ public class FitTestRunner extends TestRunner {
 			ret.append("\t\t\t\t\t\t</td>");
 			ret.append(System.lineSeparator());
 			
-			ret.append("\t\t\t\t\t\t<td>");
-			ret.append(((Fit)_suites.get(suite).getTest(test)).getOk());
-			ret.append("</td>");
-			ret.append(System.lineSeparator());
-			
-			ret.append("\t\t\t\t\t\t<td>");
-			ret.append(((Fit)_suites.get(suite).getTest(test)).getFail());
-			ret.append("</td>");
-			ret.append(System.lineSeparator());
-			
-			ret.append("\t\t\t\t\t\t<td>");
-			ret.append(((Fit)_suites.get(suite).getTest(test)).getIgnore());
-			ret.append("</td>");
-			ret.append(System.lineSeparator());
-			
-			ret.append("\t\t\t\t\t\t<td>");
-			ret.append(((Fit)_suites.get(suite).getTest(test)).getException());
-			ret.append("</td>");
-			ret.append(System.lineSeparator());
-			
-			ret.append("\t\t\t\t\t\t<td>");
-			ret.append(
-					((Fit)_suites.get(suite).getTest(test))
-						.getDurationTimeFormattedString());
+			if (_suites.get(suite).getTest(test).isExecuted()) {
+				ret.append("\t\t\t\t\t\t<td>");
+				ret.append(((Fit)_suites.get(suite).getTest(test)).getOk());
+				ret.append("</td>");
+				ret.append(System.lineSeparator());
+				
+				ret.append("\t\t\t\t\t\t<td>");
+				ret.append(((Fit)_suites.get(suite).getTest(test)).getFail());
+				ret.append("</td>");
+				ret.append(System.lineSeparator());
+				
+				ret.append("\t\t\t\t\t\t<td>");
+				ret.append(((Fit)_suites.get(suite).getTest(test)).getIgnore());
+				ret.append("</td>");
+				ret.append(System.lineSeparator());
+				
+				ret.append("\t\t\t\t\t\t<td>");
+				ret.append(((Fit)_suites.get(suite).getTest(test)).getException());
+				ret.append("</td>");
+				ret.append(System.lineSeparator());
+				
+				ret.append("\t\t\t\t\t\t<td>");
+				ret.append(
+						((Fit)_suites.get(suite).getTest(test))
+							.getDurationTimeFormattedString());
+			} else {
+				ret.append("\t\t\t\t\t\t<td colspan=\"4\">");
+				ret.append(_bundle.getString("createHtmlColumn_noneExecuted"));
+			}
 		} else {
 			ret.append(_config.getPathSrc());
 			ret.append(File.separator);

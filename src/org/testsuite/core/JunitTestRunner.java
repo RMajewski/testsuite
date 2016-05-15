@@ -69,6 +69,14 @@ public class JunitTestRunner extends TestRunner {
 					System.out.println(_bundle.getString("run_notFound"));
 					continue;
 				}
+				
+				// Überprüfen, ob der Test nicht ausgeführt werden soll
+				if (!_suites.get(suite).getTest(test).isExecuted()) {
+					System.out.print(name + " ");
+					System.out.println(_bundle.getString(
+							"createHtmlColumn_noneExecuted"));
+					continue;
+				}
 			
 				try {
 					_suites.get(suite).getTest(test).setStart(
@@ -217,22 +225,27 @@ public class JunitTestRunner extends TestRunner {
 			ret.append("\t\t\t\t\t\t</td>");
 			ret.append(System.lineSeparator());
 			
-			ret.append(td);
-			ret.append(String.valueOf(
-					((Junit)_suites.get(suite).getTest(test)).getOk()));
-			ret.append("</td>");
-			ret.append(System.lineSeparator());
-			
-			ret.append(td);
-			ret.append(String.valueOf(
-					((Junit)_suites.get(suite).getTest(test)).getFail()));
-			ret.append("</td>");
-			ret.append(System.lineSeparator());
-			
-			ret.append(td);
-			ret.append(String.valueOf(
-					_suites.get(suite).getTest(test)
-						.getDurationTimeFormattedString()));
+			if (_suites.get(suite).getTest(test).isExecuted()) {
+				ret.append(td);
+				ret.append(String.valueOf(
+						((Junit)_suites.get(suite).getTest(test)).getOk()));
+				ret.append("</td>");
+				ret.append(System.lineSeparator());
+				
+				ret.append(td);
+				ret.append(String.valueOf(
+						((Junit)_suites.get(suite).getTest(test)).getFail()));
+				ret.append("</td>");
+				ret.append(System.lineSeparator());
+				
+				ret.append(td);
+				ret.append(String.valueOf(
+						_suites.get(suite).getTest(test)
+							.getDurationTimeFormattedString()));
+			} else {
+				ret.append("\t\t\t\t\t\t<td colspan=\"3\">");
+				ret.append(_bundle.getString("createHtmlColumn_noneExecuted"));
+			}
 		} else {
 			ret.append(_config.getPathSrc());
 			ret.append(File.separator);

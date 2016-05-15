@@ -30,7 +30,7 @@
 		<testSuite>
 			<name>Test 1</name>
 			<package>test1</package>
-			<test>Test1Class</test>
+			<test executed="false">Test1Class</test>
 		</testSuite>
 		<testSuite>
 			<name>Test 2</name>

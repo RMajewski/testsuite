@@ -208,6 +208,7 @@ public class TestConfigParser {
 		org.testsuite.data.Test test = suite.getTest(0);
 		assertEquals(testId++, test.getId());
 		assertEquals("Test1Class", test.getName());
+		assertFalse(test.isExecuted());
 		
 		suite = suites.get(1);
 		assertEquals(suiteId++, suite.getId());
@@ -219,6 +220,7 @@ public class TestConfigParser {
 		test = suite.getTest(0);
 		assertEquals(testId++, test.getId());
 		assertEquals("Test2Class", test.getName());
+		assertTrue(test.isExecuted());
 		
 		test = suite.getTest(1);
 		assertEquals(testId++, test.getId());

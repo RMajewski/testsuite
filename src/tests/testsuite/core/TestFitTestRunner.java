@@ -117,7 +117,51 @@ public class TestFitTestRunner {
 		verify(_config, never()).getPathResult();
 		
 		verify(fit).isExists();
+		verify(fit, never()).isExecuted();
 		verify(fit).setExitStatus(100);
+		verify(fit, never()).setExists(Matchers.anyBoolean());
+		verify(fit).getName();
+		
+		verify(suite).getName();
+		verify(suite, atLeastOnce()).testCount();
+		verify(suite, atLeastOnce()).getTest(0);
+		verify(suite).getPackage();
+		verify(suite).isExists();
+	}
+	
+	/**
+	 * Tests if the will be canceled if the test does not executed.
+	 */
+	@Test
+	public void testRunWithNoneExecutedTest() {
+		String suiteName = "suite";
+		String pathSrc = "src";
+		String packageName = "package";
+		String testName = "test";
+		
+		when(_config.getPathSrc()).thenReturn(pathSrc);
+
+		Fit fit = mock(Fit.class);
+		when(fit.isExists()).thenReturn(true);
+		when(fit.isExecuted()).thenReturn(false);
+		when(fit.getName()).thenReturn(testName);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getName()).thenReturn(suiteName);
+		when(suite.testCount()).thenReturn(1);
+		when(suite.getTest(0)).thenReturn(fit);
+		when(suite.getPackage()).thenReturn(packageName);
+		when(suite.isExists()).thenReturn(true);
+		_runner.addTestSuite(suite);
+		
+		_runner.run();
+		
+		verify(_config).getPathSrc();
+		verify(_config, never()).getPathResult();
+		
+		verify(fit).isExists();
+		verify(fit).isExecuted();
+		verify(fit, never()).setExitStatus(100);
 		verify(fit, never()).setExists(Matchers.anyBoolean());
 		verify(fit).getName();
 		
@@ -159,6 +203,7 @@ public class TestFitTestRunner {
 		verify(_config, never()).getPathResult();
 		
 		verify(fit, never()).isExists();
+		verify(fit, never()).isExecuted();
 		verify(fit).setExitStatus(100);
 		verify(fit, never()).setExists(Matchers.anyBoolean());
 		verify(fit).getName();
@@ -217,6 +262,7 @@ public class TestFitTestRunner {
 
 		Fit fit = mock(Fit.class);
 		when(fit.isExists()).thenReturn(true);
+		when(fit.isExecuted()).thenReturn(true);
 		when(fit.getName()).thenReturn(testName);
 		
 		TestSuite suite = mock(TestSuite.class);
@@ -285,6 +331,7 @@ public class TestFitTestRunner {
 		verify(_config).getPathSuitesResult();
 		
 		verify(fit).isExists();
+		verify(fit).isExecuted();
 		verify(fit).setExitStatus(0);
 		verify(fit, never()).setExists(Matchers.anyBoolean());
 		verify(fit, atLeastOnce()).getName();
@@ -389,6 +436,7 @@ public class TestFitTestRunner {
 		
 		Fit test = mock(Fit.class);
 		when(test.isExists()).thenReturn(true);
+		when(test.isExecuted()).thenReturn(true);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
 		when(test.getIn()).thenReturn(console);
@@ -411,13 +459,94 @@ public class TestFitTestRunner {
 		order.verify(test).getId();
 		order.verify(test).getIn();
 		order.verify(test).getError();
+		order.verify(test).isExecuted();
 		order.verify(test).getOk();
 		order.verify(test).getFail();
 		order.verify(test).getIgnore();
 		order.verify(test).getException();
 		order.verify(test).getDurationTimeFormattedString();
 		
-		verify(suite, times(11)).getTest(0);
+		verify(suite, times(12)).getTest(0);
+	}
+	
+	/**
+	 * Tests if the line of HTML is generated correctly for a none executed
+	 * test.
+	 */
+	@Test
+	public void testCreateHtmlColumnWithNoneExecutedTest() throws Exception {
+		String testName = "Test1";
+		String testOut = "\t\t\t\t\t\t<div class=\"right\"><a " +
+				"href=\"javascript:togleDisplayId(0, 0)\"> Ausgabe</a></div>" +
+				System.lineSeparator() + "\t\t\t\t\t\t<div " +
+				"class=\"testoutInvisible\" id=\"id_0_0\">" + 
+				System.lineSeparator() + "\t\t\t\t\t\t\t<div " +
+				"class=\"console\">Console</div>" + System.lineSeparator() +
+				"\t\t\t\t\t\t\t<div class=\"error\">Fehler</div>" +
+				System.lineSeparator() + "\t\t\t\t\t\t</div>" + 
+				System.lineSeparator();
+		String console="console";
+		String error = "error";
+		String resultSuite = "1";
+		int ok = 1;
+		int fail = 2;
+		int ignore = 0;
+		int exception = 4;
+		String duration = "00:00:01.897";
+		int suiteId = 0;
+		int testId = 0;
+		
+		String ret = "\t\t\t\t\t\t<td><a href=\"" + resultSuite + 
+				File.separator + testName + ".html\">" + 
+				testName + "</a>" + testOut + "\t\t\t\t\t\t</td>" +
+				System.lineSeparator() + "\t\t\t\t\t\t<td colspan=\"4\">" +
+				"wurde nicht ausgeführt</td>" +
+				System.lineSeparator();
+		
+		when(_config.getPathSuitesResult()).thenReturn(resultSuite);
+		
+		HtmlOut html = mock(HtmlOut.class);
+		when(html.generateTestOut(suiteId, testId, console, error))
+			.thenReturn(testOut);
+		
+		Method method = 
+				FitTestRunner.class.getDeclaredMethod("createHtmlColumn", 
+						int.class, int.class, HtmlOut.class);
+		method.setAccessible(true);
+		
+		Fit test = mock(Fit.class);
+		when(test.isExists()).thenReturn(true);
+		when(test.isExecuted()).thenReturn(false);
+		when(test.getName()).thenReturn(testName);
+		when(test.getError()).thenReturn(error);
+		when(test.getIn()).thenReturn(console);
+		when(test.getOk()).thenReturn(ok);
+		when(test.getFail()).thenReturn(fail);
+		when(test.getIgnore()).thenReturn(ignore);
+		when(test.getException()).thenReturn(exception);
+		when(test.getDurationTimeFormattedString()).thenReturn(duration);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getTest(0)).thenReturn(test);
+		_runner.addTestSuite(suite);
+		
+		assertEquals(ret, method.invoke(_runner, 0, 0, html));
+		
+		InOrder order = inOrder(test, suite);
+		order.verify(test).isExists();
+		order.verify(test, times(2)).getName();
+		order.verify(suite).getId();
+		order.verify(test).getId();
+		order.verify(test).getIn();
+		order.verify(test).getError();
+		order.verify(test).isExecuted();
+		order.verify(test, never()).getOk();
+		order.verify(test, never()).getFail();
+		order.verify(test, never()).getIgnore();
+		order.verify(test, never()).getException();
+		order.verify(test, never()).getDurationTimeFormattedString();
+		
+		verify(suite, times(7)).getTest(0);
 	}
 	
 	/**
@@ -470,6 +599,7 @@ public class TestFitTestRunner {
 		InOrder order = inOrder(test);
 		order.verify(test).isExists();
 		order.verify(test).getName();
+		order.verify(test, never()).isExecuted();
 		order.verify(test, never()).getOk();
 		order.verify(test, never()).getFail();
 		order.verify(test, never()).getIgnore();

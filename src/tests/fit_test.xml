@@ -26,6 +26,7 @@
 		<testSuite>
 			<name>Fit tests</name>
 			<package>tests.fit.app</package>
+			<test executed="false">AppElementsCreated</test>
 			<test>AppTree</test>
 			<test>NoneExististingTest</test>
 		</testSuite>
