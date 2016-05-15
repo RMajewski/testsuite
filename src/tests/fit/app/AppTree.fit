@@ -57,6 +57,16 @@
 					<td>isCheckBox2Selected</td>
 					<td>true</td>
 				</tr>
+				<tr>
+					<td>press</td>
+					<td>doubleClickOnCheckBox1</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isCheckBox1Selected</td>
+					<td>true</td>
+				</tr>
 			</tbody>
 		</table>
 	</body>

@@ -28,17 +28,22 @@ import org.testsuite.data.Config;
 
 import javax.swing.JTextPane;
 import java.awt.BorderLayout;
+import java.awt.Component;
+
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JPanel;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.ResourceBundle;
 
 import javax.swing.JProgressBar;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 
 /**
@@ -131,6 +136,56 @@ public class App extends JFrame implements ActionListener {
 		_tree = new JTree();
 		_tree.setModel(new TestRunnerModel());
 		_tree.setCellRenderer(new TestRunnerRenderer());
+		_tree.addMouseListener(new MouseListener() {
+
+			/**
+			 * If you double-click a test selected will toggle.
+			 * 
+			 * @param me Dates of the events.
+			 */
+			@Override
+			public void mouseClicked(MouseEvent me) {
+				if (me.getClickCount() == 2) {
+					Object c = _tree.getLastSelectedPathComponent();
+					if (c instanceof org.testsuite.data.Test) {
+						((org.testsuite.data.Test)c).setExecuted(
+								!((org.testsuite.data.Test)c).isExecuted());
+						((TestRunnerModel)_tree.getModel())
+							.fireTreeNodesChanged(_tree.getSelectionPath());
+					}
+				}
+			}
+
+			/**
+			 * Is not needed.
+			 */
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				
+			}
+
+			/**
+			 * Is not needed.
+			 */
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+			}
+
+			/**
+			 * Is not needed.
+			 */
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+			}
+
+			/**
+			 * Is not needed.
+			 */
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+			}
+			
+		});
 		
 		// FIXME Maus-Event bei click auf Test abfangen und JCheckBox tooglen
 		

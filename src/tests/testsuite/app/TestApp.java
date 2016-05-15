@@ -24,9 +24,6 @@ import java.io.File;
 import java.util.ResourceBundle;
 
 import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.tree.TreePath;
-
 import org.netbeans.jemmy.ClassReference;
 import org.netbeans.jemmy.Scenario;
 import org.netbeans.jemmy.operators.JButtonOperator;
@@ -333,6 +330,10 @@ public class TestApp implements Scenario {
 	public void treeExpandAll() {
 		_tree.expandRow(1);
 		_tree.expandRow(2);
+	}
+	
+	public void doubleClickOnCheckBoxFromTree(int index) {
+		_tree.clickOnPath(_tree.getPathForRow(index), 2);
 	}
 
 	/**

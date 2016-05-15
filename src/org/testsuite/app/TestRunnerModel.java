@@ -137,5 +137,15 @@ public class TestRunnerModel implements TreeModel {
 			_treeModelListener.elementAt(i).treeStructureChanged(
 					new TreeModelEvent(this, new Object[] {"TestRunner"}));
 	}
+	
+	public void fireTreeNodesChanged(TreePath path) {
+		int index = getChildCount(path.getLastPathComponent());
+		
+		for (int i = 0; i < _treeModelListener.size(); i++)
+			_treeModelListener.elementAt(i).treeNodesChanged(
+					new TreeModelEvent(this, path.getParentPath(), 
+							new int[] {index}, 
+							new Object[] {path.getLastPathComponent()}));
+	}
 
 }

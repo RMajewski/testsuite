@@ -230,4 +230,8 @@ public class FixtureApp extends ActionFixture {
 	public boolean isCheckBox2Selected() {
 		return _tests.isCheckBoxFromTreeSelected(4);
 	}
+	
+	public void doubleClickOnCheckBox1() {
+		_tests.doubleClickOnCheckBoxFromTree(3);
+	}
 }
