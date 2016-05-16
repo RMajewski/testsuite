@@ -239,6 +239,7 @@ public class TestFitTestRunner {
 		String lib = "lib1.jar";
 		String prop = "test1=\"1\"";
 
+		when(_config.getMaxDuration()).thenReturn(60000l);
 		when(_config.getPathLibrary()).thenReturn(pathLib);
 		when(_config.propertyCount()).thenReturn(1);
 		when(_config.getProperty(0)).thenReturn(prop);
@@ -304,6 +305,7 @@ public class TestFitTestRunner {
 		when(console.readLine()).thenReturn(null);
 		
 		BufferedReader error = mock(BufferedReader.class);
+		when(error.ready()).thenReturn(true);
 		when(error.readLine())
 			.thenReturn("1 right 2 wrong 3 ignore 4 exception", null);
 		
@@ -490,7 +492,7 @@ public class TestFitTestRunner {
 		order.verify(test).getException();
 		order.verify(test).getDurationTimeFormattedString();
 		
-		verify(suite, times(15)).getTest(0);
+		verify(suite, times(17)).getTest(0);
 	}
 	
 	/**
@@ -634,7 +636,7 @@ public class TestFitTestRunner {
 		order.verify(test, never()).getException();
 		order.verify(test, never()).getDurationTimeFormattedString();
 		
-		verify(suite, times(5)).getTest(0);
+		verify(suite, times(6)).getTest(0);
 	}
 	
 	/**

@@ -271,6 +271,7 @@ public class TestJunitTestRunner {
 			.thenReturn(isrError);
 		
 		BufferedReader console = mock(BufferedReader.class);
+		when(console.ready()).thenReturn(true);
 		when(console.readLine())
 			.thenReturn("OK (2 tests)", null);
 		
@@ -390,6 +391,7 @@ public class TestJunitTestRunner {
 			.thenReturn(isrError);
 		
 		BufferedReader console = mock(BufferedReader.class);
+		when(console.ready()).thenReturn(true);
 		when(console.readLine())
 			.thenReturn("Tests run: 1,  Failures: 2", null);
 		
@@ -541,7 +543,7 @@ public class TestJunitTestRunner {
 		order.verify(test).isExecuted();
 		order.verify(test).getDurationTimeFormattedString();
 		
-		verify(suite, times(11)).getTest(0);
+		verify(suite, times(14)).getTest(0);
 	}
 	/**
 	 * Tests if the line of HTML is generated correctly for a none executed test.
@@ -566,11 +568,11 @@ public class TestJunitTestRunner {
 		int suiteId = 0;
 		int testId = 0;
 		
-		String ret = "\t\t\t\t\t\t<td class=\"wrong\">" + testName +
+		String ret = "\t\t\t\t\t\t<td class=\"ignore\">" + testName +
 				System.lineSeparator() +
 				testOut + "\t\t\t\t\t\t</td>" + System.lineSeparator() + 
-				"\t\t\t\t\t\t<td colspan=\"3\">wurde nicht ausgeführt</td>" + 
-				System.lineSeparator();
+				"\t\t\t\t\t\t<td colspan=\"3\" class=\"ignore\">" +
+				"wurde nicht ausgeführt</td>" + System.lineSeparator();
 		
 		when(_config.getPathSuitesResult()).thenReturn(resultSuite);
 		
@@ -610,7 +612,7 @@ public class TestJunitTestRunner {
 		order.verify(test).isExecuted();
 		order.verify(test, never()).getDurationTimeFormattedString();
 		
-		verify(suite, times(8)).getTest(0);
+		verify(suite, times(9)).getTest(0);
 	}
 	
 	/**
@@ -629,11 +631,11 @@ public class TestJunitTestRunner {
 		int fail = 2;
 		String duration = "00:00:01.897";
 		
-		String ret = "\t\t\t\t\t\t<td class=\"wrong\">" + srcName +
+		String ret = "\t\t\t\t\t\t<td class=\"ignore\">" + srcName +
 				File.separator + 
 				packageName.replaceAll("\\.", File.separator) + File.separator +
 				testName + "." + extension + "</td>" + System.lineSeparator() + 
-				"\t\t\t\t\t\t<td colspan=\"3\" class=\"wrong\">Test " +
+				"\t\t\t\t\t\t<td colspan=\"3\" class=\"ignore\">Test " +
 				"existiert nicht</td>" + System.lineSeparator();
 
 		_runner.setFileExtension(extension);
@@ -673,7 +675,7 @@ public class TestJunitTestRunner {
 		order.verify(test, never()).isExecuted();
 		order.verify(test, never()).getDurationTime();
 		
-		verify(suite, times(4)).getTest(0);
+		verify(suite, times(5)).getTest(0);
 	}
 	
 	/**

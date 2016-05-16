@@ -62,6 +62,11 @@ public class Test extends Data {
 	private boolean _executed;
 	
 	/**
+	 * Saves whether the test is terminated.
+	 */
+	private boolean _terminated;
+	
+	/**
 	 * Initialize the data of this class
 	 */
 	public Test() {
@@ -72,6 +77,7 @@ public class Test extends Data {
 		_exitStatus = -1;
 		_console = null;
 		_executed = true;
+		_terminated = false;
 	}
 	
 	/**
@@ -200,5 +206,23 @@ public class Test extends Data {
 	 */
 	public void setExecuted(boolean executed) {
 		_executed = executed;
+	}
+
+	/**
+	 * Returns whether the test was terminated.
+	 * 
+	 * @return If the test terminated?
+	 */
+	public boolean isTerminated() {
+		return _terminated;
+	}
+	
+	/**
+	 * Saves whether the test was terminated.
+	 * 
+	 * @param terminated if the test terminated?
+	 */
+	public void setTerminated(boolean terminated) {
+		_terminated = terminated;
 	}
 }

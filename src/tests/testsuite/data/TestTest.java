@@ -222,4 +222,21 @@ public class TestTest {
 		_data.setExecuted(false);
 		assertFalse(_data.isExecuted());
 	}
+	
+	/**
+	 * Tests if the test is terminated returned correctly.
+	 */
+	@Test
+	public void testIsTerminated() {
+		assertFalse(_data.isTerminated());
+	}
+	
+	/**
+	 * Tests if the test can be terminated correctly set.
+	 */
+	@Test
+	public void testSetTerminated() {
+		_data.setTerminated(true);
+		assertTrue(_data.isTerminated());
+	}
 }

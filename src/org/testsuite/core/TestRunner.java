@@ -577,10 +577,12 @@ public abstract class TestRunner {
 		
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
-			String line;
-			while ((line = br.readLine()) != null) {
-				ret.append(line);
-				ret.append(System.lineSeparator());
+			if (br.ready()) {
+				String line;
+				while ((line = br.readLine()) != null) {
+					ret.append(line);
+					ret.append(System.lineSeparator());
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

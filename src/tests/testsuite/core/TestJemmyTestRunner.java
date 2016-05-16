@@ -387,11 +387,11 @@ public class TestJemmyTestRunner {
 		int exit = 0;
 		boolean executed = true;
 		
-		String ret = "\t\t\t\t\t\t<td>" + testName + System.lineSeparator() + 
-				testOut + "\t\t\t\t\t\t</td>" + System.lineSeparator() +
-				"\t\t\t\t\t\t<td>Ja</td>" + System.lineSeparator() + 
-				"\t\t\t\t\t\t<td>" + duration + "</td>" + 
-				System.lineSeparator();
+		String ret = "\t\t\t\t\t\t<td class=\"pass\">" + testName + 
+				System.lineSeparator() + testOut + "\t\t\t\t\t\t</td>" +
+				System.lineSeparator() + "\t\t\t\t\t\t<td class=\"pass\">Ja" +
+				"</td>" + System.lineSeparator() + "\t\t\t\t\t\t<td " +
+				"class=\"pass\">" + duration + "</td>" + System.lineSeparator();
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(suiteId, testId, console, error))
@@ -428,7 +428,7 @@ public class TestJemmyTestRunner {
 		order.verify(test).getExitStatus();
 		order.verify(test).getDurationTimeFormattedString();
 		
-		verify(suite, times(8)).getTest(0);
+		verify(suite, times(13)).getTest(0);
 	}
 	
 	/**
@@ -455,10 +455,11 @@ public class TestJemmyTestRunner {
 		int exit = 100;
 		boolean executed = true;
 		
-		String ret = "\t\t\t\t\t\t<td>" + testName + System.lineSeparator() + 
-				testOut + "\t\t\t\t\t\t</td>" + System.lineSeparator() +
-				"\t\t\t\t\t\t<td>Nein</td>" + System.lineSeparator() + 
-				"\t\t\t\t\t\t<td>" + duration + "</td>" + 
+		String ret = "\t\t\t\t\t\t<td class=\"wrong\">" + testName + 
+				System.lineSeparator() + testOut + "\t\t\t\t\t\t</td>" + 
+				System.lineSeparator() + "\t\t\t\t\t\t<td class=\"wrong\">" +
+				"Nein</td>" + System.lineSeparator() + 
+				"\t\t\t\t\t\t<td class=\"wrong\">" + duration + "</td>" + 
 				System.lineSeparator();
 		
 		HtmlOut html = mock(HtmlOut.class);
@@ -496,7 +497,7 @@ public class TestJemmyTestRunner {
 		order.verify(test).getExitStatus();
 		order.verify(test).getDurationTimeFormattedString();
 		
-		verify(suite, times(8)).getTest(0);
+		verify(suite, times(14)).getTest(0);
 	}
 
 	/**
@@ -552,7 +553,7 @@ public class TestJemmyTestRunner {
 		order.verify(test).isExists();
 		order.verify(test).getName();
 		
-		verify(suite, times(2)).getTest(0);
+		verify(suite, times(7)).getTest(0);
 		verify(suite).getPackage();
 	}
 	
@@ -572,10 +573,11 @@ public class TestJemmyTestRunner {
 		int testId = 0;
 		boolean executed = false; 
 		
-		String ret = "\t\t\t\t\t\t<td>" + testName + System.lineSeparator() +
-				"\t\t\t\t\t\t</td>" + System.lineSeparator() + 
-				"\t\t\t\t\t\t<td colspan=\"2\">wurde nicht ausgeführt</td>" + 
-				System.lineSeparator();
+		String ret = "\t\t\t\t\t\t<td class=\"ignore\">" + testName + 
+				System.lineSeparator() + "\t\t\t\t\t\t</td>" + 
+				System.lineSeparator() + 
+				"\t\t\t\t\t\t<td class=\"ignore\" colspan=\"2\">wurde nicht " +
+				"ausgeführt</td>" + System.lineSeparator();
 		
 		_runner.setFileExtension(extension);
 		
@@ -613,7 +615,7 @@ public class TestJemmyTestRunner {
 		order.verify(test).getError();
 		order.verify(test).isExecuted();
 		
-		verify(suite, times(6)).getTest(0);
+		verify(suite, times(9)).getTest(0);
 	}
 	
 	/**

@@ -1,0 +1,23 @@
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Test with maximum duration time</title>
+	</head>
+	<body>
+		<h2>Test with maximum duration time</h2>
+		<p>This simulated a too long duration time for a test. It is tested 
+		whether the test after the maximum duration time is terminated.</p>
+		<table border="1" cellpadding="1" cellspacing="1" style="width: *;">
+			<tbody>
+				<tr>
+					<td colspan="3">fit.ActionFixture</td>
+				</tr>
+				<tr>
+					<td>start</td>
+					<td>tests.fixtures.testsuite.core.FixtureTooLongFit</td>
+					<td>&nbsp;</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>

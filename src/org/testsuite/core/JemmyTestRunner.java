@@ -19,9 +19,13 @@
 
 package org.testsuite.core;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+
+import javax.swing.Timer;
 
 import org.testsuite.data.Config;
 
@@ -90,14 +94,28 @@ public class JemmyTestRunner extends TestRunner {
 							new Date().getTime());
 
 					System.out.print(name + ": ");
-					Process p = Runtime.getRuntime().exec("java -cp " +
+					final Process p = Runtime.getRuntime().exec("java -cp " +
 							createClasspath() + createProperty() + name);
+
+					Timer timer = new Timer((int)_config.getMaxDuration(),
+							new ActionListener() {
+								@Override
+								public void actionPerformed(ActionEvent e) {
+									p.destroy();
+								}
+					});
+					
+					timer.start();
 					int exit = p.waitFor();
+					timer.stop();
 					
 					// Ausgabe wie der Test verlaufen ist
 					_suites.get(suite).getTest(test).setEnd(new Date().getTime());
 					_suites.get(suite).getTest(test).setExitStatus(exit);
-					if (exit == 0)
+					if (exit == 143) {
+						result = _bundle.getString("run_terminated");
+						_suites.get(suite).getTest(test).setTerminated(true);
+					} else if (exit == 0)
 						result = _bundle.getString("run_pass");
 					else
 						result = _bundle.getString("run_failure");
@@ -174,7 +192,20 @@ public class JemmyTestRunner extends TestRunner {
 		if (html == null)
 			throw new IllegalArgumentException();
 		
-		StringBuilder ret = new StringBuilder("\t\t\t\t\t\t<td>");
+		String cl = new String();
+		if ((_suites.get(suite).getTest(test).getExitStatus() == 0) &&
+				_suites.get(suite).getTest(test).isExists())
+			cl = " class=\"pass\"";
+		else if ((_suites.get(suite).getTest(test).getExitStatus() != 0) &&
+				_suites.get(suite).getTest(test).isExists())
+			cl = " class=\"wrong\"";
+		if (!_suites.get(suite).getTest(test).isExecuted() ||
+				_suites.get(suite).getTest(test).isTerminated())
+			cl = " class=\"ignore\"";
+		
+		String td = "\t\t\t\t\t\t<td" + cl + ">";
+		
+		StringBuilder ret = new StringBuilder(td);
 		
 		if (_suites.get(suite).getTest(test).isExists()) {
 			ret.append(_suites.get(suite).getTest(test).getName());
@@ -188,21 +219,27 @@ public class JemmyTestRunner extends TestRunner {
 			ret.append(System.lineSeparator());
 			
 			if (_suites.get(suite).getTest(test).isExecuted()) {
-				ret.append("\t\t\t\t\t\t<td>");
+				ret.append(td);
 				
-				if (_suites.get(suite).getTest(test).getExitStatus() == 0)
-					ret.append(_bundle.getString("createHtmlColumn_yes"));
-				else
-					ret.append(_bundle.getString("createHtmlColumn_no"));
-				
+				if (_suites.get(suite).getTest(test).isTerminated()) {
+					ret.append(_bundle.getString("createHtmlColumn_terminated"));
+				} else {
+					if (_suites.get(suite).getTest(test).getExitStatus() == 0)
+						ret.append(_bundle.getString("createHtmlColumn_yes"));
+					else
+						ret.append(_bundle.getString("createHtmlColumn_no"));
+				}
+
 				ret.append("</td>");
 				ret.append(System.lineSeparator());
 				
-				ret.append("\t\t\t\t\t\t<td>");
+				ret.append(td);
 				ret.append(String.valueOf(
 						_suites.get(suite).getTest(test).getDurationTimeFormattedString()));
 			} else {
-				ret.append("\t\t\t\t\t\t<td colspan=\"2\">");
+				ret.append("\t\t\t\t\t\t<td");
+				ret.append(cl);
+				ret.append(" colspan=\"2\">");
 				ret.append(_bundle.getString("createHtmlColumn_noneExecuted"));
 			}
 		} else {

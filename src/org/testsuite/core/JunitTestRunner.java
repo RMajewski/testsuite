@@ -19,12 +19,16 @@
 
 package org.testsuite.core;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Date;
+
+import javax.swing.Timer;
 
 import org.testsuite.data.Config;
 import org.testsuite.data.Junit;
@@ -96,19 +100,32 @@ public class JunitTestRunner extends TestRunner {
 							new Date().getTime());
 
 					System.out.print(name + ": ");
-					Process p = Runtime.getRuntime().exec("java -cp " +
+					final Process p = Runtime.getRuntime().exec("java -cp " +
 							createClasspath() + createProperty() +
 							"org.junit.runner.JUnitCore " +
 							name);
+
+					Timer timer = new Timer((int)_config.getMaxDuration(),
+							new ActionListener() {
+								@Override
+								public void actionPerformed(ActionEvent e) {
+									p.destroy();
+								}
+					});
+					timer.start();
 					
 					int exit = p.waitFor();
+					timer.stop();
 					_suites.get(suite).getTest(test).setExitStatus(exit);
 					
 					// Ausgabe wie der Test verlaufen ist
 					_suites.get(suite).getTest(test).setEnd(
 							new Date().getTime());
 
-					if (exit == 0)
+					if (exit == 143){
+						result = _bundle.getString("run_terminated");
+						_suites.get(suite).getTest(test).setTerminated(true);
+					} else  if (exit == 0)
 						result = _bundle.getString("run_pass");
 					else
 						result = _bundle.getString("run_failure");
@@ -127,29 +144,31 @@ public class JunitTestRunner extends TestRunner {
 					BufferedReader br = new BufferedReader(new InputStreamReader(is));
 					String line;
 					StringBuilder console = new StringBuilder();
-					while ((line = br.readLine()) != null) {
-						console.append(line);
-						console.append(System.lineSeparator());
-						if (line.indexOf("OK (") > -1) {
-							String ok = new String("OK (");
-							
-							String tmp = line.substring(ok.length(),
-									line.indexOf(" test"));
-							((Junit)_suites.get(suite).getTest(test)).setOk(
-									Integer.valueOf(tmp));
-						} else if (line.indexOf("Tests run") > -1) {
-							String ok = new String("Tests run: ");
-							String fail = new String(",  Failures: ");
-							int indexOk = ok.length();
-							int indexFail = line.indexOf(fail);
-
-							((Junit)_suites.get(suite).getTest(test)).setOk(
-									Integer.valueOf(line.substring(indexOk, 
-											indexFail)));
-							
-							indexFail += fail.length();
-							((Junit)_suites.get(suite).getTest(test)).setFail(
-									Integer.valueOf(line.substring(indexFail)));
+					if (br.ready()) {
+						while ((line = br.readLine()) != null) {
+							console.append(line);
+							console.append(System.lineSeparator());
+							if (line.indexOf("OK (") > -1) {
+								String ok = new String("OK (");
+								
+								String tmp = line.substring(ok.length(),
+										line.indexOf(" test"));
+								((Junit)_suites.get(suite).getTest(test)).setOk(
+										Integer.valueOf(tmp));
+							} else if (line.indexOf("Tests run") > -1) {
+								String ok = new String("Tests run: ");
+								String fail = new String(",  Failures: ");
+								int indexOk = ok.length();
+								int indexFail = line.indexOf(fail);
+	
+								((Junit)_suites.get(suite).getTest(test)).setOk(
+										Integer.valueOf(line.substring(indexOk, 
+												indexFail)));
+								
+								indexFail += fail.length();
+								((Junit)_suites.get(suite).getTest(test)).setFail(
+										Integer.valueOf(line.substring(indexFail)));
+							}
 						}
 					}
 					_suites.get(suite).getTest(test).setStringConsole(
@@ -228,6 +247,10 @@ public class JunitTestRunner extends TestRunner {
 		if (((Junit)_suites.get(suite).getTest(test)).getFail() > 0)
 			cl = " class=\"wrong\"";
 		
+		if (!_suites.get(suite).getTest(test).isExecuted() ||
+				_suites.get(suite).getTest(test).isTerminated())
+			cl = " class=\"ignore\"";
+		
 		String td = "\t\t\t\t\t\t<td" + cl + ">";
 
 		StringBuilder ret = new StringBuilder(td);
@@ -244,24 +267,33 @@ public class JunitTestRunner extends TestRunner {
 			ret.append(System.lineSeparator());
 			
 			if (_suites.get(suite).getTest(test).isExecuted()) {
-				ret.append(td);
-				ret.append(String.valueOf(
-						((Junit)_suites.get(suite).getTest(test)).getOk()));
-				ret.append("</td>");
-				ret.append(System.lineSeparator());
-				
-				ret.append(td);
-				ret.append(String.valueOf(
-						((Junit)_suites.get(suite).getTest(test)).getFail()));
-				ret.append("</td>");
-				ret.append(System.lineSeparator());
+				if (_suites.get(suite).getTest(test).isTerminated()) {
+					ret.append("\t\t\t\t\t\t<td class=\"ignore\" ");
+					ret.append("colspan=\"2\">");
+					ret.append(_bundle.getString("createHtmlColumn_terminated"));
+					ret.append("</td>");
+					ret.append(System.lineSeparator());
+				} else {
+					ret.append(td);
+					ret.append(String.valueOf(
+							((Junit)_suites.get(suite).getTest(test)).getOk()));
+					ret.append("</td>");
+					ret.append(System.lineSeparator());
+					
+					ret.append(td);
+					ret.append(String.valueOf(
+							((Junit)_suites.get(suite).getTest(test))
+							.getFail()));
+					ret.append("</td>");
+					ret.append(System.lineSeparator());
+				}
 				
 				ret.append(td);
 				ret.append(String.valueOf(
 						_suites.get(suite).getTest(test)
 							.getDurationTimeFormattedString()));
 			} else {
-				ret.append("\t\t\t\t\t\t<td colspan=\"3\">");
+				ret.append("\t\t\t\t\t\t<td colspan=\"3\" class=\"ignore\">");
 				ret.append(_bundle.getString("createHtmlColumn_noneExecuted"));
 			}
 		} else {
@@ -276,7 +308,7 @@ public class JunitTestRunner extends TestRunner {
 			ret.append("</td>");
 			ret.append(System.lineSeparator());
 			
-			ret.append("\t\t\t\t\t\t<td colspan=\"3\" class=\"wrong\">");
+			ret.append("\t\t\t\t\t\t<td colspan=\"3\" class=\"ignore\">");
 			ret.append(_bundle.getString("createHtmlColumn_noneExistingTest"));
 		}
 		

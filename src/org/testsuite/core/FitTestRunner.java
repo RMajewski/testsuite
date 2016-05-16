@@ -19,12 +19,16 @@
 
 package org.testsuite.core;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Date;
+
+import javax.swing.Timer;
 
 import org.testsuite.data.Config;
 import org.testsuite.data.Fit;
@@ -115,15 +119,29 @@ public class FitTestRunner extends TestRunner {
 					String exec = "java -cp " + createClasspath() +
 							createProperty() + "fit.FileRunner " + fit + " " +
 							resultFileName;
-					Process p = Runtime.getRuntime().exec(exec);
+					final Process p = Runtime.getRuntime().exec(exec);
+
+					Timer timer = new Timer((int)_config.getMaxDuration(),
+							new ActionListener() {
+								@Override
+								public void actionPerformed(ActionEvent e) {
+									p.destroy();
+								}
+					});
+					timer.start();
+					
 					int exit = p.waitFor();
+					timer.stop();
 					
 					// Endzeit ermitteln
 					_suites.get(suite).getTest(test).setEnd(new Date().getTime());
 					
 					// Überpüfen ob Exit-Status 0 ist
 					_suites.get(suite).getTest(test).setExitStatus(exit);
-					if (exit == 0)
+					if (exit == 143) {
+						result = _bundle.getString("run_terminated");
+						_suites.get(suite).getTest(test).setTerminated(true);
+					} else if (exit == 0)
 						result = _bundle.getString("run_pass");
 					else
 						result = _bundle.getString("run_failure");
@@ -144,24 +162,26 @@ public class FitTestRunner extends TestRunner {
 					BufferedReader br = new BufferedReader(new InputStreamReader(is));
 					StringBuilder error = new StringBuilder();
 					String line;
-					while ((line = br.readLine()) != null) {
-						error.append(line);
-						error.append("<br/>");
-						if ((line.indexOf("right") > -1) &&
-								(line.indexOf("wrong") > -1)) {
-							String[] tmp = line.split(" ");
-							((Fit)_suites.get(suite).getTest(test)).setOk(
-									Integer.valueOf(tmp[0]));
-							((Fit)_suites.get(suite).getTest(test)).setFail(
-									Integer.valueOf(tmp[2]));
-							((Fit)_suites.get(suite).getTest(test)).setIgnore(
-									Integer.valueOf(tmp[4]));
-							((Fit)_suites.get(suite).getTest(test)).setException(
-									Integer.valueOf(tmp[6]));
+					if (br.ready()) {
+						while ((line = br.readLine()) != null) {
+							error.append(line);
+							error.append(System.lineSeparator());
+							if ((line.indexOf("right") > -1) &&
+									(line.indexOf("wrong") > -1)) {
+								String[] tmp = line.split(" ");
+								((Fit)_suites.get(suite).getTest(test)).setOk(
+										Integer.valueOf(tmp[0]));
+								((Fit)_suites.get(suite).getTest(test)).setFail(
+										Integer.valueOf(tmp[2]));
+								((Fit)_suites.get(suite).getTest(test)).setIgnore(
+										Integer.valueOf(tmp[4]));
+								((Fit)_suites.get(suite).getTest(test)).setException(
+										Integer.valueOf(tmp[6]));
+							}
 						}
 					}
 					_suites.get(suite).getTest(test).setError(
-							error.toString());
+							replaceHtmlEntities(error.toString()));
 				} catch (IOException e) {
 					e.printStackTrace();
 					_suites.get(suite).getTest(test).setExitStatus(100);
@@ -276,7 +296,8 @@ public class FitTestRunner extends TestRunner {
 		if (((Fit)_suites.get(suite).getTest(test)).getFail() > 0)
 			cl = " class=\"wrong\"";
 		
-		if (!_suites.get(suite).getTest(test).isExecuted())
+		if (!_suites.get(suite).getTest(test).isExecuted() ||
+				_suites.get(suite).getTest(test).isTerminated())
 			cl = " class=\"ignore\"";
 		
 		String td = "\t\t\t\t\t\t<td" + cl + ">";
@@ -302,25 +323,35 @@ public class FitTestRunner extends TestRunner {
 			ret.append(System.lineSeparator());
 			
 			if (_suites.get(suite).getTest(test).isExecuted()) {
-				ret.append(td);
-				ret.append(((Fit)_suites.get(suite).getTest(test)).getOk());
-				ret.append("</td>");
-				ret.append(System.lineSeparator());
-				
-				ret.append(td);
-				ret.append(((Fit)_suites.get(suite).getTest(test)).getFail());
-				ret.append("</td>");
-				ret.append(System.lineSeparator());
-				
-				ret.append(td);
-				ret.append(((Fit)_suites.get(suite).getTest(test)).getIgnore());
-				ret.append("</td>");
-				ret.append(System.lineSeparator());
-				
-				ret.append(td);
-				ret.append(((Fit)_suites.get(suite).getTest(test)).getException());
-				ret.append("</td>");
-				ret.append(System.lineSeparator());
+				if (_suites.get(suite).getTest(test).isTerminated()) {
+					ret.append("\t\t\t\t\t\t<td class=\"ignore\" ");
+					ret.append("colspan=\"4\">");
+					ret.append(_bundle.getString("createHtmlColumn_terminated"));
+					ret.append("</td>");
+					ret.append(System.lineSeparator());
+				} else {
+					ret.append(td);
+					ret.append(((Fit)_suites.get(suite).getTest(test)).getOk());
+					ret.append("</td>");
+					ret.append(System.lineSeparator());
+					
+					ret.append(td);
+					ret.append(((Fit)_suites.get(suite).getTest(test))
+								.getFail());
+					ret.append("</td>");
+					ret.append(System.lineSeparator());
+					
+					ret.append(td);
+					ret.append(((Fit)_suites.get(suite).getTest(test))
+								.getIgnore());
+					ret.append("</td>");
+					ret.append(System.lineSeparator());
+					
+					ret.append(td);
+					ret.append(((Fit)_suites.get(suite).getTest(test)).getException());
+					ret.append("</td>");
+					ret.append(System.lineSeparator());
+				}
 				
 				ret.append(td);
 				ret.append(
