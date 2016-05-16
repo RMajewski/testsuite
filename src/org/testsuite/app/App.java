@@ -339,6 +339,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 					if (parser.parse()) {
 						((TestRunnerModel)_tree.getModel()).setListOfTestRunner(
 								parser.getTestRunnerList());
+						_config = parser.getConfig();
 						_btnRun.setEnabled(true);
 						
 						int tests = 0;

@@ -7,8 +7,6 @@
 		<htmlOut>true</htmlOut>
 		<systemPoperty>
 			<property>testing="true"</property>
-			<property>user.language="de"</property>
-			<property>user.country="DE"</property>
 		</systemPoperty>
 	</config>
 	

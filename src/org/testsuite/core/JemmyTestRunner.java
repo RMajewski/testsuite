@@ -132,7 +132,8 @@ public class JemmyTestRunner extends TestRunner {
 
 	@Override
 	protected String createHtmlTableHead(int suite) {
-		StringBuilder ret = new StringBuilder("\t\t\t\t\t\t<th>");
+		StringBuilder ret = new StringBuilder("\t\t\t\t\t\t<th style=\"");
+		ret.append("width: 50%;\">");
 		ret.append(_suites.get(suite).getName());
 		ret.append("</th>");
 		ret.append(System.lineSeparator());

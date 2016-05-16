@@ -129,7 +129,7 @@ public class JunitTestRunner extends TestRunner {
 					StringBuilder console = new StringBuilder();
 					while ((line = br.readLine()) != null) {
 						console.append(line);
-						console.append("<br/>");
+						console.append(System.lineSeparator());
 						if (line.indexOf("OK (") > -1) {
 							String ok = new String("OK (");
 							
@@ -153,7 +153,7 @@ public class JunitTestRunner extends TestRunner {
 						}
 					}
 					_suites.get(suite).getTest(test).setStringConsole(
-							console.toString());
+							replaceHtmlEntities(console.toString()));
 				} catch (IOException e) {
 					e.printStackTrace();
 					_suites.get(suite).getTest(test).setExitStatus(100);

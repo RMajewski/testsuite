@@ -580,13 +580,25 @@ public abstract class TestRunner {
 			String line;
 			while ((line = br.readLine()) != null) {
 				ret.append(line);
-				ret.append("<br/>");
+				ret.append(System.lineSeparator());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return ret.toString().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+		return replaceHtmlEntities(ret.toString());
+	}
+	
+	/**
+	 * Replaces the HTML entities for &lt; and &gt; by their names.
+	 * 
+	 * @param source String in the HTML entities should be replaced.
+	 * 
+	 * @return String in the HTML entities were replaced.
+	 */
+	protected String replaceHtmlEntities(String source) {
+		return source.replaceAll("<", "&lt;").replaceAll(">", "&gt;")
+				.replaceAll(System.lineSeparator(), "<br/>");
 	}
 
 	/**

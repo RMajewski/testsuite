@@ -336,11 +336,11 @@ public class TestJemmyTestRunner {
 		String suiteName = "TestSuite";
 		String packageName = "package";
 		
-		String ret = "\t\t\t\t\t\t<th>" + suiteName + "</th>" + 
-				System.lineSeparator() + "\t\t\t\t\t\t<th>Erfolgreich?</th>" +
-				System.lineSeparator() + "\t\t\t\t\t\t<th>Zeit</th>" +
-				System.lineSeparator() + "\t\t\t\t\t</tr>" + 
-				System.lineSeparator() + "\t\t\t\t\t<tr>" + 
+		String ret = "\t\t\t\t\t\t<th style=\"width: 50%;\">" + suiteName + 
+				"</th>" + System.lineSeparator() + 
+				"\t\t\t\t\t\t<th>Erfolgreich?</th>" + System.lineSeparator() + 
+				"\t\t\t\t\t\t<th>Zeit</th>" + System.lineSeparator() +
+				"\t\t\t\t\t</tr>" + System.lineSeparator() + "\t\t\t\t\t<tr>" + 
 				System.lineSeparator() + "\t\t\t\t\t\t<th colspan=\"3\">" +
 				packageName + "</th>" + System.lineSeparator();
 		

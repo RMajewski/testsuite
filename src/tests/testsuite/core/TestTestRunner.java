@@ -727,7 +727,7 @@ public class TestTestRunner extends TestRunnerHelper {
 			.thenReturn(bf);
 		
 		String ret = "&lt;h1&gt;Test&lt;/h1&gt;&lt;p&gt;Dies ist ein " +
-				"Test!&lt;/p&gt;&lt;br/&gt;";
+				"Test!&lt;/p&gt;<br/>";
 		assertEquals(ret, inputStreamToString.invoke(_runner, is));
 	}
 	
