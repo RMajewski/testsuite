@@ -238,7 +238,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 			
 		});
 		
-		splitPane.setLeftComponent(_tree);
+		splitPane.setLeftComponent(new JScrollPane(_tree));
 		
 		JScrollPane scrollPane = new JScrollPane();
 		splitPane.setRightComponent(scrollPane);
