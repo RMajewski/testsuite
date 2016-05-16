@@ -31,7 +31,6 @@ import org.testsuite.data.Config;
 import org.testsuite.data.TestEvent;
 import org.testsuite.data.TestEventListener;
 
-import javax.swing.JTextPane;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
@@ -44,14 +43,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -62,7 +55,6 @@ import javax.swing.JProgressBar;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
-import javax.swing.JScrollBar;
 
 /**
  * Window that the test app displays.
@@ -370,6 +362,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				_btnRun.setEnabled(false);
 				_btnCancel.setEnabled(true);
 				_btnLoad.setEnabled(false);
+				_txtMessage.setText(new String());
 				_thread.start();
 				
 				Thread thread = new Thread() {
@@ -384,6 +377,8 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 								_btnRun.setEnabled(true);
 								_btnLoad.setEnabled(true);
 								_btnExit.setEnabled(true);
+								_pBar.setValue(0);
+								_thread = null;
 							}
 						}
 						
@@ -425,7 +420,6 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 						} catch (Exception er) {
 							er.printStackTrace();
 						}
-						
 					}
 				};
 				thread.start();

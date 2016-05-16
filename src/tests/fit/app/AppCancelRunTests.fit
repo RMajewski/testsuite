@@ -62,6 +62,11 @@
 					<td>isButtonForCancelTestsEnable</td>
 					<td>false</td>
 				</tr>
+				<tr>
+					<td>check</td>
+					<td>getValueOfProgressBar</td>
+					<td>0</td>
+				</tr>
 			</tbody>
 		</table>
 	</body>

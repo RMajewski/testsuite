@@ -1,4 +1,4 @@
-<tests>
+<configurationFile>
 	<config>
 		<resultPath>result</resultPath>
 		<srcPath>src</srcPath>
@@ -7,8 +7,8 @@
 		<htmlOut>true</htmlOut>
 		<systemPoperty>
 			<property>testing="true"</property>
-			<property>user.language=de</property>
-			<property>user.country=DE</property>
+			<property>user.language="de"</property>
+			<property>user.country="DE"</property>
 		</systemPoperty>
 	</config>
 	
@@ -95,4 +95,4 @@
 			<test>AppReadHtmlOut</test>
 		</testSuite>
 	</testGroup>
-</tests>
+</configurationFile>
