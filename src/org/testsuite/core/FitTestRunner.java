@@ -287,6 +287,9 @@ public class FitTestRunner extends TestRunner {
 			ret.append("<a href=\"");
 			ret.append(_config.getPathSuitesResult());
 			ret.append(File.separator);
+			ret.append(_suites.get(suite).getPackage().replaceAll("\\.", 
+					File.separator));
+			ret.append(File.separator);
 			ret.append(_suites.get(suite).getTest(test).getName());
 			ret.append(".html\">");
 			ret.append(_suites.get(suite).getTest(test).getName());

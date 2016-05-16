@@ -290,6 +290,10 @@ public class TestJunitTestRunner {
 			public void testExecutedCompleted(TestEvent te) {
 				_runCount++;
 			}
+
+			@Override
+			public void testEnd(TestEvent te) {
+			}
 		});
 		
 		_runner.run();

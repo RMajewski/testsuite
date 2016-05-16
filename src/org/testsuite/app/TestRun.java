@@ -22,6 +22,7 @@ package org.testsuite.app;
 import java.util.List;
 
 import org.testsuite.core.TestRunner;
+import org.testsuite.data.TestEvent;
 import org.testsuite.data.TestEventListener;
 
 /**
@@ -63,6 +64,7 @@ public class TestRun implements Runnable {
 			_testRunner.get(i).addTestEventListener(_listener);
 			_testRunner.get(i).run();
 		}
+		_listener.testEnd(new TestEvent(this, "", "", -1, -1, ""));
 	}
 
 }

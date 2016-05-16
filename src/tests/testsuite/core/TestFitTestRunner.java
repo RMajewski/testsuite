@@ -315,10 +315,14 @@ public class TestFitTestRunner {
 			.withArguments(isrError)
 			.thenReturn(error);
 		
-		_runner.addTestEventListener(new  TestEventListener() {
+		_runner.addTestEventListener(new TestEventListener() {
 			@Override
 			public void testExecutedCompleted(TestEvent te) {
 				_runCount++;
+			}
+
+			@Override
+			public void testEnd(TestEvent te) {
 			}
 		});
 		
@@ -426,11 +430,12 @@ public class TestFitTestRunner {
 		String duration = "00:00:01.897";
 		int suiteId = 0;
 		int testId = 0;
+		String packageName = "test.fit";
 		
 		String ret = "\t\t\t\t\t\t<td class=\"pass\"><a href=\"" + resultSuite + 
-				File.separator + testName + ".html\">" + 
-				testName + "</a>" + testOut + "\t\t\t\t\t\t</td>" + 
-				System.lineSeparator() + 
+				File.separator + packageName.replaceAll("\\.", File.separator) +
+				File.separator + testName + ".html\">" + testName + "</a>" +
+				testOut + "\t\t\t\t\t\t</td>" + System.lineSeparator() + 
 				"\t\t\t\t\t\t<td class=\"pass\">" + ok + "</td>" + 
 				System.lineSeparator() + 
 				"\t\t\t\t\t\t<td class=\"pass\">" + fail + "</td>" + 
@@ -466,6 +471,7 @@ public class TestFitTestRunner {
 		
 		TestSuite suite = mock(TestSuite.class);
 		when(suite.getTest(0)).thenReturn(test);
+		when(suite.getPackage()).thenReturn(packageName);
 		_runner.addTestSuite(suite);
 		
 		assertEquals(ret, method.invoke(_runner, 0, 0, html));
@@ -513,11 +519,13 @@ public class TestFitTestRunner {
 		String duration = "00:00:01.897";
 		int suiteId = 0;
 		int testId = 0;
+		String packageName = "test.fit";
 		
 		String ret = "\t\t\t\t\t\t<td class=\"ignore\"><a href=\"" + resultSuite + 
-				File.separator + testName + ".html\">" + 
-				testName + "</a>" + testOut + "\t\t\t\t\t\t</td>" +
-				System.lineSeparator() + "\t\t\t\t\t\t<td class=\"ignore\" " +
+				File.separator + packageName.replaceAll("\\.", File.separator) +
+				File.separator + testName + ".html\">" + testName + "</a>" + 
+				testOut + "\t\t\t\t\t\t</td>" + System.lineSeparator() + 
+				"\t\t\t\t\t\t<td class=\"ignore\" " +
 				"colspan=\"4\">wurde nicht ausgeführt</td>" +
 				System.lineSeparator();
 		
@@ -546,6 +554,7 @@ public class TestFitTestRunner {
 		
 		TestSuite suite = mock(TestSuite.class);
 		when(suite.getTest(0)).thenReturn(test);
+		when(suite.getPackage()).thenReturn(packageName);
 		_runner.addTestSuite(suite);
 		
 		assertEquals(ret, method.invoke(_runner, 0, 0, html));

@@ -30,4 +30,5 @@ import java.util.EventListener;
  */
 public interface TestEventListener extends EventListener {
 	public void testExecutedCompleted(TestEvent te);
+	public void testEnd(TestEvent te);
 }

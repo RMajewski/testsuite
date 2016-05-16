@@ -320,7 +320,8 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		switch(e.getActionCommand()) {
 			case AC_CANCEL:
 				_thread.stop();
-				break;
+				testEnd(new TestEvent(this, "", "", -1, -1, ""));
+			break;
 				
 			case AC_LOAD:
 				JFileChooser fc = new JFileChooser();
@@ -366,64 +367,6 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				_txtMessage.setText(new String());
 				_thread.start();
 				
-				Thread thread = new Thread() {
-					@Override
-					public void run() {
-						boolean loop = true;
-						while (loop) {
-							yield();
-							if (!_thread.isAlive()) {
-								loop = false;
-								_btnCancel.setEnabled(false);
-								_btnRun.setEnabled(true);
-								_btnLoad.setEnabled(true);
-								_btnExit.setEnabled(true);
-								_pBar.setValue(0);
-								_thread = null;
-							}
-						}
-						
-						// Create HTML ouput
-						String htmlFile = _config.getPathResult() + File.separator;
-						File f = new File(htmlFile);
-						if (!f.exists())
-							f.mkdirs();
-						
-						htmlFile += _bundle.getString("html_result") + "_" +
-								_config.getPathSuitesResult() + ".html";
-						try {
-							
-							HtmlOut html = new HtmlOut(htmlFile);
-							html.htmlHead();
-							
-							List<TestRunner> testRunner = 
-									((TestRunnerModel)_tree.getModel())
-									.getTestRunnerList();
-							
-							for (int runner = 0; runner < testRunner.size(); runner++) {
-								boolean line = true;
-								if (runner == 0)
-									line = false;
-								html.writeHtml(testRunner.get(runner).createHtml(html, 
-										line));
-							}
-							
-							html.htmlEnd();
-						} catch (IOException ex) {
-							ex.printStackTrace();
-						}
-						
-						// Read Html
-						try {
-							f = new File(htmlFile);
-							if (f.exists())
-								_txtHtml.setPage(f.toURI().toURL());
-						} catch (Exception er) {
-							er.printStackTrace();
-						}
-					}
-				};
-				thread.start();
 				break;
 		}
 	}
@@ -443,6 +386,53 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		_spMessage.getVerticalScrollBar().getModel().setValue(
 				_spMessage.getVerticalScrollBar().getModel().getValue() +
 				_txtMessage.getRows());
+	}
+	
+	@Override
+	public void testEnd(TestEvent te) {
+		_btnExit.setEnabled(true);
+		_btnRun.setEnabled(true);
+		_btnCancel.setEnabled(false);
+		_btnLoad.setEnabled(true);
+
+		// Create HTML ouput
+		String htmlFile = _config.getPathResult() + File.separator;
+		File f = new File(htmlFile);
+		if (!f.exists())
+			f.mkdirs();
+		
+		htmlFile += _bundle.getString("html_result") + "_" +
+				_config.getPathSuitesResult() + ".html";
+		try {
+			
+			HtmlOut html = new HtmlOut(htmlFile);
+			html.htmlHead();
+			
+			List<TestRunner> testRunner = 
+					((TestRunnerModel)_tree.getModel())
+					.getTestRunnerList();
+			
+			for (int runner = 0; runner < testRunner.size(); runner++) {
+				boolean line = true;
+				if (runner == 0)
+					line = false;
+				html.writeHtml(testRunner.get(runner).createHtml(html, 
+						line));
+			}
+			
+			html.htmlEnd();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		
+		// Read Html
+		try {
+			f = new File(htmlFile);
+			if (f.exists())
+				_txtHtml.setPage(f.toURI().toURL());
+		} catch (Exception er) {
+			er.printStackTrace();
+		}
 	}
 
 	/**
