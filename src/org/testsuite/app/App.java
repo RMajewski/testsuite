@@ -30,6 +30,7 @@ import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
 import org.testsuite.data.TestEvent;
 import org.testsuite.data.TestEventListener;
+import org.testsuite.data.TestSuite;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -38,6 +39,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -59,9 +62,13 @@ import javax.swing.JFileChooser;
 /**
  * Window that the test app displays.
  * 
+ * In the Version 0.2 configuration dialogs have been added. It can also the
+ * configuration is stored. It can also be entered a completely new
+ * configuration.
+ * 
  * @author René Majewski
  *
- * @version 0.1
+ * @version 0.2
  */
 @SuppressWarnings("serial")
 public class App extends JFrame implements ActionListener, TestEventListener {
@@ -79,6 +86,12 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 	 * Saves the string of action command for the run button.
 	 */
 	private static final String AC_RUN = "App.btnRun";
+	
+	/**
+	 * Saves the string of action command for open configuration dialog for a
+	 * test suite.
+	 */
+	private static final String CONFIG_TEST_SUITE = "App.config.TestSuite";
 	
 	/**
 	 * Saves the title of the main window
@@ -161,6 +174,22 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		
 		_config = new Config();
 		
+		createLayout();
+	}
+	
+	/**
+	 * Creates the popup menu for the tree
+	 */
+	private JPopupMenu treePopup() {
+		JPopupMenu popup = new JPopupMenu();
+		
+		return popup;
+	}
+	
+	/**
+	 * Create the Layout of the main window.
+	 */
+	private void createLayout() {
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.setTime(new Date());
 		DecimalFormat df = new DecimalFormat("00");
@@ -184,9 +213,12 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		splitPane.setResizeWeight(0.25);
 		getContentPane().add(splitPane, BorderLayout.CENTER);
 		
+		final JFrame owner = (JFrame)this;
+		
 		_tree = new JTree();
 		_tree.setModel(new TestRunnerModel());
 		_tree.setCellRenderer(new TestRunnerRenderer());
+		_tree.setComponentPopupMenu(treePopup());
 		_tree.addMouseListener(new MouseListener() {
 
 			/**
@@ -198,11 +230,34 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 			public void mouseClicked(MouseEvent me) {
 				if (me.getClickCount() == 2) {
 					Object c = _tree.getLastSelectedPathComponent();
+					
+					// toogle ignore on Test
 					if (c instanceof org.testsuite.data.Test) {
 						((org.testsuite.data.Test)c).setExecuted(
 								!((org.testsuite.data.Test)c).isExecuted());
 						((TestRunnerModel)_tree.getModel())
 							.fireTreeNodesChanged(_tree.getSelectionPath());
+					}
+					
+					// config for TestSuite
+					else if (c instanceof TestSuite) {
+						DlgConfigTestSuite dlg = new DlgConfigTestSuite(owner,
+								((TestSuite)c).getName(),
+								((TestSuite)c).getPackage());
+						if (dlg.getExitStatus() == 
+								DlgConfigTestSuite.EXIT_ACCEPT) {
+							((TestSuite)c).setName(dlg.getTestSuiteName());
+							((TestSuite)c).setPackage(dlg.getPackageName());
+						}
+					}
+					
+					// config for TestRunner
+					else if (c instanceof org.testsuite.core.TestRunner) {
+						System.out.println("Double click on TestRunner");
+					}
+					
+					else {
+						System.out.println("Double click on " + c.getClass().getName());
 					}
 				}
 			}
