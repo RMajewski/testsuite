@@ -129,7 +129,7 @@ public class HtmlOut {
 	 * @throws IOException 
 	 */
 	public void htmlHead() throws IOException {
-		String date = HelperCalendar.dateToString(new Date().getTime());
+		String date = HelperCalendar.datetimeToString(new Date().getTime());
 		
 		_bw.write("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 "
 				+ "Transitional//EN\" \"http://www.w3.org/TR/html4/"
