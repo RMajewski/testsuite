@@ -19,10 +19,7 @@
 
 package org.testsuite.app;
 
-import java.util.ResourceBundle;
-
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 import javax.swing.JLabel;
@@ -30,17 +27,17 @@ import javax.swing.JTextField;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
- * Konfigurations-Dialog für die TestSuite.
+ * Konfigurations-Dialog for the TestSuite.
+ * 
+ * In version 0.2 the class of DlgDialog is derived.
  * 
  * @author René Majewski
  *
- * @version 0.1
+ * @version 0.2
  */
-public class DlgConfigTestSuite extends JDialog implements ActionListener {
+public class DlgConfigTestSuite extends DlgConfig {
 
 	/**
 	 *  Serilisation ID
@@ -52,36 +49,6 @@ public class DlgConfigTestSuite extends JDialog implements ActionListener {
 	 */
 	public static final String BUNDLE_FILE = 
 			"resources.lang.org.testsuite.app.DlgConfigTestSuite";
-	
-	/**
-	 * Saves the action command for accept button
-	 */
-	private static final String BTN_ACCEPT = "DlgConfigTestSuite.accept";
-	
-	/**
-	 * Saves the action command for cancel button
-	 */
-	private static final String BTN_CANCEL = "DlgConfigTestSuite.cancel";
-	
-	/**
-	 * Specifies that ended with accept.
-	 */
-	public static final int EXIT_ACCEPT = 1;
-	
-	/**
-	 * Specifies that ended with cancel.
-	 */
-	public static final int EXIT_CANCEL = 2;
-	
-	/**
-	 * Saves the Exit status
-	 */
-	private int _exitStatus;
-	
-	/**
-	 * Saves the instance of resource bundle
-	 */
-	private ResourceBundle _bundle;
 	
 	/**
 	 * Saves the input field for the name of test suite
@@ -103,13 +70,9 @@ public class DlgConfigTestSuite extends JDialog implements ActionListener {
 	 * @param packageName name of the package for test suite
 	 */
 	public DlgConfigTestSuite(JFrame owner, String name, String packageName) {
-		super(owner);
-		
-		_bundle = ResourceBundle.getBundle(BUNDLE_FILE);
-		_exitStatus = -1;
+		super(owner, BUNDLE_FILE);
 		
 		setSize(500, 200);
-		setTitle(_bundle.getString("dialog_title"));
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] {150, 150, 200};
@@ -196,27 +159,5 @@ public class DlgConfigTestSuite extends JDialog implements ActionListener {
 	 */
 	public String getPackageName() {
 		return _txtPackage.getText();
-	}
-	
-	/**
-	 * Returns the exit status
-	 * 
-	 * @return Exit status of this dialog
-	 */
-	public int getExitStatus() {
-		return _exitStatus;
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent ae) {
-		if (ae.getActionCommand().equals(BTN_CANCEL)) {
-			_exitStatus = EXIT_CANCEL;
-			setVisible(false);
-		}
-		
-		else if(ae.getActionCommand().equals(BTN_ACCEPT)) {
-			_exitStatus = EXIT_ACCEPT;
-			setVisible(false);
-		}
 	}
 }
