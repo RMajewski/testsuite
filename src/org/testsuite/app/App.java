@@ -26,6 +26,7 @@ import javax.swing.JTree;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.tree.TreePath;
 
 import org.testsuite.core.ConfigParser;
 import org.testsuite.core.HtmlOut;
@@ -52,6 +53,7 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -467,12 +469,18 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 						DlgConfigTestRunner dlg = new DlgConfigTestRunner(owner,
 								(TestRunner)c);
 						if (dlg.getExitStatus() == DlgConfig.EXIT_ACCEPT) {
-							
+							if (dlg.isTestRunnerChanged()) {
+								int index = ((TestRunnerModel)_tree.getModel())
+											.getTestRunnerList().indexOf(c);
+								((TestRunnerModel)_tree.getModel())
+									.getTestRunnerList().remove(index);
+								((TestRunnerModel)_tree.getModel())
+								.getTestRunnerList().add(index, 
+										dlg.getTestRunner());
+								((TestRunnerModel)_tree.getModel())
+									.fireTreeStructureChanged();
+							}
 						}
-					}
-					
-					else {
-						System.out.println("Double click on " + c.getClass().getName());
 					}
 				}
 			}

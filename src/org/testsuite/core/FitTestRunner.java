@@ -41,6 +41,17 @@ import org.testsuite.data.Fit;
  * @version 0.1
  */
 public class FitTestRunner extends TestRunner {
+	
+	/**
+	 * Initialize the data of the class.
+	 * 
+	 * <strong>Important</strong>: It must also be initialized config. Please
+	 * use {@link #setConfig(Config)}.
+	 */
+	public FitTestRunner() {
+		super();
+	}
+	
 	/**
 	 * Initialis the data of the class.
 	 * 

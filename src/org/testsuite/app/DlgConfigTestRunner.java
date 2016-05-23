@@ -116,6 +116,11 @@ public class DlgConfigTestRunner extends DlgConfig {
 	 * Saves the object of test runner
 	 */
 	private TestRunner _runner;
+	
+	/**
+	 * Saves whether the test runner object has changed. 
+	 */
+	private boolean _testRunnerChanged;
 
 	/**
 	 * Initialize the class an create the layout. 
@@ -129,6 +134,7 @@ public class DlgConfigTestRunner extends DlgConfig {
 		super(owner, BUNDLE_FILE);
 		
 		_runner = runner;
+		_testRunnerChanged = false;
 		
 		setSize(600, 550);
 		
@@ -349,6 +355,24 @@ public class DlgConfigTestRunner extends DlgConfig {
 	}
 	
 	/**
+	 * Returns whether the test runner object has changed.
+	 * 
+	 * @return Has changed the test runner?
+	 */
+	public boolean isTestRunnerChanged() {
+		return _testRunnerChanged;
+	}
+	
+	/**
+	 * Return the test runner object
+	 * 
+	 * @return Test runner object
+	 */
+	public TestRunner getTestRunner() {
+		return _runner;
+	}
+	
+	/**
 	 * Saves the config if click to accept button.
 	 * 
 	 * @param ae Data of event
@@ -361,6 +385,27 @@ public class DlgConfigTestRunner extends DlgConfig {
 			case BTN_ACCEPT:
 				_runner.setDescription(_txtDescription.getText());
 				_runner.setFileExtension(_txtExtension.getText());
+				
+				if (!_runner.getClass().getName().equals(_txtClass.getText())) {
+					try {
+						TestRunner runner = (TestRunner)this.getClass()
+								.getClassLoader().loadClass(_txtClass.getText())
+								.newInstance();
+						runner.setClassPathList(_runner.getClassPathList());
+						runner.setConfig(_runner.getConfig());
+						runner.setDescription(_runner.getDescription());
+						runner.setFileExtension(_runner.getFileExtension());
+						runner.setLastSuiteId(_runner.getLastSuiteId());
+						runner.setLibraryList(_runner.getLibraryList());
+						runner.setTestSuiteList(_runner.getTestSuiteList());
+						runner.setTestEventListenerList(
+								_runner.getTestEventListenerList());
+						_runner = runner;
+						_testRunnerChanged = true;
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
 				break;
 				
 			case INSERT_CLASSPATH:

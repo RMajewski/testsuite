@@ -90,11 +90,12 @@ public abstract class TestRunner {
 	protected Vector<TestEventListener> _testEventListeners;
 	
 	/**
-	 * Initialis the data of the class.
+	 * Initialize the data of the class.
 	 * 
-	 * @param config The configuration
+	 * <strong>Important</strong>: It must also be initialized config. Please
+	 * use {@link #setConfig(Config)}.
 	 */
-	public TestRunner(Config config) {
+	public TestRunner() {
 		try {
 			_bundle = ResourceBundle.getBundle(
 					"resources.lang.org.testsuite.core.TestRunner");
@@ -106,9 +107,19 @@ public abstract class TestRunner {
 		_classpath = new ArrayList<String>();
 		_testEventListeners = new Vector<TestEventListener>();
 		_fileExtension = new String();
-		_config = config;
+		_config = null;
 		_description = new String();
 		_lastSuiteId = -1;
+	}
+	
+	/**
+	 * Initialis the data of the class.
+	 * 
+	 * @param config The configuration
+	 */
+	public TestRunner(Config config) {
+		this();
+		_config = config;
 	}
 	
 	/**
@@ -143,9 +154,33 @@ public abstract class TestRunner {
 		_suites.add(suite);
 	}
 	
-	// FIXME Test hinzufügen und javadoc erstellen
+	/**
+	 * Sets a new list with test suites
+	 * 
+	 * @param list New list with test suites
+	 */
+	public void setTestSuiteList(List<TestSuite> list) {
+		_suites = list;
+	}
+	
+	/**
+	 * Returns the test suite with the index
+	 * 
+	 * @param index Index of test suite
+	 * 
+	 * @return Test suite with the index
+	 */
 	public TestSuite getTestSuite(int index) {
 		return _suites.get(index);
+	}
+	
+	/**
+	 * Returns the list with test suites.
+	 * 
+	 * @return List with test suites.
+	 */
+	public List<TestSuite> getTestSuiteList() {
+		return _suites;
 	}
 	
 	/**
@@ -167,6 +202,15 @@ public abstract class TestRunner {
 	}
 	
 	/**
+	 * Sets the list with libraries with new datas
+	 * 
+	 * @param list New list with libraries
+	 */
+	public void setLibraryList(List<Library> list) {
+		_library = list;
+	}
+	
+	/**
 	 * Returns the library with the index
 	 * 
 	 * @param index Index of the library
@@ -175,6 +219,15 @@ public abstract class TestRunner {
 	 */
 	public Library getLibrary(int index) {
 		return _library.get(index);
+	}
+	
+	/**
+	 * Returns the list with libraries
+	 * 
+	 * @return List with libraries
+	 */
+	public List<Library> getLibraryList() {
+		return _library;
 	}
 	
 	/**
@@ -209,6 +262,15 @@ public abstract class TestRunner {
 	}
 	
 	/**
+	 * Returns the list with class paths
+	 * 
+	 * @return List with class paths
+	 */
+	public List<String> getClassPathList() {
+		return _classpath;
+	}
+	
+	/**
 	 * Adds a path to the list.
 	 * 
 	 * @param library Path, which is to be added to the list.
@@ -217,6 +279,15 @@ public abstract class TestRunner {
 		if ((path == null) || path.isEmpty())
 			throw new IllegalArgumentException();
 		_classpath.add(path);
+	}
+	
+	/**
+	 * Sets the new list with class paths
+	 * 
+	 * @param list New list with class paths
+	 */
+	public void setClassPathList(List<String> list) {
+		_classpath = list;
 	}
 	
 	/**
@@ -649,6 +720,24 @@ public abstract class TestRunner {
 	 */
 	public void addTestEventListener(TestEventListener listener) {
 		_testEventListeners.add(listener);
+	}
+	
+	/**
+	 * Sets the new list with test event listeners
+	 * 
+	 * @param vector New list with test event listeners
+	 */
+	public void setTestEventListenerList(Vector<TestEventListener> vector) {
+		_testEventListeners = vector;
+	}
+	
+	/**
+	 * Returns the list with test event listeners
+	 * 
+	 * @return List with test event listeners
+	 */
+	public Vector<TestEventListener> getTestEventListenerList() {
+		return _testEventListeners;
 	}
 	
 	/**

@@ -37,6 +37,16 @@ import org.testsuite.data.Config;
  * @version 0.1
  */
 public class JemmyTestRunner extends TestRunner {
+	
+	/**
+	 * Initialize the data of the class.
+	 * 
+	 * <strong>Important</strong>: It must also be initialized config. Please
+	 * use {@link #setConfig(Config)}.
+	 */
+	public JemmyTestRunner() {
+		super();
+	}
 
 	/**
 	 * Initialis the data of the class.

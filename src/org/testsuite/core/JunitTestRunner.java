@@ -41,9 +41,19 @@ import org.testsuite.data.Junit;
  * @version 0.1
  */
 public class JunitTestRunner extends TestRunner {
+	
+	/**
+	 * Initialize the data of the class.
+	 * 
+	 * <strong>Important</strong>: It must also be initialized config. Please
+	 * use {@link #setConfig(Config)}.
+	 */
+	public JunitTestRunner() {
+		super();
+	}
 
 	/**
-	 * Initialis the data of the class.
+	 * Initialize the data of the class.
 	 * 
 	 * @param config The configuration.
 	 */
