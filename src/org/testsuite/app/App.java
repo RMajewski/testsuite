@@ -755,6 +755,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 			case TREE_INSERT_TEST_SUITE:
 				((TestRunner)_tree.getLastSelectedPathComponent()).addTestSuite(
 						new TestSuite());
+				_tree.updateUI();
 				break;
 				
 			case TREE_INSERT_TEST:

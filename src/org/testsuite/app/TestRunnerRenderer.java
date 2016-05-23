@@ -109,7 +109,10 @@ public class TestRunnerRenderer implements TreeCellRenderer {
 			_label.setBackground(tree.getBackground());
 		
 		if (value instanceof TestSuite)
-			_label.setText(((TestSuite)value).getName());
+			if (((TestSuite)value).getName().isEmpty())
+				_label.setText(_bundle.getString("tree_no_test_suite_name"));
+			else
+				_label.setText(((TestSuite)value).getName());
 		
 		else if (value instanceof JunitTestRunner)
 			_label.setText("JunitTestRunner");
