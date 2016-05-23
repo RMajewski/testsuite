@@ -36,6 +36,7 @@ import org.testsuite.core.HtmlOut;
 import org.testsuite.core.JunitTestRunner;
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
+import org.testsuite.data.Test;
 import org.testsuite.data.TestEvent;
 import org.testsuite.data.TestEventListener;
 import org.testsuite.data.TestSuite;
@@ -789,6 +790,8 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				break;
 				
 			case TREE_INSERT_TEST:
+				((TestSuite)_tree.getLastSelectedPathComponent()).addTest(
+						new Test());
 				break;
 				
 			case TREE_DELETE_CONFIG_GENERAL:

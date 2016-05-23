@@ -99,7 +99,10 @@ public class TestRunnerRenderer implements TreeCellRenderer {
 			_check.setEnabled(((org.testsuite.data.Test)value).isExists());
 			_check.setSelected(((org.testsuite.data.Test)value).isExecuted());
 			
-			_check.setText(((org.testsuite.data.Test)value).getName());
+			if (((org.testsuite.data.Test)value).getName().isEmpty())
+				_check.setText(_bundle.getString("tree_no_test_name"));
+			else
+				_check.setText(((org.testsuite.data.Test)value).getName());
 			return _check;
 		}
 		
