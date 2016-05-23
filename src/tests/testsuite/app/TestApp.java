@@ -24,16 +24,21 @@ import java.io.File;
 import java.util.ResourceBundle;
 
 import javax.swing.JCheckBox;
+import javax.swing.JMenu;
+
 import org.netbeans.jemmy.ClassReference;
 import org.netbeans.jemmy.Scenario;
 import org.netbeans.jemmy.operators.JButtonOperator;
 import org.netbeans.jemmy.operators.JCheckBoxOperator;
 import org.netbeans.jemmy.operators.JFileChooserOperator;
 import org.netbeans.jemmy.operators.JFrameOperator;
+import org.netbeans.jemmy.operators.JMenuOperator;
+import org.netbeans.jemmy.operators.JPopupMenuOperator;
 import org.netbeans.jemmy.operators.JProgressBarOperator;
 import org.netbeans.jemmy.operators.JTextAreaOperator;
 import org.netbeans.jemmy.operators.JTextFieldOperator;
 import org.netbeans.jemmy.operators.JTreeOperator;
+import org.netbeans.jemmy.operators.Operator;
 import org.testsuite.app.App;
 import org.testsuite.data.Config;
 
@@ -99,6 +104,11 @@ public class TestApp implements Scenario {
 	 * Saves the instance of open configuration file dialog.
 	 */
 	private JFileChooserOperator _fileChooser;
+	
+	/**
+	 * Saves the instance of pop-up menu
+	 */
+	private JPopupMenuOperator _popup;
 	
 	/**
 	 * Saves the instance of ClassReference.
@@ -398,6 +408,22 @@ public class TestApp implements Scenario {
 	
 	public int rowsFromHtmlTextEditor() {
 		return _txtHtml.getRows();
+	}
+	
+	public void openTreePopup() {
+		if (_popup == null) {
+			_tree.clickForPopup();
+			_popup = new JPopupMenuOperator();
+		}
+	}
+	
+	public boolean isPopupItemEnabled(int menu, int item) {
+		JMenuOperator mo = new JMenuOperator((JMenu)_popup.getComponent(menu));
+		return mo.getItem(item).isEnabled();
+	}
+	
+	public void selectElementInTree(int row) {
+		_tree.setSelectionRow(row);
 	}
 
 	/**

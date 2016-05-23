@@ -176,7 +176,7 @@ public class FixtureApp extends ActionFixture {
 	 * Click on the open button into the dialog.
 	 */
 	public void pushDialogOpen() {
-		_tests.pushDialogButton(5);
+		_tests.pushDialogButton(10);
 	}
 	
 	/**
@@ -268,5 +268,77 @@ public class FixtureApp extends ActionFixture {
 	public boolean drawsHtmlFileIntoApp() throws InterruptedException {
 		Thread.sleep(500);
 		return _tests.rowsFromHtmlTextEditor() > 0;
+	}
+	
+	public void openPopup() {
+		_tests.openTreePopup();
+	}
+	
+	public boolean isInsertGeneralConfigurationSelected() {
+		return _tests.isPopupItemEnabled(0, 0);
+	}
+	
+	public boolean isInsertTestRunnerSelected() {
+		return _tests.isPopupItemEnabled(0, 1);
+	}
+	
+	public boolean isInsertTestSuiteSelected() {
+		return _tests.isPopupItemEnabled(0, 2);
+	}
+	
+	public boolean isInsertTestSelected() {
+		return _tests.isPopupItemEnabled(0, 3);
+	}
+	
+	public boolean isDeleteGeneralConfigurationSelected() {
+		return _tests.isPopupItemEnabled(1, 0);
+	}
+	
+	public boolean isDeleteTestRunnerSelected() {
+		return _tests.isPopupItemEnabled(1, 1);
+	}
+	
+	public boolean isDeleteTestSuiteSelected() {
+		return _tests.isPopupItemEnabled(1, 2);
+	}
+	
+	public boolean isDeleteTestSelected() {
+		return _tests.isPopupItemEnabled(1, 3);
+	}
+	
+	public boolean isConfigurationGeneralConfigurationSelected() {
+		return _tests.isPopupItemEnabled(2, 0);
+	}
+	
+	public boolean isConfigurationInsertTestRunnerSelected() {
+		return _tests.isPopupItemEnabled(2, 1);
+	}
+	
+	public boolean isConfigurtionInsertTestSuiteSelected() {
+		return _tests.isPopupItemEnabled(2, 2);
+	}
+	
+	public boolean isConfigurationtTestSelected() {
+		return _tests.isPopupItemEnabled(2, 3);
+	}
+	
+	public void selectRootElementInTree() {
+		_tests.selectElementInTree(0);
+	}
+	
+	public void selectTestRunnerInTree() {
+		_tests.selectElementInTree(1);
+	}
+	
+	public void selectTestSuiteInTree() {
+		_tests.selectElementInTree(2);
+	}
+	
+	public void selectTestInTree() {
+		_tests.selectElementInTree(3);
+	}
+	
+	public void expandTree() {
+		_tests.treeExpandAll();
 	}
 }
