@@ -775,6 +775,20 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				break;
 				
 			case TREE_DELETE_TEST_RUNNER:
+				ret = JOptionPane.showConfirmDialog(this, 
+						_bundle.getString("delete_test_runner_message"),
+						_bundle.getString("delete_test_runner_title"),
+						JOptionPane.YES_NO_OPTION, 
+						JOptionPane.QUESTION_MESSAGE);
+				if (ret == JOptionPane.YES_OPTION) {
+					int index = ((TestRunnerModel)_tree.getModel())
+							.getTestRunnerList().indexOf(
+									(TestRunner)_tree
+										.getLastSelectedPathComponent());
+					((TestRunnerModel)_tree.getModel()).getTestRunnerList()
+						.remove(index);
+					_tree.updateUI();
+				}
 				break;
 				
 			case TREE_DELETE_TEST_SUITE:
