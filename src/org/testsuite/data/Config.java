@@ -99,7 +99,7 @@ public class Config {
 	 * @param pathSrc The new directory for the source files
 	 */
 	public void setPathSrc(String pathSrc) {
-		if ((pathSrc == null) || pathSrc.isEmpty())
+		if (pathSrc == null)
 			throw new IllegalArgumentException();
 		_pathSrc = pathSrc;
 	}
@@ -119,7 +119,7 @@ public class Config {
 	 * @param pathResult The new directory for the result files.
 	 */
 	public void setPathResult(String pathResult) {
-		if ((pathResult == null) || pathResult.isEmpty())
+		if (pathResult == null)
 			throw new IllegalArgumentException();
 		_pathResult = pathResult;
 	}
@@ -159,7 +159,7 @@ public class Config {
 	 * @param pathLibrary The new directory for libraries.
 	 */
 	public void setPathLibrary(String pathLibrary) {
-		if ((pathLibrary == null) || pathLibrary.isEmpty())
+		if (pathLibrary == null)
 			throw new IllegalArgumentException();
 		_pathLibrary = pathLibrary;
 	}
@@ -227,6 +227,17 @@ public class Config {
 	}
 	
 	/**
+	 * Remove the property from the list of system properties
+	 * 
+	 * @param property Property that is to be deleted
+	 */
+	public void removeProperty(String property) {
+		if ((property == null) || property.isEmpty())
+			throw new IllegalArgumentException();
+		_property.remove(_property.indexOf(property));
+	}
+	
+	/**
 	 * Returns a property from the list
 	 * 
 	 * @param index Place where the property is.
@@ -235,6 +246,19 @@ public class Config {
 	 */
 	public String getProperty(int index) {
 		return _property.get(index);
+	}
+	
+	/**
+	 * Change the system property
+	 * 
+	 * @param oldProperty Old system property
+	 * 
+	 * @param newProperty Changed system property
+	 */
+	public void changeProperty(String oldProperty, String newProperty) {
+		int index = _property.indexOf(oldProperty);
+		_property.remove(index);
+		_property.add(index, newProperty);
 	}
 	
 	/**

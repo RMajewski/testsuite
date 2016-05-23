@@ -22,6 +22,7 @@ package org.testsuite.app;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.text.NumberFormat;
 
 import javax.swing.AbstractListModel;
@@ -31,8 +32,13 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import org.testsuite.data.Config;
 
@@ -55,6 +61,21 @@ public class DlgConfigGeneral extends DlgConfig {
 	 */
 	public static final String BUNDLE_FILE = 
 			"resources.lang.org.testsuite.app.DlgConfigGeneral";
+	
+	/**
+	 * Saves the action command for the insert a new property
+	 */
+	private static final String PROPERTY_INSERT = "App.insert.Property";
+	
+	/**
+	 * Saves the action command for the change a property
+	 */
+	private static final String PROPERTY_CHANGE = "App.change.Property";
+	
+	/**
+	 * Saves the action command for the delete a property
+	 */
+	private static final String PROPERTY_DELETE = "App.delete.Property";
 	
 	/**
 	 * Saves the instance of text field for library path.
@@ -229,6 +250,25 @@ public class DlgConfigGeneral extends DlgConfig {
 			}
 			
 		});
+		_listProperties.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if (e.getFirstIndex() > -1) {
+					_listProperties.getComponentPopupMenu().getComponent(1)
+						.setEnabled(true);
+					_listProperties.getComponentPopupMenu().getComponent(2)
+						.setEnabled(true);
+				} else {
+					_listProperties.getComponentPopupMenu().getComponent(1)
+					.setEnabled(false);
+				_listProperties.getComponentPopupMenu().getComponent(2)
+					.setEnabled(false);
+				}
+			}
+			
+		});
+		_listProperties.setComponentPopupMenu(createPopupForProperties());
 		gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.insets = new Insets(5, 5, 5, 5);
@@ -264,4 +304,91 @@ public class DlgConfigGeneral extends DlgConfig {
 		setVisible(true);
 	}
 
+	/**
+	 * Responds to the click of a button or the click on a pop-up menu item.
+	 * 
+	 * @param ae Data auf the event
+	 */
+	@Override
+	public void actionPerformed(ActionEvent ae) {
+		super.actionPerformed(ae);
+		
+		// Save the entered configuration
+		if (ae.getActionCommand().equals(BTN_ACCEPT)) {
+			_config.setCreateHtml(_cbHtml.isSelected());
+			_config.setPathLibrary(_txtLibraryPath.getText());
+			_config.setMaxDuration(
+					((Number)_txtMaxDuration.getValue()).longValue());
+			_config.setPathResult(_txtResultPath.getText());
+			_config.setPathSrc(_txtSrcPath.getText());
+		}
+		
+		// Insert a new system property
+		else if (ae.getActionCommand().equals(PROPERTY_INSERT)) {
+			String ncp = JOptionPane.showInputDialog(this, 
+					_bundle.getString("insert_property_message"),
+					_bundle.getString("insert_property_title"),
+					JOptionPane.OK_CANCEL_OPTION);
+			if ((ncp != null) && !ncp.isEmpty()) {
+				_config.addProperty(ncp);
+				_listProperties.updateUI();
+			}
+		}
+		
+		// Change the selected property 
+		else if (ae.getActionCommand().equals(PROPERTY_CHANGE)) {
+			String ncp = JOptionPane.showInputDialog(this, 
+					_bundle.getString("change_property_message"),
+					_bundle.getString("change_property_title"),
+					JOptionPane.OK_CANCEL_OPTION);
+			if ((ncp != null) && !ncp.isEmpty()) {
+				_config.changeProperty(_listProperties.getSelectedValue(), ncp);
+				_listProperties.updateUI();
+			}
+		}
+		
+		// Delete the selected system property
+		else if (ae.getActionCommand().equals(PROPERTY_DELETE)) {
+			int ret = JOptionPane.showConfirmDialog(this, 
+					_bundle.getString("delete_property_message"),
+					_bundle.getString("delete_property_title"),
+					JOptionPane.YES_NO_OPTION, 
+					JOptionPane.QUESTION_MESSAGE);
+			if (ret == JOptionPane.YES_OPTION) {
+				_config.removeProperty(_listProperties.getSelectedValue());
+				_listProperties.updateUI();
+			}
+		}
+	}
+	
+	/**
+	 * Create the pop-up menu for the property list
+	 * 
+	 * @return Pop-up menu for the property list
+	 */
+	private JPopupMenu createPopupForProperties() {
+		JPopupMenu ret = new JPopupMenu();
+		
+		JMenuItem item = new JMenuItem(_bundle.getString("insert_property"));
+		item.setMnemonic(_bundle.getString("insert_property_mnemonic").charAt(0));
+		item.addActionListener(this);
+		item.setActionCommand(PROPERTY_INSERT);
+		ret.add(item);
+		
+		item = new JMenuItem(_bundle.getString("change_property"));
+		item.setMnemonic(_bundle.getString("change_property_mnemonic").charAt(0));
+		item.addActionListener(this);
+		item.setActionCommand(PROPERTY_CHANGE);
+		item.setEnabled(false);
+		ret.add(item);
+		
+		item = new JMenuItem(_bundle.getString("delete_property"));
+		item.setMnemonic(_bundle.getString("delete_property_mnemonic").charAt(0));
+		item.addActionListener(this);
+		item.setActionCommand(PROPERTY_DELETE);
+		item.setEnabled(false);
+		ret.add(item);
+		
+		return ret;
+	}
 }
