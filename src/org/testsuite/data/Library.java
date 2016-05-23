@@ -93,7 +93,7 @@ public class Library {
 	 * @param name The new name.
 	 */
 	public void setName(String name) {
-		if ((name == null) || name.isEmpty())
+		if (name == null)
 			throw new IllegalArgumentException();
 		_name = name;
 	}
@@ -113,7 +113,7 @@ public class Library {
 	 * @param path The new path.
 	 */
 	public void setPath(String path) {
-		if ((path == null) || path.isEmpty())
+		if (path == null)
 			throw new IllegalArgumentException();
 		_path = path;
 	}
@@ -133,7 +133,7 @@ public class Library {
 	 * @param version The new version.
 	 */
 	public void setVersion(String version) {
-		if ((version == null) || version.isEmpty())
+		if (version == null)
 			throw new IllegalArgumentException();
 		_version = version;
 	}

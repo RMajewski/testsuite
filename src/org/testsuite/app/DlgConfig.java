@@ -81,6 +81,7 @@ public class DlgConfig extends JDialog implements ActionListener {
 		_exitStatus = -1;
 
 		setTitle(_bundle.getString("dialog_title"));
+		setResizable(false);
 	}
 	
 	/**

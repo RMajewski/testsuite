@@ -19,11 +19,14 @@
 
 package org.testsuite.app;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -34,6 +37,9 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
+import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -69,6 +75,11 @@ public class DlgConfigTestRunner extends DlgConfig {
 	 * Saves the action command for delete a library
 	 */
 	private static final String DELETE_LIBRARY = "App.config.delete.library";
+	
+	/**
+	 * Saves the action command for change a library
+	 */
+	private static final String CHANGE_LIBRARY = "App.config.change.library";
 	
 	/**
 	 * Saves the name of the bundle file
@@ -113,6 +124,7 @@ public class DlgConfigTestRunner extends DlgConfig {
 	 * 
 	 * @param runner The object of test runner that you want to configure.
 	 */
+	@SuppressWarnings("serial")
 	public DlgConfigTestRunner(JFrame owner, TestRunner runner) {
 		super(owner, BUNDLE_FILE);
 		
@@ -198,6 +210,63 @@ public class DlgConfigTestRunner extends DlgConfig {
 		
 		_listLibrary = new JList<Library>();
 		_listLibrary.setComponentPopupMenu(createPopupForLibrary());
+		_listLibrary.setCellRenderer(new ListCellRenderer<Library>() {
+
+			@Override
+			public Component getListCellRendererComponent(
+					JList<? extends Library> list, Library value, int index,
+					boolean isSelected, boolean cellHasFocus) {
+				JLabel ret = new JLabel();
+				ret.setOpaque(true);
+				ret.setText(value.getFileName());
+				
+				Color background = UIManager.getColor("List.background");
+				Color foreground = UIManager.getColor("List.foreground");
+				
+				if (isSelected) {
+					background = UIManager.getColor("List.selectionBackground");
+					foreground = UIManager.getColor("List.selectionForeground");
+				}
+				
+				ret.setForeground(foreground);
+				ret.setBackground(background);
+				
+				return ret;
+			}
+			
+		});
+		_listLibrary.setModel(new AbstractListModel<Library>() {
+
+			@Override
+			public Library getElementAt(int index) {
+				return _runner.getLibrary(index);
+			}
+
+			@Override
+			public int getSize() {
+				return _runner.libraryCount();
+			}
+			
+		});
+		_listLibrary.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if (e.getFirstIndex() > -1) {
+					_listLibrary.getComponentPopupMenu().getComponent(1)
+						.setEnabled(true);
+					_listLibrary.getComponentPopupMenu().getComponent(2)
+						.setEnabled(true);
+				} else {
+					_listLibrary.getComponentPopupMenu().getComponent(1)
+					.setEnabled(false);
+					_listLibrary.getComponentPopupMenu().getComponent(2)
+					.setEnabled(false);
+				}
+			}
+			
+		});
+		_listLibrary.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.insets = new Insets(5, 5, 5, 5);
@@ -217,7 +286,19 @@ public class DlgConfigTestRunner extends DlgConfig {
 		
 		_listClasspath = new JList<String>();
 		_listClasspath.setComponentPopupMenu(createPopupForClasspath());
-		_listClasspath.setListData(_runner.getClassPath());
+		_listClasspath.setModel(new AbstractListModel<String>() {
+
+			@Override
+			public String getElementAt(int index) {
+				return _runner.getClassPath(index);
+			}
+
+			@Override
+			public int getSize() {
+				return _runner.classPathCount();
+			}
+			
+		});
 		_listClasspath.addListSelectionListener(new ListSelectionListener(){
 
 			@Override
@@ -287,9 +368,10 @@ public class DlgConfigTestRunner extends DlgConfig {
 						_bundle.getString("insert_classpath_message"),
 						_bundle.getString("insert_classpath_title"),
 						JOptionPane.OK_CANCEL_OPTION);
-				if ((ncp != null) && !ncp.isEmpty())
+				if ((ncp != null) && !ncp.isEmpty()) {
 					_runner.addClassPath(ncp);
-					_listClasspath.setListData(_runner.getClassPath());
+					_listClasspath.updateUI();
+				}
 				break;
 				
 			case DELETE_CLASSPATH:
@@ -299,15 +381,53 @@ public class DlgConfigTestRunner extends DlgConfig {
 						JOptionPane.YES_NO_OPTION, 
 						JOptionPane.QUESTION_MESSAGE);
 				if (ret == JOptionPane.YES_OPTION) {
-					_runner.deleteClassPath(_listClasspath.getSelectedValue());
-					_listClasspath.setListData(_runner.getClassPath());
+					_runner.removeClassPath(_listClasspath.getSelectedValue());
+					_listClasspath.updateUI();
 				}
 				break;
 				
 			case INSERT_LIBRARY:
+				DlgConfigLibrary dlg = new DlgConfigLibrary((JFrame)getOwner(),
+						"", "", "", "");
+				if (dlg.getExitStatus() == DlgConfig.EXIT_ACCEPT) {
+					Library lib = new Library();
+					lib.setFileName(dlg.getFileName());
+					lib.setPath(dlg.getPath());
+					lib.setName(dlg.getLibraryName());
+					lib.setVersion(dlg.getVersion());
+					_runner.addLibrary(lib);
+					_listLibrary.updateUI();
+				}
 				break;
 				
 			case DELETE_LIBRARY:
+				ret = JOptionPane.showConfirmDialog(this, 
+						_bundle.getString("delete_library_message"),
+						_bundle.getString("delete_library_title"),
+						JOptionPane.YES_NO_OPTION, 
+						JOptionPane.QUESTION_MESSAGE);
+				if (ret == JOptionPane.YES_OPTION) {
+					_runner.removeLibrary(_listLibrary.getSelectedValue());
+					_listLibrary.updateUI();
+				}
+				break;
+				
+			case CHANGE_LIBRARY:
+				dlg = new DlgConfigLibrary((JFrame)getOwner(), 
+						_listLibrary.getSelectedValue().getFileName(),
+						_listLibrary.getSelectedValue().getPath(),
+						_listLibrary.getSelectedValue().getName(),
+						_listLibrary.getSelectedValue().getVersion());
+				if (dlg.getExitStatus() == DlgConfig.EXIT_ACCEPT) {
+					_listLibrary.getSelectedValue().setFileName(
+							dlg.getFileName());
+					_listLibrary.getSelectedValue().setPath(dlg.getPath());
+					_listLibrary.getSelectedValue().setName(
+							dlg.getLibraryName());
+					_listLibrary.getSelectedValue().setVersion(
+							dlg.getVersion());
+					_listLibrary.updateUI();
+				}
 				break;
 		}
 	}
@@ -350,6 +470,13 @@ public class DlgConfigTestRunner extends DlgConfig {
 		item.setMnemonic(_bundle.getString("insert_library_mnemonic").charAt(0));
 		item.addActionListener(this);
 		item.setActionCommand(INSERT_LIBRARY);
+		ret.add(item);
+		
+		item = new JMenuItem(_bundle.getString("change_library"));
+		item.setMnemonic(_bundle.getString("change_library_mnemonic").charAt(0));
+		item.addActionListener(this);
+		item.setActionCommand(CHANGE_LIBRARY);
+		item.setEnabled(false);
 		ret.add(item);
 		
 		item = new JMenuItem(_bundle.getString("delete_library"));

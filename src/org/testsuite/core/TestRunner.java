@@ -166,9 +166,26 @@ public abstract class TestRunner {
 		_library.add(library);
 	}
 	
+	/**
+	 * Returns the library with the index
+	 * 
+	 * @param index Index of the library
+	 * 
+	 * @return Library with theindex
+	 */
 	public Library getLibrary(int index) {
 		return _library.get(index);
-		
+	}
+	
+	/**
+	 * Removes the library from the list
+	 * 
+	 * @param lib Library, to be deleted.
+	 */
+	public void removeLibrary(Library lib) {
+		for (int i = 0; i < _library.size(); i++)
+			if (_library.get(i).getFileName().equals(lib.getFileName()))
+				_library.remove(i);
 	}
 	
 	/**
@@ -181,12 +198,14 @@ public abstract class TestRunner {
 	}
 	
 	/**
-	 * Returns a array with all elements of classpath.
+	 * Returns the classpath with the index
 	 * 
-	 * @return Array with all elements of classpath
+	 * @param index Index of the classpath
+	 * 
+	 * @return Classpath with the index
 	 */
-	public String[] getClassPath() {
-		return _classpath.toArray(new String[_classpath.size()]);
+	public String getClassPath(int index) {
+		return _classpath.get(index);
 	}
 	
 	/**
@@ -205,7 +224,7 @@ public abstract class TestRunner {
 	 * 
 	 * @param path Classpath, to be deleted.
 	 */
-	public void deleteClassPath(String path) {
+	public void removeClassPath(String path) {
 		for (int i = 0;i < _classpath.size(); i++)
 			if (_classpath.get(i).equals(path))
 				_classpath.remove(i);
