@@ -64,7 +64,12 @@
 			<test>TestTestSuiteData</test>
 		</testSuite>
 		<testSuite>
-			<name>Test org.testsuite.helper</name>
+			<name>Test org.testsuite.App</name>
+			<package>tests.testsuite.app</package>
+			<test>TestConfigDialog</test>
+		</testSuite>
+		<testSuite>
+			<name>Test org.testsuite.Helper</name>
 			<package>tests.testsuite.helper</package>
 			<test>TestHelperCalendar</test>
 		</testSuite>
@@ -91,6 +96,7 @@
 			<test>AppCancelRunTests</test>
 			<test>AppCreateHtmlOut</test>
 			<test>AppReadHtmlOut</test>
+			<test>AppPopupIsRightEnabled</test>
 		</testSuite>
 	</testGroup>
 </configurationFile>
