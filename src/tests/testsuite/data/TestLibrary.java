@@ -111,10 +111,9 @@ public class TestLibrary {
 	}
 	
 	/**
-	 * Tests if the error occurs IllegalArgumentException if empty string is
-	 * passed as the name.
+	 * Verifies that no error occurs when an empty string is passed.
 	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testSetNameWithEmptyStringAsParameter() {
 		_data.setName(new String());
 	}
@@ -147,10 +146,9 @@ public class TestLibrary {
 	}
 	
 	/**
-	 * Tests if the error occurs IllegalArgumentException if empty string is
-	 * passed as the path.
+	 * Verifies that no error occurs when an empty string is passed.
 	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testSetPathWithEmptyStringAsParameter() {
 		_data.setPath(new String());
 	}
@@ -183,10 +181,9 @@ public class TestLibrary {
 	}
 	
 	/**
-	 * Tests if the error occurs IllegalArgumentException if empty string is
-	 * passed as the version.
+	 * Verifies that no error occurs when an empty string is passed.
 	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testSetVersionWithEmptyStringAsParameter() {
 		_data.setVersion(new String());
 	}
