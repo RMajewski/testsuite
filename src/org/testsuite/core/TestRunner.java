@@ -181,6 +181,15 @@ public abstract class TestRunner {
 	}
 	
 	/**
+	 * Returns a array with all elements of classpath.
+	 * 
+	 * @return Array with all elements of classpath
+	 */
+	public String[] getClassPath() {
+		return _classpath.toArray(new String[_classpath.size()]);
+	}
+	
+	/**
 	 * Adds a path to the list.
 	 * 
 	 * @param library Path, which is to be added to the list.
@@ -189,6 +198,17 @@ public abstract class TestRunner {
 		if ((path == null) || path.isEmpty())
 			throw new IllegalArgumentException();
 		_classpath.add(path);
+	}
+	
+	/**
+	 * Deletes the specified classpath from the list.
+	 * 
+	 * @param path Classpath, to be deleted.
+	 */
+	public void deleteClassPath(String path) {
+		for (int i = 0;i < _classpath.size(); i++)
+			if (_classpath.get(i).equals(path))
+				_classpath.remove(i);
 	}
 	
 	/**

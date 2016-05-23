@@ -23,6 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JTree;
+import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.html.HTMLEditorKit;
 
@@ -235,6 +236,12 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 	 */
 	public App() {
 		super();
+		
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		_bundle = ResourceBundle.getBundle(BUNDLE_FILE);
 		
@@ -449,16 +456,19 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 						DlgConfigTestSuite dlg = new DlgConfigTestSuite(owner,
 								((TestSuite)c).getName(),
 								((TestSuite)c).getPackage());
-						if (dlg.getExitStatus() == 
-								DlgConfigTestSuite.EXIT_ACCEPT) {
+						if (dlg.getExitStatus() == DlgConfig.EXIT_ACCEPT) {
 							((TestSuite)c).setName(dlg.getTestSuiteName());
 							((TestSuite)c).setPackage(dlg.getPackageName());
 						}
 					}
 					
 					// config for TestRunner
-					else if (c instanceof org.testsuite.core.TestRunner) {
-						System.out.println("Double click on TestRunner");
+					else if (c instanceof TestRunner) {
+						DlgConfigTestRunner dlg = new DlgConfigTestRunner(owner,
+								(TestRunner)c);
+						if (dlg.getExitStatus() == DlgConfig.EXIT_ACCEPT) {
+							
+						}
 					}
 					
 					else {
@@ -579,7 +589,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()) {
 			case AC_CANCEL:
-				_thread.stop();
+				_thread.stop(); // FIXME replace by _thread.interrupt()
 				testEnd(new TestEvent(this, "", "", -1, -1, ""));
 			break;
 				
@@ -632,7 +642,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 	}
 
 	/**
-	 * 
+	 * All tests have been completed.
 	 * 
 	 * @param te Data of the event.
 	 */
