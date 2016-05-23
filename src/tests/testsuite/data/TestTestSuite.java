@@ -34,7 +34,7 @@ import org.testsuite.data.TestSuite;
  * 
  * @version 0.1
  */
-public class TestTestSuiteData {
+public class TestTestSuite {
 
 	/**
 	 * Save the class TestSuiteData
@@ -149,6 +149,32 @@ public class TestTestSuiteData {
 				mock(org.testsuite.data.Test.class);
 		_data.addTest(data);
 		assertEquals(data, _data.getTest(0));
+	}
+	
+	/**
+	 * Verifies that the correct test is deleted.
+	 */
+	@Test
+	public void testRemoveTest() {
+		org.testsuite.data.Test test1 = new org.testsuite.data.Test();
+		test1.setName("Test1");
+		_data.addTest(test1);
+		
+		org.testsuite.data.Test test2 = new org.testsuite.data.Test();
+		test2.setName("Test2");
+		_data.addTest(test2);
+		
+		org.testsuite.data.Test test3 = new org.testsuite.data.Test();
+		test3.setName("Test3");
+		_data.addTest(test3);
+		
+		assertEquals(3, _data.testCount());
+		
+		_data.removeTest(test2);
+		
+		assertEquals(2, _data.testCount());
+		assertEquals(test1, _data.getTest(0));
+		assertEquals(test3, _data.getTest(1));
 	}
 
 	/**
