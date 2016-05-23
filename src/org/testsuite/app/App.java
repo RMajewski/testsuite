@@ -22,6 +22,7 @@ package org.testsuite.app;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.UIManager;
 import javax.swing.event.TreeSelectionEvent;
@@ -522,6 +523,22 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 					config.getItem(2).setEnabled(false);
 				}
 				
+				// selected test runner
+				else if (e.getPath().getLastPathComponent() instanceof 
+						TestRunner) {
+					insert.getItem(0).setEnabled(false);
+					insert.getItem(1).setEnabled(false);
+					insert.getItem(2).setEnabled(true);
+
+					delete.getItem(0).setEnabled(false);
+					delete.getItem(1).setEnabled(true);
+					delete.getItem(2).setEnabled(false);
+
+					config.getItem(0).setEnabled(false);
+					config.getItem(1).setEnabled(true);
+					config.getItem(2).setEnabled(false);
+				}
+				
 				// Not defined
 				else {
 					insert.getItem(0).setEnabled(false);
@@ -744,6 +761,17 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				break;
 				
 			case TREE_DELETE_CONFIG_GENERAL:
+				int ret = JOptionPane.showConfirmDialog(this, 
+						_bundle.getString("delete_config_general_message"),
+						_bundle.getString("delete_config_general_title"),
+						JOptionPane.YES_NO_OPTION, 
+						JOptionPane.QUESTION_MESSAGE);
+				if (ret == JOptionPane.YES_OPTION) {
+					((TestRunnerModel)_tree.getModel()).getTestRunnerList()
+						.clear();
+					_config.clear();
+					_tree.updateUI();
+				}
 				break;
 				
 			case TREE_DELETE_TEST_RUNNER:

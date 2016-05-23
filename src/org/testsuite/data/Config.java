@@ -74,14 +74,8 @@ public class Config {
 	 * Initialize the data of this class
 	 */
 	public Config() {
-		_classpath = new String();
-		_pathLibrary = new String();
-		_pathResult = new String();
-		_pathSrc = new String();
-		_pathSuitesResult = new String();
-		_createHtml = false;
 		_property = new ArrayList<String>();
-		_maxDuration = 0;
+		clear();
 	}
 
 	/**
@@ -287,5 +281,17 @@ public class Config {
 		return (_pathLibrary.isEmpty() && _pathResult.isEmpty() &&
 				_pathSrc.isEmpty() && !_createHtml && (_maxDuration == 0) && 
 				_property.isEmpty());
+	}
+	
+	/**
+	 * Clear all the data
+	 */
+	public void clear() {
+		_pathLibrary = new String();
+		_pathResult = new String();
+		_pathSrc = new String();
+		_createHtml = false;
+		_maxDuration = 0;
+		_property.clear();
 	}
 }
