@@ -794,6 +794,14 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				break;
 				
 			case CONFIG_TEST:
+				TreePath path = _tree.getSelectionPath();
+				Test test = (Test)path.getLastPathComponent();
+				DlgConfigTest dlg = new DlgConfigTest(this, test.getName(), 
+						test.isExecuted());
+				if (dlg.getExitStatus() == DlgConfigTest.EXIT_ACCEPT) {
+					test.setName(dlg.getTestName());
+					test.setExecuted(dlg.isTestExecute());
+				}
 				break;
 				
 			case TREE_INSERT_CONFIG_GENERAL:
@@ -855,7 +863,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 						JOptionPane.YES_NO_OPTION, 
 						JOptionPane.QUESTION_MESSAGE);
 				if (ret == JOptionPane.YES_OPTION) {
-					TreePath path = _tree.getSelectionPath();
+					path = _tree.getSelectionPath();
 					((TestRunner)path.getPathComponent(1)).removeTestSuite(
 							(TestSuite)path.getLastPathComponent());
 					_tree.updateUI();
@@ -869,7 +877,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 						JOptionPane.YES_NO_OPTION, 
 						JOptionPane.QUESTION_MESSAGE);
 				if (ret == JOptionPane.YES_OPTION) {
-					TreePath path = _tree.getSelectionPath();
+					path = _tree.getSelectionPath();
 					((TestSuite)path.getPathComponent(2)).removeTest(
 							(Test)path.getLastPathComponent());
 					_tree.updateUI();
