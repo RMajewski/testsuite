@@ -29,6 +29,8 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.tree.TreePath;
+
 import org.testsuite.core.ConfigParser;
 import org.testsuite.core.HtmlOut;
 import org.testsuite.core.JunitTestRunner;
@@ -513,14 +515,17 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 					insert.getItem(0).setEnabled(true);
 					insert.getItem(1).setEnabled(true);
 					insert.getItem(2).setEnabled(false);
+					insert.getItem(3).setEnabled(false);
 
 					delete.getItem(0).setEnabled(true);
 					delete.getItem(1).setEnabled(false);
 					delete.getItem(2).setEnabled(false);
+					delete.getItem(3).setEnabled(false);
 
 					config.getItem(0).setEnabled(true);
 					config.getItem(1).setEnabled(false);
 					config.getItem(2).setEnabled(false);
+					config.getItem(3).setEnabled(false);
 				}
 				
 				// selected test runner
@@ -529,14 +534,36 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 					insert.getItem(0).setEnabled(false);
 					insert.getItem(1).setEnabled(false);
 					insert.getItem(2).setEnabled(true);
+					insert.getItem(3).setEnabled(false);
 
 					delete.getItem(0).setEnabled(false);
 					delete.getItem(1).setEnabled(true);
 					delete.getItem(2).setEnabled(false);
+					delete.getItem(3).setEnabled(false);
 
 					config.getItem(0).setEnabled(false);
 					config.getItem(1).setEnabled(true);
 					config.getItem(2).setEnabled(false);
+					config.getItem(3).setEnabled(false);
+				}
+				
+				// selected test suite
+				else if (e.getPath().getLastPathComponent() instanceof
+						TestSuite) {
+					insert.getItem(0).setEnabled(false);
+					insert.getItem(1).setEnabled(false);
+					insert.getItem(2).setEnabled(false);
+					insert.getItem(3).setEnabled(true);
+
+					delete.getItem(0).setEnabled(false);
+					delete.getItem(1).setEnabled(false);
+					delete.getItem(2).setEnabled(true);
+					delete.getItem(3).setEnabled(false);
+
+					config.getItem(0).setEnabled(false);
+					config.getItem(1).setEnabled(false);
+					config.getItem(2).setEnabled(true);
+					config.getItem(3).setEnabled(false);
 				}
 				
 				// Not defined
@@ -544,14 +571,17 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 					insert.getItem(0).setEnabled(false);
 					insert.getItem(1).setEnabled(false);
 					insert.getItem(2).setEnabled(false);
+					insert.getItem(3).setEnabled(false);
 
 					delete.getItem(0).setEnabled(false);
 					delete.getItem(1).setEnabled(false);
 					delete.getItem(2).setEnabled(false);
+					delete.getItem(3).setEnabled(false);
 
 					config.getItem(0).setEnabled(false);
 					config.getItem(1).setEnabled(false);
 					config.getItem(2).setEnabled(false);
+					config.getItem(3).setEnabled(false);
 				}
 			}
 			
@@ -793,6 +823,17 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				break;
 				
 			case TREE_DELETE_TEST_SUITE:
+				ret = JOptionPane.showConfirmDialog(this, 
+						_bundle.getString("delete_test_suite_message"),
+						_bundle.getString("delete_test_suite_title"),
+						JOptionPane.YES_NO_OPTION, 
+						JOptionPane.QUESTION_MESSAGE);
+				if (ret == JOptionPane.YES_OPTION) {
+					TreePath path = _tree.getSelectionPath();
+					((TestRunner)path.getPathComponent(1)).removeTestSuite(
+							(TestSuite)path.getLastPathComponent());
+					_tree.updateUI();
+				}
 				break;
 				
 			case TREE_DELETE_TEST:

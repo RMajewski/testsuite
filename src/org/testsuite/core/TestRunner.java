@@ -184,6 +184,15 @@ public abstract class TestRunner {
 	}
 	
 	/**
+	 * Removes the test suite from list
+	 * 
+	 * @param o TestSuite, which is to be deleted
+	 */
+	public void removeTestSuite(Object o) {
+		_suites.remove(o);
+	}
+	
+	/**
 	 * Determines the number of libraries.
 	 * 
 	 * @return Number of libraries.
