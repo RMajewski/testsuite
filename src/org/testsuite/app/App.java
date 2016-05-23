@@ -504,6 +504,11 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		});
 		_tree.addTreeSelectionListener(new TreeSelectionListener() {
 
+			/**
+			 * What pop-up menu items are enabled and which are disabled?
+			 * 
+			 * @param e Datas of the event
+			 */
 			@Override
 			public void valueChanged(TreeSelectionEvent e) {
 				JPopupMenu popup = _tree.getComponentPopupMenu();
@@ -565,6 +570,23 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 					config.getItem(1).setEnabled(false);
 					config.getItem(2).setEnabled(true);
 					config.getItem(3).setEnabled(false);
+				}
+				
+				else if (e.getPath().getLastPathComponent() instanceof Test) {
+					insert.getItem(0).setEnabled(false);
+					insert.getItem(1).setEnabled(false);
+					insert.getItem(2).setEnabled(false);
+					insert.getItem(3).setEnabled(false);
+
+					delete.getItem(0).setEnabled(false);
+					delete.getItem(1).setEnabled(false);
+					delete.getItem(2).setEnabled(false);
+					delete.getItem(3).setEnabled(true);
+
+					config.getItem(0).setEnabled(false);
+					config.getItem(1).setEnabled(false);
+					config.getItem(2).setEnabled(false);
+					config.getItem(3).setEnabled(true);
 				}
 				
 				// Not defined
@@ -792,6 +814,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 			case TREE_INSERT_TEST:
 				((TestSuite)_tree.getLastSelectedPathComponent()).addTest(
 						new Test());
+				_tree.updateUI();
 				break;
 				
 			case TREE_DELETE_CONFIG_GENERAL:
@@ -840,6 +863,17 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				break;
 				
 			case TREE_DELETE_TEST:
+				ret = JOptionPane.showConfirmDialog(this, 
+						_bundle.getString("delete_test_message"),
+						_bundle.getString("delete_test_title"),
+						JOptionPane.YES_NO_OPTION, 
+						JOptionPane.QUESTION_MESSAGE);
+				if (ret == JOptionPane.YES_OPTION) {
+					TreePath path = _tree.getSelectionPath();
+					((TestSuite)path.getPathComponent(2)).removeTest(
+							(Test)path.getLastPathComponent());
+					_tree.updateUI();
+				}
 				break;
 		}
 	}

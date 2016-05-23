@@ -95,6 +95,14 @@ public class TestSuite extends Data {
 	}
 	
 	/**
+	 * Removes the test from the test list
+	 * @param o Test, which is to be deleted.
+	 */
+	public void removeTest(Object o) {
+		_tests.remove(o);
+	}
+	
+	/**
 	 * Determines the number of tests in this test suite and returns.
 	 * 
 	 * @return Number of Tests
