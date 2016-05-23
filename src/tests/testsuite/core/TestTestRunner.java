@@ -29,6 +29,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -108,6 +112,49 @@ public class TestTestRunner extends TestRunnerHelper {
 	}
 	
 	/**
+	 * Verifies that the correct test suite is return.
+	 */
+	@Test
+	public void testGetTestSuite() {
+		TestSuite suite = mock(TestSuite.class);
+		_runner.addTestSuite(suite);
+		assertEquals(suite, _runner.getTestSuite(0));
+	}
+	
+	/**
+	 * Checks whether the new list of test suites has been stored correctly and
+	 * whether they will also be given right back.
+	 */
+	@Test
+	public void testSetTestSuiteListAndGetTestSuiteList() {
+		List<TestSuite> list = new ArrayList<TestSuite>();
+		_runner.setTestSuiteList(list);
+		assertEquals(list, _runner.getTestSuiteList());
+	}
+	
+	/**
+	 * Verifies that remove the correct test suite.
+	 */
+	@Test
+	public void testRemoveTestSuite() {
+		TestSuite suite1 = new TestSuite();
+		TestSuite suite2 = new TestSuite();
+		TestSuite suite3 = new TestSuite();
+		
+		_runner.addTestSuite(suite1);
+		_runner.addTestSuite(suite2);
+		_runner.addTestSuite(suite3);
+		
+		assertEquals(3, _runner.testSuiteCount());
+		
+		_runner.removeTestSuite(suite2);
+		
+		assertEquals(2, _runner.testSuiteCount());
+		assertEquals(suite1, _runner.getTestSuite(0));
+		assertEquals(suite3, _runner.getTestSuite(1));
+	}
+	
+	/**
 	 * Verifies that the correct number of libraries is returned.
 	 */
 	@Test
@@ -126,12 +173,98 @@ public class TestTestRunner extends TestRunnerHelper {
 	}
 	
 	/**
+	 * Verifies that the correct library was deleted.
+	 */
+	@Test
+	public void testRemoveLibrary() {
+		Library lib1 = new Library();
+		lib1.setFileName("Test1");
+		_runner.addLibrary(lib1);
+		
+		Library lib2 = new Library();
+		lib2.setFileName("Test2");
+		_runner.addLibrary(lib2);
+		
+		Library lib3 = new Library();
+		lib3.setFileName("Test3");
+		_runner.addLibrary(lib3);
+		
+		assertEquals(3, _runner.libraryCount());
+		
+		_runner.removeLibrary(lib2);
+		
+		assertEquals(2, _runner.libraryCount());
+		assertEquals(lib1, _runner.getLibrary(0));
+		assertEquals(lib3, _runner.getLibrary(1));
+	}
+	
+	/**
+	 * Checks whether the new list of libraries has been stored correctly and
+	 * whether they will also be given right back.
+	 */
+	@Test
+	public void testSetLibraryListAndGetLibraryList() {
+		List<Library> list = new ArrayList<Library>();
+		
+		_runner.setLibraryList(list);
+		
+		assertEquals(list, _runner.getLibraryList());
+	}
+	
+	/**
 	 * Verifies that the correct number of directories for classpath is
 	 * returned.
 	 */
 	@Test
 	public void testClasspathCount() {
 		assertEquals(0, _runner.classPathCount());
+	}
+	
+
+	/**
+	 * Verifies that the correct name of class path is returned.
+	 */
+	@Test
+	public void testGetClassPath() {
+		String classpath = "Test";
+		_runner.addClassPath(classpath);
+		assertEquals(classpath, _runner.getClassPath(0));
+	}
+
+	/**
+	 * Verifies that the correct name of class path is removed.
+	 */
+	@Test
+	public void testRemoveClassPath() {
+		String classpath1 = "Test1";
+		String classpath2 = "Test2";
+		String classpath3 = "Test3";
+		
+		_runner.addClassPath(classpath1);
+		_runner.addClassPath(classpath2);
+		_runner.addClassPath(classpath3);
+
+		assertEquals(3, _runner.classPathCount());
+		
+		_runner.removeClassPath(classpath2);
+		
+		assertEquals(2, _runner.classPathCount());
+		assertEquals(classpath1, _runner.getClassPath(0));
+		assertEquals(classpath3, _runner.getClassPath(1));
+	}
+	
+	/**
+	 * Verifies that the new list has been stored correctly and whether the list
+	 * is given right back.
+	 */
+	@Test
+	public void testAddClassPathListAndGetClassPathList() {
+		List<String> list = new ArrayList<String>();
+		list.add("Test");
+		
+		_runner.setClassPathList(list);
+		
+		assertEquals(list, _runner.getClassPathList());
 	}
 	
 	/**
@@ -708,6 +841,7 @@ public class TestTestRunner extends TestRunnerHelper {
 	public void testInputStreamToString() throws Exception{
 		Method inputStreamToString = getProtectedMethod(TestRunner.class, 
 				"inputStreamToString", InputStream.class);
+		inputStreamToString.setAccessible(true);
 		
 		String line = "<h1>Test</h1><p>Dies ist ein Test!</p>";
 		
@@ -721,6 +855,7 @@ public class TestTestRunner extends TestRunnerHelper {
 		
 		BufferedReader bf = mock(BufferedReader.class);
 		when(bf.readLine()).thenReturn(line, null);
+		when(bf.ready()).thenReturn(true);
 		
 		PowerMockito.whenNew(BufferedReader.class)
 			.withArguments(isr)
@@ -774,6 +909,9 @@ public class TestTestRunner extends TestRunnerHelper {
 		order.verify(suite5).testCount();
 	}
 	
+	/**
+	 * Checks whether a test listener could be added to the list.
+	 */
 	@Test
 	public void testAddTestListener() throws Exception {
 		assertEquals(0, _runner.getTestEventListenerCount());
@@ -784,6 +922,9 @@ public class TestTestRunner extends TestRunnerHelper {
 		assertEquals(1, _runner.getTestEventListenerCount());
 	}
 	
+	/**
+	 * Verifies that the correct test listener could be deleted from the list.
+	 */
 	@Test
 	public void testRemoveTestListener() throws Exception {
 		TestEventListener listener1 = mock(TestEventListener.class);
@@ -797,6 +938,10 @@ public class TestTestRunner extends TestRunnerHelper {
 		assertEquals(1, _runner.getTestEventListenerCount());
 	}
 	
+	/**
+	 * Checks whether the TestExecuteCompleted event has been sent to all
+	 * listeners.
+	 */
 	@Test
 	public void testFireTestExecutedCompleted() {
 		TestEventListener listener1 = mock(TestEventListener.class);
@@ -815,5 +960,16 @@ public class TestTestRunner extends TestRunnerHelper {
 		
 		verify(listener1).testExecutedCompleted(Matchers.any(TestEvent.class));
 		verify(listener2).testExecutedCompleted(Matchers.any(TestEvent.class));
+	}
+	
+	/**
+	 * Checks whether the new list of EventListenerList has been saved and
+	 * whether it is correctly returned back.
+	 */
+	@Test
+	public void testSetTestEventListenersListAndGetTestEventListenersList() {
+		Vector<TestEventListener> vector = new Vector<TestEventListener>();
+		_runner.setTestEventListenerList(vector);
+		assertEquals(vector, _runner.getTestEventListenerList());
 	}
 }
