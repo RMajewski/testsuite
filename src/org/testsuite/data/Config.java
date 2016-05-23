@@ -278,4 +278,14 @@ public class Config {
 	public void setMaxDuration(long duration) {
 		_maxDuration = duration;
 	}
+	
+	/**
+	 * Return if no settings exist.
+	 * @return If no settings exist?
+	 */
+	public boolean isEmpty() {
+		return (_pathLibrary.isEmpty() && _pathResult.isEmpty() &&
+				_pathSrc.isEmpty() && !_createHtml && (_maxDuration == 0) && 
+				_property.isEmpty());
+	}
 }

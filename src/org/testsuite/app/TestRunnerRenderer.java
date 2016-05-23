@@ -31,6 +31,7 @@ import javax.swing.tree.TreeCellRenderer;
 import org.testsuite.core.FitTestRunner;
 import org.testsuite.core.JemmyTestRunner;
 import org.testsuite.core.JunitTestRunner;
+import org.testsuite.data.Config;
 import org.testsuite.data.TestSuite;
 
 import java.awt.Color;
@@ -38,20 +39,45 @@ import java.awt.Color;
 /**
  * Displays the tests in tree on.
  * 
+ * In version 0.2 takes into account whether the initialized general
+ * configuration.
+ * 
  * @author René Majewski
  *
- * @version 0.1
+ * @version 0.2
  */
 public class TestRunnerRenderer implements TreeCellRenderer {
 	
+	/**
+	 * Saves the instance of check box for execute test
+	 */
 	private JCheckBox _check;
 	
+	/**
+	 * Saves the instance of label for generated output 
+	 */
 	private JLabel _label;
 	
+	/**
+	 * Saves the instance of resource bundle
+	 */
 	private ResourceBundle _bundle;
 	
-	public TestRunnerRenderer() {
+	/**
+	 * Saves the general configuration
+	 */
+	private Config _config;
+	
+	/**
+	 * Initialize the renderer
+	 * 
+	 * @param config General configuration
+	 */
+	
+	public TestRunnerRenderer(Config config) {
 		_bundle = ResourceBundle.getBundle(App.BUNDLE_FILE);
+		
+		_config = config;
 		
 		_check = new JCheckBox();
 		_check.setOpaque(true);
@@ -84,21 +110,31 @@ public class TestRunnerRenderer implements TreeCellRenderer {
 		
 		if (value instanceof TestSuite)
 			_label.setText(((TestSuite)value).getName());
+		
 		else if (value instanceof JunitTestRunner)
 			_label.setText("JunitTestRunner");
+		
 		else if (value instanceof JemmyTestRunner)
 			_label.setText("JemmyTestRunner");
+		
 		else if (value instanceof FitTestRunner)
 			_label.setText("FitTestRunner");
-		else if ((row == 0) && (value instanceof List<?>) && 
-				((List<?>)value).isEmpty()) {
-			_label.setText(_bundle.getString("treeNullNode"));
-			_label.setBackground(new Color(0xff, 0xcf, 0xcf));
-		} else if (value instanceof List<?>)
-			_label.setText("TestRunner");
+		
+		else if (row == 0) {
+			if ((value instanceof List<?>) && ((List<?>)value).isEmpty() &&
+					_config.isEmpty()) {
+				_label.setText(_bundle.getString("tree_null_node"));
+				_label.setBackground(new Color(0xff, 0xcf, 0xcf));
+			} else if ((value instanceof List<?>) && ((List<?>)value).isEmpty() &&
+					!_config.isEmpty()) {
+				_label.setText(_bundle.getString("tree_insert_test_runner"));
+			} else if (value instanceof List<?>) {
+				_label.setText(_bundle.getString("tree_configuration"));
+			}
+		} 
+		
 		else {
 			_label.setText(value.toString());
-			System.out.println(row);
 		}
 		return _label;
 	}

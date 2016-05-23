@@ -24,12 +24,13 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JTree;
 import javax.swing.UIManager;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.html.HTMLEditorKit;
-import javax.swing.tree.TreePath;
-
 import org.testsuite.core.ConfigParser;
 import org.testsuite.core.HtmlOut;
+import org.testsuite.core.JunitTestRunner;
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
 import org.testsuite.data.TestEvent;
@@ -53,7 +54,6 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -136,7 +136,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 	/**
 	 * Saves the string of action command to insert the genral configuration
 	 */
-	private static final String TREE_INSERT_CONFIG_GENRAL = 
+	private static final String TREE_INSERT_CONFIG_GENERAL = 
 			"App.tree.insert.ConfigGeneral";
 	
 	/**
@@ -270,7 +270,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		item.setMnemonic(_bundle.getString(
 				"popup_tree_insert_config_mnemonic").charAt(0));
 		item.addActionListener(this);
-		item.setActionCommand(TREE_INSERT_CONFIG_GENRAL);
+		item.setActionCommand(TREE_INSERT_CONFIG_GENERAL);
 		item.setEnabled(false);
 		menu.add(item);
 		
@@ -427,11 +427,9 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		splitPane.setResizeWeight(0.25);
 		getContentPane().add(splitPane, BorderLayout.CENTER);
 		
-		final JFrame owner = (JFrame)this;
-		
 		_tree = new JTree();
 		_tree.setModel(new TestRunnerModel());
-		_tree.setCellRenderer(new TestRunnerRenderer());
+		_tree.setCellRenderer(new TestRunnerRenderer(_config));
 		_tree.setComponentPopupMenu(treePopup());
 		_tree.addMouseListener(new MouseListener() {
 
@@ -455,38 +453,17 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 					
 					// config for TestSuite
 					else if (c instanceof TestSuite) {
-						DlgConfigTestSuite dlg = new DlgConfigTestSuite(owner,
-								((TestSuite)c).getName(),
-								((TestSuite)c).getPackage());
-						if (dlg.getExitStatus() == DlgConfig.EXIT_ACCEPT) {
-							((TestSuite)c).setName(dlg.getTestSuiteName());
-							((TestSuite)c).setPackage(dlg.getPackageName());
-						}
+						configTestSuite((TestSuite)c);
 					}
 					
 					// config for TestRunner
 					else if (c instanceof TestRunner) {
-						DlgConfigTestRunner dlg = new DlgConfigTestRunner(owner,
-								(TestRunner)c);
-						if (dlg.getExitStatus() == DlgConfig.EXIT_ACCEPT) {
-							if (dlg.isTestRunnerChanged()) {
-								int index = ((TestRunnerModel)_tree.getModel())
-											.getTestRunnerList().indexOf(c);
-								((TestRunnerModel)_tree.getModel())
-									.getTestRunnerList().remove(index);
-								((TestRunnerModel)_tree.getModel())
-								.getTestRunnerList().add(index, 
-										dlg.getTestRunner());
-								((TestRunnerModel)_tree.getModel())
-									.fireTreeStructureChanged();
-							}
-						}
+						configTestRunner((TestRunner)c);
 					}
 					
 					// General configuration
 					else if (c instanceof List<?>) {
-						DlgConfigGeneral dlg = new DlgConfigGeneral(owner,
-								_config);
+						configGeneral();
 					}
 				}
 			}
@@ -518,6 +495,47 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 			 */
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
+			}
+			
+		});
+		_tree.addTreeSelectionListener(new TreeSelectionListener() {
+
+			@Override
+			public void valueChanged(TreeSelectionEvent e) {
+				JPopupMenu popup = _tree.getComponentPopupMenu();
+				JMenu insert = (JMenu)popup.getComponent(0);
+				JMenu delete = (JMenu)popup.getComponent(1);
+				JMenu config = (JMenu)popup.getComponent(2);
+				
+				// selected root element
+				if (e.getPath().getLastPathComponent() instanceof List<?>) {
+					insert.getItem(0).setEnabled(true);
+					insert.getItem(1).setEnabled(true);
+					insert.getItem(2).setEnabled(false);
+
+					delete.getItem(0).setEnabled(true);
+					delete.getItem(1).setEnabled(false);
+					delete.getItem(2).setEnabled(false);
+
+					config.getItem(0).setEnabled(true);
+					config.getItem(1).setEnabled(false);
+					config.getItem(2).setEnabled(false);
+				}
+				
+				// Not defined
+				else {
+					insert.getItem(0).setEnabled(false);
+					insert.getItem(1).setEnabled(false);
+					insert.getItem(2).setEnabled(false);
+
+					delete.getItem(0).setEnabled(false);
+					delete.getItem(1).setEnabled(false);
+					delete.getItem(2).setEnabled(false);
+
+					config.getItem(0).setEnabled(false);
+					config.getItem(1).setEnabled(false);
+					config.getItem(2).setEnabled(false);
+				}
 			}
 			
 		});
@@ -586,6 +604,45 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 	}
 	
 	/**
+	 * Open the configuration dialog for general configuration
+	 */
+	private void configGeneral() {
+		new DlgConfigGeneral(this, _config);
+	}
+	
+	/**
+	 * Open the configuration dialog for test runner
+	 */
+	private void configTestRunner(TestRunner tr) {
+		DlgConfigTestRunner dlg = new DlgConfigTestRunner(this, tr);
+		if (dlg.getExitStatus() == DlgConfig.EXIT_ACCEPT) {
+			if (dlg.isTestRunnerChanged()) {
+				int index = ((TestRunnerModel)_tree.getModel())
+							.getTestRunnerList().indexOf(tr);
+				((TestRunnerModel)_tree.getModel())
+					.getTestRunnerList().remove(index);
+				((TestRunnerModel)_tree.getModel())
+					.getTestRunnerList().add(index, 
+						dlg.getTestRunner());
+				((TestRunnerModel)_tree.getModel())
+					.fireTreeStructureChanged();
+			}
+		}
+	}
+	
+	/**
+	 * Open the configuration dialog for test suite
+	 */
+	private void configTestSuite(TestSuite ts) {
+		DlgConfigTestSuite dlg = new DlgConfigTestSuite(this, ts.getName(),
+				ts.getPackage());
+		if (dlg.getExitStatus() == DlgConfig.EXIT_ACCEPT) {
+			ts.setName(dlg.getTestSuiteName());
+			ts.setPackage(dlg.getPackageName());
+		}
+	}
+	
+	/**
 	 * Returns the configuration.
 	 * 
 	 * @return Configuration
@@ -649,8 +706,53 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				_btnCancel.setEnabled(true);
 				_btnLoad.setEnabled(false);
 				_txtMessage.setText(new String());
-				_thread.start();
+				_thread.start();				
+				break;
 				
+			case CONFIG_GENERAL:
+				configGeneral();
+				break;
+				
+			case CONFIG_TEST_RUNNER:
+				configTestRunner(
+						(TestRunner)_tree.getLastSelectedPathComponent());
+				break;
+				
+			case CONFIG_TEST_SUITE:
+				configTestSuite(
+						(TestSuite)_tree.getLastSelectedPathComponent());
+				break;
+				
+			case CONFIG_TEST:
+				break;
+				
+			case TREE_INSERT_CONFIG_GENERAL:
+				break;
+				
+			case TREE_INSERT_TEST_RUNNER:
+				((TestRunnerModel)_tree.getModel()).getTestRunnerList().add(
+						new JunitTestRunner(_config));
+				_tree.updateUI();
+				break;
+				
+			case TREE_INSERT_TEST_SUITE:
+				((TestRunner)_tree.getLastSelectedPathComponent()).addTestSuite(
+						new TestSuite());
+				break;
+				
+			case TREE_INSERT_TEST:
+				break;
+				
+			case TREE_DELETE_CONFIG_GENERAL:
+				break;
+				
+			case TREE_DELETE_TEST_RUNNER:
+				break;
+				
+			case TREE_DELETE_TEST_SUITE:
+				break;
+				
+			case TREE_DELETE_TEST:
 				break;
 		}
 	}
