@@ -482,6 +482,12 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 							}
 						}
 					}
+					
+					// General configuration
+					else if (c instanceof List<?>) {
+						DlgConfigGeneral dlg = new DlgConfigGeneral(owner,
+								_config);
+					}
 				}
 			}
 

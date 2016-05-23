@@ -47,6 +47,13 @@ import org.testsuite.data.Library;
 
 import org.testsuite.core.TestRunner;
 
+/**
+ * Configuration dialog for the TestRunner.
+ * 
+ * @author René Majewski
+ *
+ * @version 0.1
+ */
 public class DlgConfigTestRunner extends DlgConfig {
 
 	/**

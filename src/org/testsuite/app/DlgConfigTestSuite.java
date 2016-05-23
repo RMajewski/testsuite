@@ -29,7 +29,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
 /**
- * Konfigurations-Dialog for the TestSuite.
+ * Configuration dialog for the TestSuite.
  * 
  * In version 0.2 the class of DlgDialog is derived.
  * 
