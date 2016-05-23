@@ -75,10 +75,10 @@ public class TestConfig {
 	}
 	
 	/**
-	 * Tests whether the error IllegalArgumentException appears when empty 
-	 * string is passed as a parameter.
+	 * Tests if no fault is triggered when an empty string is passed as a
+	 * parameter.
 	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testSetPathSrcWithEmptyStringAsParameter() {
 		_config.setPathSrc(new String());
 	}
@@ -111,10 +111,10 @@ public class TestConfig {
 	}
 	
 	/**
-	 * Tests whether the error IllegalArgumentException appears when empty 
-	 * string is passed as a parameter.
+	 * Tests if no fault is triggered when an empty string is passed as a
+	 * parameter.
 	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testSetPathResultWithEmptyStringAsParameter() {
 		_config.setPathResult(new String());
 	}
@@ -184,10 +184,10 @@ public class TestConfig {
 	}
 	
 	/**
-	 * Tests whether the error IllegalArgumentException appears when empty 
-	 * string is passed as a parameter.
+	 * Tests if no fault is triggered when an empty string is passed as a
+	 * parameter.
 	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testSetPathLibraryWithEmptyStringAsParameter() {
 		_config.setPathLibrary(new String());
 	}
@@ -301,6 +301,51 @@ public class TestConfig {
 	}
 	
 	/**
+	 * Verifies that the correct system property was deleted.
+	 */
+	@Test
+	public void testRemoveProperty() {
+		String prop1 = "Test1";
+		String prop2 = "Test2";
+		String prop3 = "Test3";
+		
+		_config.addProperty(prop1);
+		_config.addProperty(prop2);
+		_config.addProperty(prop3);
+		
+		assertEquals(3, _config.propertyCount());
+		
+		_config.removeProperty(prop2);
+		
+		assertEquals(2, _config.propertyCount());
+		assertEquals(prop1, _config.getProperty(0));
+		assertEquals(prop3, _config.getProperty(1));
+	}
+	
+	/**
+	 * Verifies that the correct system property has changed.
+	 */
+	@Test
+	public void testChangeProperty() {
+		String prop1 = "Test1";
+		String prop2 = "Test2";
+		String prop3 = "Test3";
+		
+		_config.addProperty(prop1);
+		_config.addProperty(prop2);
+		_config.addProperty(prop3);
+		
+		assertEquals(3, _config.propertyCount());
+		
+		_config.changeProperty(prop2, "Test4");
+		
+		assertEquals(3, _config.propertyCount());
+		assertEquals(prop1, _config.getProperty(0));
+		assertEquals("Test4", _config.getProperty(1));
+		assertEquals(prop3, _config.getProperty(2));
+	}
+	
+	/**
 	 * Tests if the maximum test duration is returned correctly.
 	 */
 	@Test
@@ -316,5 +361,97 @@ public class TestConfig {
 		long duration = 100l;
 		_config.setMaxDuration(duration);
 		assertEquals(duration, _config.getMaxDuration());
+	}
+	
+	/**
+	 * Checks whether the configuration is empty.
+	 */
+	@Test
+	public void testIsEmpty() {
+		assertTrue(_config.isEmpty());
+	}
+	
+	/**
+	 * Checks whether the configuration is not empty, if the result path is set.
+	 */
+	@Test
+	public void testIsNotEmptyResultPathIsSet() {
+		_config.setPathResult("Test");
+		assertFalse(_config.isEmpty());
+	}
+	
+	/**
+	 * Checks whether the configuration is not empty, if the src path is set.
+	 */
+	@Test
+	public void testIsNotEmptySrcPathIsSet() {
+		_config.setPathSrc("Test");
+		assertFalse(_config.isEmpty());
+	}
+	
+	/**
+	 * Checks whether the configuration is not empty, if the library path is
+	 * set.
+	 */
+	@Test
+	public void testIsNotEmptyLibraryPathIsSet() {
+		_config.setPathLibrary("Test");
+		assertFalse(_config.isEmpty());
+	}
+	
+	/**
+	 * Checks whether the configuration is not empty, if the create html is true.
+	 */
+	@Test
+	public void testIsNotEmptyCreateHtmlIsTrue() {
+		_config.setCreateHtml(true);;
+		assertFalse(_config.isEmpty());
+	}
+	
+	/**
+	 * Checks whether the configuration is not empty, if the max duration time
+	 * is zero.
+	 */
+	@Test
+	public void testIsNotEmptyMaxDurationTimeIsNotZero() {
+		_config.setMaxDuration(100l);;
+		assertFalse(_config.isEmpty());
+	}
+	
+	/**
+	 * Checks whether the configuration is not empty, if a system property is in
+	 * the list of system properties.
+	 */
+	@Test
+	public void testIsNotEmptyListOfPropertyHavOneProperty() {
+		_config.addProperty("Test");
+		assertFalse(_config.isEmpty());
+	}
+	
+	/**
+	 * Tests whether the proper configuration entries have been reset.
+	 */
+	@Test
+	public void testClear() {
+		_config.setClasspath("Test");
+		_config.addProperty("Test");
+		_config.setPathLibrary("Test");
+		_config.setMaxDuration(100l);
+		_config.setCreateHtml(true);
+		_config.setPathResult("Test");
+		_config.setPathSrc("Test");
+		_config.setPathSuitesResult("Test");
+		
+		_config.clear();
+		
+		assertTrue(_config.getPathLibrary().isEmpty());
+		assertTrue(_config.getPathResult().isEmpty());
+		assertTrue(_config.getPathSrc().isEmpty());
+		assertEquals(0, _config.propertyCount());
+		assertEquals(0, _config.getMaxDuration());
+		assertFalse(_config.isCreateHtml());
+		
+		assertEquals("Test", _config.getClasspath());
+		assertEquals("Test", _config.getPathSuitesResult());
 	}
 }

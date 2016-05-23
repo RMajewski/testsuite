@@ -75,6 +75,8 @@ public class Config {
 	 */
 	public Config() {
 		_property = new ArrayList<String>();
+		_pathSuitesResult = new String();
+		_classpath = new String();
 		clear();
 	}
 
