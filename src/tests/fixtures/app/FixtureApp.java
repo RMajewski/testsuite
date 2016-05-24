@@ -27,6 +27,7 @@ import javax.swing.JList;
 
 import org.testsuite.app.DlgConfigGeneral;
 import org.testsuite.app.DlgConfigLibrary;
+import org.testsuite.app.DlgConfigTest;
 import org.testsuite.app.DlgConfigTestRunner;
 import org.testsuite.app.DlgConfigTestSuite;
 
@@ -768,5 +769,43 @@ public class FixtureApp extends ActionFixture {
 	
 	public String getSelectTestName() {
 		return _tests.getTreeSelectedTest().getName();
+	}
+	
+	public void pushConfigurationTest() {
+		_tests.pushNoBlockTreePopupItem(2, 3);
+		_tests.waitForDialog(ResourceBundle.getBundle(
+				DlgConfigTest.BUNDLE_FILE).getString("dialog_title"));
+	}
+	
+	public boolean haveConfigurationTestTextFieldName() {
+		return _tests.getDialogTextField(0).isEnabled();
+	}
+	
+	public String getConfigurationTestTextName() {
+		return _tests.getDialogTextField(0).getText();
+	}
+	
+	public boolean haveConfigurationTestCheckBoxExecute() {
+		return _tests.getDialogTextField(0).isEnabled();
+	}
+	
+	public boolean isConfigurationTestCheckBoxExecute() {
+		return _tests.getDialogCheckBox(0).isSelected();
+	}
+	
+	public void setConfigurationTestTextName(String name) {
+		_tests.getDialogTextField(0).setText(name);
+	}
+	
+	public void setConfigurationTestCheckBoxExecute(boolean execute) {
+		_tests.getDialogCheckBox(0).setSelected(execute);
+	}
+	
+	public String getTestName() {
+		return _tests.getTreeSelectedTest().getName();
+	}
+	
+	public boolean isTestExecuteSelected() {
+		return _tests.getTreeSelectedTest().isExecuted();
 	}
 }
