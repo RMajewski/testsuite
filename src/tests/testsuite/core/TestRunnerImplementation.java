@@ -25,21 +25,18 @@ import org.testsuite.core.HtmlOut;
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
 import org.testsuite.data.Test;
+import org.testsuite.data.TestSuite;
 
 /**
  * Implements the class TestRunner for testing purposes.
  * 
  * @author René Majewski
  * 
- * @version 0.1
+ * @version 0.2
  */
 class TestRunnerImplementation extends TestRunner {
 	public TestRunnerImplementation(Config config) {
 		super(config);
-	}
-
-	@Override
-	public void run() {
 	}
 
 	@Override
@@ -60,5 +57,10 @@ class TestRunnerImplementation extends TestRunner {
 	
 	public int getTestEventListenerCount() {
 		return _testEventListeners.size();
+	}
+
+	@Override
+	protected String exec(String name, TestSuite suite, Test test) {
+		return name;
 	}
 }

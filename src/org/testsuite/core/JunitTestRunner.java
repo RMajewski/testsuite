@@ -32,13 +32,15 @@ import javax.swing.Timer;
 
 import org.testsuite.data.Config;
 import org.testsuite.data.Junit;
+import org.testsuite.data.Test;
+import org.testsuite.data.TestSuite;
 
 /**
  * Executes the junit tests.
  * 
  * @author René Majewski
  *
- * @version 0.1
+ * @version 0.2
  */
 public class JunitTestRunner extends TestRunner {
 	
@@ -63,9 +65,10 @@ public class JunitTestRunner extends TestRunner {
 
 	/**
 	 * Executes the junit tests.
+	 * 
+	 * @deprecated Since version 0.3 in the test runner class.
 	 */
-	@Override
-	public void run() {
+	public void run_old() {
 		for (int suite = 0; suite < _suites.size(); suite++) {
 			// Test-Suite Name
 			System.out.println(_suites.get(suite).getName());
@@ -75,7 +78,8 @@ public class JunitTestRunner extends TestRunner {
 				String name = _suites.get(suite).getPackage() + "." +
 							_suites.get(suite).getTest(test).getName();
 				String result = new String();
-				
+
+				// OPT -- Begin -- Into run in TestRunner class
 				// Überprüfen, ob Datei existiert
 				if (!_suites.get(suite).isExists() || 
 						!_suites.get(suite).getTest(test).isExists()) {
@@ -104,12 +108,14 @@ public class JunitTestRunner extends TestRunner {
 							_suites.get(suite).getTest(test).getId(), result);
 				continue;
 				}
+				// OPT -- End -- Into run in TestRunner class
 			
 				try {
 					_suites.get(suite).getTest(test).setStart(
 							new Date().getTime());
 
 					System.out.print(name + ": ");
+					// OPT -- Begin -- Into run in TestRunner class
 					final Process p = Runtime.getRuntime().exec("java -cp " +
 							createClasspath() + createProperty() +
 							"org.junit.runner.JUnitCore " +
@@ -127,6 +133,7 @@ public class JunitTestRunner extends TestRunner {
 					int exit = p.waitFor();
 					timer.stop();
 					_suites.get(suite).getTest(test).setExitStatus(exit);
+					// OPT -- End -- Into run in TestRunner class
 					
 					// Ausgabe wie der Test verlaufen ist
 					_suites.get(suite).getTest(test).setEnd(
@@ -150,6 +157,7 @@ public class JunitTestRunner extends TestRunner {
 					_suites.get(suite).getTest(test).setError(
 							inputStreamToString(p.getErrorStream()));
 
+					// OPT -- Begin -- Into the error evaluation method
 					InputStream is = p.getInputStream();
 					BufferedReader br = new BufferedReader(new InputStreamReader(is));
 					String line;
@@ -183,6 +191,7 @@ public class JunitTestRunner extends TestRunner {
 					}
 					_suites.get(suite).getTest(test).setStringConsole(
 							replaceHtmlEntities(console.toString()));
+					// OPT -- End -- Into the error evaluation method
 				} catch (IOException e) {
 					e.printStackTrace();
 					_suites.get(suite).getTest(test).setExitStatus(100);
@@ -341,5 +350,23 @@ public class JunitTestRunner extends TestRunner {
 		ret.setName(name);
 		ret.setId(id);
 		return ret;
+	}
+	
+	/**
+	 * Creates the command to execute.
+	 * 
+	 * @param test Name of the test class or name of file
+	 * 
+	 * @return Command to execute
+	 */
+	@Override
+	public String exec(String name, TestSuite suite, Test test) {
+		StringBuilder ret = new StringBuilder("java -cp ");
+		ret.append(createClasspath());
+		ret.append(createProperty());
+		ret.append("org.junit.runner.JunitCore");
+		ret.append(test);
+		
+		return ret.toString();
 	}
 }

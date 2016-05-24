@@ -732,9 +732,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()) {
 			case AC_CANCEL:
-				_thread.stop(); // FIXME replace by _thread.interrupt()
-				testEnd(new TestEvent(this, "", "", -1, -1, ""));
-				_pBar.setValue(0);
+				_thread.interrupt();
 			break;
 				
 			case AC_LOAD:
@@ -771,9 +769,8 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				break;
 				
 			case AC_RUN:
-				TestRun run = new TestRun(((TestRunnerModel)_tree.getModel())
+				_thread = new TestRun(((TestRunnerModel)_tree.getModel())
 					.getTestRunnerList(), this);
-				_thread = new Thread(run);
 				_btnExit.setEnabled(false);
 				_btnRun.setEnabled(false);
 				_btnCancel.setEnabled(true);
@@ -910,6 +907,8 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 	
 	@Override
 	public void testEnd(TestEvent te) {
+		_thread = null;
+		_pBar.setValue(0);
 		_btnExit.setEnabled(true);
 		_btnRun.setEnabled(true);
 		_btnCancel.setEnabled(false);

@@ -32,13 +32,15 @@ import javax.swing.Timer;
 
 import org.testsuite.data.Config;
 import org.testsuite.data.Fit;
+import org.testsuite.data.Test;
+import org.testsuite.data.TestSuite;
 
 /**
  * Executes the Fit tests.
  * 
  * @author René Majewski
  *
- * @version 0.1
+ * @version 0.2
  */
 public class FitTestRunner extends TestRunner {
 	
@@ -65,9 +67,10 @@ public class FitTestRunner extends TestRunner {
 
 	/**
 	 * Executes the Fit tests
+	 * 
+	 * @deprecated Since version 0.3 in the test runner class.
 	 */
-	@Override
-	public void run() {
+	public void run_old() {
 		for (int suite = 0; suite < _suites.size(); suite++) {
 			// Test-Suite Name
 			System.out.println(_suites.get(suite).getName());
@@ -108,6 +111,7 @@ public class FitTestRunner extends TestRunner {
 				}
 				
 				// Überprüfen ob das Result-Verzeichnis existiert
+				// OPT -- Begin -- Into run in TestRunner class
 				String resultPath = _config.getPathResult() + File.separator + 
 						_config.getPathSuitesResult() + File.separator + 
 						_suites.get(suite).getPackage().replaceAll("\\.", 
@@ -117,6 +121,7 @@ public class FitTestRunner extends TestRunner {
 					// Verzeichnis anlegen
 					r.mkdirs();
 				}
+				// OPT -- End -- Into run in TestRunner class
 				
 				// Name der Result-Datei ermitteln und als Endung html
 				String resultFileName = resultPath + File.separator + 
@@ -124,6 +129,7 @@ public class FitTestRunner extends TestRunner {
 				
 				// Ausführen
 				try {
+					// OPT -- Begin -- Into run in TestRunner class
 					_suites.get(suite).getTest(test).setStart(new Date().getTime());
 
 					System.out.print(fit + ": ");
@@ -143,6 +149,7 @@ public class FitTestRunner extends TestRunner {
 					
 					int exit = p.waitFor();
 					timer.stop();
+					// OPT -- End -- Into run in TestRunner class
 					
 					// Endzeit ermitteln
 					_suites.get(suite).getTest(test).setEnd(new Date().getTime());
@@ -169,6 +176,7 @@ public class FitTestRunner extends TestRunner {
 							inputStreamToString(p.getInputStream()));
 
 					// Error auslesen
+					// OPT -- Begin -- Into the console evaluation method
 					InputStream is = p.getErrorStream();
 					BufferedReader br = new BufferedReader(new InputStreamReader(is));
 					StringBuilder error = new StringBuilder();
@@ -193,6 +201,7 @@ public class FitTestRunner extends TestRunner {
 					}
 					_suites.get(suite).getTest(test).setError(
 							replaceHtmlEntities(error.toString()));
+					// OPT -- End -- Into the console evaluation method
 				} catch (IOException e) {
 					e.printStackTrace();
 					_suites.get(suite).getTest(test).setExitStatus(100);
@@ -409,5 +418,47 @@ public class FitTestRunner extends TestRunner {
 		ret.setName(name);
 		ret.setId(id);
 		return ret;
+	}
+	
+	/**
+	 * Creates the command to execute.
+	 * 
+	 * @param test Name of the test class or name of file
+	 * 
+	 * @param suite The actual test suite
+	 * 
+	 * @param test The actual test
+	 * 
+	 * @return Command to execute
+	 */
+	@Override
+	public String exec(String name, TestSuite suite, Test test) {
+		StringBuilder ret = new StringBuilder("java -cp ");
+		ret.append(createClasspath());
+		ret.append(createProperty());
+		ret.append("fit.FileRunner ");
+		
+		ret.append(_config.getPathSrc());
+		ret.append("/");
+		ret.append(name.replaceAll("\\.", File.separator));
+		ret.append(_fileExtension);
+		ret.append(" ");
+		
+		// Path for result files
+		String resultPath = _config.getPathResult() + File.separator + 
+				_config.getPathSuitesResult() + File.separator + 
+				suite.getPackage().replaceAll("\\.", File.separator);
+		File r = new File(resultPath);
+		if (!r.exists()) {
+			r.mkdirs();
+		}
+		
+		// File for the result
+		ret.append(resultPath);
+		ret.append(File.separator);
+		ret.append(test.getName());
+		ret.append(".html");
+		
+		return ret.toString();
 	}
 }

@@ -28,13 +28,15 @@ import java.util.Date;
 import javax.swing.Timer;
 
 import org.testsuite.data.Config;
+import org.testsuite.data.Test;
+import org.testsuite.data.TestSuite;
 
 /**
  * Executes the jemmy tests.
  * 
  * @author René Majewski
  *
- * @version 0.1
+ * @version 0.2
  */
 public class JemmyTestRunner extends TestRunner {
 	
@@ -59,9 +61,10 @@ public class JemmyTestRunner extends TestRunner {
 
 	/**
 	 * Executes the jemmy tests
+	 * 
+	 * @deprecated Since version 0.3 in the test runner class.
 	 */
-	@Override
-	public void run() {
+	public void run_old() {
 		for (int suite = 0; suite < _suites.size(); suite++) {
 			// Test-Suite Name
 			System.out.println(_suites.get(suite).getName());
@@ -104,6 +107,7 @@ public class JemmyTestRunner extends TestRunner {
 							new Date().getTime());
 
 					System.out.print(name + ": ");
+					// OPT -- Begin -- Into run in TestRunner class
 					final Process p = Runtime.getRuntime().exec("java -cp " +
 							createClasspath() + createProperty() + name);
 
@@ -114,6 +118,7 @@ public class JemmyTestRunner extends TestRunner {
 									p.destroy();
 								}
 					});
+					// OPT -- End -- Into run in TestRunner class
 					
 					timer.start();
 					int exit = p.waitFor();
@@ -289,4 +294,20 @@ public class JemmyTestRunner extends TestRunner {
 		return ret;
 	}
 
+	/**
+	 * Creates the command to execute.
+	 * 
+	 * @param test Name of the test class or name of file
+	 * 
+	 * @return Command to execute
+	 */
+	@Override
+	public String exec(String name, TestSuite suite, Test test) {
+		StringBuffer ret = new StringBuffer("java -cp ");
+		ret.append(createClasspath());
+		ret.append(createProperty());
+		ret.append(name);
+		
+		return ret.toString();
+	}
 }

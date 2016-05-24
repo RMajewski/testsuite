@@ -32,7 +32,7 @@ import org.testsuite.data.TestEventListener;
  *
  * @version 0.1
  */
-public class TestRun implements Runnable {
+public class TestRun extends Thread {
 	/**
 	 * Saves the list of classes TestRunner;
 	 */
@@ -60,10 +60,26 @@ public class TestRun implements Runnable {
 	 */
 	@Override
 	public void run() {
-		for (int i = 0; i < _testRunner.size(); i++) {
-			_testRunner.get(i).addTestEventListener(_listener);
-			_testRunner.get(i).run();
-		}
+		Runner:
+		for (int runner = 0; runner < _testRunner.size(); runner++) {
+			_testRunner.get(runner).addTestEventListener(_listener);
+
+			for (int suite = 0; suite < _testRunner.get(runner).testSuiteCount(); suite++) {
+				System.out.print(
+						_testRunner.get(runner).getTestSuite(suite).getName());
+				System.out.println(":");
+				
+				for (int test = 0; test < _testRunner.get(runner).getTestSuite(suite).testCount(); test++) {
+					if (isInterrupted())
+						break Runner;
+					_testRunner.get(runner).run(
+							_testRunner.get(runner).getTestSuite(suite),
+							_testRunner.get(runner).getTestSuite(suite)
+								.getTest(test), this);
+				} // for test
+			} // for suite
+		} // for runner
+		
 		_listener.testEnd(new TestEvent(this, "", "", -1, -1, ""));
 	}
 

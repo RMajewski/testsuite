@@ -119,8 +119,19 @@ public class TestCore {
 	 * Executes the individual tests
 	 */
 	public void run() {
-		for (int runner = 0; runner < _testRunner.size(); runner++)
-			_testRunner.get(runner).run();
+		for (int runner = 0; runner < _testRunner.size(); runner++) {
+			for (int suite = 0; suite < _testRunner.get(runner).testSuiteCount(); suite++) {
+				System.out.print(
+						_testRunner.get(runner).getTestSuite(suite).getName());
+				System.out.println(":");
+				for (int test = 0; test < _testRunner.get(runner).getTestSuite(suite).testCount(); test++) {
+					_testRunner.get(runner).run(
+							_testRunner.get(runner).getTestSuite(suite),
+							_testRunner.get(runner).getTestSuite(suite)
+								.getTest(test), null);
+				} // for test
+			} // for suite
+		} // for runner
 	}
 	
 	/**
@@ -130,7 +141,7 @@ public class TestCore {
 		if (_config.isCreateHtml()) {
 			String htmlFile = _config.getPathResult() + File.separator;
 			
-			// FIXME In Tests einbinden
+			// FIXME In Tests einbinden (File mocken)
 			File file = new File(htmlFile);
 			if (!file.exists())
 				file.mkdirs();

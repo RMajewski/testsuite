@@ -19,19 +19,25 @@
 
 package org.testsuite.core;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
+import javax.swing.Timer;
+
 import org.testsuite.data.Config;
 import org.testsuite.data.Library;
+import org.testsuite.data.Test;
 import org.testsuite.data.TestEvent;
 import org.testsuite.data.TestEventListener;
 import org.testsuite.data.TestSuite;
@@ -41,9 +47,24 @@ import org.testsuite.data.TestSuite;
  * 
  * @author René Majewski
  *
- * @version 0.1
+ * @version 0.2
  */
 public abstract class TestRunner {
+	/**
+	 * Saves the exit status for terminated execute
+	 */
+	public static final int EXIT_TERMINATED_EXEC = 143;
+	
+	/**
+	 * Saves the exit status for error
+	 */
+	public static final int EXIT_ERROR = 1001;
+	
+	/**
+	 * Saves the exit status for executed ok
+	 */
+	public static final int EXIT_OK = 0;
+	
 	/**
 	 * Hold an instance of the list of TestSuites.
 	 */
@@ -781,6 +802,30 @@ public abstract class TestRunner {
 					source, pName, tName, suiteId, testId, result));
 	}
 	
+	
+	/**
+	 * Called to evaluation error.
+	 * 
+	 * If the errors are to be evaluated, so this method must be overridden.
+	 * 
+	 * @param error Error from test run
+	 */
+	protected void errorEvaluation(String error) {
+		// Empty method
+	}
+	
+	/**
+	 * Called to evaluation console input.
+	 * 
+	 * If the console input are to be evaluated, so this method must be 
+	 * overridden.
+	 * 
+	 * @param console Input from console of test run
+	 */
+	protected void consoleEvaluation(String console) {
+		// Empty method
+	}
+	
 	/**
 	 * Called to insert a new test class in the list.
 	 * 
@@ -791,9 +836,99 @@ public abstract class TestRunner {
 	public abstract org.testsuite.data.Test newTest(String name, int id);
 	
 	/**
-	 * Called to start the stored tests.
+	 * Execute the tests in list.
+	 * 
+	 * @param suite The actual test suite
+	 * 
+	 * @param test The actual test
 	 */
-	public abstract void run();
+	public void run(TestSuite suite, Test test, Thread thread) {
+		// Create the name
+		String name = suite.getPackage() + "." + test.getName();
+		String result = new String();
+		
+		// Verify that file exists
+		if (!suite.isExists() || !test.isExists()) {
+			test.setExitStatus(100);
+			System.out.print(name + " ");
+			System.out.println(result = _bundle.getString("run_notFound"));
+			fireTestExecutedCompleted(this, suite.getPackage(), test.getName(),
+					suite.getId(), test.getId(), result);
+			return;
+		}
+		
+		// Should the test not be executed?
+		if (!test.isExecuted()) {
+			System.out.print(name + " ");
+			System.out.println(result = _bundle.getString(
+					"createHtmlColumn_noneExecuted"));
+			fireTestExecutedCompleted(this, 
+					suite.getPackage(), test.getName(), suite.getId(),
+					test.getId(), result);
+			return;
+		}
+		
+		try {
+			// Start time
+			test.setStart(new Date().getTime());
+			
+			System.out.print(name + ": ");
+
+			final Process p = Runtime.getRuntime().exec(exec(name, suite, test));
+
+			Timer timer = new Timer((int)_config.getMaxDuration(),
+					new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							p.destroy();
+						}
+			});
+
+			int exit = EXIT_TERMINATED_EXEC;
+			try {
+				timer.start();
+				exit = p.waitFor();
+				timer.stop();
+			} catch (InterruptedException e) {
+				System.out.println(" --- Interrupt --- ");
+				if (thread != null)
+					thread.interrupt();
+			}
+			
+			// End time
+			test.setEnd(new Date().getTime());
+			test.setExitStatus(exit);
+			
+			// Verifies exit status
+			if (exit == EXIT_TERMINATED_EXEC) {
+				result = _bundle.getString("run_terminated");
+				test.setTerminated(true);
+			} else if (exit == EXIT_OK)
+				result = _bundle.getString("run_pass");
+			else
+				result = _bundle.getString("run_failure");
+			
+			// Result output on the console
+			result += " (" + _bundle.getString("run_duration") + " " +
+					String.valueOf(test.getDurationTime()) + " ms)";
+			System.out.println(result);
+			
+			// Output from the console and the error
+			test.setError(inputStreamToString(p.getErrorStream()));
+			test.setStringConsole(inputStreamToString(p.getInputStream()));
+			
+			// Evaluation output
+			errorEvaluation(test.getError());
+			consoleEvaluation(test.getError());
+		} catch (Exception e) {
+			e.printStackTrace();
+			test.setExitStatus(EXIT_ERROR);
+		}
+		
+		fireTestExecutedCompleted(this, 
+				suite.getPackage(), test.getName(), suite.getId(), test.getId(),
+				result);
+	}
 	
 	/**
 	 * Called to create the column headings for the HTML table.
@@ -806,4 +941,11 @@ public abstract class TestRunner {
 	 */
 	protected abstract String createHtmlColumn(int suite, int test,
 			HtmlOut html) throws IOException;
+	
+	/**
+	 * String containing the execute command.
+	 * 
+	 * @param test Name of the test class or name of file
+	 */
+	protected abstract String exec(String name, TestSuite suite, Test test);
 }

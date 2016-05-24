@@ -44,6 +44,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.testsuite.core.HtmlOut;
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
+import org.testsuite.data.Junit;
 import org.testsuite.data.Library;
 import org.testsuite.data.TestEvent;
 import org.testsuite.data.TestEventListener;
@@ -56,7 +57,7 @@ import org.testsuite.data.TestSuite;
  * 
  * @author René Majewski
  * 
- * @version 0.1
+ * @version 0.2
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({TestRunner.class})
@@ -71,6 +72,11 @@ public class TestTestRunner extends TestRunnerHelper {
 	 * Save the mock of configuration
 	 */
 	private Config _config;
+	
+	/**
+	 * Saves the count of run tests.
+	 */
+	private int _runCount;
 
 	/**
 	 * Initialize the tests
@@ -79,6 +85,7 @@ public class TestTestRunner extends TestRunnerHelper {
 	public void setUp() throws Exception {
 		_config = mock(Config.class);
 		_runner = new TestRunnerImplementation(_config);
+		_runCount = 0;
 	}
 	
 	/**
@@ -971,5 +978,281 @@ public class TestTestRunner extends TestRunnerHelper {
 		Vector<TestEventListener> vector = new Vector<TestEventListener>();
 		_runner.setTestEventListenerList(vector);
 		assertEquals(vector, _runner.getTestEventListenerList());
+	}
+	/**
+	 * Tests if the will be canceled if the test file does not exist.
+	 */
+	@Test
+	public void testRunWithNonExistingTestFile() {
+		String packageName = "package";
+		String testName = "test";
+
+		Junit junit = mock(Junit.class);
+		when(junit.isExists()).thenReturn(false);
+		when(junit.getName()).thenReturn(testName);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getPackage()).thenReturn(packageName);
+		when(suite.isExists()).thenReturn(true);
+		
+		_runner.addTestSuite(suite);
+		
+		_runner.run(suite, junit);
+		
+		verify(junit).isExists();
+		verify(junit).setExitStatus(100);
+		verify(junit, never()).setExists(Matchers.anyBoolean());
+		verify(junit, times(2)).getName();
+		
+		verify(suite, times(2)).getPackage();
+		verify(suite).isExists();
+	}
+	
+	/**
+	 * Tests if the will be canceled when the directory of the test file does
+	 * not exist.
+	 */
+	@Test
+	public void testRunWithNonExistingPath() {
+		String pathSrc = "src";
+		String packageName = "package";
+		String testName = "test";
+		
+		when(_config.getPathSrc()).thenReturn(pathSrc);
+
+		Junit junit = mock(Junit.class);
+		when(junit.isExists()).thenReturn(true);
+		when(junit.getName()).thenReturn(testName);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getPackage()).thenReturn(packageName);
+		when(suite.isExists()).thenReturn(false);
+		_runner.addTestSuite(suite);
+		
+		_runner.run(suite, junit);
+		
+		verify(_config, never()).getPathSrc();
+		verify(_config, never()).getPathResult();
+		
+		verify(junit, never()).isExists();
+		verify(junit).setExitStatus(100);
+		verify(junit, never()).setExists(Matchers.anyBoolean());
+		verify(junit, times(2)).getName();
+		
+		verify(suite, times(2)).getPackage();
+		verify(suite).isExists();
+	}
+	
+	/**
+	 * Tests if the will be canceled if the test file does not exist.
+	 */
+	@Test
+	public void testRunWithNoneExecuteTest() {
+		String packageName = "package";
+		String testName = "test";
+
+		Junit junit = mock(Junit.class);
+		when(junit.isExists()).thenReturn(true);
+		when(junit.isExecuted()).thenReturn(false);
+		when(junit.getName()).thenReturn(testName);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getTest(0)).thenReturn(junit);
+		when(suite.getPackage()).thenReturn(packageName);
+		when(suite.isExists()).thenReturn(true);
+		_runner.addTestSuite(suite);
+		
+		_runner.run(suite, junit);
+		
+		verify(junit).isExists();
+		verify(junit).isExecuted();
+		verify(junit, never()).setExitStatus(100);
+		verify(junit, never()).setExists(Matchers.anyBoolean());
+		verify(junit, times(2)).getName();
+		
+		verify(suite, times(2)).getPackage();
+		verify(suite).isExists();
+	}
+
+	/**
+	 * Tests if the test is performed correctly.
+	 */
+	@Test
+	public void testRun() throws Exception {
+		String packageName = "package";
+		String testName = "test";
+		String exec = packageName + "." + testName;
+		
+		Library library = mock(Library.class);
+		
+		InputStream isConsole = mock(InputStream.class);
+		InputStream isError = mock(InputStream.class);
+
+		Junit junit = mock(Junit.class);
+		when(junit.isExists()).thenReturn(true);
+		when(junit.isExecuted()).thenReturn(true);
+		when(junit.getName()).thenReturn(testName);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.testCount()).thenReturn(1);
+		when(suite.getTest(0)).thenReturn(junit);
+		when(suite.getPackage()).thenReturn(packageName);
+		when(suite.isExists()).thenReturn(true);
+		_runner.addTestSuite(suite);
+		
+		Process process = mock(Process.class);
+		when(process.waitFor()).thenReturn(0);
+		when(process.getInputStream()).thenReturn(isConsole);
+		when(process.getErrorStream()).thenReturn(isError);
+		
+		Runtime runtime = mock(Runtime.class);
+		when(runtime.exec(Matchers.anyString())).thenReturn(process);
+		
+		PowerMockito.mockStatic(Runtime.class);
+		PowerMockito.when(Runtime.getRuntime()).thenReturn(runtime);
+		
+		InputStreamReader isrConsole = mock(InputStreamReader.class);
+		InputStreamReader isrError = mock(InputStreamReader.class);
+		
+		PowerMockito.whenNew(InputStreamReader.class)
+			.withArguments(isConsole)
+			.thenReturn(isrConsole);
+		
+		PowerMockito.whenNew(InputStreamReader.class)
+			.withArguments(isError)
+			.thenReturn(isrError);
+		
+		BufferedReader console = mock(BufferedReader.class);
+		when(console.ready()).thenReturn(true);
+		when(console.readLine())
+			.thenReturn("OK (2 tests)", null);
+		
+		BufferedReader error = mock(BufferedReader.class);
+		when(error.readLine()).thenReturn(null);
+		
+		PowerMockito.whenNew(BufferedReader.class)
+			.withArguments(isrConsole)
+			.thenReturn(console);
+		
+		PowerMockito.whenNew(BufferedReader.class)
+			.withArguments(isrError)
+			.thenReturn(error);
+		
+		_runner.addTestEventListener(new TestEventListener() {
+			@Override
+			public void testExecutedCompleted(TestEvent te) {
+				_runCount++;
+			}
+
+			@Override
+			public void testEnd(TestEvent te) {
+			}
+		});
+		
+		_runner.run(suite, junit);
+		
+		assertEquals(1, _runCount);
+		
+		verify(runtime).exec(exec);
+		
+		verify(process).waitFor();
+		verify(process).getInputStream();
+		verify(process).getErrorStream();
+		
+		verify(junit).isExists();
+		verify(junit).isExecuted();
+		verify(junit).setExitStatus(0);
+		verify(junit, never()).setExists(Matchers.anyBoolean());
+		verify(junit, atLeastOnce()).getName();
+		verify(junit).setStart(Matchers.anyLong());
+		verify(junit).setEnd(Matchers.anyLong());
+		verify(junit).getDurationTime();
+		verify(junit).setStringConsole(Matchers.anyString());
+		
+		verify(suite, atLeastOnce()).getPackage();
+		verify(suite).isExists();
+	}
+
+	/**
+	 * Tests if the test has a failure.
+	 */
+	@Test
+	public void testRunWithFailure() throws Exception {
+		String packageName = "package";
+		String testName = "test";
+
+		InputStream isConsole = mock(InputStream.class);
+		InputStream isError = mock(InputStream.class);
+
+		Junit junit = mock(Junit.class);
+		when(junit.isExists()).thenReturn(true);
+		when(junit.isExecuted()).thenReturn(true);
+		when(junit.getName()).thenReturn(testName);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getTest(0)).thenReturn(junit);
+		when(suite.getPackage()).thenReturn(packageName);
+		when(suite.isExists()).thenReturn(true);
+		_runner.addTestSuite(suite);
+		
+		Process process = mock(Process.class);
+		when(process.waitFor()).thenReturn(0);
+		when(process.getInputStream()).thenReturn(isConsole);
+		when(process.getErrorStream()).thenReturn(isError);
+		
+		Runtime runtime = mock(Runtime.class);
+		when(runtime.exec(Matchers.anyString())).thenReturn(process);
+		
+		PowerMockito.mockStatic(Runtime.class);
+		PowerMockito.when(Runtime.getRuntime()).thenReturn(runtime);
+		
+		InputStreamReader isrConsole = mock(InputStreamReader.class);
+		InputStreamReader isrError = mock(InputStreamReader.class);
+		
+		PowerMockito.whenNew(InputStreamReader.class)
+			.withArguments(isConsole)
+			.thenReturn(isrConsole);
+		
+		PowerMockito.whenNew(InputStreamReader.class)
+			.withArguments(isError)
+			.thenReturn(isrError);
+		
+		BufferedReader console = mock(BufferedReader.class);
+		when(console.ready()).thenReturn(true);
+		when(console.readLine())
+			.thenReturn("Tests run: 1,  Failures: 2", null);
+		
+		BufferedReader error = mock(BufferedReader.class);
+		when(error.readLine()).thenReturn(null);
+		
+		PowerMockito.whenNew(BufferedReader.class)
+			.withArguments(isrConsole)
+			.thenReturn(console);
+		
+		PowerMockito.whenNew(BufferedReader.class)
+			.withArguments(isrError)
+			.thenReturn(error);
+		
+		_runner.run(suite, junit);
+		
+		String exec = packageName + "." + testName;
+		verify(runtime).exec(exec);
+		
+		verify(process).waitFor();
+		verify(process).getInputStream();
+		verify(process).getErrorStream();
+		
+		verify(junit).isExists();
+		verify(junit).isExecuted();
+		verify(junit).setExitStatus(0);
+		verify(junit, never()).setExists(Matchers.anyBoolean());
+		verify(junit, atLeastOnce()).getName();
+		verify(junit).setStart(Matchers.anyLong());
+		verify(junit).setEnd(Matchers.anyLong());
+		verify(junit).getDurationTime();
+		verify(junit).setStringConsole(Matchers.anyString());
+		
+		verify(suite, atLeastOnce()).getPackage();
+		verify(suite).isExists();
 	}
 }
