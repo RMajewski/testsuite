@@ -606,6 +606,7 @@ public class FixtureApp extends ActionFixture {
 	}
 	
 	public void insertConfigurationTestRunnerClasspathItem() {
+		_tests.getDialogList(1).clickMouse();
 		_tests.openConfigTestRunnerClasspathPopup();
 		_tests.pushNoBlockConfigGeneralPropertyPopup(0, 
 				ResourceBundle.getBundle(DlgConfigTestRunner.BUNDLE_FILE)
@@ -678,5 +679,29 @@ public class FixtureApp extends ActionFixture {
 		_tests.pushNoBlockConfigGeneralPropertyPopup(2, 
 				ResourceBundle.getBundle(DlgConfigTestRunner.BUNDLE_FILE)
 				.getString("delete_library_title"));
+	}
+	
+	public void selectConfigurationTestRunnerClasspathItem0() {
+		_tests.getDialogList(1).selectItem(0);
+	}
+	
+	public void openConfigTestRunnerClasspathPopup() {
+		_tests.openConfigTestRunnerClasspathPopup();
+	}
+	
+	public void deleteConfigTestRunnerClasspath() {
+		_tests.getDialogList(1).clickMouse();
+		_tests.openConfigTestRunnerClasspathPopup();
+		_tests.pushNoBlockConfigGeneralPropertyPopup(1, 
+				ResourceBundle.getBundle(DlgConfigTestRunner.BUNDLE_FILE)
+				.getString("delete_classpath_title"));
+	}
+	
+	public boolean isConfigTestRunnerClasspathPopupInsertEnabled() {
+		return _tests.isPopupItemEnabled(0);
+	}
+	
+	public boolean isConfigTestRunnerClasspathPopupDeleteEnabled() {
+		return _tests.isPopupItemEnabled(1);
 	}
 }

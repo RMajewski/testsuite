@@ -357,6 +357,14 @@ public class DlgConfigGeneral extends DlgConfig {
 			if (ret == JOptionPane.YES_OPTION) {
 				_config.removeProperty(_listProperties.getSelectedValue());
 				_listProperties.updateUI();
+				if (_listProperties.getSelectedIndex() >= 
+						_listProperties.getModel().getSize()) {
+					_listProperties.clearSelection();
+					_listProperties.getComponentPopupMenu().getComponent(1)
+						.setEnabled(false);
+					_listProperties.getComponentPopupMenu().getComponent(2)
+					.setEnabled(false);
+				}
 			}
 		}
 	}

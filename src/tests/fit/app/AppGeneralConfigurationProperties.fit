@@ -183,6 +183,26 @@
 					<td>getGeneralConfigurationPropertyCount</td>
 					<td>0</td>
 				</tr>
+				<tr>
+					<td>press</td>
+					<td>openGeneralConfigurationPropertyPopup</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isGeneralConfigurationPropertyPopupInsertEnabled</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isGeneralConfigurationPropertyPopupChangeEnabled</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isGeneralConfigurationPropertyPopupDeleteEnabled</td>
+					<td>false</td>
+				</tr>
 			</tbody>
 		</table>
 	</body>

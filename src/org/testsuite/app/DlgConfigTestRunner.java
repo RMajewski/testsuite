@@ -316,6 +316,7 @@ public class DlgConfigTestRunner extends DlgConfig {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
+				System.out.println(e.getFirstIndex());
 				if (e.getFirstIndex() > -1) {
 					_listClasspath.getComponentPopupMenu().getComponent(1)
 						.setEnabled(true);
@@ -435,6 +436,12 @@ public class DlgConfigTestRunner extends DlgConfig {
 				if (ret == JOptionPane.YES_OPTION) {
 					_runner.removeClassPath(_listClasspath.getSelectedValue());
 					_listClasspath.updateUI();
+					if (_listClasspath.getSelectedIndex() >= 
+							_listClasspath.getModel().getSize()) {
+						_listClasspath.clearSelection();
+						_listClasspath.getComponentPopupMenu().getComponent(1)
+							.setEnabled(false);
+					}
 				}
 				break;
 				
@@ -461,6 +468,14 @@ public class DlgConfigTestRunner extends DlgConfig {
 				if (ret == JOptionPane.YES_OPTION) {
 					_runner.removeLibrary(_listLibrary.getSelectedValue());
 					_listLibrary.updateUI();
+					if (_listLibrary.getSelectedIndex() >= 
+							_listLibrary.getModel().getSize()) {
+						_listLibrary.clearSelection();
+						_listLibrary.getComponentPopupMenu().getComponent(1)
+							.setEnabled(false);
+						_listLibrary.getComponentPopupMenu().getComponent(2)
+						.setEnabled(false);
+					}
 				}
 				break;
 				

@@ -2,22 +2,20 @@
 	<head>
 		<meta charset="UTF-8" />
 		<title>
-			Test the TestSuiteApp (test runner configuration dialog library
+			Test the TestSuiteApp (test runner configuration dialog class path
 			pop-up)
 		</title>
 	</head>
 	<body>
 		<h2>
-			Tests for the TestSuiteApp (test runner configuration dialog library
-			pop-up)
+			Tests for the TestSuiteApp (test runner configuration dialog class
+			path pop-up)
 		</h2>
 		<p>
 			First, it is tested whether the pop-up menu items are enabled or
-			disabled. After a library is inserted. The new library is selected.
-			Now all pop-up menu items should be enabled. It is changed
-			consisting library. Thereafter, it is checked whether the
-			amendments have been adopted. Finally, it is checked whether the
-			selected library can be deleted.
+			disabled. After a class path is inserted. The new class path is 
+			selected. Now all pop-up menu items should be enabled. Finally, it 
+			is checked whether the selected class path can be deleted.
 		</p>
 		<table border="1" cellpadding="1" cellspacing="1" style="width: *;">
 			<tbody>
@@ -66,87 +64,57 @@
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>openConfigTestRunnerLibraryPopup</td>
+					<td>openConfigTestRunnerClasspathPopup</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>isConfigTestRunnerLibraryPopupInsertEnabled</td>
+					<td>isConfigTestRunnerClasspathPopupInsertEnabled</td>
 					<td>true</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>isConfigTestRunnerLibraryPopupChangeEnabled</td>
-					<td>false</td>
-				</tr>
-				<tr>
-					<td>check</td>
-					<td>isConfigTestRunnerLibraryPopupDeleteEnabled</td>
+					<td>isConfigTestRunnerClasspathPopupDeleteEnabled</td>
 					<td>false</td>
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>insertConfigurationTestRunnerLibraryItem</td>
+					<td>insertConfigurationTestRunnerClasspathItem</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>getConfigurationTestRunnerLibraryCount</td>
+					<td>getConfigurationTestRunnerClasspathCount</td>
 					<td>1</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>getTestRunnerLibraryItem0Name</td>
-					<td>test.jar</td>
+					<td>getTestRunnerClasspathItem0</td>
+					<td>bin</td>
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>selectConfigurationTestRunnerLibraryItem0</td>
+					<td>selectConfigurationTestRunnerClasspathItem0</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>openConfigTestRunnerLibraryPopup</td>
+					<td>openConfigTestRunnerClasspathPopup</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>isConfigTestRunnerLibraryPopupInsertEnabled</td>
+					<td>isConfigTestRunnerClasspathPopupInsertEnabled</td>
 					<td>true</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>isConfigTestRunnerLibraryPopupChangeEnabled</td>
-					<td>true</td>
-				</tr>
-				<tr>
-					<td>check</td>
-					<td>isConfigTestRunnerLibraryPopupDeleteEnabled</td>
+					<td>isConfigTestRunnerClasspathPopupDeleteEnabled</td>
 					<td>true</td>
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>changeConfigurationTestRunnerLibraryItem0</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>check</td>
-					<td>getConfigurationTestRunnerLibraryCount</td>
-					<td>1</td>
-				</tr>
-				<tr>
-					<td>check</td>
-					<td>getTestRunnerLibraryItem0Name</td>
-					<td>test1.jar</td>
-				</tr>
-				<tr>
-					<td>press</td>
-					<td>openConfigTestRunnerLibraryPopup</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>press</td>
-					<td>deleteConfigTestRunnerLibrary</td>
+					<td>deleteConfigTestRunnerClasspath</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
@@ -156,12 +124,12 @@
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>getConfigurationTestRunnerLibraryCount</td>
+					<td>getConfigurationTestRunnerClasspathCount</td>
 					<td>1</td>
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>deleteConfigTestRunnerLibrary</td>
+					<td>deleteConfigTestRunnerClasspath</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
@@ -171,27 +139,22 @@
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>getConfigurationTestRunnerLibraryCount</td>
+					<td>getConfigurationTestRunnerClasspathCount</td>
 					<td>0</td>
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>openConfigTestRunnerLibraryPopup</td>
+					<td>openConfigTestRunnerClasspathPopup</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>isConfigTestRunnerLibraryPopupInsertEnabled</td>
+					<td>isConfigTestRunnerClasspathPopupInsertEnabled</td>
 					<td>true</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>isConfigTestRunnerLibraryPopupChangeEnabled</td>
-					<td>false</td>
-				</tr>
-				<tr>
-					<td>check</td>
-					<td>isConfigTestRunnerLibraryPopupDeleteEnabled</td>
+					<td>isConfigTestRunnerClasspathPopupDeleteEnabled</td>
 					<td>false</td>
 				</tr>
 			</tbody>
