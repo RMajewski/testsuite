@@ -436,17 +436,23 @@ public class TestApp implements Scenario {
 		_popup = new JPopupMenuOperator();
 	}
 	
-	public void pushNoBlockConfigGeneralPropertyPopup(int index) {
+	public void pushNoBlockConfigGeneralPropertyPopup(int index, String name) {
 		new JMenuItemOperator((JMenuItem)_popup.getComponent(index))
 			.pushNoBlock();
-		_dlg2 = new JDialogOperator(_wnd, ResourceBundle.getBundle(
-				DlgConfigGeneral.BUNDLE_FILE).getString(
-						"insert_property_title"));
+		_dlg2 = new JDialogOperator(_wnd, name);
 	}
 	
 	public boolean isPopupItemEnabled(int menu, int item) {
 		JMenuOperator mo = new JMenuOperator((JMenu)_popup.getComponent(menu));
 		return mo.getItem(item).isEnabled();
+	}
+	
+	public boolean isPopupItemEnabled(int item) {
+		return ((JMenuItem)_popup.getComponent(item)).isEnabled();
+	}
+	
+	public boolean havePopupItem(int item, String text) {
+		return ((JMenuItem)_popup.getComponent(item)).getText().equals(text);
 	}
 	
 	public void selectElementInTree(int row) {

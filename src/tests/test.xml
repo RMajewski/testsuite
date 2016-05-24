@@ -97,6 +97,7 @@
 			<test>AppCreateHtmlOut</test>
 			<test>AppReadHtmlOut</test>
 			<test>AppPopupIsRightEnabled</test>
+			<test>AppGeneralConfigurationProperties</test>
 		</testSuite>
 	</testGroup>
 </configurationFile>

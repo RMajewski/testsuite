@@ -20,8 +20,12 @@
 package tests.fixtures.app;
 
 import java.text.ParseException;
+import java.util.ResourceBundle;
 
 import javax.swing.JFormattedTextField;
+import javax.swing.JList;
+
+import org.testsuite.app.DlgConfigGeneral;
 
 import fit.ActionFixture;
 import tests.testsuite.app.TestApp;
@@ -434,10 +438,91 @@ public class FixtureApp extends ActionFixture {
 		 return new String();
 	 }
 	
-	public void addSystemProperty(String str) throws InterruptedException {
+	public void addSystemProperty(String str) {
 		_tests.openConfigGeneralPropertyPopup();
-		_tests.pushNoBlockConfigGeneralPropertyPopup(0);
+		_tests.pushNoBlockConfigGeneralPropertyPopup(0, 
+				ResourceBundle.getBundle(DlgConfigGeneral.BUNDLE_FILE)
+					.getString("insert_property_title"));
 		_tests.setConfigGeneralPropertyName(str);
+		_tests.pushConfigPopupDialogButton(0);
+	}
+	
+	public int getGeneralConfigurationPropertyCount() {
+		return ((JList<?>)_tests.getDialogList(0).getSource()).getModel()
+				.getSize();
+	}
+	
+	public void openGeneralConfigurationPropertyPopup() {
+		_tests.openConfigGeneralPropertyPopup();
+	}
+	
+	public boolean isGeneralConfigurationPropertyPopupInsertEnabled() {
+		return _tests.isPopupItemEnabled(0);
+	}
+	
+	public boolean isGeneralConfigurationPropertyPopupChangeEnabled() {
+		return _tests.isPopupItemEnabled(1);
+	}
+	
+	public boolean isGeneralConfigurationPropertyPopupDeleteEnabled() {
+		return _tests.isPopupItemEnabled(2);
+	}
+	
+	public boolean haveGeneralConfigurationPropertyPopupInsert() {
+		return _tests.havePopupItem(0, ResourceBundle.getBundle(
+				DlgConfigGeneral.BUNDLE_FILE).getString("insert_property"));
+	}
+	
+	public boolean haveGeneralConfigurationPropertyPopupChange() {
+		return _tests.havePopupItem(1, ResourceBundle.getBundle(
+				DlgConfigGeneral.BUNDLE_FILE).getString("change_property"));
+	}
+	
+	public boolean haveGeneralConfigurationPropertyPopupDelete() {
+		return _tests.havePopupItem(2, ResourceBundle.getBundle(
+				DlgConfigGeneral.BUNDLE_FILE).getString("delete_property"));
+	}
+	
+	public void pushGeneralConfigurationPropertyPopupInsert() {
+		_tests.pushNoBlockConfigGeneralPropertyPopup(0, 
+				ResourceBundle.getBundle(DlgConfigGeneral.BUNDLE_FILE)
+					.getString("insert_property_title"));
+	}
+	
+	public void setGeneralConfigurationPropertyDialogNameText(String name) {
+		_tests.setConfigGeneralPropertyName(name);
+	}
+	
+	public void pushGeneralConfigurationPropertyDialogOk() {
+		_tests.pushConfigPopupDialogButton(0);
+	}
+	
+	public void selectGeneralConfigurationPropertyItem0() {
+		_tests.getDialogList(0).selectItem(0);
+	}
+	
+	public void pushGeneralConfigurationPropertyPopupChange() {
+		_tests.pushNoBlockConfigGeneralPropertyPopup(1,
+				ResourceBundle.getBundle(DlgConfigGeneral.BUNDLE_FILE)
+				.getString("change_property_title"));
+	}
+	
+	public String getGeneralConfigurationProperty0Name() {
+		return ((JList<?>)_tests.getDialogList(0).getSource()).getModel()
+				.getElementAt(0).toString();
+	}
+	
+	public void pushGeneralConfigurationPropertyPopupDelete() {
+		_tests.pushNoBlockConfigGeneralPropertyPopup(2, 
+				ResourceBundle.getBundle(DlgConfigGeneral.BUNDLE_FILE)
+				.getString("delete_property_title"));
+	}
+	
+	public void pushGeneralConfigurationPropertyDialogNo() {
+		_tests.pushConfigPopupDialogButton(1);
+	}
+	
+	public void pushGeneralConfigurationPropertyDialogYes() {
 		_tests.pushConfigPopupDialogButton(0);
 	}
 }
