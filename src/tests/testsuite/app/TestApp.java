@@ -427,15 +427,31 @@ public class TestApp implements Scenario {
 	}
 	
 	public void openTreePopup() {
-		if (_popup == null) {
-			_tree.clickForPopup();
-			_popup = new JPopupMenuOperator();
-		}
+		_tree.clickForPopup();
+		_popup = new JPopupMenuOperator();
 	}
 	
 	public void openConfigGeneralPropertyPopup() {
 		getDialogList(0).clickForPopup();
 		_popup = new JPopupMenuOperator();
+	}
+	
+	public void openConfigTestRunnerLibraryPopup() {
+		getDialogList(0).clickForPopup();
+		_popup = new JPopupMenuOperator();
+	}
+	
+	public void openConfigTestRunnerClasspathPopup() {
+		getDialogList(1).clickForPopup();
+		_popup = new JPopupMenuOperator();
+	}
+	
+	public void setConfigTestRunnerLibraryFileName(String name) {
+		new JTextFieldOperator(_dlg2, 0).setText(name);
+	}
+	
+	public void pushConfigTestRunnerLibraryPopup(int index) {
+		new JMenuItemOperator((JMenuItem)_popup.getComponent(index)).push();
 	}
 	
 	public void pushNoBlockConfigGeneralPropertyPopup(int index, String name) {
@@ -471,8 +487,8 @@ public class TestApp implements Scenario {
 		_popup.pushMenu(mo.getText() + "|" + mo.getItem(item).getText());
 	}
 	
-	public void waitForDialog() {
-		_dlg = new JDialogOperator(_wnd);
+	public void waitForDialog(String name) {
+		_dlg = new JDialogOperator(_wnd, name);
 	}
 	
 	public JTextFieldOperator getDialogTextField(int index) {
@@ -489,6 +505,10 @@ public class TestApp implements Scenario {
 
 	public JButtonOperator getDialogButton(int index) {
 		return new JButtonOperator(_dlg, index);
+	}
+	
+	public JTextAreaOperator getDialogTextArea(int index) {
+		return new JTextAreaOperator(_dlg, index);
 	}
 	
 	public Config getGeneralConfiguration() {

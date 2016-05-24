@@ -26,6 +26,8 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JList;
 
 import org.testsuite.app.DlgConfigGeneral;
+import org.testsuite.app.DlgConfigLibrary;
+import org.testsuite.app.DlgConfigTestRunner;
 
 import fit.ActionFixture;
 import tests.testsuite.app.TestApp;
@@ -352,7 +354,8 @@ public class FixtureApp extends ActionFixture {
 	
 	public void pushConfigurationGeneralConfiguration() {
 		_tests.pushNoBlockTreePopupItem(2, 0);
-		_tests.waitForDialog();
+		_tests.waitForDialog(ResourceBundle.getBundle(
+				DlgConfigGeneral.BUNDLE_FILE).getString("dialog_title"));
 	}
 	
 	public boolean haveTextFieldPathLibrary() {
@@ -532,5 +535,109 @@ public class FixtureApp extends ActionFixture {
 	
 	public String getTestRunnerClassName() {
 		return _tests.getTreeSelectedTestRunner().getClass().getName();
+	}
+	
+	public void pushConfigurationTestRunner() {
+		_tests.pushNoBlockTreePopupItem(2, 1);
+		_tests.waitForDialog(ResourceBundle.getBundle(
+				DlgConfigTestRunner.BUNDLE_FILE).getString("dialog_title"));
+	}
+	
+	public boolean haveConfigurationTestRunnerTextFieldClassName() {
+		return _tests.getDialogTextField(0).isEnabled();
+	}
+	
+	public String getConfigurationTestRunnerTextClassName() {
+		return _tests.getDialogTextField(0).getDisplayedText();
+	}
+	
+	public boolean haveConfigurationTestRunnerTextFieldFileExtension() {
+		return _tests.getDialogTextField(1).isEnabled();
+	}
+	
+	public String getConfigurationTestRunnerTextFileExtension() {
+		return _tests.getDialogTextField(1).getDisplayedText();
+	}
+	
+	public boolean haveConfigurationTestRunnerTextAreaDescription() {
+		return _tests.getDialogTextArea(0).isEnabled();
+	}
+	
+	public String getConfigurationTestRunnerTextDescription() {
+		return _tests.getDialogTextArea(0).getDisplayedText();
+	}
+	
+	public boolean haveConfigurationTestRunnerListLibraries() {
+		return _tests.getDialogList(0).isEnabled();
+	}
+	
+	public int getConfigurationTestRunnerLibraryCount() {
+		return _tests.getDialogList(0).getModel().getSize();
+	}
+	
+	public boolean haveConfigurationTestRunnerListClasspath() {
+		return _tests.getDialogList(1).isEnabled();
+	}
+	
+	public int getConfigurationTestRunnerClasspathCount() {
+		return _tests.getDialogList(1).getModel().getSize();
+	}
+	
+	public void setConfigurationTestRunnerTextClassName(String name) {
+		_tests.getDialogTextField(0).setText(name);
+	}
+	
+	public void setConfigurationTestRunnerTextFileExtension(String extension) {
+		_tests.getDialogTextField(1).setText(extension);
+	}
+	
+	public void setConfigurationTestRunnerTextDescription(String description) {
+		_tests.getDialogTextArea(0).setText(description);
+	}
+	
+	public void insertConfigurationTestRunnerLibraryItem() {
+		_tests.openConfigTestRunnerLibraryPopup();
+		_tests.pushNoBlockConfigGeneralPropertyPopup(0, 
+				ResourceBundle.getBundle(DlgConfigLibrary.BUNDLE_FILE)
+					.getString("dialog_title"));
+		_tests.setConfigTestRunnerLibraryFileName("test.jar");
+		_tests.pushConfigPopupDialogButton(0);
+	}
+	
+	public void insertConfigurationTestRunnerClasspathItem() {
+		_tests.openConfigTestRunnerClasspathPopup();
+		_tests.pushNoBlockConfigGeneralPropertyPopup(0, 
+				ResourceBundle.getBundle(DlgConfigTestRunner.BUNDLE_FILE)
+					.getString("insert_classpath_title"));
+		_tests.setConfigGeneralPropertyName("bin");
+		_tests.pushConfigPopupDialogButton(0);
+	}
+	
+	public void pushConfigurationButtanAccept() {
+		_tests.getDialogButton(0).push();
+	}
+	
+	public String getTestRunnerExtension() {
+		return _tests.getTreeSelectedTestRunner().getFileExtension();
+	}
+	
+	public String getTestRunnerDescription() {
+		return _tests.getTreeSelectedTestRunner().getDescription();
+	}
+	
+	public int getTestRunnerLibraryCount() {
+		return _tests.getTreeSelectedTestRunner().libraryCount();
+	}
+	
+	public String getTestRunnerLibraryItem0Name() {
+		return _tests.getTreeSelectedTestRunner().getLibrary(0).getFileName();
+	}
+	
+	public int getTestRunnerClasspathCount() {
+		return _tests.getTreeSelectedTestRunner().classPathCount();
+	}
+	
+	public String getTestRunnerClasspathItem0() {
+		return _tests.getTreeSelectedTestRunner().getClassPath(0);
 	}
 }
