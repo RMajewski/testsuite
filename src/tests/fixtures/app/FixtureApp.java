@@ -909,4 +909,10 @@ public class FixtureApp extends ActionFixture {
 		_tests.waitForDialog2(ResourceBundle.getBundle(App.BUNDLE_FILE)
 				.getString("delete_test_suite_title"));
 	}
+	
+	public void pushDeleteTestRunner() {
+		_tests.pushNoBlockTreePopupItem(1, 1);
+		_tests.waitForDialog2(ResourceBundle.getBundle(App.BUNDLE_FILE)
+				.getString("delete_test_runner_title"));
+	}
 }

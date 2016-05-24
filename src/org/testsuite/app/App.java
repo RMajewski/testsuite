@@ -517,7 +517,8 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				JMenu config = (JMenu)popup.getComponent(2);
 				
 				// selected root element
-				if (e.getPath().getLastPathComponent() instanceof List<?>) {
+				if ((e.getPath().getLastPathComponent() instanceof List<?>) &&
+					e.isAddedPath()) {
 					insert.getItem(0).setEnabled(true);
 					insert.getItem(1).setEnabled(true);
 					insert.getItem(2).setEnabled(false);
@@ -535,8 +536,8 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				}
 				
 				// selected test runner
-				else if (e.getPath().getLastPathComponent() instanceof 
-						TestRunner) {
+				else if ((e.getPath().getLastPathComponent() instanceof 
+						TestRunner) && e.isAddedPath()) {
 					insert.getItem(0).setEnabled(false);
 					insert.getItem(1).setEnabled(false);
 					insert.getItem(2).setEnabled(true);
@@ -554,8 +555,8 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				}
 				
 				// selected test suite
-				else if (e.getPath().getLastPathComponent() instanceof
-						TestSuite) {
+				else if ((e.getPath().getLastPathComponent() instanceof
+						TestSuite) && e.isAddedPath()) {
 					insert.getItem(0).setEnabled(false);
 					insert.getItem(1).setEnabled(false);
 					insert.getItem(2).setEnabled(false);
@@ -572,7 +573,8 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 					config.getItem(3).setEnabled(false);
 				}
 				
-				else if (e.getPath().getLastPathComponent() instanceof Test) {
+				else if ((e.getPath().getLastPathComponent() instanceof Test) &&
+						e.isAddedPath()) {
 					insert.getItem(0).setEnabled(false);
 					insert.getItem(1).setEnabled(false);
 					insert.getItem(2).setEnabled(false);
@@ -853,6 +855,8 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 					((TestRunnerModel)_tree.getModel()).getTestRunnerList()
 						.remove(index);
 					_tree.updateUI();
+					_tree.clearSelection();
+					
 				}
 				break;
 				

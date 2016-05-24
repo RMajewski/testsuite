@@ -1,11 +1,11 @@
 <html>
 	<head>
 		<meta charset="UTF-8" />
-		<title>Test the TestSuiteApp (delete test from the tree)</title>
+		<title>Test the TestSuiteApp (delete test suite from the tree)</title>
 	</head>
 	<body>
-		<h2>Tests for the TestSuiteApp (delete test from the tree)</h2>
-		<p>Tests if a test is delete from the tree.</p>
+		<h2>Tests for the TestSuiteApp (delete test suite from the tree)</h2>
+		<p>Tests if a test suite is delete from the tree.</p>
 		<table border="1" cellpadding="1" cellspacing="1" style="width: *;">
 			<tbody>
 				<tr>
