@@ -28,6 +28,7 @@ import javax.swing.JList;
 import org.testsuite.app.DlgConfigGeneral;
 import org.testsuite.app.DlgConfigLibrary;
 import org.testsuite.app.DlgConfigTestRunner;
+import org.testsuite.app.DlgConfigTestSuite;
 
 import fit.ActionFixture;
 import tests.testsuite.app.TestApp;
@@ -713,7 +714,47 @@ public class FixtureApp extends ActionFixture {
 		_tests.pushTreePopupItem(0, 2);
 	}
 	
+	// OPT mit getTestSuiteName() zusammen legen
 	public String getSelectTestSuiteName() {
 		return _tests.getTreeSelectedTestSuite().getName();
+	}
+	
+	public void pushConfigurationTestSuite() {
+		_tests.pushNoBlockTreePopupItem(2, 2);
+		_tests.waitForDialog(ResourceBundle.getBundle(
+				DlgConfigTestSuite.BUNDLE_FILE).getString("dialog_title"));
+	}
+	
+	public boolean haveConfigurationTestSuiteTextFieldName() {
+		return _tests.getDialogTextField(0).isEnabled();
+	}
+	
+	public String getConfigurationTestSuiteTextName() {
+		return _tests.getDialogTextField(0).getText();
+	}
+	
+	public boolean haveConfigurationTestSuiteTextFieldPackageName() {
+		return _tests.getDialogTextField(0).isEnabled();
+	}
+	
+	public String getConfigurationTestSuiteTextPackageName() {
+		return _tests.getDialogTextField(1).getText();
+	}
+	
+	public void setConfigurationTestSuiteTextName(String name) {
+		_tests.getDialogTextField(0).setText(name);
+	}
+	
+	public void setConfigurationTestSuiteTextPackageName(String name) {
+		_tests.getDialogTextField(1).setText(name);
+	}
+	
+	// OPT Mit getSelectTestSuiteName() zusammen legen
+	public String getTestSuiteName() {
+		return _tests.getTreeSelectedTestSuite().getName();
+	}
+	
+	public String getTestSuitePackageName() {
+		return _tests.getTreeSelectedTestSuite().getPackage();
 	}
 }

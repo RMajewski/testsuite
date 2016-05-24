@@ -1,0 +1,159 @@
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Test the TestSuiteApp (test suite configuration dialog)</title>
+	</head>
+	<body>
+		<h2>Tests for the TestSuiteApp (test suite configuration dialog)</h2>
+		<p>
+			After the TestSuite was added to the tree, its configuration
+			dialog opens. It is checked whether all the required components are
+			present. After the dialog is filled in and clicked Accept. Now it is
+			checked whether the data has been changed. Finally once the dialog
+			DlgConfigTestSuite is opened and checked whether the data is
+			transferred to the components.
+		</p>
+		<table border="1" cellpadding="1" cellspacing="1" style="width: *;">
+			<tbody>
+				<tr>
+					<td colspan="3">fit.ActionFixture</td>
+				</tr>
+				<tr>
+					<td>start</td>
+					<td>tests.fixtures.app.FixtureApp</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>selectRootElementInTree</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>openPopup</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushInsertTestRunner</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>expandTree</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>selectTestRunnerInTree</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>openPopup</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushInsertTestSuite</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>selectTestSuiteInTree</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>openPopup</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushConfigurationTestSuite</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>haveConfigurationTestSuiteTextFieldName</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getConfigurationTestSuiteTextName</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>haveConfigurationTestSuiteTextFieldPackageName</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getConfigurationTestSuiteTextPackageName</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>haveButtonAccept</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>haveButtonCancel</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>enter</td>
+					<td>setConfigurationTestSuiteTextName</td>
+					<td>This is a test</td>
+				</tr>
+				<tr>
+					<td>enter</td>
+					<td>setConfigurationTestSuiteTextPackageName</td>
+					<td>tests.test</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushConfigurationButtanAccept</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>selectTestSuiteInTree</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getTestSuiteName</td>
+					<td>This is a test</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getTestSuitePackageName</td>
+					<td>tests.test</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>openPopup</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushConfigurationTestSuite</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getConfigurationTestSuiteTextName</td>
+					<td>This is a test</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getConfigurationTestSuiteTextPackageName</td>
+					<td>tests.test</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>
