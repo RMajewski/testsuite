@@ -25,21 +25,25 @@ import java.util.ResourceBundle;
 
 import javax.swing.JCheckBox;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 import org.netbeans.jemmy.ClassReference;
 import org.netbeans.jemmy.Scenario;
 import org.netbeans.jemmy.operators.JButtonOperator;
 import org.netbeans.jemmy.operators.JCheckBoxOperator;
+import org.netbeans.jemmy.operators.JDialogOperator;
 import org.netbeans.jemmy.operators.JFileChooserOperator;
 import org.netbeans.jemmy.operators.JFrameOperator;
+import org.netbeans.jemmy.operators.JListOperator;
+import org.netbeans.jemmy.operators.JMenuItemOperator;
 import org.netbeans.jemmy.operators.JMenuOperator;
 import org.netbeans.jemmy.operators.JPopupMenuOperator;
 import org.netbeans.jemmy.operators.JProgressBarOperator;
 import org.netbeans.jemmy.operators.JTextAreaOperator;
 import org.netbeans.jemmy.operators.JTextFieldOperator;
 import org.netbeans.jemmy.operators.JTreeOperator;
-import org.netbeans.jemmy.operators.Operator;
 import org.testsuite.app.App;
+import org.testsuite.app.DlgConfigGeneral;
 import org.testsuite.data.Config;
 
 /**
@@ -47,7 +51,7 @@ import org.testsuite.data.Config;
  * 
  * @author René Majewski
  *
- * @version 0.1
+ * @version 0.2
  */
 public class TestApp implements Scenario {
 	/**
@@ -109,6 +113,16 @@ public class TestApp implements Scenario {
 	 * Saves the instance of pop-up menu
 	 */
 	private JPopupMenuOperator _popup;
+	
+	/**
+	 * Saves the instance of dialog
+	 */
+	private JDialogOperator _dlg;
+	
+	/**
+	 * Saves the instance of second dialog
+	 */
+	private JDialogOperator _dlg2;
 	
 	/**
 	 * Saves the instance of ClassReference.
@@ -417,6 +431,19 @@ public class TestApp implements Scenario {
 		}
 	}
 	
+	public void openConfigGeneralPropertyPopup() {
+		getDialogList(0).clickForPopup();
+		_popup = new JPopupMenuOperator();
+	}
+	
+	public void pushNoBlockConfigGeneralPropertyPopup(int index) {
+		new JMenuItemOperator((JMenuItem)_popup.getComponent(index))
+			.pushNoBlock();
+		_dlg2 = new JDialogOperator(_wnd, ResourceBundle.getBundle(
+				DlgConfigGeneral.BUNDLE_FILE).getString(
+						"insert_property_title"));
+	}
+	
 	public boolean isPopupItemEnabled(int menu, int item) {
 		JMenuOperator mo = new JMenuOperator((JMenu)_popup.getComponent(menu));
 		return mo.getItem(item).isEnabled();
@@ -425,7 +452,44 @@ public class TestApp implements Scenario {
 	public void selectElementInTree(int row) {
 		_tree.setSelectionRow(row);
 	}
+	
+	public void pushNoBlockTreePopupItem(int menu, int item) {
+		JMenuOperator mo = new JMenuOperator((JMenu)_popup.getComponent(menu));
+		_popup.pushMenuNoBlock(mo.getText() + "|" + mo.getItem(item).getText());
+	}
+	
+	public void waitForDialog() {
+		_dlg = new JDialogOperator(_wnd);
+	}
+	
+	public JTextFieldOperator getDialogTextField(int index) {
+		return new JTextFieldOperator(_dlg, index);
+	}
+	
+	public JCheckBoxOperator getDialogCheckBox(int index) {
+		return new JCheckBoxOperator(_dlg, index);
+	}
+	
+	public JListOperator getDialogList(int index) {
+		return new JListOperator(_dlg, index);
+	}
 
+	public JButtonOperator getDialogButton(int index) {
+		return new JButtonOperator(_dlg, index);
+	}
+	
+	public Config getGeneralConfiguration() {
+		return ((DlgConfigGeneral)_dlg.getSource()).getConfig();
+	}
+	
+	public void setConfigGeneralPropertyName(String name) {
+		new JTextFieldOperator(_dlg2, 0).setText(name);
+	}
+	
+	public void pushConfigPopupDialogButton(int index) {
+		new JButtonOperator(_dlg2, index).push();
+	}
+	
 	/**
 	 * Start the jemmy tests.
 	 */

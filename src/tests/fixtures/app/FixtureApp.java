@@ -19,6 +19,10 @@
 
 package tests.fixtures.app;
 
+import java.text.ParseException;
+
+import javax.swing.JFormattedTextField;
+
 import fit.ActionFixture;
 import tests.testsuite.app.TestApp;
 
@@ -340,5 +344,100 @@ public class FixtureApp extends ActionFixture {
 	
 	public void expandTree() {
 		_tests.treeExpandAll();
+	}
+	
+	public void pushConfigurationGeneralConfiguration() {
+		_tests.pushNoBlockTreePopupItem(2, 0);
+		_tests.waitForDialog();
+	}
+	
+	public boolean haveTextFieldPathLibrary() {
+		return _tests.getDialogTextField(0).isEnabled();
+	}
+	
+	public boolean haveTextFieldPathResult() {
+		return _tests.getDialogTextField(2).isEnabled();
+	}
+	
+	public boolean haveTextFieldPathSrc() {
+		return _tests.getDialogTextField(1).isEnabled();
+	}
+	
+	public boolean haveTextFieldMaxDuration() {
+		return _tests.getDialogTextField(3).isEnabled();
+	}
+	
+	public boolean haveCheckButtonHtmlCreate() {
+		return _tests.getDialogCheckBox(0).isEnabled();
+	}
+	
+	public boolean haveListSystemProperties() {
+		return _tests.getDialogList(0).isEnabled();
+	}
+	
+	public boolean haveButtonAccept() {
+		return _tests.getDialogButton(0).isEnabled();
+	}
+	
+	public boolean haveButtonCancel() {
+		return _tests.getDialogButton(1).isEnabled();
+	}
+	
+	public void setPathLibrary(String str) {
+		_tests.getDialogTextField(0).setText(str);
+	}
+	
+	public void setPathSrc(String str) {
+		_tests.getDialogTextField(1).setText(str);
+	}
+	
+	public void setPathResult(String str) {
+		_tests.getDialogTextField(2).setText(str);
+	}
+	
+	public void setMaxDuration(String str) throws ParseException {
+		_tests.getDialogTextField(3).setText(str);
+		((JFormattedTextField)_tests.getDialogTextField(3).getSource()).commitEdit();
+	}
+	
+	public void pushAccept() {
+		_tests.getDialogButton(0).push();
+	}
+	
+	public String getConfigurationPathLibrary() {
+		return _tests.getGeneralConfiguration().getPathLibrary();
+	}
+	
+	public String getConfigurationPathResult() {
+		return _tests.getGeneralConfiguration().getPathResult();
+	}
+	
+	public String getConfigurationPathSrc() {
+		return _tests.getGeneralConfiguration().getPathSrc();
+	}
+	
+	public void setHtmlCreate(boolean bln) {
+		_tests.getDialogCheckBox(0).setSelected(bln);
+	}
+	
+	 public long getMaxDuration() {
+		 return _tests.getGeneralConfiguration().getMaxDuration();
+	 }
+	 
+	 public boolean getHtmlCreate() {
+		 return _tests.getGeneralConfiguration().isCreateHtml();
+	 }
+	 public String getListItem0() {
+		 if (_tests.getGeneralConfiguration().propertyCount() > 0)
+			 return _tests.getGeneralConfiguration().getProperty(0);
+		 
+		 return new String();
+	 }
+	
+	public void addSystemProperty(String str) throws InterruptedException {
+		_tests.openConfigGeneralPropertyPopup();
+		_tests.pushNoBlockConfigGeneralPropertyPopup(0);
+		_tests.setConfigGeneralPropertyName(str);
+		_tests.pushConfigPopupDialogButton(0);
 	}
 }

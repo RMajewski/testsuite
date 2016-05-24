@@ -391,4 +391,13 @@ public class DlgConfigGeneral extends DlgConfig {
 		
 		return ret;
 	}
+	
+	/**
+	 * Returns the general configuration
+	 * 
+	 * @return General configuration
+	 */
+	public Config getConfig() {
+		return _config;
+	}
 }
