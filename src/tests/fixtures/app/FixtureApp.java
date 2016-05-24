@@ -25,6 +25,7 @@ import java.util.ResourceBundle;
 import javax.swing.JFormattedTextField;
 import javax.swing.JList;
 
+import org.testsuite.app.App;
 import org.testsuite.app.DlgConfigGeneral;
 import org.testsuite.app.DlgConfigLibrary;
 import org.testsuite.app.DlgConfigTest;
@@ -895,5 +896,11 @@ public class FixtureApp extends ActionFixture {
 		_tests.pushNoBlockConfigGeneralPropertyPopup(1, 
 				ResourceBundle.getBundle(DlgConfigLibrary.BUNDLE_FILE)
 					.getString("dialog_title"));
+	}
+	
+	public void pushDeleteTest() {
+		_tests.pushNoBlockTreePopupItem(1, 3);
+		_tests.waitForDialog2(ResourceBundle.getBundle(App.BUNDLE_FILE)
+				.getString("delete_test_title"));
 	}
 }

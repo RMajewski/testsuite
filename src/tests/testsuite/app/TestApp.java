@@ -497,6 +497,10 @@ public class TestApp implements Scenario {
 		_dlg = new JDialogOperator(_wnd, name);
 	}
 	
+	public void waitForDialog2(String name) {
+		_dlg2 = new JDialogOperator(_wnd, name);
+	}
+	
 	public JTextFieldOperator getDialogTextField(int index) {
 		return new JTextFieldOperator(_dlg, index);
 	}
