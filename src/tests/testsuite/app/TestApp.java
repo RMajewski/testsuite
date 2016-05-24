@@ -431,11 +431,13 @@ public class TestApp implements Scenario {
 		_popup = new JPopupMenuOperator();
 	}
 	
+	// OPT mit openConfigTestRunnerLibraryPopup zusammen legen
 	public void openConfigGeneralPropertyPopup() {
 		getDialogList(0).clickForPopup();
 		_popup = new JPopupMenuOperator();
 	}
 	
+	// OPT mit openConfigGeneralPropertyPopup zusammen legen
 	public void openConfigTestRunnerLibraryPopup() {
 		getDialogList(0).clickForPopup();
 		_popup = new JPopupMenuOperator();

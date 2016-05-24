@@ -596,6 +596,7 @@ public class FixtureApp extends ActionFixture {
 	}
 	
 	public void insertConfigurationTestRunnerLibraryItem() {
+		_tests.getDialogList(0).clickMouse();
 		_tests.openConfigTestRunnerLibraryPopup();
 		_tests.pushNoBlockConfigGeneralPropertyPopup(0, 
 				ResourceBundle.getBundle(DlgConfigLibrary.BUNDLE_FILE)
@@ -639,5 +640,43 @@ public class FixtureApp extends ActionFixture {
 	
 	public String getTestRunnerClasspathItem0() {
 		return _tests.getTreeSelectedTestRunner().getClassPath(0);
+	}
+	
+	public void openConfigTestRunnerLibraryPopup() {
+		_tests.openConfigTestRunnerLibraryPopup();
+	}
+	
+	public boolean isConfigTestRunnerLibraryPopupInsertEnabled() {
+		return _tests.isPopupItemEnabled(0);
+	}
+	
+	public boolean isConfigTestRunnerLibraryPopupChangeEnabled() {
+		return _tests.isPopupItemEnabled(1);
+	}
+	
+	public boolean isConfigTestRunnerLibraryPopupDeleteEnabled() {
+		return _tests.isPopupItemEnabled(2);
+	}
+	
+	public void selectConfigurationTestRunnerLibraryItem0() {
+		_tests.getDialogList(0).setSelectedIndex(0);
+	}
+	
+	public void changeConfigurationTestRunnerLibraryItem0() {
+		_tests.getDialogList(0).clickMouse();
+		_tests.openConfigTestRunnerLibraryPopup();
+		_tests.pushNoBlockConfigGeneralPropertyPopup(1, 
+				ResourceBundle.getBundle(DlgConfigLibrary.BUNDLE_FILE)
+					.getString("dialog_title"));
+		_tests.setConfigTestRunnerLibraryFileName("test1.jar");
+		_tests.pushConfigPopupDialogButton(0);
+	}
+	
+	public void deleteConfigTestRunnerLibrary() {
+		_tests.getDialogList(0).clickMouse();
+		_tests.openConfigTestRunnerLibraryPopup();
+		_tests.pushNoBlockConfigGeneralPropertyPopup(2, 
+				ResourceBundle.getBundle(DlgConfigTestRunner.BUNDLE_FILE)
+				.getString("delete_library_title"));
 	}
 }
