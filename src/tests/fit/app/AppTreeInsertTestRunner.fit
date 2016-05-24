@@ -1,0 +1,62 @@
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Test the TestSuiteApp (insert test runner in the tree)</title>
+	</head>
+	<body>
+		<h2>Tests for the TestSuiteApp (insert test runner in the tree)</h2>
+		<p>Tests if a test runner is inserted into the tree.</p>
+		<table border="1" cellpadding="1" cellspacing="1" style="width: *;">
+			<tbody>
+				<tr>
+					<td colspan="3">fit.ActionFixture</td>
+				</tr>
+				<tr>
+					<td>start</td>
+					<td>tests.fixtures.app.FixtureApp</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getTreeRootItemCount</td>
+					<td>0</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>selectRootElementInTree</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>openPopup</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushInsertTestRunner</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getTreeRootItemCount</td>
+					<td>1</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>expandTree</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>selectTestRunnerInTree</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getTestRunnerClassName</td>
+					<td>org.testsuite.core.JunitTestRunner</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>

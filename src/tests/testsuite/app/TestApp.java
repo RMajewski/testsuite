@@ -44,6 +44,7 @@ import org.netbeans.jemmy.operators.JTextFieldOperator;
 import org.netbeans.jemmy.operators.JTreeOperator;
 import org.testsuite.app.App;
 import org.testsuite.app.DlgConfigGeneral;
+import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
 
 /**
@@ -376,6 +377,7 @@ public class TestApp implements Scenario {
 	 * Tree expand.
 	 */
 	public void treeExpandAll() {
+		_tree.expandRow(0);
 		_tree.expandRow(1);
 		_tree.expandRow(2);
 	}
@@ -464,6 +466,11 @@ public class TestApp implements Scenario {
 		_popup.pushMenuNoBlock(mo.getText() + "|" + mo.getItem(item).getText());
 	}
 	
+	public void pushTreePopupItem(int menu, int item) {
+		JMenuOperator mo = new JMenuOperator((JMenu)_popup.getComponent(menu));
+		_popup.pushMenu(mo.getText() + "|" + mo.getItem(item).getText());
+	}
+	
 	public void waitForDialog() {
 		_dlg = new JDialogOperator(_wnd);
 	}
@@ -494,6 +501,10 @@ public class TestApp implements Scenario {
 	
 	public void pushConfigPopupDialogButton(int index) {
 		new JButtonOperator(_dlg2, index).push();
+	}
+	
+	public TestRunner getTreeSelectedTestRunner() {
+		return (TestRunner)_tree.getLastSelectedPathComponent();
 	}
 	
 	/**

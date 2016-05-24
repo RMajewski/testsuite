@@ -525,4 +525,12 @@ public class FixtureApp extends ActionFixture {
 	public void pushGeneralConfigurationPropertyDialogYes() {
 		_tests.pushConfigPopupDialogButton(0);
 	}
+	
+	public void pushInsertTestRunner() {
+		_tests.pushTreePopupItem(0, 1);
+	}
+	
+	public String getTestRunnerClassName() {
+		return _tests.getTreeSelectedTestRunner().getClass().getName();
+	}
 }
