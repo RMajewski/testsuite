@@ -61,12 +61,12 @@
 			<test>TestJunitData</test>
 			<test>TestLibrary</test>
 			<test>TestTest</test>
-			<test>TestTestSuiteData</test>
+			<test>TestTestSuite</test>
 		</testSuite>
 		<testSuite>
 			<name>Test org.testsuite.App</name>
 			<package>tests.testsuite.app</package>
-			<test>TestConfigDialog</test>
+			<test>TestDlgConfig</test>
 		</testSuite>
 		<testSuite>
 			<name>Test org.testsuite.Helper</name>
@@ -100,10 +100,17 @@
 			<test>AppChangeGeneralConfiguration</test>
 			<test>AppGeneralConfigurationProperties</test>
 			<test>AppTreeInsertTestRunner</test>
+			<test>AppTreeDeleteTestRunner</test>
 			<test>AppTestRunnerConfiguration</test>
 			<test>AppTestRunnerConfigurationClasspathPopup</test>
 			<test>AppTestRunnerConfigurationLibraryPopup</test>
+			<test>AppLibraryConfiguration</test>
 			<test>AppTreeInsertTestSuite</test>
+			<test>AppTreeDeleteTestSuite</test>
+			<test>AppTestSuiteConfiguration</test>
+			<test>AppTreeInsertTest</test>
+			<test>AppTreeDeleteTest</test>
+			<test>AppTestConfiguration</test>
 		</testSuite>
 	</testGroup>
 </configurationFile>

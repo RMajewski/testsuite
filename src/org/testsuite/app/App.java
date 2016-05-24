@@ -734,6 +734,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 			case AC_CANCEL:
 				_thread.stop(); // FIXME replace by _thread.interrupt()
 				testEnd(new TestEvent(this, "", "", -1, -1, ""));
+				_pBar.setValue(0);
 			break;
 				
 			case AC_LOAD:

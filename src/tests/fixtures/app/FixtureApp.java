@@ -173,7 +173,7 @@ public class FixtureApp extends ActionFixture {
 	 * Click an the cancel button into the dialog.
 	 */
 	public void pushDialogCancel() {
-		_tests.pushDialogButton(6);
+		_tests.pushDialogButton(9);
 	}
 	
 	/**

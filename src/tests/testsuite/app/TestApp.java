@@ -430,6 +430,7 @@ public class TestApp implements Scenario {
 	}
 	
 	public void openTreePopup() {
+		_tree.clickMouse();
 		_tree.clickForPopup();
 		_popup = new JPopupMenuOperator();
 	}
