@@ -803,39 +803,6 @@ public abstract class TestRunner {
 					source, pName, tName, suiteId, testId, result));
 	}
 	
-	
-	/**
-	 * Called to evaluation error.
-	 * 
-	 * If the errors are to be evaluated, so this method must be overridden.
-	 * 
-	 * @param error Error from test run
-	 */
-	protected void errorEvaluation(String error) {
-		// Empty method
-	}
-	
-	/**
-	 * Called to evaluation console input.
-	 * 
-	 * If the console input are to be evaluated, so this method must be 
-	 * overridden.
-	 * 
-	 * @param console Input from console of test run
-	 */
-	protected void consoleEvaluation(String console) {
-		// Empty method
-	}
-	
-	/**
-	 * Called to insert a new test class in the list.
-	 * 
-	 * @param name Name of the new test
-	 * 
-	 * @param id ID of the new test 
-	 */
-	public abstract org.testsuite.data.Test newTest(String name, int id);
-	
 	/**
 	 * Execute the tests in list.
 	 * 
@@ -919,8 +886,7 @@ public abstract class TestRunner {
 			test.setStringConsole(inputStreamToString(p.getInputStream()));
 			
 			// Evaluation output
-			errorEvaluation(test.getError());
-			consoleEvaluation(test.getError());
+			evaluation(test);
 		} catch (Exception e) {
 			e.printStackTrace();
 			test.setExitStatus(EXIT_ERROR);
@@ -930,6 +896,26 @@ public abstract class TestRunner {
 				suite.getPackage(), test.getName(), suite.getId(), test.getId(),
 				result);
 	}
+	
+	/**
+	 * Called to evaluation error or console output.
+	 * 
+	 * If the to be evaluated, so this method must be overridden.
+	 * 
+	 * @param test The actual test
+	 */
+	protected void evaluation(Test test) {
+		// Empty method
+	}
+	
+	/**
+	 * Called to insert a new test class in the list.
+	 * 
+	 * @param name Name of the new test
+	 * 
+	 * @param id ID of the new test 
+	 */
+	public abstract org.testsuite.data.Test newTest(String name, int id);
 	
 	/**
 	 * Called to create the column headings for the HTML table.

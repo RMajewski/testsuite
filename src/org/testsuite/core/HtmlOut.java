@@ -85,10 +85,10 @@ public class HtmlOut {
 	 */
 	private void stylesheets() throws IOException {
 		_bw.write("\t\t<style>"); _bw.newLine();
-		_bw.write(".pass {background-color: #0F0;}"); _bw.newLine();
-		_bw.write(".wrong {background-color: #F00;}"); _bw.newLine();
+		_bw.write(".pass {background-color: #CFFFCF;}"); _bw.newLine();
+		_bw.write(".wrong {background-color: #FFCFCF;}"); _bw.newLine();
 		_bw.write(".ignore {background-color: #AAAAAA;}"); _bw.newLine();
-		_bw.write(".exception {background-color: #FF0;}"); _bw.newLine();
+		_bw.write(".exception {background-color: #FFFFCF;}"); _bw.newLine();
 		_bw.write(".testoutInvisible {display: none;}"); _bw.newLine();
 		_bw.write(".testoutVisible {display: block;}"); _bw.newLine();
 		_bw.write(".right {float: right;}"); _bw.newLine();

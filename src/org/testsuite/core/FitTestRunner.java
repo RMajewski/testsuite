@@ -466,4 +466,20 @@ public class FitTestRunner extends TestRunner {
 		
 		return ret.toString();
 	}
+	
+	@Override
+	protected void evaluation(Test test) {
+		String[] lines = test.getError().split("<br/>");
+		
+		for (int i = 0; i < lines.length; i++){
+			if ((lines[i].indexOf("right") > -1) &&
+					(lines[i].indexOf("wrong") > -1)) {
+				String[] tmp = lines[i].split(" ");
+				((Fit)test).setOk(Integer.valueOf(tmp[0]));
+				((Fit)test).setFail(Integer.valueOf(tmp[2]));
+				((Fit)test).setIgnore(Integer.valueOf(tmp[4]));
+				((Fit)test).setException(Integer.valueOf(tmp[6]));
+			}
+		}
+	}
 }

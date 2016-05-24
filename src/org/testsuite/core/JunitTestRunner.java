@@ -368,9 +368,36 @@ public class JunitTestRunner extends TestRunner {
 		StringBuilder ret = new StringBuilder("java -cp ");
 		ret.append(createClasspath());
 		ret.append(createProperty());
-		ret.append("org.junit.runner.JunitCore");
-		ret.append(test);
+		ret.append("org.junit.runner.JUnitCore ");
+		ret.append(name);
 		
 		return ret.toString();
+	}
+	
+	@Override
+	protected void evaluation(Test test) {
+		String[] lines = test.getIn().split("<br/>");
+		
+		for (int i = 0; i < lines.length; i++) {
+			if (lines[i].indexOf("OK (") > -1) {
+				String ok = new String("OK (");
+				
+				String tmp = lines[i].substring(ok.length(), 
+						lines[i].indexOf(" test"));
+				((Junit)test).setOk(Integer.valueOf(tmp));
+			} else if (lines[i].indexOf("Tests run") > -1) {
+				String ok = new String("Tests run: ");
+				String fail = new String(",  Failures: ");
+				int indexOk = ok.length();
+				int indexFail = lines[i].indexOf(fail);
+
+				((Junit)test).setOk(Integer.valueOf(lines[i].substring(indexOk, 
+								indexFail)));
+				
+				indexFail += fail.length();
+				((Junit)test).setFail(Integer.valueOf(
+						lines[i].substring(indexFail)));
+			}
+		}
 	}
 }
