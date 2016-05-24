@@ -47,6 +47,7 @@ import org.testsuite.app.DlgConfigGeneral;
 import org.testsuite.app.TestRunnerModel;
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
+import org.testsuite.data.Library;
 import org.testsuite.data.TestSuite;
 
 /**
@@ -458,6 +459,7 @@ public class TestApp implements Scenario {
 		new JMenuItemOperator((JMenuItem)_popup.getComponent(index)).push();
 	}
 	
+	// OPT Rename, da von mehreren Tests benutzt wird
 	public void pushNoBlockConfigGeneralPropertyPopup(int index, String name) {
 		new JMenuItemOperator((JMenuItem)_popup.getComponent(index))
 			.pushNoBlock();
@@ -547,6 +549,18 @@ public class TestApp implements Scenario {
 	
 	public org.testsuite.data.Test getTreeSelectedTest() {
 		return ((org.testsuite.data.Test)_tree.getLastSelectedPathComponent());
+	}
+	
+	public JTextFieldOperator getDialog2TextField(int index) {
+		return new JTextFieldOperator(_dlg2, index);
+	}
+	
+	public JButtonOperator getDialog2Button(int index) {
+		return new JButtonOperator(_dlg2, index);
+	}
+	
+	public Library getSelectedConfigurationLibrary() {
+		return (Library)new JListOperator(_dlg, 0).getModel().getElementAt(0);
 	}
 	
 	/**

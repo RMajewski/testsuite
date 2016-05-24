@@ -39,7 +39,7 @@ import tests.testsuite.app.TestApp;
  * 
  * @author René Majewski
  *
- * @version 0.1
+ * @version 0.2
  */
 public class FixtureApp extends ActionFixture {
 	/**
@@ -617,6 +617,7 @@ public class FixtureApp extends ActionFixture {
 		_tests.pushConfigPopupDialogButton(0);
 	}
 	
+	// FIXME Rename this function in pushConfigurationButt[o]nAccept()
 	public void pushConfigurationButtanAccept() {
 		_tests.getDialogButton(0).push();
 	}
@@ -807,5 +808,92 @@ public class FixtureApp extends ActionFixture {
 	
 	public boolean isTestExecuteSelected() {
 		return _tests.getTreeSelectedTest().isExecuted();
+	}
+	
+	public void pushTestRunnerLibraryPopupInsert() {
+		_tests.pushNoBlockConfigGeneralPropertyPopup(0, 
+				ResourceBundle.getBundle(DlgConfigLibrary.BUNDLE_FILE)
+					.getString("dialog_title"));
+	}
+	
+	public boolean haveConfigurationLibraryTextFieldFileName() {
+		return _tests.getDialog2TextField(0).isEnabled();
+	}
+	
+	public String getConfigurationLibraryTextFileName() {
+		return _tests.getDialog2TextField(0).getText();
+	}
+	
+	public boolean haveConfigurationLibraryTextFieldPath() {
+		return _tests.getDialog2TextField(1).isEnabled();
+	}
+	
+	public String getConfigurationLibraryTextPath() {
+		return _tests.getDialog2TextField(1).getText();
+	}
+	
+	public boolean haveConfigurationLibraryTextName() {
+		return _tests.getDialog2TextField(2).isEnabled();
+	}
+	public String getConfigurationLibraryTextName() {
+		return _tests.getDialog2TextField(2).getText();
+	}
+	
+	public boolean haveConfigurationLibraryTextFieldVersion() {
+		return _tests.getDialog2TextField(3).isEnabled();
+	}
+	
+	public String getConfigurationLibraryTextVersion() {
+		return _tests.getDialog2TextField(3).getText();
+	}
+	
+	public boolean haveConfigurationLibraryButtonAccept() {
+		return _tests.getDialog2Button(0).isEnabled();
+	}
+	
+	public boolean haveConfigurationLibraryButtonCancel() {
+		return _tests.getDialog2Button(1).isEnabled();
+	}
+	
+	public void setConfigurationLibraryTextFileName(String name) {
+		_tests.getDialog2TextField(0).setText(name);
+	}
+	
+	public void setConfigurationLibraryTextPath(String path) {
+		_tests.getDialog2TextField(1).setText(path);
+	}
+	
+	public void setConfigurationLibraryTextName(String name) {
+		_tests.getDialog2TextField(2).setText(name);
+	}
+	
+	public void setConfigurationLibraryTextVersion(String version) {
+		_tests.getDialog2TextField(3).setText(version);
+	}
+	
+	public String getSelectedConfigurationLibraryTextFileName() {
+		return _tests.getSelectedConfigurationLibrary().getFileName();
+	}
+	
+	public String getSelectedConfigurationLibraryTextPath() {
+		return _tests.getSelectedConfigurationLibrary().getPath();
+	}
+	
+	public String getSelectedConfigurationLibraryTextName() {
+		return _tests.getSelectedConfigurationLibrary().getName();
+	}
+	
+	public String getSelectedConfigurationLibraryTextVersion() {
+		return _tests.getSelectedConfigurationLibrary().getVersion();
+	}
+	
+	public void pushConfigurationLibraryButtonAccept() {
+		_tests.getDialog2Button(0).push();
+	}
+	
+	public void pushConfigurationTestRunnerLibraryPopupChange() {
+		_tests.pushNoBlockConfigGeneralPropertyPopup(1, 
+				ResourceBundle.getBundle(DlgConfigLibrary.BUNDLE_FILE)
+					.getString("dialog_title"));
 	}
 }
