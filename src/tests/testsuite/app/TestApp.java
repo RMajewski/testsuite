@@ -541,6 +541,14 @@ public class TestApp implements Scenario {
 				.getTestRunnerList().get(0));
 	}
 	
+	public int getTreeTestSuiteItemCount() {
+		return _tree.getChildCount(_tree.getLastSelectedPathComponent());
+	}
+	
+	public org.testsuite.data.Test getTreeSelectedTest() {
+		return ((org.testsuite.data.Test)_tree.getLastSelectedPathComponent());
+	}
+	
 	/**
 	 * Start the jemmy tests.
 	 */

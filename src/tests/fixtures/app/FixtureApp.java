@@ -757,4 +757,16 @@ public class FixtureApp extends ActionFixture {
 	public String getTestSuitePackageName() {
 		return _tests.getTreeSelectedTestSuite().getPackage();
 	}
+	
+	public int getTreeTestSuiteItemCount() {
+		return _tests.getTreeTestSuiteItemCount();
+	}
+	
+	public void pushInsertTest() {
+		_tests.pushTreePopupItem(0, 3);
+	}
+	
+	public String getSelectTestName() {
+		return _tests.getTreeSelectedTest().getName();
+	}
 }
