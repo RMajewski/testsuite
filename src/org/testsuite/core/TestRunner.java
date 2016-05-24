@@ -504,11 +504,12 @@ public abstract class TestRunner {
 	public String createHtmlHead(boolean line) {
 		StringBuilder ret = new StringBuilder();
 
+		if (line) {
+			ret.append("\t\t\t<hr/>");
+			ret.append(System.lineSeparator());
+		}
+
 		if (!_description.isEmpty()) {
-			if (line) {
-				ret.append("\t\t\t<hr/>");
-				ret.append(System.lineSeparator());
-			}
 			
 			ret.append("\t\t\t<div class=\"testdescription\">");
 	

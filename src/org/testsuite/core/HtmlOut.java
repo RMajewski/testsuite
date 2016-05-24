@@ -185,7 +185,7 @@ public class HtmlOut {
 	}
 	
 	public String generateTestOut(int suiteId, int testId, String console,
-			String error) throws IOException {
+			String error, String exec) throws IOException {
 		if ((suiteId < 0) || (testId <0))
 			return new String();
 		
@@ -203,7 +203,18 @@ public class HtmlOut {
 		ret.append(testId);
 		ret.append("\">");
 		ret.append(System.lineSeparator());
-		
+
+		ret.append("\t\t\t\t\t\t\t<div class=\"command line\">");
+
+		if ((exec == null) || exec.isEmpty())
+			ret.append(_bundle.getString("generateTestOut_noExecOut"));
+		else {
+			ret.append("\t\t\t\t\t\t\t\t<code>");
+			ret.append(exec);
+			ret.append("</code>");
+		}
+
+		ret.append("\t\t\t\t\t\t\t</div>");
 		ret.append("\t\t\t\t\t\t\t<div class=\"console\">");
 		
 		if ((console == null) || console.isEmpty())

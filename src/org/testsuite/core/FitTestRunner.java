@@ -338,7 +338,11 @@ public class FitTestRunner extends TestRunner {
 			ret.append(html.generateTestOut(_suites.get(suite).getId(), 
 						_suites.get(suite).getTest(test).getId(), 
 						_suites.get(suite).getTest(test).getIn(),
-						_suites.get(suite).getTest(test).getError()));
+						_suites.get(suite).getTest(test).getError(),
+						exec(_suites.get(suite).getPackage() + "." + 
+								_suites.get(suite).getTest(test).getName(),
+								_suites.get(suite), 
+								_suites.get(suite).getTest(test))));
 			ret.append("\t\t\t\t\t\t</td>");
 			ret.append(System.lineSeparator());
 			
@@ -441,6 +445,7 @@ public class FitTestRunner extends TestRunner {
 		ret.append(_config.getPathSrc());
 		ret.append("/");
 		ret.append(name.replaceAll("\\.", File.separator));
+		ret.append(".");
 		ret.append(_fileExtension);
 		ret.append(" ");
 		
