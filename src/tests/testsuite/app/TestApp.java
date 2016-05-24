@@ -44,8 +44,10 @@ import org.netbeans.jemmy.operators.JTextFieldOperator;
 import org.netbeans.jemmy.operators.JTreeOperator;
 import org.testsuite.app.App;
 import org.testsuite.app.DlgConfigGeneral;
+import org.testsuite.app.TestRunnerModel;
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
+import org.testsuite.data.TestSuite;
 
 /**
  * Tests the test suite app.
@@ -527,6 +529,16 @@ public class TestApp implements Scenario {
 	
 	public TestRunner getTreeSelectedTestRunner() {
 		return (TestRunner)_tree.getLastSelectedPathComponent();
+	}
+	
+	public TestSuite getTreeSelectedTestSuite() {
+		return (TestSuite)_tree.getLastSelectedPathComponent();
+	}
+	
+	// OPT mit getTreeRootItemCount zusammenlegen
+	public int getTreeTestRunnerItemCount() {
+		return _tree.getChildCount(((TestRunnerModel)_tree.getModel())
+				.getTestRunnerList().get(0));
 	}
 	
 	/**

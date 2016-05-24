@@ -97,8 +97,13 @@
 			<test>AppCreateHtmlOut</test>
 			<test>AppReadHtmlOut</test>
 			<test>AppPopupIsRightEnabled</test>
+			<test>AppChangeGeneralConfiguration</test>
 			<test>AppGeneralConfigurationProperties</test>
 			<test>AppTreeInsertTestRunner</test>
+			<test>AppTestRunnerConfiguration</test>
+			<test>AppTestRunnerConfigurationClasspathPopup</test>
+			<test>AppTestRunnerConfigurationLibraryPopup</test>
+			<test>AppTreeInsertTestSuite</test>
 		</testSuite>
 	</testGroup>
 </configurationFile>

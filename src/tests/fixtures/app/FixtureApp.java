@@ -704,4 +704,16 @@ public class FixtureApp extends ActionFixture {
 	public boolean isConfigTestRunnerClasspathPopupDeleteEnabled() {
 		return _tests.isPopupItemEnabled(1);
 	}
+	
+	public int getTreeTestRunnerItemCount() {
+		return _tests.getTreeTestRunnerItemCount();
+	}
+	
+	public void pushInsertTestSuite() {
+		_tests.pushTreePopupItem(0, 2);
+	}
+	
+	public String getSelectTestSuiteName() {
+		return _tests.getTreeSelectedTestSuite().getName();
+	}
 }
