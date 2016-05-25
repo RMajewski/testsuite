@@ -481,9 +481,9 @@ public abstract class TestRunner {
 			t.append("\t\t\t<div class=\"libraries\">");
 			t.append(System.lineSeparator());
 			
-			t.append("\t\t\t\t<p>");
+			t.append("\t\t\t\t<h2>");
 			t.append(_bundle.getString("createHtmlListOfLibraries_libraries"));
-			t.append(":</p>");
+			t.append(":</h2>");
 			t.append(System.lineSeparator());
 			
 			t.append("\t\t\t\t<ul>");
@@ -564,9 +564,9 @@ public abstract class TestRunner {
 		if (nonExists) {
 			StringBuilder t = new StringBuilder("\t\t\t<div class=\"nonexists\">");
 			t.append(System.lineSeparator());
-			t.append("\t\t\t\t<p>");
+			t.append("\t\t\t\t<h2>");
 			t.append(_bundle.getString("createHtmlListOfNonExistsTests_tests"));
-			t.append(":</p>");
+			t.append(":</h2>");
 			t.append(System.lineSeparator());
 			t.append("\t\t\t\t<ul>");
 			t.append(System.lineSeparator());
@@ -920,8 +920,7 @@ public abstract class TestRunner {
 	 * @return HTML table with result of all test runners.
 	 */
 	public static String createHtmlAllResultTable(List<TestRunner> runners) {
-		StringBuilder ret = new StringBuilder("\t\t\t\t<table>");
-		ret.append(System.lineSeparator());
+		StringBuilder ret = new StringBuilder();
 		
 		ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_FILE);
 		
@@ -964,12 +963,36 @@ public abstract class TestRunner {
 		String th = "\t\t\t\t\t\t<th>";
 		String td = "\t\t\t\t\t\t<td>";
 		
+		ret.append("\t\t\t<div class=\"result\">");
+		ret.append(System.lineSeparator());
+		
+		ret.append("\t\t\t\t<table>");
+		ret.append(System.lineSeparator());
+		
 		ret.append(tr);
 		ret.append(System.lineSeparator());
 		
-		ret.append(th);
+		// All TestRunner
+		ret.append("\t\t\t\t\t\t<th colspan=\"3\">");
 		ret.append(bundle.getString("test_runner_result_name"));
 		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(tr_end);
+		ret.append(System.lineSeparator());
+		
+		ret.append(tr);
+		ret.append(System.lineSeparator());
+		
+		ret.append("\t\t\t\t\t\t<td colspan=\"3\">");
+		ret.append(bundle.getString("test_runner_result_all"));
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(tr_end);
+		ret.append(System.lineSeparator());
+		
+		ret.append(tr);
 		ret.append(System.lineSeparator());
 		
 		ret.append(th);
@@ -985,6 +1008,33 @@ public abstract class TestRunner {
 		ret.append(th);
 		ret.append(bundle.getString("test_runner_result_tests_terminated"));
 		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(tr_end);
+		ret.append(System.lineSeparator());
+		
+		ret.append(tr);
+		ret.append(System.lineSeparator());
+		
+		ret.append(td);
+		ret.append(String.valueOf(tests_all));
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(td);
+		ret.append(String.valueOf(tests_executed));
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(td);
+		ret.append(String.valueOf(tests_terminated));
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(tr_end);
+		ret.append(System.lineSeparator());
+		
+		ret.append(tr);
 		ret.append(System.lineSeparator());
 		
 		ret.append(th);
@@ -1009,26 +1059,6 @@ public abstract class TestRunner {
 		ret.append(System.lineSeparator());
 		
 		ret.append(td);
-		ret.append(bundle.getString("test_runner_result_all"));
-		ret.append("</td>");
-		ret.append(System.lineSeparator());
-		
-		ret.append(td);
-		ret.append(String.valueOf(tests_all));
-		ret.append("</td>");
-		ret.append(System.lineSeparator());
-		
-		ret.append(td);
-		ret.append(String.valueOf(tests_executed));
-		ret.append("</td>");
-		ret.append(System.lineSeparator());
-		
-		ret.append(td);
-		ret.append(String.valueOf(tests_terminated));
-		ret.append("</td>");
-		ret.append(System.lineSeparator());
-		
-		ret.append(td);
 		ret.append(String.valueOf(tests_ignored));
 		ret.append("</td>");
 		ret.append(System.lineSeparator());
@@ -1049,6 +1079,9 @@ public abstract class TestRunner {
 		ret.append(System.lineSeparator());
 		
 		ret.append("\t\t\t\t</table>");
+		ret.append(System.lineSeparator());
+		
+		ret.append("\t\t\t</div>");
 		ret.append(System.lineSeparator());
 		
 		return ret.toString();

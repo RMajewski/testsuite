@@ -30,8 +30,6 @@ import java.util.Date;
 import javax.swing.Timer;
 
 import org.testsuite.data.Config;
-import org.testsuite.data.Fit;
-import org.testsuite.data.Junit;
 import org.testsuite.data.Test;
 import org.testsuite.data.TestSuite;
 
@@ -389,9 +387,26 @@ public class JemmyTestRunner extends TestRunner {
 		ret.append(tr);
 		ret.append(System.lineSeparator());
 		
-		ret.append(th);
+		ret.append("\t\t\t\t\t\t<th colspan=\"3\">");
 		ret.append(_bundle.getString("test_runner_result_name"));
 		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(tr_end);
+		ret.append(System.lineSeparator());
+		
+		ret.append(tr);
+		ret.append(System.lineSeparator());
+		
+		ret.append("\t\t\t\t\t\t<td colspan=\"3\">");
+		ret.append(this.getClass().getName());
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(tr_end);
+		ret.append(System.lineSeparator());
+		
+		ret.append(tr);
 		ret.append(System.lineSeparator());
 		
 		ret.append(th);
@@ -409,40 +424,10 @@ public class JemmyTestRunner extends TestRunner {
 		ret.append("</th>");
 		ret.append(System.lineSeparator());
 		
-		ret.append(th);
-		ret.append(_bundle.getString("test_runner_result_tests_ignored"));
-		ret.append("</th>");
-		ret.append(System.lineSeparator());
-		
-		ret.append(th);
-		ret.append(_bundle.getString("test_runner_result_tests_not_exists"));
-		ret.append("</th>");
-		ret.append(System.lineSeparator());
-		
-		ret.append(th);
-		ret.append(_bundle.getString("test_runner_result_right"));
-		ret.append("</th>");
-		ret.append(System.lineSeparator());
-		
-		ret.append(th);
-		ret.append(_bundle.getString("test_runner_result_wrong"));
-		ret.append("</th>");
-		ret.append(System.lineSeparator());
-		
-		ret.append(th);
-		ret.append(_bundle.getString("test_runner_result_duration"));
-		ret.append("</th>");
-		ret.append(System.lineSeparator());
-
 		ret.append(tr_end);
 		ret.append(System.lineSeparator());
 		
 		ret.append(tr);
-		ret.append(System.lineSeparator());
-		
-		ret.append(td);
-		ret.append(this.getClass().getName());
-		ret.append("</td>");
 		ret.append(System.lineSeparator());
 		
 		ret.append(td);
@@ -460,6 +445,33 @@ public class JemmyTestRunner extends TestRunner {
 		ret.append("</td>");
 		ret.append(System.lineSeparator());
 		
+		ret.append(tr_end);
+		ret.append(System.lineSeparator());
+		
+		ret.append(tr);
+		ret.append(System.lineSeparator());
+		
+		ret.append(th);
+		ret.append(_bundle.getString("test_runner_result_tests_ignored"));
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(th);
+		ret.append(_bundle.getString("test_runner_result_tests_not_exists"));
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(th);
+		ret.append(_bundle.getString("test_runner_result_right"));
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(tr_end);
+		ret.append(System.lineSeparator());
+		
+		ret.append(tr);
+		ret.append(System.lineSeparator());
+		
 		ret.append(td);
 		ret.append(String.valueOf(tests_ignored));
 		ret.append("</td>");
@@ -475,6 +487,28 @@ public class JemmyTestRunner extends TestRunner {
 		ret.append("</td>");
 		ret.append(System.lineSeparator());
 		
+		ret.append(tr_end);
+		ret.append(System.lineSeparator());
+		
+		ret.append(tr);
+		ret.append(System.lineSeparator());
+		
+		ret.append(th);
+		ret.append(_bundle.getString("test_runner_result_wrong"));
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append("\t\t\t\t\t\t<th colspan=\"2\">");
+		ret.append(_bundle.getString("test_runner_result_duration"));
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+
+		ret.append(tr_end);
+		ret.append(System.lineSeparator());
+		
+		ret.append(tr);
+		ret.append(System.lineSeparator());
+		
 		ret.append(td);
 		ret.append(String.valueOf(wrong));
 		ret.append("</td>");
@@ -482,7 +516,7 @@ public class JemmyTestRunner extends TestRunner {
 		
 		// OPT Insert in HelperCalendar
 		DateFormat df = new SimpleDateFormat("HH:mm:ss.SSS");
-		ret.append(td);
+		ret.append("\t\t\t\t\t\t<td colspan=\"2\">");
 		ret.append(df.format(new Date(duration - 3600000)));
 		ret.append("</td>");
 		ret.append(System.lineSeparator());
