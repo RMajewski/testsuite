@@ -84,7 +84,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 	/**
 	 * Saves the string of action command for the configuration load button.
 	 */
-	private static final String AC_LOAD = "App.btnLoad";
+	private static final String AC_CONFIG_LOAD = "App.btnConfigLoad";
 	
 	/**
 	 * Saves the string of action command for the cancel button.
@@ -95,6 +95,26 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 	 * Saves the string of action command for the run button.
 	 */
 	private static final String AC_RUN = "App.btnRun";
+	
+	/**
+	 * Saves the string of action command for all tests select ignore
+	 */
+	private static final String AC_ALL_TESTS_IGNORE = "App.btnAllTestsIgnore";
+	
+	/**
+	 * Saves the string of action command for all tests select execute
+	 */
+	private static final String AC_ALL_TESTS_EXECUTE = "App.btnAllTestsExecute";
+	
+	/**
+	 * Saves the string of action command for validate the configuration
+	 */
+	private static final String AC_CONFIG_VALIDATE = "App.btnConfigValidate";
+	
+	/**
+	 * Saves the string of action command for save the configuration
+	 */
+	private static final String AC_CONFIG_SAVE = "App.btnConfigSave";
 	
 	/**
 	 * Saves the string of action command for open configuration dialog for a
@@ -190,12 +210,32 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 	/**
 	 * Saves the button for load the configuration file
 	 */
-	private JButton _btnLoad;
+	private JButton _btnConfigLoad;
 	
 	/**
 	 * Saves the button for exit the app.
 	 */
 	private JButton _btnExit;
+	
+	/**
+	 * Saves the button for all tests select ignore
+	 */
+	private JButton _btnAllTestsIgnore;
+	
+	/**
+	 * Saves the button for all tests select execute
+	 */
+	private JButton _btnAllTestsExecute;
+	
+	/**
+	 * Saves the button for save configuration
+	 */
+	private JButton _btnConfigSave;
+	
+	/**
+	 * Saves the button for validate configuration
+	 */
+	private JButton _btnConfigValidate;
 	
 	/**
 	 * Saves the instance of resource bundle
@@ -511,6 +551,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 			 */
 			@Override
 			public void valueChanged(TreeSelectionEvent e) {
+				// OPT This code into a separate method?
 				JPopupMenu popup = _tree.getComponentPopupMenu();
 				JMenu insert = (JMenu)popup.getComponent(0);
 				JMenu delete = (JMenu)popup.getComponent(1);
@@ -649,11 +690,40 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		_btnCancel.setName(AC_CANCEL);
 		panButtons.add(_btnCancel);
 		
-		_btnLoad = new JButton(_bundle.getString("btnLoad"));
-		_btnLoad.addActionListener(this);
-		_btnLoad.setActionCommand(AC_LOAD);
-		_btnLoad.setName(AC_LOAD);
-		panButtons.add(_btnLoad);
+		_btnAllTestsIgnore = new JButton(_bundle.getString("btnAllTestsIgnore"));
+		_btnAllTestsIgnore.addActionListener(this);
+		_btnAllTestsIgnore.setActionCommand(AC_ALL_TESTS_IGNORE);
+		_btnAllTestsIgnore.setName(AC_ALL_TESTS_IGNORE);
+		_btnAllTestsIgnore.setEnabled(false);
+		panButtons.add(_btnAllTestsIgnore);
+		
+		_btnAllTestsExecute = new JButton(
+				_bundle.getString("btnAllTestsExecute"));
+		_btnAllTestsExecute.addActionListener(this);
+		_btnAllTestsExecute.setActionCommand(AC_ALL_TESTS_EXECUTE);
+		_btnAllTestsExecute.setName(AC_ALL_TESTS_EXECUTE);
+		_btnAllTestsExecute.setEnabled(false);
+		panButtons.add(_btnAllTestsExecute);
+		
+		_btnConfigLoad = new JButton(_bundle.getString("btnConfigLoad"));
+		_btnConfigLoad.addActionListener(this);
+		_btnConfigLoad.setActionCommand(AC_CONFIG_LOAD);
+		_btnConfigLoad.setName(AC_CONFIG_LOAD);
+		panButtons.add(_btnConfigLoad);
+		
+		_btnConfigValidate = new JButton(_bundle.getString("btnConfigValidate"));
+		_btnConfigValidate.addActionListener(this);
+		_btnConfigValidate.setActionCommand(AC_CONFIG_VALIDATE);
+		_btnConfigValidate.setName(AC_CONFIG_VALIDATE);
+		_btnConfigValidate.setEnabled(false);
+		panButtons.add(_btnConfigValidate);
+		
+		_btnConfigSave = new JButton(_bundle.getString("btnConfigSave"));
+		_btnConfigSave.addActionListener(this);
+		_btnConfigSave.setActionCommand(AC_CONFIG_SAVE);
+		_btnConfigSave.setName(AC_CONFIG_SAVE);
+		_btnConfigSave.setEnabled(false);
+		panButtons.add(_btnConfigSave);
 		
 		_btnExit = new JButton(_bundle.getString("btnExit"));
 		_btnExit.addActionListener(new ActionListener() {
@@ -735,7 +805,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				_thread.interrupt();
 			break;
 				
-			case AC_LOAD:
+			case AC_CONFIG_LOAD:
 				JFileChooser fc = new JFileChooser();
 				fc.setDialogTitle(_bundle.getString("configFileOpenTitle"));
 				fc.setFileFilter(new FileNameExtensionFilter(
@@ -754,6 +824,10 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 								parser.getTestRunnerList());
 						_config = parser.getConfig();
 						_btnRun.setEnabled(true);
+						_btnConfigSave.setEnabled(true);
+						_btnConfigValidate.setEnabled(true);
+						_btnAllTestsIgnore.setEnabled(true);
+						_btnAllTestsExecute.setEnabled(true);
 						
 						int tests = 0;
 						for (int index = 0; 
@@ -765,16 +839,27 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 						_pBar.setValue(0);
 					}
 				}
+				break;
 				
+			case AC_CONFIG_SAVE:
+				break;
+				
+			case AC_CONFIG_VALIDATE:
+				((TestRunnerModel)_tree.getModel()).validateConfiguration();
 				break;
 				
 			case AC_RUN:
 				_thread = new TestRun(((TestRunnerModel)_tree.getModel())
 					.getTestRunnerList(), this);
+				// OPT Into own function with boolean as parameter
 				_btnExit.setEnabled(false);
 				_btnRun.setEnabled(false);
 				_btnCancel.setEnabled(true);
-				_btnLoad.setEnabled(false);
+				_btnConfigLoad.setEnabled(false);
+				_btnConfigSave.setEnabled(false);
+				_btnConfigValidate.setEnabled(false);
+				_btnAllTestsIgnore.setEnabled(false);
+				_btnAllTestsExecute.setEnabled(false);
 				_txtMessage.setText(new String());
 				_thread.start();				
 				break;
@@ -811,6 +896,12 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				((TestRunnerModel)_tree.getModel()).getTestRunnerList().add(
 						new JunitTestRunner(_config));
 				_tree.updateUI();
+				// OPT Into a separate method with boolean as parameter
+				_btnConfigValidate.setEnabled(true);
+				_btnConfigSave.setEnabled(true);
+				_btnAllTestsIgnore.setEnabled(true);
+				_btnAllTestsExecute.setEnabled(true);
+				_btnRun.setEnabled(true);
 				break;
 				
 			case TREE_INSERT_TEST_SUITE:
@@ -836,6 +927,12 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 						.clear();
 					_config.clear();
 					_tree.updateUI();
+					// Opt Into separate method with boolean as parameter
+					_btnConfigValidate.setEnabled(false);
+					_btnConfigSave.setEnabled(false);
+					_btnAllTestsIgnore.setEnabled(false);
+					_btnAllTestsExecute.setEnabled(false);
+					_btnRun.setEnabled(false);
 				}
 				break;
 				
@@ -855,6 +952,16 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 					_tree.updateUI();
 					_tree.clearSelection();
 					
+					if (_config.isEmpty() && 
+							(((TestRunnerModel)_tree.getModel())
+									.getTestRunnerList().size() == 0)) {
+						// Opt Into separate method with boolean as parameter
+						_btnConfigValidate.setEnabled(false);
+						_btnConfigSave.setEnabled(false);
+						_btnAllTestsIgnore.setEnabled(false);
+						_btnAllTestsExecute.setEnabled(false);
+						_btnRun.setEnabled(false);
+					}
 				}
 				break;
 				
@@ -912,7 +1019,11 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		_btnExit.setEnabled(true);
 		_btnRun.setEnabled(true);
 		_btnCancel.setEnabled(false);
-		_btnLoad.setEnabled(true);
+		_btnConfigLoad.setEnabled(true);
+		_btnConfigSave.setEnabled(true);
+		_btnConfigValidate.setEnabled(true);
+		_btnAllTestsIgnore.setEnabled(true);
+		_btnAllTestsExecute.setEnabled(true);
 
 		// Create HTML ouput
 		String htmlFile = _config.getPathResult() + File.separator;

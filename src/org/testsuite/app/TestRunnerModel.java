@@ -62,10 +62,17 @@ public class TestRunnerModel implements TreeModel {
 	 */
 	public void setListOfTestRunner(List<TestRunner> list) {
 		_testRunner = list;
-		for (int runner = 0; runner < _testRunner.size(); runner++)
-			_testRunner.get(runner).checkFileExists();
+		validateConfiguration();
 		
 		fireTreeStructureChanged();
+	}
+	
+	/**
+	 * Validate the configuration
+	 */
+	public void validateConfiguration() {
+		for (int runner = 0; runner < _testRunner.size(); runner++)
+			_testRunner.get(runner).checkFileExists();
 	}
 
 	/**
