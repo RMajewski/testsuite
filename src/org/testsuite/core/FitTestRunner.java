@@ -387,7 +387,7 @@ public class FitTestRunner extends TestRunner {
 			} else {
 				ret.append("\t\t\t\t\t\t<td");
 				ret.append(cl);
-				ret.append(" colspan=\"4\">");
+				ret.append(" colspan=\"5\">");
 				ret.append(_bundle.getString("createHtmlColumn_noneExecuted"));
 			}
 		} else {

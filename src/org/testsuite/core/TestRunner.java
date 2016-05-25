@@ -1051,9 +1051,6 @@ public abstract class TestRunner {
 		ret.append("\t\t\t\t</table>");
 		ret.append(System.lineSeparator());
 		
-		ret.append("\t\t\t\t</table>");
-		ret.append(System.lineSeparator());
-		
 		return ret.toString();
 		
 	}

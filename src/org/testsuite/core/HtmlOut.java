@@ -87,7 +87,7 @@ public class HtmlOut {
 		_bw.write("\t\t<style>"); _bw.newLine();
 		_bw.write(".pass {background-color: #CFFFCF;}"); _bw.newLine();
 		_bw.write(".wrong {background-color: #FFCFCF;}"); _bw.newLine();
-		_bw.write(".ignore {background-color: #AAAAAA;}"); _bw.newLine();
+		_bw.write(".ignore {background-color: #CFCFCF;}"); _bw.newLine();
 		_bw.write(".exception {background-color: #FFFFCF;}"); _bw.newLine();
 		_bw.write(".testoutInvisible {display: none;}"); _bw.newLine();
 		_bw.write(".testoutVisible {display: block;}"); _bw.newLine();
@@ -100,6 +100,16 @@ public class HtmlOut {
 		_bw.newLine();
 		_bw.write("th {text-align: left;}"); _bw.newLine();
 		_bw.write("tr {border: 1px solid #000;}"); _bw.newLine();
+		_bw.write("a:link {text-decoration: none; font-weight: bold;");
+		_bw.write("color: #505050}"); _bw.newLine();
+		_bw.write("a:visited {text-decoration: none; color: #505050}");
+		_bw.newLine();
+		_bw.write("a:hover {text-decoration: underline; font-weight: bold;");
+		_bw.write("color: #505050}"); _bw.newLine();
+		_bw.write("a:active {text-decoration: underline; font-weight: bold;");
+		_bw.write("color: #505050}"); _bw.newLine();
+		_bw.write("a:focus {text-decoration: underline; font-weight: bold;");
+		_bw.write("color: #505050}"); _bw.newLine();
 		_bw.write("\t\t</style>"); _bw.newLine();
 	}
 	
