@@ -19,10 +19,13 @@
 
 package org.testsuite.core;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -79,9 +82,41 @@ public class HtmlOut {
 	}
 	
 	/**
+	 * Load the text file and returned as string.
+	 * 
+	 * @param name Name of the file
+	 * 
+	 * @return Loaded file as string
+	 */
+	private String readFile(String name) {
+		StringBuilder ret = new StringBuilder();
+		
+		try {
+			URL url = getClass().getClassLoader().getResource(name);
+			System.out.println(url);
+			BufferedReader bf = new BufferedReader(new FileReader(
+					url.getFile()));
+			if (bf.ready()) {
+				String line;
+				while ((line = bf.readLine()) != null) {
+					ret.append(line);
+				}
+				bf.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ret.toString();
+	}
+	
+	// OPT Delete stylesheets method
+	/**
 	 * Created the stylesheets
 	 * 
 	 * @throws IOException
+	 * 
+	 * @deprecated since version 0.3. Save the stylesheet into a text file and
+	 * use the {@link #readFile(String)} method.
 	 */
 	private void stylesheets() throws IOException {
 		_bw.write("\t\t<style>"); _bw.newLine();
@@ -90,9 +125,25 @@ public class HtmlOut {
 		_bw.write(".ignore {background-color: #CFCFCF;}"); _bw.newLine();
 		_bw.write(".exception {background-color: #FFFFCF;}"); _bw.newLine();
 		_bw.write(".testoutInvisible {display: none;}"); _bw.newLine();
-		_bw.write(".testoutVisible {display: block;}"); _bw.newLine();
+		_bw.write(".testoutVisible {display: block; border: 1px solid #000}");
+		_bw.newLine();
 		_bw.write(".right {float: right;}"); _bw.newLine();
-		_bw.write(".testsuite {margin-bottom: 25px;}"); _bw.newLine();
+		_bw.write(".testsuite {margin: 25px 0;}"); _bw.newLine();
+		_bw.write(".testgroup {border: 1px solid #000; margin-bottom: 25px; ");
+		_bw.write("padding: 10px; }"); _bw.newLine();
+		_bw.write(".testdescription {border: 1px dashed #808080; padding: ");
+		_bw.write("10px; } "); _bw.newLine();
+		_bw.write(".libraries {border: 1px dashed #808080; padding: 10px; ");
+		_bw.write("margin-top: 5px;}"); _bw.newLine();
+		_bw.write(".nonexists {border: 1px dashed #808080; padding: 10px; ");
+		_bw.write("margin-top: 5px;}"); _bw.newLine();
+		_bw.write(".command_line {margin: 10px; color: #FFF; background: #000; ");
+		_bw.write("padding: 5px;}"); _bw.newLine();
+		_bw.write(".console {border: 1px dashed #808080; margin: 0 10px; ");
+		_bw.write("padding: 5px;}"); _bw.newLine();
+		_bw.write(".error {border: 1px dashed #F00; margin: 10px; padding: ");
+		_bw.write("5px;}"); _bw.newLine();
+		_bw.write("padding: 5px;}"); _bw.newLine();
 		_bw.write("table {width: 100%; border-collapse: collapse; ");
 		_bw.write("border: 2px solid #000; table-layout:fixed;}"); 
 		_bw.newLine();
@@ -101,22 +152,26 @@ public class HtmlOut {
 		_bw.write("th {text-align: left;}"); _bw.newLine();
 		_bw.write("tr {border: 1px solid #000;}"); _bw.newLine();
 		_bw.write("a:link {text-decoration: none; font-weight: bold;");
-		_bw.write("color: #505050}"); _bw.newLine();
-		_bw.write("a:visited {text-decoration: none; color: #505050}");
+		_bw.write("color: #505050;}"); _bw.newLine();
+		_bw.write("a:visited {text-decoration: none; color: #505050;}");
 		_bw.newLine();
 		_bw.write("a:hover {text-decoration: underline; font-weight: bold;");
-		_bw.write("color: #505050}"); _bw.newLine();
+		_bw.write("color: #505050;}"); _bw.newLine();
 		_bw.write("a:active {text-decoration: underline; font-weight: bold;");
-		_bw.write("color: #505050}"); _bw.newLine();
+		_bw.write("color: #505050;}"); _bw.newLine();
 		_bw.write("a:focus {text-decoration: underline; font-weight: bold;");
-		_bw.write("color: #505050}"); _bw.newLine();
+		_bw.write("color: #505050;}"); _bw.newLine();
 		_bw.write("\t\t</style>"); _bw.newLine();
 	}
 	
+	// OPT Delete the javaScript method
 	/**
 	 * Created the Java Script
 	 * 
 	 * @throws IOException
+	 * 
+	 * @deprecated since version 0.3 Save the javascript into a text file and
+	 * use the {@link #readFile(String)} method.
 	 */
 	private void javaScript() throws IOException {
 		_bw.write("\t\t<script type=\"text/javascript\">"); _bw.newLine();
@@ -153,8 +208,17 @@ public class HtmlOut {
 		_bw.write("\t\t<meta http-equiv=\"content-type\" "
 				+ "content=\"text/html; charset=UTF-8\">");
 		_bw.newLine();
-		stylesheets();
-		javaScript();
+		
+		_bw.write("\t\t<style>"); _bw.newLine();
+		_bw.write(readFile("resources" + File.separator + "html" +
+				File.separator + "out.css")); _bw.newLine();
+		_bw.write("\t\t</style>"); _bw.newLine();
+		
+		_bw.write("\t\t<script type=\"text/javascript\">"); _bw.newLine();
+		_bw.write(readFile("resources" + File.separator + "html" +
+				File.separator + "out.js")); _bw.newLine();
+		_bw.write("\t\t</script>"); _bw.newLine();
+		
 		_bw.write("\t</head>"); _bw.newLine();
 		_bw.write("\t<body>"); _bw.newLine();
 		_bw.write("\t\t<h1>");
