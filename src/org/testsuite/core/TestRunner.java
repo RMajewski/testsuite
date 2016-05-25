@@ -38,7 +38,6 @@ import java.util.Vector;
 import javax.swing.Timer;
 
 import org.testsuite.data.Config;
-import org.testsuite.data.Junit;
 import org.testsuite.data.Library;
 import org.testsuite.data.Test;
 import org.testsuite.data.TestEvent;
@@ -926,24 +925,33 @@ public abstract class TestRunner {
 		
 		ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_FILE);
 		
+		int tests_all = 0;
 		int tests_terminated = 0;
 		int tests_ignored = 0;
 		int tests_executed = 0;
+		int tests_not_exists = 0;
 		long duration = 0;
 		
 		for (int runner = 0; runner < runners.size(); runner++) {
 			for (int suite = 0; suite < runners.get(runner).testSuiteCount(); 
 					suite++) {
+				tests_all += runners.get(runner).getTestSuite(suite).testCount();
 				for (int test = 0; test < runners.get(runner)
 						.getTestSuite(suite).testCount(); test++) {
 					duration += runners.get(runner).getTestSuite(suite)
 							.getTest(test).getDurationTime();
+
 					if (runners.get(runner).getTestSuite(suite).getTest(test)
 							.isTerminated())
 						tests_terminated++;
+					
 					if (runners.get(runner).getTestSuite(suite).getTest(test)
-							.isExecuted())
+							.isExecuted() && runners.get(runner)
+							.getTestSuite(suite).getTest(test).isExists())
 						tests_executed++;
+					else if (!runners.get(runner).getTestSuite(suite)
+							.getTest(test).isExists())
+						tests_not_exists++;
 					else
 						tests_ignored++;
 				}
@@ -985,6 +993,11 @@ public abstract class TestRunner {
 		ret.append(System.lineSeparator());
 		
 		ret.append(th);
+		ret.append(bundle.getString("test_runner_result_tests_not_exists"));
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(th);
 		ret.append(bundle.getString("test_runner_result_duration"));
 		ret.append("</th>");
 		ret.append(System.lineSeparator());
@@ -1001,8 +1014,7 @@ public abstract class TestRunner {
 		ret.append(System.lineSeparator());
 		
 		ret.append(td);
-		ret.append(String.valueOf(tests_executed + tests_ignored + 
-				tests_terminated));
+		ret.append(String.valueOf(tests_all));
 		ret.append("</td>");
 		ret.append(System.lineSeparator());
 		
@@ -1018,6 +1030,11 @@ public abstract class TestRunner {
 		
 		ret.append(td);
 		ret.append(String.valueOf(tests_ignored));
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(td);
+		ret.append(String.valueOf(tests_not_exists));
 		ret.append("</td>");
 		ret.append(System.lineSeparator());
 		

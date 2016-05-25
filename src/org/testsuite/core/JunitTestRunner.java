@@ -33,7 +33,6 @@ import java.util.Date;
 import javax.swing.Timer;
 
 import org.testsuite.data.Config;
-import org.testsuite.data.Fit;
 import org.testsuite.data.Junit;
 import org.testsuite.data.Test;
 import org.testsuite.data.TestSuite;
@@ -403,20 +402,28 @@ public class JunitTestRunner extends TestRunner {
 		
 		int right = 0;
 		int wrong = 0;
+		int tests_all = 0;
 		int tests_terminated = 0;
 		int tests_ignored = 0;
 		int tests_executed = 0;
+		int tests_not_exists = 0;
 		long duration = 0;
 
 		for (int suite = 0; suite < _suites.size(); suite++) {
+			tests_all += _suites.get(suite).testCount();
 			for (int test = 0; test < _suites.get(suite).testCount(); test++) {
 				right += ((Junit)_suites.get(suite).getTest(test)).getOk();
 				wrong += ((Junit)_suites.get(suite).getTest(test)).getFail();
 				duration += _suites.get(suite).getTest(test).getDurationTime();
+				
 				if (_suites.get(suite).getTest(test).isTerminated())
 					tests_terminated++;
-				if (_suites.get(suite).getTest(test).isExecuted())
+				
+				if (_suites.get(suite).getTest(test).isExecuted() && 
+						_suites.get(suite).getTest(test).isExists())
 					tests_executed++;
+				else if (!_suites.get(suite).getTest(test).isExists())
+					tests_not_exists++;
 				else
 					tests_ignored++;
 			}
@@ -456,6 +463,11 @@ public class JunitTestRunner extends TestRunner {
 		ret.append(System.lineSeparator());
 		
 		ret.append(th);
+		ret.append(_bundle.getString("test_runner_result_tests_not_exists"));
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(th);
 		ret.append(_bundle.getString("test_runner_result_right"));
 		ret.append("</th>");
 		ret.append(System.lineSeparator());
@@ -482,8 +494,7 @@ public class JunitTestRunner extends TestRunner {
 		ret.append(System.lineSeparator());
 		
 		ret.append(td);
-		ret.append(String.valueOf(tests_executed + tests_ignored + 
-				tests_terminated));
+		ret.append(String.valueOf(tests_all));
 		ret.append("</td>");
 		ret.append(System.lineSeparator());
 		
@@ -499,6 +510,11 @@ public class JunitTestRunner extends TestRunner {
 		
 		ret.append(td);
 		ret.append(String.valueOf(tests_ignored));
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(td);
+		ret.append(String.valueOf(tests_not_exists));
 		ret.append("</td>");
 		ret.append(System.lineSeparator());
 		
