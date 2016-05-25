@@ -26,11 +26,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.Timer;
 
 import org.testsuite.data.Config;
+import org.testsuite.data.Fit;
 import org.testsuite.data.Junit;
 import org.testsuite.data.Test;
 import org.testsuite.data.TestSuite;
@@ -63,6 +66,7 @@ public class JunitTestRunner extends TestRunner {
 		super(config);
 	}
 
+	// OPT delete run_old
 	/**
 	 * Executes the junit tests.
 	 * 
@@ -336,6 +340,189 @@ public class JunitTestRunner extends TestRunner {
 		}
 		
 		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		return ret.toString();
+	}
+	
+	/**
+	 * Generate the footer for the HTML table
+	 * 
+	 * @param suite Index for test suite
+	 * 
+	 * @return Footer for the HTML table.
+	 */
+	@Override
+	protected String createHtmlTableFooter(int suite) {
+		StringBuilder ret = new StringBuilder();
+		String td = "\t\t\t\t\t\t<td>";
+		
+		int right = 0;
+		int wrong = 0;
+		long duration = 0;
+		
+		for (int test = 0; test < _suites.get(suite).testCount(); test++) {
+			right += ((Junit)_suites.get(suite).getTest(test)).getOk();
+			wrong += ((Junit)_suites.get(suite).getTest(test)).getFail();
+			duration += _suites.get(suite).getTest(test).getDurationTime();
+		}
+		
+		ret.append(td);
+		ret.append("&nbsp;</td>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(td);
+		ret.append(right);
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(td);
+		ret.append(wrong);
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		// OPT Insert in HelperCalendar
+		DateFormat df = new SimpleDateFormat("HH:mm:ss.SSS");
+		ret.append(td);
+		ret.append(df.format(new Date(duration - 3600000)));
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		return ret.toString();
+	}
+	
+	/**
+	 * Generate the result table of all tests in this test runner
+	 * 
+	 * @return Result table of all tests in this test runner
+	 */
+	@Override
+	protected String createResultTestRunnerTable() {
+		StringBuilder ret = new StringBuilder("\t\t\t\t<table>");
+		ret.append(System.lineSeparator());
+		
+		int right = 0;
+		int wrong = 0;
+		int tests_terminated = 0;
+		int tests_ignored = 0;
+		int tests_executed = 0;
+		long duration = 0;
+
+		for (int suite = 0; suite < _suites.size(); suite++) {
+			for (int test = 0; test < _suites.get(suite).testCount(); test++) {
+				right += ((Junit)_suites.get(suite).getTest(test)).getOk();
+				wrong += ((Junit)_suites.get(suite).getTest(test)).getFail();
+				duration += _suites.get(suite).getTest(test).getDurationTime();
+				if (_suites.get(suite).getTest(test).isTerminated())
+					tests_terminated++;
+				if (_suites.get(suite).getTest(test).isExecuted())
+					tests_executed++;
+				else
+					tests_ignored++;
+			}
+		}
+		
+		String tr = "\t\t\t\t\t<tr>";
+		String tr_end = "\t\t\t\t\t</tr>";
+		String th = "\t\t\t\t\t\t<th>";
+		String td = "\t\t\t\t\t\t<td>";
+		
+		ret.append(tr);
+		ret.append(System.lineSeparator());
+		
+		ret.append(th);
+		ret.append(_bundle.getString("test_runner_result_name"));
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(th);
+		ret.append(_bundle.getString("test_runner_result_tests"));
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(th);
+		ret.append(_bundle.getString("test_runner_result_tests_executed"));
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(th);
+		ret.append(_bundle.getString("test_runner_result_tests_terminated"));
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(th);
+		ret.append(_bundle.getString("test_runner_result_tests_ignored"));
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(th);
+		ret.append(_bundle.getString("test_runner_result_right"));
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(th);
+		ret.append(_bundle.getString("test_runner_result_wrong"));
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(th);
+		ret.append(_bundle.getString("test_runner_result_duration"));
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+
+		ret.append(tr_end);
+		ret.append(System.lineSeparator());
+		
+		ret.append(tr);
+		ret.append(System.lineSeparator());
+		
+		ret.append(td);
+		ret.append(this.getClass().getName());
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(td);
+		ret.append(String.valueOf(tests_executed + tests_ignored + 
+				tests_terminated));
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(td);
+		ret.append(String.valueOf(tests_executed));
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(td);
+		ret.append(String.valueOf(tests_terminated));
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(td);
+		ret.append(String.valueOf(tests_ignored));
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(td);
+		ret.append(String.valueOf(right));
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(td);
+		ret.append(String.valueOf(wrong));
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		// OPT Insert in HelperCalendar
+		DateFormat df = new SimpleDateFormat("HH:mm:ss.SSS");
+		ret.append(td);
+		ret.append(df.format(new Date(duration - 3600000)));
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+
+		ret.append(tr_end);
+		ret.append(System.lineSeparator());
+		
+		ret.append("\t\t\t\t</table>");
 		ret.append(System.lineSeparator());
 		
 		return ret.toString();

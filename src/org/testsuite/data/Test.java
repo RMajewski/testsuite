@@ -186,6 +186,7 @@ public class Test extends Data {
 	 * @return Duration time as formatted string.
 	 */
 	public String getDurationTimeFormattedString() {
+		// OPT Insert in  HelperCalendar
 		DateFormat df = new SimpleDateFormat("HH:mm:ss.SSS");
 		return df.format(new Date(getDurationTime() - 3600000));
 	}

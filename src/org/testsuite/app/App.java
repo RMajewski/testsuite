@@ -939,6 +939,8 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 						line));
 			}
 			
+			html.writeHtml(TestRunner.createHtmlAllResultTable(testRunner));
+			
 			html.htmlEnd();
 		} catch (IOException ex) {
 			ex.printStackTrace();

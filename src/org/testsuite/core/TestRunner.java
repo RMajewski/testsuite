@@ -26,6 +26,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +38,7 @@ import java.util.Vector;
 import javax.swing.Timer;
 
 import org.testsuite.data.Config;
+import org.testsuite.data.Junit;
 import org.testsuite.data.Library;
 import org.testsuite.data.Test;
 import org.testsuite.data.TestEvent;
@@ -64,6 +67,12 @@ public abstract class TestRunner {
 	 * Saves the exit status for executed ok
 	 */
 	public static final int EXIT_OK = 0;
+	
+	/**
+	 * Saves the file for resource bundle
+	 */
+	protected static final String BUNDLE_FILE =
+			"resources.lang.org.testsuite.core.TestRunner";
 	
 	/**
 	 * Hold an instance of the list of TestSuites.
@@ -118,8 +127,7 @@ public abstract class TestRunner {
 	 */
 	public TestRunner() {
 		try {
-			_bundle = ResourceBundle.getBundle(
-					"resources.lang.org.testsuite.core.TestRunner");
+			_bundle = ResourceBundle.getBundle(BUNDLE_FILE);
 		} catch (MissingResourceException e) {
 			e.printStackTrace();
 		}
@@ -609,11 +617,19 @@ public abstract class TestRunner {
 				ret.append(System.lineSeparator());
 			}
 			
+			ret.append("\t\t\t\t\t<tr>");
+			ret.append(System.lineSeparator());
+			ret.append(createHtmlTableFooter(suite));
+			ret.append("\t\t\t\t\t</tr>");
+			ret.append(System.lineSeparator());
+			
 			ret.append("\t\t\t\t</table>");
 			ret.append(System.lineSeparator());
 			ret.append("\t\t\t</div>");
 			ret.append(System.lineSeparator());
 		}
+		
+		ret.append(createResultTestRunnerTable());
 		
 		ret.append("\t\t</div>");
 		ret.append(System.lineSeparator());
@@ -898,6 +914,134 @@ public abstract class TestRunner {
 	}
 	
 	/**
+	 * Generate the HTML table with result of all test runners.
+	 * 
+	 * @param runners List with test runner
+	 * 
+	 * @return HTML table with result of all test runners.
+	 */
+	public static String createHtmlAllResultTable(List<TestRunner> runners) {
+		StringBuilder ret = new StringBuilder("\t\t\t\t<table>");
+		ret.append(System.lineSeparator());
+		
+		ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_FILE);
+		
+		int tests_terminated = 0;
+		int tests_ignored = 0;
+		int tests_executed = 0;
+		long duration = 0;
+		
+		for (int runner = 0; runner < runners.size(); runner++) {
+			for (int suite = 0; suite < runners.get(runner).testSuiteCount(); 
+					suite++) {
+				for (int test = 0; test < runners.get(runner)
+						.getTestSuite(suite).testCount(); test++) {
+					duration += runners.get(runner).getTestSuite(suite)
+							.getTest(test).getDurationTime();
+					if (runners.get(runner).getTestSuite(suite).getTest(test)
+							.isTerminated())
+						tests_terminated++;
+					if (runners.get(runner).getTestSuite(suite).getTest(test)
+							.isExecuted())
+						tests_executed++;
+					else
+						tests_ignored++;
+				}
+			}
+		}
+
+		
+		String tr = "\t\t\t\t\t<tr>";
+		String tr_end = "\t\t\t\t\t</tr>";
+		String th = "\t\t\t\t\t\t<th>";
+		String td = "\t\t\t\t\t\t<td>";
+		
+		ret.append(tr);
+		ret.append(System.lineSeparator());
+		
+		ret.append(th);
+		ret.append(bundle.getString("test_runner_result_name"));
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(th);
+		ret.append(bundle.getString("test_runner_result_tests"));
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(th);
+		ret.append(bundle.getString("test_runner_result_tests_executed"));
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(th);
+		ret.append(bundle.getString("test_runner_result_tests_terminated"));
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(th);
+		ret.append(bundle.getString("test_runner_result_tests_ignored"));
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(th);
+		ret.append(bundle.getString("test_runner_result_duration"));
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+
+		ret.append(tr_end);
+		ret.append(System.lineSeparator());
+		
+		ret.append(tr);
+		ret.append(System.lineSeparator());
+		
+		ret.append(td);
+		ret.append(bundle.getString("test_runner_result_all"));
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(td);
+		ret.append(String.valueOf(tests_executed + tests_ignored + 
+				tests_terminated));
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(td);
+		ret.append(String.valueOf(tests_executed));
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(td);
+		ret.append(String.valueOf(tests_terminated));
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(td);
+		ret.append(String.valueOf(tests_ignored));
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		// OPT Insert in HelperCalendar
+		DateFormat df = new SimpleDateFormat("HH:mm:ss.SSS");
+		ret.append(td);
+		ret.append(df.format(new Date(duration - 3600000)));
+		ret.append("</td>");
+		ret.append(System.lineSeparator());
+
+		ret.append(tr_end);
+		ret.append(System.lineSeparator());
+		
+		ret.append("\t\t\t\t</table>");
+		ret.append(System.lineSeparator());
+		
+		ret.append("\t\t\t\t</table>");
+		ret.append(System.lineSeparator());
+		
+		return ret.toString();
+		
+	}
+	
+	/**
 	 * Called to evaluation error or console output.
 	 * 
 	 * If the to be evaluated, so this method must be overridden.
@@ -928,6 +1072,16 @@ public abstract class TestRunner {
 	 */
 	protected abstract String createHtmlColumn(int suite, int test,
 			HtmlOut html) throws IOException;
+	
+	/**
+	 * Called to generate the footer for the HTML table
+	 */
+	protected abstract String createHtmlTableFooter(int suite);
+	
+	/**
+	 * Called to generate the result of all tests in test runner
+	 */
+	protected abstract String createResultTestRunnerTable();
 	
 	/**
 	 * String containing the execute command.

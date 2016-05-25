@@ -161,6 +161,8 @@ public class TestCore {
 							line));
 				}
 				
+				html.writeHtml(TestRunner.createHtmlAllResultTable(_testRunner));
+				
 				html.htmlEnd();
 			} catch (IOException e) {
 				e.printStackTrace();
