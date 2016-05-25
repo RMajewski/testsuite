@@ -328,16 +328,21 @@ public class FitTestRunner extends TestRunner {
 		StringBuilder ret = new StringBuilder(td);
 		
 		if (_suites.get(suite).getTest(test).isExists()) {
-			ret.append("<a href=\"");
-			ret.append(_config.getPathSuitesResult());
-			ret.append(File.separator);
-			ret.append(_suites.get(suite).getPackage().replaceAll("\\.", 
-					File.separator));
-			ret.append(File.separator);
-			ret.append(_suites.get(suite).getTest(test).getName());
-			ret.append(".html\">");
-			ret.append(_suites.get(suite).getTest(test).getName());
-			ret.append("</a>");
+			if (_suites.get(suite).getTest(test).isExecuted() &&
+					!_suites.get(suite).getTest(test).isTerminated()) {
+				ret.append("<a href=\"");
+				ret.append(_config.getPathSuitesResult());
+				ret.append(File.separator);
+				ret.append(_suites.get(suite).getPackage().replaceAll("\\.", 
+						File.separator));
+				ret.append(File.separator);
+				ret.append(_suites.get(suite).getTest(test).getName());
+				ret.append(".html\">");
+				ret.append(_suites.get(suite).getTest(test).getName());
+				ret.append("</a>");
+			} else {
+				ret.append(_suites.get(suite).getTest(test).getName());
+			}
 			ret.append(html.generateTestOut(_suites.get(suite).getId(), 
 						_suites.get(suite).getTest(test).getId(), 
 						_suites.get(suite).getTest(test).getIn(),
