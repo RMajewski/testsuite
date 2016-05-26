@@ -523,9 +523,6 @@ public class JunitTestRunner extends TestRunner {
 		ret.append(tr);
 		ret.append(System.lineSeparator());
 		
-		ret.append(tr_end);
-		ret.append(System.lineSeparator());
-		
 		ret.append(td);
 		ret.append(String.valueOf(tests_ignored));
 		ret.append("</td>");
@@ -539,6 +536,9 @@ public class JunitTestRunner extends TestRunner {
 		ret.append(td);
 		ret.append(String.valueOf(right));
 		ret.append("</td>");
+		ret.append(System.lineSeparator());
+		
+		ret.append(tr_end);
 		ret.append(System.lineSeparator());
 		
 		ret.append(tr);
@@ -604,7 +604,7 @@ public class JunitTestRunner extends TestRunner {
 	 * @return Command to execute
 	 */
 	@Override
-	public String exec(String name, TestSuite suite, Test test) {
+	protected String exec(String name, TestSuite suite, Test test) {
 		StringBuilder ret = new StringBuilder("java -cp ");
 		ret.append(createClasspath());
 		ret.append(createProperty());

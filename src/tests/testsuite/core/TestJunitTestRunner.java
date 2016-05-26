@@ -21,19 +21,15 @@ package tests.testsuite.core;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ResourceBundle;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
-import org.mockito.Matchers;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.testsuite.core.HtmlOut;
@@ -41,8 +37,6 @@ import org.testsuite.core.JunitTestRunner;
 import org.testsuite.data.Config;
 import org.testsuite.data.Junit;
 import org.testsuite.data.Library;
-import org.testsuite.data.TestEvent;
-import org.testsuite.data.TestEventListener;
 import org.testsuite.data.TestSuite;
 
 /**
@@ -67,6 +61,11 @@ public class TestJunitTestRunner {
 	 * Save the mock of configuration
 	 */
 	private Config _config;
+	
+	/**
+	 * Save the instance of resource bundle
+	 */
+	private ResourceBundle _bundle;
 
 	/**
 	 * Initialize the tests
@@ -74,6 +73,7 @@ public class TestJunitTestRunner {
 	@Before
 	public void setUp() throws Exception {
 		_config = mock(Config.class);
+		_bundle = ResourceBundle.getBundle(JunitTestRunner.BUNDLE_FILE);
 		_runner = new JunitTestRunner(_config);
 	}
 
@@ -129,15 +129,20 @@ public class TestJunitTestRunner {
 		String testOut = "\t\t\t\t\t\t<div class=\"right\"><a " +
 				"href=\"javascript:togleDisplayId(0, 0)\"> Ausgabe</a></div>" +
 				System.lineSeparator() + "\t\t\t\t\t\t<div " +
-				"class=\"testoutInvisible\" id=\"id_0_0\">" + 
-				System.lineSeparator() + "\t\t\t\t\t\t\t<div " +
-				"class=\"console\">Console</div>" + System.lineSeparator() +
-				"\t\t\t\t\t\t\t<div class=\"error\">Fehler</div>" +
-				System.lineSeparator() + "\t\t\t\t\t\t</div>" + 
+				"class=\"testoutInvisible\" id=\"id_0_0\">" +
+				System.lineSeparator() + " class=\"" +
+				"command_line\">" + System.lineSeparator() + 
+				"\t\t\t\t\t\t\t\t<code>exec</code>" + System.lineSeparator() +
+				"\t\t\t\t\t\t\t</div>" + System.lineSeparator() + 
+				"\t\t\t\t\t\t\t<div class=\"console\">Console</div>" +
+				System.lineSeparator() + "\t\t\t\t\t\t\t<div class=\"error\">" +
+				"Fehler</div>" + System.lineSeparator() + "\t\t\t\t\t\t</div>" + 
 				System.lineSeparator();
 		String resultSuite = "1";
 		String console = "console";
 		String error = "error";
+		String exec = "exec";
+		String packageName = "package";
 		int ok = 1;
 		int fail = 2;
 		String duration = "00:00:01.897";
@@ -157,8 +162,8 @@ public class TestJunitTestRunner {
 		when(_config.getPathSuitesResult()).thenReturn(resultSuite);
 		
 		HtmlOut html = mock(HtmlOut.class);
-		when(html.generateTestOut(suiteId, testId, console, error))
-			.thenReturn(testOut);
+		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
+				eq(error), anyString())).thenReturn(testOut);
 		
 		Method method = 
 				JunitTestRunner.class.getDeclaredMethod("createHtmlColumn", 
@@ -177,6 +182,7 @@ public class TestJunitTestRunner {
 		when(test.getDurationTimeFormattedString()).thenReturn(duration);
 		
 		TestSuite suite = mock(TestSuite.class);
+		when(suite.getPackage()).thenReturn(packageName);
 		when(suite.getTest(0)).thenReturn(test);
 		when(suite.getId()).thenReturn(suiteId);
 		_runner.addTestSuite(suite);
@@ -193,7 +199,7 @@ public class TestJunitTestRunner {
 		order.verify(test).isExecuted();
 		order.verify(test).getDurationTimeFormattedString();
 		
-		verify(suite, times(14)).getTest(0);
+		verify(suite, times(16)).getTest(0);
 	}
 	/**
 	 * Tests if the line of HTML is generated correctly for a none executed test.
@@ -213,6 +219,7 @@ public class TestJunitTestRunner {
 		String resultSuite = "1";
 		String console = "console";
 		String error = "error";
+		String exec = "exec";
 		int ok = 1;
 		int fail = 2;
 		int suiteId = 0;
@@ -227,8 +234,8 @@ public class TestJunitTestRunner {
 		when(_config.getPathSuitesResult()).thenReturn(resultSuite);
 		
 		HtmlOut html = mock(HtmlOut.class);
-		when(html.generateTestOut(suiteId, testId, console, error))
-			.thenReturn(testOut);
+		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
+				eq(error), anyString())).thenReturn(testOut);
 		
 		Method method = 
 				JunitTestRunner.class.getDeclaredMethod("createHtmlColumn", 
@@ -262,7 +269,7 @@ public class TestJunitTestRunner {
 		order.verify(test).isExecuted();
 		order.verify(test, never()).getDurationTimeFormattedString();
 		
-		verify(suite, times(9)).getTest(0);
+		verify(suite, times(11)).getTest(0);
 	}
 	
 	/**
@@ -369,13 +376,379 @@ public class TestJunitTestRunner {
 		method.invoke(_runner, 0, 0, null);
 	}
 	
+	/**
+	 * Tests if the correct command is created.
+	 */
 	@Test
-	public void testExec() {
-		fail("Test not yet implemented.");
+	public void testExec() throws Exception{
+		org.testsuite.data.Test test = mock(org.testsuite.data.Test.class);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.testCount()).thenReturn(1);
+		when(suite.getTest(0)).thenReturn(test);
+		
+		String name = "test";
+		String libName1 = "lib1.jar";
+		String libName2 = "lib2.jar";
+		String propName = "testing=\"true\"";
+		String pathLib = "lib";
+		String classPath = "bin";
+		String ret = "java -cp " + classPath + File.pathSeparator + pathLib +
+				File.separator + libName1 + File.pathSeparator + pathLib +
+				File.separator + libName2 + " -D" + propName +
+				" org.junit.runner.JUnitCore " + name;
+		
+		_runner.addClassPath(classPath);
+		
+		Library lib1 = mock(Library.class);
+		when(lib1.getFileName()).thenReturn(libName1);
+		when(lib1.getPath()).thenReturn(new String());
+		when(lib1.getName()).thenReturn(new String());
+		when(lib1.getVersion()).thenReturn(new String());
+		_runner.addLibrary(lib1);
+		
+		Library lib2 = mock(Library.class);
+		when(lib2.getFileName()).thenReturn(libName2);
+		when(lib2.getPath()).thenReturn(new String());
+		when(lib2.getName()).thenReturn(new String());
+		when(lib2.getVersion()).thenReturn(new String());
+		_runner.addLibrary(lib2);
+		
+		when(_config.getPathLibrary()).thenReturn(pathLib);
+		when(_config.propertyCount()).thenReturn(1);
+		when(_config.getProperty(0)).thenReturn(propName);
+		
+		Method method = 
+				JunitTestRunner.class.getDeclaredMethod("exec", 
+						String.class, TestSuite.class, 
+						org.testsuite.data.Test.class);
+		method.setAccessible(true);
+		assertEquals(ret, method.invoke(_runner, name, suite, test));
 	}
 	
+	/**
+	 * Tests if the evaluation correct.
+	 */
 	@Test
-	public void testErrorEvaluation() {
-		fail("Test not yet implemented.");
+	public void testEvaluation() throws Exception{
+		int ok = 10;
+		
+		Junit test = mock(Junit.class);
+		when(test.getIn()).thenReturn("OK (" + ok + " tests)");
+		
+		Method method = 
+				JunitTestRunner.class.getDeclaredMethod("evaluation", 
+						org.testsuite.data.Test.class);
+		method.setAccessible(true);
+		method.invoke(_runner, test);
+		
+		verify(test).getIn();
+		verify(test).setOk(ok);
+	}
+	
+	/**
+	 * Tests if the evaluation correct.
+	 */
+	@Test
+	public void testEvaluationFail() throws Exception{
+		int ok = 10;
+		int failures = 20;
+		
+		Junit test = mock(Junit.class);
+		when(test.getIn()).thenReturn("Tests run: " + ok + ",  Failures: " +
+				failures);
+		
+		Method method = 
+				JunitTestRunner.class.getDeclaredMethod("evaluation", 
+						org.testsuite.data.Test.class);
+		method.setAccessible(true);
+		method.invoke(_runner, test);
+		
+		verify(test).getIn();
+		verify(test).setOk(ok);
+		verify(test).setFail(failures);
+	}
+	
+	/**
+	 * Tests if the created html table footer correct.
+	 */
+	@Test
+	public void testCreateHtmlTableFooter() throws Exception {
+		StringBuilder result = new StringBuilder();
+		String td = "\t\t\t\t\t\t<td>";
+		int right1 = 10;
+		int right2 = 1;
+		int fail1 = 0;
+		int fail2 = 1;
+		long duration1 = 400;
+		long duration2 = 600;
+		int suite = 0;
+		
+		Junit test1 = mock(Junit.class);
+		when(test1.getOk()).thenReturn(right1);
+		when(test1.getFail()).thenReturn(fail1);
+		when(test1.getDurationTime()).thenReturn(duration1);
+		
+		Junit test2 = mock(Junit.class);
+		when(test2.getOk()).thenReturn(right2);
+		when(test2.getFail()).thenReturn(fail2);
+		when(test2.getDurationTime()).thenReturn(duration2);
+		
+		TestSuite suite1 = mock(TestSuite.class);
+		when(suite1.testCount()).thenReturn(2);
+		when(suite1.getTest(0)).thenReturn(test1);
+		when(suite1.getTest(1)).thenReturn(test2);
+		_runner.addTestSuite(suite1);
+		
+		result.append(td);
+		result.append("&nbsp;</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(right1 + right2);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(fail1 + fail2);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append("00:00:01.000</td>");
+		result.append(System.lineSeparator());
+		
+		Method method = 
+				JunitTestRunner.class.getDeclaredMethod("createHtmlTableFooter", 
+						int.class);
+		method.setAccessible(true);
+		assertEquals(result.toString(), method.invoke(_runner, suite));
+	}
+	
+	/**
+	 * Tests if the created html table over all tests in test this runner
+	 * correct.
+	 */
+	@Test
+	public void testCreateResultTestRunnerTable() throws Exception {
+		StringBuilder result = new StringBuilder("\t\t\t\t<table>");
+		result.append(System.lineSeparator());
+		
+		int right1 = 10;
+		int right2 = 1;
+		int right3 = 0;
+		int right4 = 0;
+		int fail1 = 0;
+		int fail2 = 1;
+		int fail3 = 0;
+		int fail4 = 0;
+		boolean term1 = false;
+		boolean term2 = true;
+		boolean term3 = false;
+		boolean term4 = false;
+		boolean exec1 = true;
+		boolean exec2 = true;
+		boolean exec3 = false;
+		boolean exec4 = false;
+		boolean exists1 = true;
+		boolean exists2 = true;
+		boolean exists3 = true;
+		boolean exists4 = false;
+		long duration1 = 400;
+		long duration2 = 600;
+		long duration3 = 0;
+		long duration4 = 0;
+		String tr = "\t\t\t\t\t<tr>";
+		String tr_end = "\t\t\t\t\t</tr>";
+		String th = "\t\t\t\t\t\t<th>";
+		String td = "\t\t\t\t\t\t<td>";
+		
+		Junit test1 = mock(Junit.class);
+		when(test1.getOk()).thenReturn(right1);
+		when(test1.getFail()).thenReturn(fail1);
+		when(test1.getDurationTime()).thenReturn(duration1);
+		when(test1.isExists()).thenReturn(exists1);
+		when(test1.isExecuted()).thenReturn(exec1);
+		when(test1.isTerminated()).thenReturn(term1);
+		
+		Junit test2 = mock(Junit.class);
+		when(test2.getOk()).thenReturn(right2);
+		when(test2.getFail()).thenReturn(fail2);
+		when(test2.getDurationTime()).thenReturn(duration2);
+		when(test2.isExists()).thenReturn(exists2);
+		when(test2.isExecuted()).thenReturn(exec2);
+		when(test2.isTerminated()).thenReturn(term2);
+		
+		Junit test3 = mock(Junit.class);
+		when(test3.getOk()).thenReturn(right3);
+		when(test3.getFail()).thenReturn(fail3);
+		when(test3.getDurationTime()).thenReturn(duration3);
+		when(test3.isExists()).thenReturn(exists3);
+		when(test3.isExecuted()).thenReturn(exec3);
+		when(test3.isTerminated()).thenReturn(term3);
+		
+		Junit test4 = mock(Junit.class);
+		when(test4.getOk()).thenReturn(right4);
+		when(test4.getFail()).thenReturn(fail4);
+		when(test4.getDurationTime()).thenReturn(duration4);
+		when(test4.isExists()).thenReturn(exists4);
+		when(test4.isExecuted()).thenReturn(exec4);
+		when(test4.isTerminated()).thenReturn(term4);
+		
+		TestSuite suite1 = mock(TestSuite.class);
+		when(suite1.testCount()).thenReturn(2);
+		when(suite1.getTest(0)).thenReturn(test1);
+		when(suite1.getTest(1)).thenReturn(test2);
+		_runner.addTestSuite(suite1);
+		
+		TestSuite suite2 = mock(TestSuite.class);
+		when(suite2.testCount()).thenReturn(2);
+		when(suite2.getTest(0)).thenReturn(test3);
+		when(suite2.getTest(1)).thenReturn(test4);
+		_runner.addTestSuite(suite2);
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+		
+		result.append("\t\t\t\t\t\t<th colspan=\"3\">");
+		result.append(_bundle.getString("test_runner_result_name"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+		result.append("\t\t\t\t\t\t<td colspan=\"3\">");
+		result.append(JunitTestRunner.class.getName());
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+
+		result.append(th);
+		result.append(_bundle.getString("test_runner_result_tests"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+
+		result.append(th);
+		result.append(_bundle.getString("test_runner_result_tests_executed"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+
+		result.append(th);
+		result.append(_bundle.getString("test_runner_result_tests_terminated"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(4);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(2);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(1);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+
+		result.append(th);
+		result.append(_bundle.getString("test_runner_result_tests_ignored"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+
+		result.append(th);
+		result.append(_bundle.getString("test_runner_result_tests_not_exists"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+
+		result.append(th);
+		result.append(_bundle.getString("test_runner_result_right"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(1);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(1);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(right1 + right2 + right3 + right4);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+
+		result.append(th);
+		result.append(_bundle.getString("test_runner_result_wrong"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+
+		result.append("\t\t\t\t\t\t<th colspan=\"2\">");
+		result.append(_bundle.getString("test_runner_result_duration"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(fail1 + fail2 + fail3 + fail4);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append("\t\t\t\t\t\t<td colspan=\"2\">00:00:01.000</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append("\t\t\t\t</table>");
+		result.append(System.lineSeparator());
+		
+		Method method = 
+				JunitTestRunner.class.getDeclaredMethod(
+						"createResultTestRunnerTable");
+		method.setAccessible(true);
+		assertEquals(result.toString(), method.invoke(_runner));
 	}
 }
