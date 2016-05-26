@@ -560,7 +560,7 @@ public class TestTestRunner extends TestRunnerHelper {
 		String newLine = System.lineSeparator();
 		
 		String result = "\t\t\t<div class=\"libraries\">" + newLine + 
-				"\t\t\t\t<p>Verwendete Bibliotheken:</p>" + newLine +
+				"\t\t\t\t<h2>Verwendete Bibliotheken:</h2>" + newLine +
 				"\t\t\t\t<ul>" + newLine + "\t\t\t\t\t<li>" + name1 + " " + 
 				version1 + "</li>" + newLine + "\t\t\t\t\t<li>" + name2 + 
 				"</li>" + newLine + "\t\t\t\t</ul>" + newLine + "\t\t\t</div>" +
@@ -608,7 +608,7 @@ public class TestTestRunner extends TestRunnerHelper {
 		_runner.addTestSuite(suite2);
 		
 		String ret = "\t\t\t<div class=\"nonexists\">" + System.lineSeparator() +
-				"\t\t\t\t<p>Folgende Tests existieren nicht:</p>" + 
+				"\t\t\t\t<h2>Folgende Tests existieren nicht:</h2>" + 
 				System.lineSeparator() + "\t\t\t\t<ul>" + System.lineSeparator() +
 				"\t\t\t\t\t<li>Test1</li>" + System.lineSeparator() +
 				"\t\t\t\t\t<li>Test4</li>" + System.lineSeparator() +
@@ -681,10 +681,14 @@ public class TestTestRunner extends TestRunnerHelper {
 				"\t\t\t\t\t</tr>" + System.lineSeparator() +
 				"\t\t\t\t\t<tr>" + System.lineSeparator() +
 				"\t\t\t\t\t</tr>" + System.lineSeparator() +
+				"\t\t\t\t\t<tr>" + System.lineSeparator() +
+				"\t\t\t\t\t</tr>" + System.lineSeparator() +
 				"\t\t\t\t</table>" + System.lineSeparator() +
 				"\t\t\t</div>" + System.lineSeparator() +
 				"\t\t\t<div class=\"testsuite\">" + System.lineSeparator() +
 				"\t\t\t\t<table>" + System.lineSeparator() +
+				"\t\t\t\t\t<tr>" + System.lineSeparator() +
+				"\t\t\t\t\t</tr>" + System.lineSeparator() +
 				"\t\t\t\t\t<tr>" + System.lineSeparator() +
 				"\t\t\t\t\t</tr>" + System.lineSeparator() +
 				"\t\t\t\t\t<tr>" + System.lineSeparator() +
@@ -997,7 +1001,7 @@ public class TestTestRunner extends TestRunnerHelper {
 		
 		_runner.addTestSuite(suite);
 		
-		_runner.run(suite, junit);
+		_runner.run(suite, junit,  null);
 		
 		verify(junit).isExists();
 		verify(junit).setExitStatus(100);
@@ -1029,7 +1033,7 @@ public class TestTestRunner extends TestRunnerHelper {
 		when(suite.isExists()).thenReturn(false);
 		_runner.addTestSuite(suite);
 		
-		_runner.run(suite, junit);
+		_runner.run(suite, junit, null);
 		
 		verify(_config, never()).getPathSrc();
 		verify(_config, never()).getPathResult();
@@ -1062,7 +1066,7 @@ public class TestTestRunner extends TestRunnerHelper {
 		when(suite.isExists()).thenReturn(true);
 		_runner.addTestSuite(suite);
 		
-		_runner.run(suite, junit);
+		_runner.run(suite, junit, null);
 		
 		verify(junit).isExists();
 		verify(junit).isExecuted();
@@ -1149,7 +1153,7 @@ public class TestTestRunner extends TestRunnerHelper {
 			}
 		});
 		
-		_runner.run(suite, junit);
+		_runner.run(suite, junit, null);
 		
 		assertEquals(1, _runCount);
 		
@@ -1233,7 +1237,7 @@ public class TestTestRunner extends TestRunnerHelper {
 			.withArguments(isrError)
 			.thenReturn(error);
 		
-		_runner.run(suite, junit);
+		_runner.run(suite, junit, null);
 		
 		String exec = packageName + "." + testName;
 		verify(runtime).exec(exec);

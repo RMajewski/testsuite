@@ -178,22 +178,27 @@ public class TestHtmlOut {
 	public void testGenerateTestOutWithMinusOneAsSuiteId() throws Exception {
 		String console = "console";
 		String error = "error";
+		String exec = "exec";
 
-		assertEquals(new String(), _html.generateTestOut(-1, 0, console, error));
+		assertEquals(new String(), _html.generateTestOut(-1, 0, console, error,
+				exec));
 	}
 	
 	@Test
 	public void testGenerateTestOutWithMinusOneAsTestId() throws Exception {
 		String console = "console";
 		String error = "error";
+		String exec = "exec";
 
-		assertEquals(new String(), _html.generateTestOut(0, -1, console, error));
+		assertEquals(new String(), _html.generateTestOut(0, -1, console, error,
+				exec));
 	}
 	
 	@Test
 	public void testGenerateTestOutWithNullAsConsole()
 			throws Exception {
 		String error = "Fehler";
+		String exec = "exec";
 		
 		StringBuilder builder = new StringBuilder();
 		builder.append("\t\t\t\t\t\t<div class=\"right\">");
@@ -202,6 +207,14 @@ public class TestHtmlOut {
 		builder.append(System.lineSeparator());
 		builder.append("\t\t\t\t\t\t<div class=\"testoutInvisible\"");
 		builder.append(" id=\"id_1_1\">");
+		builder.append(System.lineSeparator());
+		builder.append("\t\t\t\t\t\t\t<div class=\"command_line\">");
+		builder.append(System.lineSeparator());
+		builder.append("\t\t\t\t\t\t\t\t<code>");
+		builder.append(exec);
+		builder.append("</code>");
+		builder.append(System.lineSeparator());
+		builder.append("\t\t\t\t\t\t\t</div>");
 		builder.append(System.lineSeparator());
 		builder.append("\t\t\t\t\t\t\t<div class=\"console\">");
 		builder.append("Keine Ausgabe auf der Konsole");
@@ -215,13 +228,14 @@ public class TestHtmlOut {
 		builder.append(System.lineSeparator());
 
 		assertEquals(builder.toString(), 
-				_html.generateTestOut(1, 1, null, error));
+				_html.generateTestOut(1, 1, null, error, exec));
 	}
 	
 	@Test
-	public void testGenerateTestOutWithNullAsError()
+	public void testGenerateTestOutWithNullAsExec()
 			throws Exception {
 		String console = "console";
+		String error = "Fehler";
 		
 		StringBuilder builder = new StringBuilder();
 		builder.append("\t\t\t\t\t\t<div class=\"right\">");
@@ -231,33 +245,8 @@ public class TestHtmlOut {
 		builder.append("\t\t\t\t\t\t<div class=\"testoutInvisible\"");
 		builder.append(" id=\"id_1_1\">");
 		builder.append(System.lineSeparator());
-		builder.append("\t\t\t\t\t\t\t<div class=\"console\">");
-		builder.append(console);
+		builder.append("\t\t\t\t\t\t\t<div class=\"command_line\">Kein Befehl");
 		builder.append("</div>");
-		builder.append(System.lineSeparator());
-		builder.append("\t\t\t\t\t\t\t<div class=\"error\">");
-		builder.append("Keine Fehler ausgegeben");
-		builder.append("</div>");
-		builder.append(System.lineSeparator());
-		builder.append("\t\t\t\t\t\t</div>");
-		builder.append(System.lineSeparator());
-
-		assertEquals(builder.toString(), 
-				_html.generateTestOut(1, 1, console, null));
-	}
-	
-	@Test
-	public void testGenerateTestOut() throws Exception {
-		String console = "console";
-		String error = "error";
-		
-		StringBuilder builder = new StringBuilder();
-		builder.append("\t\t\t\t\t\t<div class=\"right\">");
-		builder.append("<a href=\"javascript:toogleDisplayId(1, 1)\">");
-		builder.append("Ausgabe</a></div>");
-		builder.append(System.lineSeparator());
-		builder.append("\t\t\t\t\t\t<div class=\"testoutInvisible\"");
-		builder.append(" id=\"id_1_1\">");
 		builder.append(System.lineSeparator());
 		builder.append("\t\t\t\t\t\t\t<div class=\"console\">");
 		builder.append(console);
@@ -271,6 +260,80 @@ public class TestHtmlOut {
 		builder.append(System.lineSeparator());
 
 		assertEquals(builder.toString(), 
-				_html.generateTestOut(1, 1, console, error));
+				_html.generateTestOut(1, 1, console, error, null));
+	}
+	
+	@Test
+	public void testGenerateTestOutWithNullAsError()
+			throws Exception {
+		String console = "console";
+		String exec = "exec";
+		
+		StringBuilder builder = new StringBuilder();
+		builder.append("\t\t\t\t\t\t<div class=\"right\">");
+		builder.append("<a href=\"javascript:toogleDisplayId(1, 1)\">");
+		builder.append("Ausgabe</a></div>");
+		builder.append(System.lineSeparator());
+		builder.append("\t\t\t\t\t\t<div class=\"testoutInvisible\"");
+		builder.append(" id=\"id_1_1\">");
+		builder.append(System.lineSeparator());
+		builder.append("\t\t\t\t\t\t\t<div class=\"command_line\">");
+		builder.append(System.lineSeparator());
+		builder.append("\t\t\t\t\t\t\t\t<code>");
+		builder.append(exec);
+		builder.append("</code>");
+		builder.append(System.lineSeparator());
+		builder.append("\t\t\t\t\t\t\t</div>");
+		builder.append(System.lineSeparator());
+		builder.append("\t\t\t\t\t\t\t<div class=\"console\">");
+		builder.append(console);
+		builder.append("</div>");
+		builder.append(System.lineSeparator());
+		builder.append("\t\t\t\t\t\t\t<div class=\"error\">");
+		builder.append("Keine Fehler ausgegeben");
+		builder.append("</div>");
+		builder.append(System.lineSeparator());
+		builder.append("\t\t\t\t\t\t</div>");
+		builder.append(System.lineSeparator());
+
+		assertEquals(builder.toString(), 
+				_html.generateTestOut(1, 1, console, null, exec));
+	}
+	
+	@Test
+	public void testGenerateTestOut() throws Exception {
+		String console = "console";
+		String error = "error";
+		String exec = "exec";
+		
+		StringBuilder builder = new StringBuilder();
+		builder.append("\t\t\t\t\t\t<div class=\"right\">");
+		builder.append("<a href=\"javascript:toogleDisplayId(1, 1)\">");
+		builder.append("Ausgabe</a></div>");
+		builder.append(System.lineSeparator());
+		builder.append("\t\t\t\t\t\t<div class=\"testoutInvisible\"");
+		builder.append(" id=\"id_1_1\">");
+		builder.append(System.lineSeparator());
+		builder.append("\t\t\t\t\t\t\t<div class=\"command_line\">");
+		builder.append(System.lineSeparator());
+		builder.append("\t\t\t\t\t\t\t\t<code>");
+		builder.append(exec);
+		builder.append("</code>");
+		builder.append(System.lineSeparator());
+		builder.append("\t\t\t\t\t\t\t</div>");
+		builder.append(System.lineSeparator());
+		builder.append("\t\t\t\t\t\t\t<div class=\"console\">");
+		builder.append(console);
+		builder.append("</div>");
+		builder.append(System.lineSeparator());
+		builder.append("\t\t\t\t\t\t\t<div class=\"error\">");
+		builder.append(error);
+		builder.append("</div>");
+		builder.append(System.lineSeparator());
+		builder.append("\t\t\t\t\t\t</div>");
+		builder.append(System.lineSeparator());
+
+		assertEquals(builder.toString(), 
+				_html.generateTestOut(1, 1, console, error, exec));
 	}
 }

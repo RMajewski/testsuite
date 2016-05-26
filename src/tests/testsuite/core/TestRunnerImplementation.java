@@ -63,4 +63,14 @@ class TestRunnerImplementation extends TestRunner {
 	protected String exec(String name, TestSuite suite, Test test) {
 		return name;
 	}
+
+	@Override
+	protected String createHtmlTableFooter(int suite) {
+		return new String();
+	}
+
+	@Override
+	protected String createResultTestRunnerTable() {
+		return new String();
+	}
 }

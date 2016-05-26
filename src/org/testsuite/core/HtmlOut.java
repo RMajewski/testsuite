@@ -278,17 +278,21 @@ public class HtmlOut {
 		ret.append("\">");
 		ret.append(System.lineSeparator());
 
-		ret.append("\t\t\t\t\t\t\t<div class=\"command line\">");
+		ret.append("\t\t\t\t\t\t\t<div class=\"command_line\">");
 
 		if ((exec == null) || exec.isEmpty())
 			ret.append(_bundle.getString("generateTestOut_noExecOut"));
 		else {
+			ret.append(System.lineSeparator());
 			ret.append("\t\t\t\t\t\t\t\t<code>");
 			ret.append(exec);
 			ret.append("</code>");
+			ret.append(System.lineSeparator());
+			ret.append("\t\t\t\t\t\t\t");
 		}
 
-		ret.append("\t\t\t\t\t\t\t</div>");
+		ret.append("</div>");
+		ret.append(System.lineSeparator());
 		ret.append("\t\t\t\t\t\t\t<div class=\"console\">");
 		
 		if ((console == null) || console.isEmpty())
