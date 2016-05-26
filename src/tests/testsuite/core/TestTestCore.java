@@ -40,6 +40,7 @@ import org.testsuite.core.JunitTestRunner;
 import org.testsuite.core.TestCore;
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
+import org.testsuite.data.TestSuite;
 
 /**
  * Tests the class {@link org.testsuite.core.TestCore}.
@@ -179,8 +180,24 @@ public class TestTestCore {
 	 */
 	@Test
 	public void testRun() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		org.testsuite.data.Test test1 = mock(org.testsuite.data.Test.class);
+		org.testsuite.data.Test test2 = mock(org.testsuite.data.Test.class);
+		
+		TestSuite suite1 = mock(TestSuite.class);
+		when(suite1.testCount()).thenReturn(1);
+		when(suite1.getTest(0)).thenReturn(test1);
+		
+		TestSuite suite2 = mock(TestSuite.class);
+		when(suite2.testCount()).thenReturn(1);
+		when(suite2.getTest(0)).thenReturn(test2);
+		
 		JunitTestRunner runner1 = mock(JunitTestRunner.class);
+		when(runner1.testSuiteCount()).thenReturn(1);
+		when(runner1.getTestSuite(0)).thenReturn(suite1);
+		
 		FitTestRunner runner2 = mock(FitTestRunner.class);
+		when(runner2.testSuiteCount()).thenReturn(1);
+		when(runner2.getTestSuite(0)).thenReturn(suite2);
 		
 		Field field = TestCore.class.getDeclaredField("_testRunner");
 		field.setAccessible(true);
@@ -191,8 +208,8 @@ public class TestTestCore {
 		
 		_core.run();
 		
-		verify(runner1).run();
-		verify(runner2).run();
+		verify(runner1).run(eq(suite1), eq(test1), isNull(Thread.class));
+		verify(runner2).run(eq(suite2), eq(test2), isNull(Thread.class));
 	}
 
 	/**
@@ -236,7 +253,7 @@ public class TestTestCore {
 			.withArguments(Matchers.anyString());
 		
 		verify(html).htmlHead();
-		verify(html, times(2)).writeHtml(Matchers.anyString());
+		verify(html, times(3)).writeHtml(Matchers.anyString());
 		verify(html).htmlEnd();
 	}
 

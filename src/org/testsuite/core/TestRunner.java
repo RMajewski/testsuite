@@ -70,7 +70,7 @@ public abstract class TestRunner {
 	/**
 	 * Saves the file for resource bundle
 	 */
-	protected static final String BUNDLE_FILE =
+	public static final String BUNDLE_FILE =
 			"resources.lang.org.testsuite.core.TestRunner";
 	
 	/**
