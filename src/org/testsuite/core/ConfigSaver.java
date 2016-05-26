@@ -102,7 +102,7 @@ public class ConfigSaver {
 		if (!config.getPathLibrary().isEmpty()) {
 			bw.write("\t\t<libPath>");
 			bw.write(config.getPathLibrary());
-			bw.write("<libPath>");
+			bw.write("</libPath>");
 			bw.newLine();
 		}
 
@@ -195,16 +195,9 @@ public class ConfigSaver {
 			bw.newLine();
 		}
 
-		if (runner.testSuiteCount() > 0) {
-			bw.write("\t\t<testSuite>");
-			bw.newLine();
-
+		if (runner.testSuiteCount() > 0)
 			for (int i = 0; i < runner.classPathCount(); i++)
 				writeTestSuite(bw, runner.getTestSuite(i));
-				
-			bw.write("\t\t</testSuite>");
-			bw.newLine();
-		}
 		
 		bw.write("\t</testGroup>");
 		bw.newLine();
