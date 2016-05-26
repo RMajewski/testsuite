@@ -20,6 +20,8 @@
 package tests.testsuite.core;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
@@ -33,6 +35,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
+import java.util.ResourceBundle;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +47,9 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.testsuite.core.HtmlOut;
 import org.testsuite.core.JemmyTestRunner;
+import org.testsuite.core.JunitTestRunner;
 import org.testsuite.data.Config;
+import org.testsuite.data.Junit;
 import org.testsuite.data.Library;
 import org.testsuite.data.TestEvent;
 import org.testsuite.data.TestEventListener;
@@ -74,9 +79,9 @@ public class TestJemmyTestRunner {
 	private Config _config;
 	
 	/**
-	 * Saves the count of run tests.
+	 * Saves the instance of resource bundle
 	 */
-	private int _runCount;
+	private ResourceBundle _bundle;
 	
 
 	/**
@@ -85,8 +90,8 @@ public class TestJemmyTestRunner {
 	@Before
 	public void setUp() throws Exception {
 		_config = mock(Config.class);
+		_bundle = ResourceBundle.getBundle(JemmyTestRunner.BUNDLE_FILE);
 		_runner = new JemmyTestRunner(_config);
-		_runCount = 0;
 	}
 
 	/**
@@ -138,15 +143,20 @@ public class TestJemmyTestRunner {
 		String testOut = "\t\t\t\t\t\t<div class=\"right\"><a " +
 				"href=\"javascript:togleDisplayId(0, 0)\"> Ausgabe</a></div>" +
 				System.lineSeparator() + "\t\t\t\t\t\t<div " +
-				"class=\"testoutInvisible\" id=\"id_0_0\">" + 
-				System.lineSeparator() + "\t\t\t\t\t\t\t<div " +
-				"class=\"console\">Console</div>" + System.lineSeparator() +
-				"\t\t\t\t\t\t\t<div class=\"error\">Fehler</div>" +
-				System.lineSeparator() + "\t\t\t\t\t\t</div>" + 
+				"class=\"testoutInvisible\" id=\"id_0_0\">" +
+				System.lineSeparator() + " class=\"" +
+				"command_line\">" + System.lineSeparator() + 
+				"\t\t\t\t\t\t\t\t<code>exec</code>" + System.lineSeparator() +
+				"\t\t\t\t\t\t\t</div>" + System.lineSeparator() + 
+				"\t\t\t\t\t\t\t<div class=\"console\">Console</div>" +
+				System.lineSeparator() + "\t\t\t\t\t\t\t<div class=\"error\">" +
+				"Fehler</div>" + System.lineSeparator() + "\t\t\t\t\t\t</div>" + 
 				System.lineSeparator();
 		String console = "console";
 		String error = "error";
+		String exec = "exec";
 		String testName = "Test1";
+		String packageName = "tests";
 		int suiteId = 0;
 		int testId = 0;
 		String duration = "00:00:01.897";
@@ -160,8 +170,8 @@ public class TestJemmyTestRunner {
 				"class=\"pass\">" + duration + "</td>" + System.lineSeparator();
 		
 		HtmlOut html = mock(HtmlOut.class);
-		when(html.generateTestOut(suiteId, testId, console, error))
-			.thenReturn(testOut);
+		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
+				eq(error), anyString())).thenReturn(testOut);
 		
 		Method method = 
 				JemmyTestRunner.class.getDeclaredMethod("createHtmlColumn", 
@@ -170,6 +180,7 @@ public class TestJemmyTestRunner {
 		
 		org.testsuite.data.Test test = mock(org.testsuite.data.Test.class);
 		when(test.isExists()).thenReturn(true);
+		when(test.isExecuted()).thenReturn(true);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
 		when(test.getIn()).thenReturn(console);
@@ -179,6 +190,9 @@ public class TestJemmyTestRunner {
 		
 		TestSuite suite = mock(TestSuite.class);
 		when(suite.getTest(0)).thenReturn(test);
+		when(suite.getPackage()).thenReturn(packageName);
+		when(suite.getTest(0)).thenReturn(test);
+		when(suite.getId()).thenReturn(suiteId);
 		_runner.addTestSuite(suite);
 		
 		assertEquals(ret, method.invoke(_runner, 0, 0, html));
@@ -194,7 +208,7 @@ public class TestJemmyTestRunner {
 		order.verify(test).getExitStatus();
 		order.verify(test).getDurationTimeFormattedString();
 		
-		verify(suite, times(13)).getTest(0);
+		verify(suite, times(15)).getTest(0);
 	}
 	
 	/**
@@ -206,14 +220,18 @@ public class TestJemmyTestRunner {
 		String testOut = "\t\t\t\t\t\t<div class=\"right\"><a " +
 				"href=\"javascript:togleDisplayId(0, 0)\"> Ausgabe</a></div>" +
 				System.lineSeparator() + "\t\t\t\t\t\t<div " +
-				"class=\"testoutInvisible\" id=\"id_0_0\">" + 
-				System.lineSeparator() + "\t\t\t\t\t\t\t<div " +
-				"class=\"console\">Console</div>" + System.lineSeparator() +
-				"\t\t\t\t\t\t\t<div class=\"error\">Fehler</div>" +
-				System.lineSeparator() + "\t\t\t\t\t\t</div>" + 
+				"class=\"testoutInvisible\" id=\"id_0_0\">" +
+				System.lineSeparator() + " class=\"" +
+				"command_line\">" + System.lineSeparator() + 
+				"\t\t\t\t\t\t\t\t<code>exec</code>" + System.lineSeparator() +
+				"\t\t\t\t\t\t\t</div>" + System.lineSeparator() + 
+				"\t\t\t\t\t\t\t<div class=\"console\">Console</div>" +
+				System.lineSeparator() + "\t\t\t\t\t\t\t<div class=\"error\">" +
+				"Fehler</div>" + System.lineSeparator() + "\t\t\t\t\t\t</div>" + 
 				System.lineSeparator();
 		String console = "console";
 		String error = "error";
+		String exec = "exec";
 		String testName = "Test1";
 		int suiteId = 0;
 		int testId = 0;
@@ -229,8 +247,8 @@ public class TestJemmyTestRunner {
 				System.lineSeparator();
 		
 		HtmlOut html = mock(HtmlOut.class);
-		when(html.generateTestOut(suiteId, testId, console, error))
-			.thenReturn(testOut);
+		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
+				eq(error), anyString())).thenReturn(testOut);
 		
 		Method method = 
 				JemmyTestRunner.class.getDeclaredMethod("createHtmlColumn", 
@@ -263,7 +281,7 @@ public class TestJemmyTestRunner {
 		order.verify(test).getExitStatus();
 		order.verify(test).getDurationTimeFormattedString();
 		
-		verify(suite, times(14)).getTest(0);
+		verify(suite, times(16)).getTest(0);
 	}
 
 	/**
@@ -278,6 +296,7 @@ public class TestJemmyTestRunner {
 		String extension = "java";
 		String console = "console";
 		String error = "error";
+		String exec = "exec";
 		int suiteId = 0;
 		int testId = 0;
 		boolean executed = true;
@@ -291,8 +310,8 @@ public class TestJemmyTestRunner {
 		_runner.setFileExtension(extension);
 		
 		HtmlOut html = mock(HtmlOut.class);
-		when(html.generateTestOut(suiteId, testId, console, error))
-			.thenReturn(new String());
+		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
+				eq(error), anyString())).thenReturn(new String());
 		
 		Method method = 
 				JemmyTestRunner.class.getDeclaredMethod("createHtmlColumn", 
@@ -335,6 +354,7 @@ public class TestJemmyTestRunner {
 		String extension = "java";
 		String console = "console";
 		String error = "error";
+		String exec = "exec";
 		int suiteId = 0;
 		int testId = 0;
 		boolean executed = false; 
@@ -348,8 +368,8 @@ public class TestJemmyTestRunner {
 		_runner.setFileExtension(extension);
 		
 		HtmlOut html = mock(HtmlOut.class);
-		when(html.generateTestOut(suiteId, testId, console, error))
-			.thenReturn(new String());
+		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
+				eq(error), anyString())).thenReturn(new String());
 		
 		Method method = 
 				JemmyTestRunner.class.getDeclaredMethod("createHtmlColumn", 
@@ -381,7 +401,7 @@ public class TestJemmyTestRunner {
 		order.verify(test).getError();
 		order.verify(test).isExecuted();
 		
-		verify(suite, times(9)).getTest(0);
+		verify(suite, times(11)).getTest(0);
 	}
 	
 	/**
@@ -425,8 +445,338 @@ public class TestJemmyTestRunner {
 		method.invoke(_runner, 0, 0, null);
 	}
 	
+	/**
+	 * Tests if the correct command is created.
+	 */
 	@Test
-	public void testExec() {
-		fail("Test not yet implemented.");
+	public void testExec() throws Exception{
+		org.testsuite.data.Test test = mock(org.testsuite.data.Test.class);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.testCount()).thenReturn(1);
+		when(suite.getTest(0)).thenReturn(test);
+		
+		String name = "test";
+		String libName1 = "lib1.jar";
+		String libName2 = "lib2.jar";
+		String propName = "testing=\"true\"";
+		String pathLib = "lib";
+		String classPath = "bin";
+		String ret = "java -cp " + classPath + File.pathSeparator + pathLib +
+				File.separator + libName1 + File.pathSeparator + pathLib +
+				File.separator + libName2 + " -D" + propName + " " +
+				name;
+		
+		_runner.addClassPath(classPath);
+		
+		Library lib1 = mock(Library.class);
+		when(lib1.getFileName()).thenReturn(libName1);
+		when(lib1.getPath()).thenReturn(new String());
+		when(lib1.getName()).thenReturn(new String());
+		when(lib1.getVersion()).thenReturn(new String());
+		_runner.addLibrary(lib1);
+		
+		Library lib2 = mock(Library.class);
+		when(lib2.getFileName()).thenReturn(libName2);
+		when(lib2.getPath()).thenReturn(new String());
+		when(lib2.getName()).thenReturn(new String());
+		when(lib2.getVersion()).thenReturn(new String());
+		_runner.addLibrary(lib2);
+		
+		when(_config.getPathLibrary()).thenReturn(pathLib);
+		when(_config.propertyCount()).thenReturn(1);
+		when(_config.getProperty(0)).thenReturn(propName);
+		
+		Method method = 
+				JemmyTestRunner.class.getDeclaredMethod("exec", 
+						String.class, TestSuite.class, 
+						org.testsuite.data.Test.class);
+		method.setAccessible(true);
+		assertEquals(ret, method.invoke(_runner, name, suite, test));
+	}
+		
+	/**
+	 * Tests if the created html table footer correct.
+	 */
+	@Test
+	public void testCreateHtmlTableFooter() throws Exception {
+		StringBuilder result = new StringBuilder();
+		String td = "\t\t\t\t\t\t<td>";
+		int exit1 = 0;
+		int exit2 = 100;
+		long duration1 = 400;
+		long duration2 = 600;
+		int suite = 0;
+		
+		org.testsuite.data.Test test1 = mock(org.testsuite.data.Test.class);
+		when(test1.getDurationTime()).thenReturn(duration1);
+		when(test1.getExitStatus()).thenReturn(exit1);
+		
+		org.testsuite.data.Test test2 = mock(org.testsuite.data.Test.class);
+		when(test2.getDurationTime()).thenReturn(duration2);
+		when(test2.getExitStatus()).thenReturn(exit2);
+		
+		TestSuite suite1 = mock(TestSuite.class);
+		when(suite1.testCount()).thenReturn(2);
+		when(suite1.getTest(0)).thenReturn(test1);
+		when(suite1.getTest(1)).thenReturn(test2);
+		_runner.addTestSuite(suite1);
+		
+		result.append(td);
+		result.append("&nbsp;</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(_bundle.getString("createHtmlTableHead_ok"));
+		result.append(": ");
+		result.append(1);
+		result.append("<br/>");
+		result.append(_bundle.getString("createHtmlTableHead_exception"));
+		result.append(": ");
+		result.append(1);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append("00:00:01.000</td>");
+		result.append(System.lineSeparator());
+		
+		Method method = 
+				JemmyTestRunner.class.getDeclaredMethod("createHtmlTableFooter", 
+						int.class);
+		method.setAccessible(true);
+		assertEquals(result.toString(), method.invoke(_runner, suite));
+	}
+	
+	/**
+	 * Tests if the created html table over all tests in test this runner
+	 * correct.
+	 */
+	@Test
+	public void testCreateResultTestRunnerTable() throws Exception {
+		StringBuilder result = new StringBuilder("\t\t\t\t<table>");
+		result.append(System.lineSeparator());
+
+		int exit1 = 0;
+		int exit2 = 143;
+		int exit3 = 0;
+		int exit4 = 0;
+		int exit5 = 10;
+		boolean term1 = false;
+		boolean term2 = true;
+		boolean term3 = false;
+		boolean term4 = false;
+		boolean term5 = false;
+		boolean exec1 = true;
+		boolean exec2 = true;
+		boolean exec3 = false;
+		boolean exec4 = true;
+		boolean exec5 = true;
+		boolean exists1 = true;
+		boolean exists2 = true;
+		boolean exists3 = true;
+		boolean exists4 = false;
+		boolean exists5 = true;
+		long duration1 = 400;
+		long duration2 = 600;
+		long duration3 = 0;
+		long duration4 = 0;
+		long duration5 = 100;
+		String tr = "\t\t\t\t\t<tr>";
+		String tr_end = "\t\t\t\t\t</tr>";
+		String th = "\t\t\t\t\t\t<th>";
+		String td = "\t\t\t\t\t\t<td>";
+		
+		org.testsuite.data.Test test1 = mock(org.testsuite.data.Test.class);
+		when(test1.getDurationTime()).thenReturn(duration1);
+		when(test1.isExists()).thenReturn(exists1);
+		when(test1.isExecuted()).thenReturn(exec1);
+		when(test1.isTerminated()).thenReturn(term1);
+		when(test1.getExitStatus()).thenReturn(exit1);
+		
+		org.testsuite.data.Test test2 = mock(org.testsuite.data.Test.class);
+		when(test2.getDurationTime()).thenReturn(duration2);
+		when(test2.isExists()).thenReturn(exists2);
+		when(test2.isExecuted()).thenReturn(exec2);
+		when(test2.isTerminated()).thenReturn(term2);
+		when(test2.getExitStatus()).thenReturn(exit2);
+		
+		org.testsuite.data.Test test3 = mock(org.testsuite.data.Test.class);
+		when(test3.getDurationTime()).thenReturn(duration3);
+		when(test3.isExists()).thenReturn(exists3);
+		when(test3.isExecuted()).thenReturn(exec3);
+		when(test3.isTerminated()).thenReturn(term3);
+		when(test3.getExitStatus()).thenReturn(exit3);
+		
+		org.testsuite.data.Test test4 = mock(org.testsuite.data.Test.class);
+		when(test4.getDurationTime()).thenReturn(duration4);
+		when(test4.isExists()).thenReturn(exists4);
+		when(test4.isExecuted()).thenReturn(exec4);
+		when(test4.isTerminated()).thenReturn(term4);
+		when(test4.getExitStatus()).thenReturn(exit4);
+		
+		org.testsuite.data.Test test5 = mock(org.testsuite.data.Test.class);
+		when(test5.getDurationTime()).thenReturn(duration5);
+		when(test5.isExists()).thenReturn(exists5);
+		when(test5.isExecuted()).thenReturn(exec5);
+		when(test5.isTerminated()).thenReturn(term5);
+		when(test5.getExitStatus()).thenReturn(exit5);
+		
+		TestSuite suite1 = mock(TestSuite.class);
+		when(suite1.testCount()).thenReturn(2);
+		when(suite1.getTest(0)).thenReturn(test1);
+		when(suite1.getTest(1)).thenReturn(test2);
+		_runner.addTestSuite(suite1);
+		
+		TestSuite suite2 = mock(TestSuite.class);
+		when(suite2.testCount()).thenReturn(3);
+		when(suite2.getTest(0)).thenReturn(test3);
+		when(suite2.getTest(1)).thenReturn(test4);
+		when(suite2.getTest(2)).thenReturn(test5);
+		_runner.addTestSuite(suite2);
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+		
+		result.append("\t\t\t\t\t\t<th colspan=\"3\">");
+		result.append(_bundle.getString("test_runner_result_name"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+		result.append("\t\t\t\t\t\t<td colspan=\"3\">");
+		result.append(JemmyTestRunner.class.getName());
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+
+		result.append(th);
+		result.append(_bundle.getString("test_runner_result_tests"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+
+		result.append(th);
+		result.append(_bundle.getString("test_runner_result_tests_executed"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+
+		result.append(th);
+		result.append(_bundle.getString("test_runner_result_tests_terminated"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(5);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(3);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(1);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+
+		result.append(th);
+		result.append(_bundle.getString("test_runner_result_tests_ignored"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+
+		result.append(th);
+		result.append(_bundle.getString("test_runner_result_tests_not_exists"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+
+		result.append(th);
+		result.append(_bundle.getString("test_runner_result_right"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(1);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(1);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(1);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+
+		result.append(th);
+		result.append(_bundle.getString("test_runner_result_wrong"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+
+		result.append("\t\t\t\t\t\t<th colspan=\"2\">");
+		result.append(_bundle.getString("test_runner_result_duration"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(1);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append("\t\t\t\t\t\t<td colspan=\"2\">00:00:01.100</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append("\t\t\t\t</table>");
+		result.append(System.lineSeparator());
+		
+		Method method = 
+				JemmyTestRunner.class.getDeclaredMethod(
+						"createResultTestRunnerTable");
+		method.setAccessible(true);
+		assertEquals(result.toString(), method.invoke(_runner));
 	}
 }

@@ -361,18 +361,19 @@ public class JemmyTestRunner extends TestRunner {
 			tests_all += _suites.get(suite).testCount();
 			for (int test = 0; test < _suites.get(suite).testCount(); test++) {
 				duration += _suites.get(suite).getTest(test).getDurationTime();
-				if (_suites.get(suite).getTest(test).getExitStatus() == EXIT_OK)
-					right++;
-				else
-					wrong++;
-				
-				if (_suites.get(suite).getTest(test).isTerminated())
-					tests_terminated++;
-				
+			
 				if (_suites.get(suite).getTest(test).isExecuted() && 
-						_suites.get(suite).getTest(test).isExists())
+						_suites.get(suite).getTest(test).isExists()) {
 					tests_executed++;
-				else if (!_suites.get(suite).getTest(test).isExists())
+					
+					if (_suites.get(suite).getTest(test).isTerminated())
+						tests_terminated++;
+					
+					else if (_suites.get(suite).getTest(test).getExitStatus() == EXIT_OK)
+						right++;
+					else
+						wrong++;
+				} else if (!_suites.get(suite).getTest(test).isExists())
 					tests_not_exists++;
 				else
 					tests_ignored++;
