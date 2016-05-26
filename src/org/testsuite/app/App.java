@@ -32,6 +32,7 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.tree.TreePath;
 
 import org.testsuite.core.ConfigParser;
+import org.testsuite.core.ConfigSaver;
 import org.testsuite.core.HtmlOut;
 import org.testsuite.core.JunitTestRunner;
 import org.testsuite.core.TestRunner;
@@ -842,6 +843,29 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				break;
 				
 			case AC_CONFIG_SAVE:
+				fc = new JFileChooser();
+				fc.setDialogTitle(_bundle.getString("configFileSaveTitle"));
+				fc.setFileFilter(new FileNameExtensionFilter(
+						_bundle.getString("configFileFilter"), "xml"));
+				fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+				state = fc.showOpenDialog(this);
+				file = fc.getSelectedFile();
+				if ((state == JFileChooser.APPROVE_OPTION) && (file != null)) {
+					if (file.exists()) {
+						int s = JOptionPane.showConfirmDialog(this, 
+								_bundle.getString("fileExistsMessage"),
+								_bundle.getString("fileExistsTitle"),
+								JOptionPane.YES_NO_OPTION,
+								JOptionPane.QUESTION_MESSAGE);
+						if (s == JOptionPane.NO_OPTION) {
+							break;
+						}
+					}
+					
+					ConfigSaver.save(_config, 
+							((TestRunnerModel)_tree.getModel())
+							.getTestRunnerList(), file);
+				}
 				break;
 				
 			case AC_CONFIG_VALIDATE:
