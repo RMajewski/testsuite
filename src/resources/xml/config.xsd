@@ -1,4 +1,7 @@
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			xmlns="https://github.com/RMajewski/testsuite"
+			targetNamespace="https://github.com/RMajewski/testsuite"
+			elementFormDefault="qualified">
     <xsd:annotation>
     	<xsd:documentation>Configuration file schema for testsuite</xsd:documentation>
    	</xsd:annotation>

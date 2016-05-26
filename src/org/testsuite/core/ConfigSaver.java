@@ -51,7 +51,13 @@ public class ConfigSaver {
 			bw = new BufferedWriter(new FileWriter(file));
 			bw.write("<?xml version=\"1.0\"?>");
 			bw.newLine();
-			bw.write("<configurationFile>");
+			bw.write("<configurationFile");
+			bw.write(" xmlns=\"https://github.com/RMajewski/testsuite\"");
+			bw.write(" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
+			bw.write(" xsi:schemaLocation=\"https://github.com/RMajewski/");
+			bw.write("testsuite https://raw.githubusercontent.com/RMajewski/");
+			bw.write("testsuite/master/src/resources/xml/config.xsd\"");
+			bw.write(">");
 			bw.newLine();
 			
 			writeConfig(bw, config);
