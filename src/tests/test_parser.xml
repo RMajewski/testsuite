@@ -1,25 +1,29 @@
-<tests>
+<?xml version="1.0"?>
+<configurationFile xmlns="https://github.com/RMajewski/testsuite"
+				   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				   xsi:schemaLocation="https://github.com/RMajewski/testsuite
+				   https://raw.githubusercontent.com/RMajewski/testsuite/master/src/resources/xml/config.xsd">
 	<config>
 		<resultPath>result</resultPath>
 		<srcPath>src</srcPath>
 		<libPath>lib</libPath>
 		<maxDuration>30000</maxDuration>
 		<htmlOut>true</htmlOut>
-		<systemPoperty>
+		<systemProperty>
 			<property>testing="true"</property>
-		</systemPoperty>
+		</systemProperty>
 	</config>
 	
 	<testGroup>
 		<testRunner>org.testsuite.core.JemmyTestRunner</testRunner>
-		<extension>java</extension>
 		<description>[h2]Test[/h2][p]This is a test.[/p]</description>
+		<extension>java</extension>
 	</testGroup>
 	
 	<testGroup>
 		<testRunner>org.testsuite.core.JunitTestRunner</testRunner>
-		<extension>java</extension>
 		<description>[h2]Test[/h2][p]This is a test.[/p]</description>
+		<extension>java</extension>
 		<libraries>
 			<library version="0.1" name="name1" path="path">lib1</library>
 			<library version="0.2" name="name2">lib2</library>
@@ -48,4 +52,4 @@
 			<path>resource</path>
 		</classpath>
 	</testGroup>
-</tests>
+</configurationFile>

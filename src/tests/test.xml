@@ -1,19 +1,23 @@
-<configurationFile>
+<?xml version="1.0"?>
+<configurationFile xmlns="https://github.com/RMajewski/testsuite"
+				   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				   xsi:schemaLocation="https://github.com/RMajewski/testsuite
+				   https://raw.githubusercontent.com/RMajewski/testsuite/master/src/resources/xml/config.xsd">
 	<config>
 		<resultPath>result</resultPath>
 		<srcPath>src</srcPath>
 		<libPath>..</libPath>
 		<maxDuration>30000</maxDuration>
 		<htmlOut>true</htmlOut>
-		<systemPoperty>
+		<systemProperty>
 			<property>testing="true"</property>
-		</systemPoperty>
+		</systemProperty>
 	</config>
 	
 	<testGroup>
 		<testRunner>org.testsuite.core.JemmyTestRunner</testRunner>
-		<extension>java</extension>
 		<description>[h2]Test with jemmy[/h2][p]This is are tests with jemmy framework.[/p]</description>
+		<extension>java</extension>
 		<libraries>
 			<library version="2.3.1.1" name="jemmy">jemmy.jar</library>
 		</libraries>
@@ -24,8 +28,8 @@
 	
 	<testGroup>
 		<testRunner>org.testsuite.core.JunitTestRunner</testRunner>
-		<extension>java</extension>
 		<description>[h2]Test with junit[/h2][p]This are tests with junit framework.[/p]</description>
+		<extension>java</extension>
 		<libraries>
 			<library version="4.12" name="junit" path="/usr/share/eclipse/plugins/org.junit_4.12.0.v201504281640">junit.jar</library>
 			<library version="1.10.19" name="Mockito">mockito-all-1.10.19.jar</library>

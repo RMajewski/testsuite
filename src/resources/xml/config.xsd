@@ -74,7 +74,7 @@
 				<xsd:complexType>
 					<xsd:simpleContent>
 						<xsd:extension base="xsd:string">
-							<xsd:attribute name="execute" type="xsd:boolean"/>
+							<xsd:attribute name="executed" type="xsd:boolean"/>
 						</xsd:extension>
 					</xsd:simpleContent>
 				</xsd:complexType>

@@ -1,15 +1,19 @@
-<tests>
+<?xml version="1.0"?>
+<configurationFile xmlns="https://github.com/RMajewski/testsuite"
+				   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				   xsi:schemaLocation="https://github.com/RMajewski/testsuite
+				   https://raw.githubusercontent.com/RMajewski/testsuite/master/src/resources/xml/config.xsd">
 	<config>
 		<resultPath>result</resultPath>
 		<srcPath>src</srcPath>
 		<libPath>..</libPath>
 		<maxDuration>30000</maxDuration>
 		<htmlOut>true</htmlOut>
-		<systemPoperty>
+		<systemProperty>
 			<property>testing="true"</property>
 			<property>user.language=de</property>
 			<property>user.country=DE</property>
-		</systemPoperty>
+		</systemProperty>
 	</config>
 	
 	<testGroup>
@@ -31,6 +35,4 @@
 			<test>NoneExististingTest</test>
 		</testSuite>
 	</testGroup>
-	
-
-</tests>
+</configurationFile>
