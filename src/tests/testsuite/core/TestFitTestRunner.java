@@ -20,20 +20,18 @@
 package tests.testsuite.core;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Method;
+import java.util.ResourceBundle;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
-import org.mockito.Matchers;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.testsuite.core.FitTestRunner;
@@ -41,8 +39,6 @@ import org.testsuite.core.HtmlOut;
 import org.testsuite.data.Config;
 import org.testsuite.data.Fit;
 import org.testsuite.data.Library;
-import org.testsuite.data.TestEvent;
-import org.testsuite.data.TestEventListener;
 import org.testsuite.data.TestSuite;
 
 /**
@@ -69,9 +65,9 @@ public class TestFitTestRunner {
 	private Config _config;
 	
 	/**
-	 * Saves the count of run tests.
+	 * Saves the instance of the resource bundle
 	 */
-	private int _runCount;
+	private ResourceBundle _bundle;
 
 	/**
 	 * Initialize the tests
@@ -79,8 +75,8 @@ public class TestFitTestRunner {
 	@Before
 	public void setUp() throws Exception {
 		_config = mock(Config.class);
+		_bundle = ResourceBundle.getBundle(FitTestRunner.BUNDLE_FILE);
 		_runner = new FitTestRunner(_config);
-		_runCount = 0;
 	}
 
 	/**
@@ -136,11 +132,14 @@ public class TestFitTestRunner {
 		String testOut = "\t\t\t\t\t\t<div class=\"right\"><a " +
 				"href=\"javascript:togleDisplayId(0, 0)\"> Ausgabe</a></div>" +
 				System.lineSeparator() + "\t\t\t\t\t\t<div " +
-				"class=\"testoutInvisible\" id=\"id_0_0\">" + 
-				System.lineSeparator() + "\t\t\t\t\t\t\t<div " +
-				"class=\"console\">Console</div>" + System.lineSeparator() +
-				"\t\t\t\t\t\t\t<div class=\"error\">Fehler</div>" +
-				System.lineSeparator() + "\t\t\t\t\t\t</div>" + 
+				"class=\"testoutInvisible\" id=\"id_0_0\">" +
+				System.lineSeparator() + " class=\"" +
+				"command_line\">" + System.lineSeparator() + 
+				"\t\t\t\t\t\t\t\t<code>exec</code>" + System.lineSeparator() +
+				"\t\t\t\t\t\t\t</div>" + System.lineSeparator() + 
+				"\t\t\t\t\t\t\t<div class=\"console\">Console</div>" +
+				System.lineSeparator() + "\t\t\t\t\t\t\t<div class=\"error\">" +
+				"Fehler</div>" + System.lineSeparator() + "\t\t\t\t\t\t</div>" + 
 				System.lineSeparator();
 		String console="console";
 		String error = "error";
@@ -171,8 +170,8 @@ public class TestFitTestRunner {
 		when(_config.getPathSuitesResult()).thenReturn(resultSuite);
 		
 		HtmlOut html = mock(HtmlOut.class);
-		when(html.generateTestOut(suiteId, testId, console, error))
-			.thenReturn(testOut);
+		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
+				eq(error), anyString())).thenReturn(testOut);
 		
 		Method method = 
 				FitTestRunner.class.getDeclaredMethod("createHtmlColumn", 
@@ -198,21 +197,19 @@ public class TestFitTestRunner {
 		
 		assertEquals(ret, method.invoke(_runner, 0, 0, html));
 		
+		// FIXME Adapted the InOrder list
 		InOrder order = inOrder(test, suite);
 		order.verify(test).isExists();
-		order.verify(test, times(2)).getName();
-		order.verify(suite).getId();
-		order.verify(test).getId();
-		order.verify(test).getIn();
-		order.verify(test).getError();
+		order.verify(test, times(4)).getName();
 		order.verify(test).isExecuted();
+		order.verify(test).isTerminated();
 		order.verify(test).getOk();
 		order.verify(test).getFail();
 		order.verify(test).getIgnore();
 		order.verify(test).getException();
 		order.verify(test).getDurationTimeFormattedString();
 		
-		verify(suite, times(17)).getTest(0);
+		verify(suite, times(21)).getTest(0);
 	}
 	
 	/**
@@ -243,19 +240,17 @@ public class TestFitTestRunner {
 		int testId = 0;
 		String packageName = "test.fit";
 		
-		String ret = "\t\t\t\t\t\t<td class=\"ignore\"><a href=\"" + resultSuite + 
-				File.separator + packageName.replaceAll("\\.", File.separator) +
-				File.separator + testName + ".html\">" + testName + "</a>" + 
+		String ret = "\t\t\t\t\t\t<td class=\"ignore\">" + testName + 
 				testOut + "\t\t\t\t\t\t</td>" + System.lineSeparator() + 
 				"\t\t\t\t\t\t<td class=\"ignore\" " +
-				"colspan=\"4\">wurde nicht ausgeführt</td>" +
+				"colspan=\"5\">wurde nicht ausgeführt</td>" +
 				System.lineSeparator();
 		
 		when(_config.getPathSuitesResult()).thenReturn(resultSuite);
 		
 		HtmlOut html = mock(HtmlOut.class);
-		when(html.generateTestOut(suiteId, testId, console, error))
-			.thenReturn(testOut);
+		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
+				eq(error), anyString())).thenReturn(testOut);
 		
 		Method method = 
 				FitTestRunner.class.getDeclaredMethod("createHtmlColumn", 
@@ -281,13 +276,10 @@ public class TestFitTestRunner {
 		
 		assertEquals(ret, method.invoke(_runner, 0, 0, html));
 		
+		// FIXME Adapted the InOrder list
 		InOrder order = inOrder(test, suite);
 		order.verify(test).isExists();
-		order.verify(test, times(2)).getName();
-		order.verify(suite).getId();
-		order.verify(test).getId();
-		order.verify(test).getIn();
-		order.verify(test).getError();
+		order.verify(test, times(3)).getName();
 		order.verify(test).isExecuted();
 		order.verify(test, never()).getOk();
 		order.verify(test, never()).getFail();
@@ -295,7 +287,7 @@ public class TestFitTestRunner {
 		order.verify(test, never()).getException();
 		order.verify(test, never()).getDurationTimeFormattedString();
 		
-		verify(suite, times(10)).getTest(0);
+		verify(suite, times(12)).getTest(0);
 	}
 	
 	/**
@@ -322,8 +314,8 @@ public class TestFitTestRunner {
 		_runner.setFileExtension(extension);
 		
 		HtmlOut html = mock(HtmlOut.class);
-		when(html.generateTestOut(suiteId, testId, console, error))
-			.thenReturn(new String());
+		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
+				eq(error), anyString())).thenReturn(new String());
 		
 		Method method = 
 				FitTestRunner.class.getDeclaredMethod("createHtmlColumn", 
@@ -399,14 +391,446 @@ public class TestFitTestRunner {
 		method.setAccessible(true);
 		method.invoke(_runner, 0, 0, null);
 	}
-	
+
+	/**
+	 * Tests if the correct command is created.
+	 */
 	@Test
-	public void testExec() {
-		fail("Test not yet implemented.");
+	public void testExec() throws Exception{
+		String libName1 = "lib1.jar";
+		String libName2 = "lib2.jar";
+		String propName = "testing=\"true\"";
+		String pathLib = "lib";
+		String classPath = "bin";
+		String srcPath = "src";
+		String resultPath = "result";
+		String suitePath = "0000000";
+		String extension = "fit";
+		String packageName = "package1.package2";
+		String testName = "test";
+		String name = packageName + "." + testName;
+		String ret = "java -cp " + classPath + File.pathSeparator + pathLib +
+				File.separator + libName1 + File.pathSeparator + pathLib +
+				File.separator + libName2 + " -D" + propName +
+				" fit.FileRunner " + srcPath + File.separator + 
+				name.replaceAll("\\.", File.separator) + "." + extension + 
+				" " + resultPath + File.separator + suitePath + 
+				File.separator + packageName.replaceAll("\\.", File.separator) + 
+				File.separator + testName + ".html";
+
+		org.testsuite.data.Test test = mock(org.testsuite.data.Test.class);
+		when(test.getName()).thenReturn(testName);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.testCount()).thenReturn(1);
+		when(suite.getTest(0)).thenReturn(test);
+		when(suite.getPackage()).thenReturn(packageName);
+		
+		_runner.addClassPath(classPath);
+		_runner.setFileExtension(extension);
+		
+		Library lib1 = mock(Library.class);
+		when(lib1.getFileName()).thenReturn(libName1);
+		when(lib1.getPath()).thenReturn(new String());
+		when(lib1.getName()).thenReturn(new String());
+		when(lib1.getVersion()).thenReturn(new String());
+		_runner.addLibrary(lib1);
+		
+		Library lib2 = mock(Library.class);
+		when(lib2.getFileName()).thenReturn(libName2);
+		when(lib2.getPath()).thenReturn(new String());
+		when(lib2.getName()).thenReturn(new String());
+		when(lib2.getVersion()).thenReturn(new String());
+		_runner.addLibrary(lib2);
+		
+		when(_config.getPathLibrary()).thenReturn(pathLib);
+		when(_config.propertyCount()).thenReturn(1);
+		when(_config.getProperty(0)).thenReturn(propName);
+		when(_config.getPathSrc()).thenReturn(srcPath);
+		when(_config.getPathResult()).thenReturn(resultPath);
+		when(_config.getPathSuitesResult()).thenReturn(suitePath);
+		
+		Method method = 
+				FitTestRunner.class.getDeclaredMethod("exec", 
+						String.class, TestSuite.class, 
+						org.testsuite.data.Test.class);
+		method.setAccessible(true);
+		assertEquals(ret, method.invoke(_runner, name, suite, test));
 	}
 	
+	/**
+	 * Tests if the evaluation correct.
+	 */
 	@Test
-	public void testConsoleEvaluation() {
-		fail("Test not yet implemented.");
+	public void testEvaluation() throws Exception{
+		int ok = 10;
+		int fail = 1;
+		int ignore = 4;
+		int exception = 7;
+		
+		Fit test = mock(Fit.class);
+		when(test.getError()).thenReturn(ok + " right, " + fail + " wrong, " + 
+				ignore + " ignore, " + exception + " exception ");
+		
+		Method method = 
+				FitTestRunner.class.getDeclaredMethod("evaluation", 
+						org.testsuite.data.Test.class);
+		method.setAccessible(true);
+		method.invoke(_runner, test);
+		
+		verify(test).getError();
+		verify(test).setOk(ok);
+		verify(test).setFail(fail);
+		verify(test).setIgnore(ignore);
+		verify(test).setException(exception);
+	}
+	
+	/**
+	 * Tests if the created html table footer correct.
+	 */
+	@Test
+	public void testCreateHtmlTableFooter() throws Exception {
+		StringBuilder result = new StringBuilder();
+		String td = "\t\t\t\t\t\t<td>";
+		int right1 = 10;
+		int right2 = 1;
+		int fail1 = 0;
+		int fail2 = 1;
+		int ignore1 = 2;
+		int ignore2 = 19;
+		int exception1 = 4;
+		int exception2 = 2;
+		long duration1 = 400;
+		long duration2 = 600;
+		int suite = 0;
+		
+		Fit test1 = mock(Fit.class);
+		when(test1.getOk()).thenReturn(right1);
+		when(test1.getFail()).thenReturn(fail1);
+		when(test1.getDurationTime()).thenReturn(duration1);
+		when(test1.getIgnore()).thenReturn(ignore1);
+		when(test1.getException()).thenReturn(exception1);
+		
+		Fit test2 = mock(Fit.class);
+		when(test2.getOk()).thenReturn(right2);
+		when(test2.getFail()).thenReturn(fail2);
+		when(test2.getDurationTime()).thenReturn(duration2);
+		when(test2.getIgnore()).thenReturn(ignore2);
+		when(test2.getException()).thenReturn(exception2);
+		
+		TestSuite suite1 = mock(TestSuite.class);
+		when(suite1.testCount()).thenReturn(2);
+		when(suite1.getTest(0)).thenReturn(test1);
+		when(suite1.getTest(1)).thenReturn(test2);
+		_runner.addTestSuite(suite1);
+		
+		result.append(td);
+		result.append("&nbsp;</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(right1 + right2);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(fail1 + fail2);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(ignore1 + ignore2);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(exception1 + exception2);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append("00:00:01.000</td>");
+		result.append(System.lineSeparator());
+		
+		Method method = 
+				FitTestRunner.class.getDeclaredMethod("createHtmlTableFooter", 
+						int.class);
+		method.setAccessible(true);
+		assertEquals(result.toString(), method.invoke(_runner, suite));
+	}
+	
+	/**
+	 * Tests if the created html table over all tests in test this runner
+	 * correct.
+	 */
+	@Test
+	public void testCreateResultTestRunnerTable() throws Exception {
+		StringBuilder result = new StringBuilder("\t\t\t\t<table>");
+		result.append(System.lineSeparator());
+		
+		int right1 = 10;
+		int right2 = 1;
+		int right3 = 0;
+		int right4 = 0;
+		int fail1 = 0;
+		int fail2 = 1;
+		int fail3 = 0;
+		int fail4 = 0;
+		int ignore1 = 1;
+		int ignore2 = 1;
+		int ignore3 = 0;
+		int ignore4 = 0;
+		int exception1 = 0;
+		int exception2 = 3;
+		int exception3 = 0;
+		int exception4 = 0;
+		boolean term1 = false;
+		boolean term2 = true;
+		boolean term3 = false;
+		boolean term4 = false;
+		boolean exec1 = true;
+		boolean exec2 = true;
+		boolean exec3 = false;
+		boolean exec4 = false;
+		boolean exists1 = true;
+		boolean exists2 = true;
+		boolean exists3 = true;
+		boolean exists4 = false;
+		long duration1 = 400;
+		long duration2 = 600;
+		long duration3 = 0;
+		long duration4 = 0;
+		String tr = "\t\t\t\t\t<tr>";
+		String tr_end = "\t\t\t\t\t</tr>";
+		String th = "\t\t\t\t\t\t<th>";
+		String td = "\t\t\t\t\t\t<td>";
+		
+		Fit test1 = mock(Fit.class);
+		when(test1.getOk()).thenReturn(right1);
+		when(test1.getFail()).thenReturn(fail1);
+		when(test1.getDurationTime()).thenReturn(duration1);
+		when(test1.isExists()).thenReturn(exists1);
+		when(test1.isExecuted()).thenReturn(exec1);
+		when(test1.isTerminated()).thenReturn(term1);
+		when(test1.getIgnore()).thenReturn(ignore1);
+		when(test1.getException()).thenReturn(exception1);
+		
+		Fit test2 = mock(Fit.class);
+		when(test2.getOk()).thenReturn(right2);
+		when(test2.getFail()).thenReturn(fail2);
+		when(test2.getDurationTime()).thenReturn(duration2);
+		when(test2.isExists()).thenReturn(exists2);
+		when(test2.isExecuted()).thenReturn(exec2);
+		when(test2.isTerminated()).thenReturn(term2);
+		when(test2.getIgnore()).thenReturn(ignore2);
+		when(test2.getException()).thenReturn(exception2);
+		
+		Fit test3 = mock(Fit.class);
+		when(test3.getOk()).thenReturn(right3);
+		when(test3.getFail()).thenReturn(fail3);
+		when(test3.getDurationTime()).thenReturn(duration3);
+		when(test3.isExists()).thenReturn(exists3);
+		when(test3.isExecuted()).thenReturn(exec3);
+		when(test3.isTerminated()).thenReturn(term3);
+		when(test3.getIgnore()).thenReturn(ignore3);
+		when(test3.getException()).thenReturn(exception3);
+		
+		Fit test4 = mock(Fit.class);
+		when(test4.getOk()).thenReturn(right4);
+		when(test4.getFail()).thenReturn(fail4);
+		when(test4.getDurationTime()).thenReturn(duration4);
+		when(test4.isExists()).thenReturn(exists4);
+		when(test4.isExecuted()).thenReturn(exec4);
+		when(test4.isTerminated()).thenReturn(term4);
+		when(test4.getIgnore()).thenReturn(ignore4);
+		when(test4.getException()).thenReturn(exception4);
+		
+		TestSuite suite1 = mock(TestSuite.class);
+		when(suite1.testCount()).thenReturn(2);
+		when(suite1.getTest(0)).thenReturn(test1);
+		when(suite1.getTest(1)).thenReturn(test2);
+		_runner.addTestSuite(suite1);
+		
+		TestSuite suite2 = mock(TestSuite.class);
+		when(suite2.testCount()).thenReturn(2);
+		when(suite2.getTest(0)).thenReturn(test3);
+		when(suite2.getTest(1)).thenReturn(test4);
+		_runner.addTestSuite(suite2);
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+		
+		result.append("\t\t\t\t\t\t<th colspan=\"3\">");
+		result.append(_bundle.getString("test_runner_result_name"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+		result.append("\t\t\t\t\t\t<td colspan=\"3\">");
+		result.append(FitTestRunner.class.getName());
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+
+		result.append(th);
+		result.append(_bundle.getString("test_runner_result_tests"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+
+		result.append(th);
+		result.append(_bundle.getString("test_runner_result_tests_executed"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+
+		result.append(th);
+		result.append(_bundle.getString("test_runner_result_tests_terminated"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(4);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(2);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(1);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+
+		result.append(th);
+		result.append(_bundle.getString("test_runner_result_tests_ignored"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+
+		result.append(th);
+		result.append(_bundle.getString("test_runner_result_tests_not_exists"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+
+		result.append(th);
+		result.append(_bundle.getString("test_runner_result_right"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(1);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(1);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(right1 + right2 + right3 + right4);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+
+		result.append(th);
+		result.append(_bundle.getString("test_runner_result_wrong"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+
+		result.append(th);
+		result.append(_bundle.getString("test_runner_result_ignore"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+
+		result.append(th);
+		result.append(_bundle.getString("test_runner_result_exception"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(fail1 + fail2 + fail3 + fail4);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(ignore1 + ignore2 + ignore3 + ignore4);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(td);
+		result.append(exception1 + exception2 + exception3 + exception4);
+		result.append("</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+		
+		result.append("\t\t\t\t\t\t<th colspan=\"3\">");
+		result.append(_bundle.getString("test_runner_result_duration"));
+		result.append("</th>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append(tr);
+		result.append(System.lineSeparator());
+		
+		result.append("\t\t\t\t\t\t<td colspan=\"3\">00:00:01.000</td>");
+		result.append(System.lineSeparator());
+		
+		result.append(tr_end);
+		result.append(System.lineSeparator());
+		
+		result.append("\t\t\t\t</table>");
+		result.append(System.lineSeparator());
+		
+		Method method = 
+				FitTestRunner.class.getDeclaredMethod(
+						"createResultTestRunnerTable");
+		method.setAccessible(true);
+		assertEquals(result.toString(), method.invoke(_runner));
 	}
 }

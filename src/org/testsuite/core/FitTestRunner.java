@@ -676,7 +676,7 @@ public class FitTestRunner extends TestRunner {
 		ret.append(tr);
 		ret.append(System.lineSeparator());
 		
-		ret.append("\t\t\t\t\t\t<th colspan=\"2\">");
+		ret.append("\t\t\t\t\t\t<th colspan=\"3\">");
 		ret.append(_bundle.getString("test_runner_result_duration"));
 		ret.append("</th>");
 		ret.append(System.lineSeparator());
@@ -737,7 +737,7 @@ public class FitTestRunner extends TestRunner {
 		ret.append("fit.FileRunner ");
 		
 		ret.append(_config.getPathSrc());
-		ret.append("/");
+		ret.append(File.separator);
 		ret.append(name.replaceAll("\\.", File.separator));
 		ret.append(".");
 		ret.append(_fileExtension);
