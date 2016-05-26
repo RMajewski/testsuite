@@ -77,6 +77,26 @@
 			<package>tests.testsuite.helper</package>
 			<test>TestHelperCalendar</test>
 		</testSuite>
+		<testSuite>
+			<name>Tests the English language files</name>
+			<package>tests.lang.en</package>
+			<test>TestApp</test>
+			<test>TestDlgConfigGeneral</test>
+			<test>TestDlgConfigLibrary</test>
+			<test>TestDlgConfigTest</test>
+			<test>TestDlgConfigTestRunner</test>
+			<test>TestDlgConfigTestSuite</test>
+		</testSuite>
+		<testSuite>
+			<name>Tests the German language files</name>
+			<package>tests.lang.de_DE</package>
+			<test>TestApp</test>
+			<test>TestDlgConfigGeneral</test>
+			<test>TestDlgConfigLibrary</test>
+			<test>TestDlgConfigTest</test>
+			<test>TestDlgConfigTestRunner</test>
+			<test>TestDlgConfigTestSuite</test>
+		</testSuite>
 	</testGroup>
 	
 	<testGroup>
