@@ -21,41 +21,55 @@ package tests.lang.en;
 
 import static org.junit.Assert.*;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import org.junit.Before;
 import org.junit.Test;
-import org.testsuite.app.DlgConfigLibrary;
 
 /**
- * Tests the English language file for the DlgConfigLibrary class on
- * completeness.
+ * Test class are derived from the all test classes for testing the language
+ * files.
  * 
  * @author René Majewski
  *
  * @version 0.1
  */
-public class TestDlgConfigLibrary extends TestDlgConfig {
+public class TestLang {
 
 	/**
-	 * Initialize the tests
+	 * Saves the instance of resource bundle.
 	 */
-	@Override
+	protected ResourceBundle _bundle;
+	
+	/**
+	 * Saves the name of the resource bundle file.
+	 */
+	protected String _bundleFile;
+	
+	/**
+	 * Saves the locale
+	 */
+	protected Locale _locale;
+
+	/**
+	 * Initialize the tests.
+	 */
 	@Before
 	public void setUp() throws Exception {
-		_bundleFile = DlgConfigLibrary.BUNDLE_FILE;
-		super.setUp();
-		System.out.println(_bundle.getLocale());
+		if (_locale == null) {
+			Locale.setDefault(Locale.ENGLISH);
+			_locale = Locale.ENGLISH;
+		}
+		_bundle = ResourceBundle.getBundle(_bundleFile, _locale);
 	}
 
 	/**
-	 * Tests if have entries for the dialog components.
+	 * Tests if the right language.
 	 */
-	@Override
 	@Test
-	public void testEntriesForComponents() {
-		assertNotNull(_bundle.getString("label_file_name"));
-		assertNotNull(_bundle.getString("label_path"));
-		assertNotNull(_bundle.getString("label_name"));
-		assertNotNull(_bundle.getString("label_version"));
+	public void testHaveRightLocale() {
+		assertEquals(Locale.ENGLISH, _locale);
 	}
 
 }

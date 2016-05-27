@@ -26,18 +26,18 @@ import java.util.Locale;
 import org.junit.Before;
 import org.junit.Test;
 
+import tests.lang.en.TestTestRunner;
+
 /**
- * Tests the German language file for the DlgConfigGeneral class on
- * completeness.
+ * Tests the German language file for the TestRunner class on completeness.
  * 
  * @author René Majewski
  *
- * @version 0.1
  */
-public class TestDlgConfigGeneral extends tests.lang.en.TestDlgConfigGeneral {
+public class TestTestRunner_de extends TestTestRunner {
 
 	/**
-	 * Initialize tests
+	 * Initialize the tests
 	 */
 	@Override
 	@Before
@@ -46,6 +46,9 @@ public class TestDlgConfigGeneral extends tests.lang.en.TestDlgConfigGeneral {
 		super.setUp();
 	}
 
+	/**
+	 * Test if have the right locale
+	 */
 	@Override
 	@Test
 	public void testHaveRightLocale() {

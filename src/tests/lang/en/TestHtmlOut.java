@@ -17,24 +17,21 @@
 * sind dem Lizenztext zu entnehmen.
 */ 
 
-package tests.lang.de_DE;
+package tests.lang.en;
 
 import static org.junit.Assert.*;
 
-import java.util.Locale;
-
 import org.junit.Before;
 import org.junit.Test;
+import org.testsuite.core.HtmlOut;
 
 /**
- * Tests the German language file for the DlgConfigGeneral class on
- * completeness.
+ * Tests the English language file for the HtmlOut class on completeness.
  * 
  * @author René Majewski
  *
- * @version 0.1
  */
-public class TestDlgConfigLibrary extends tests.lang.en.TestDlgConfigLibrary {
+public class TestHtmlOut extends TestLang {
 
 	/**
 	 * Initialize the tests
@@ -42,17 +39,27 @@ public class TestDlgConfigLibrary extends tests.lang.en.TestDlgConfigLibrary {
 	@Override
 	@Before
 	public void setUp() throws Exception {
-		_locale = Locale.GERMANY;
+		_bundleFile = HtmlOut.BUNDLE_FILE;
 		super.setUp();
 	}
 
 	/**
-	 * Tests if the right language.
+	 * Tests if have all entries for the HTML head
 	 */
-	@Override
 	@Test
-	public void testHaveRightLocale() {
-		assertEquals(Locale.GERMANY, _locale);
+	public void testHaveAllEntriesForHtmlHead() {
+		assertNotNull(_bundle.getString("htmlHead_head"));
+		assertNotNull(_bundle.getString("htmlHead_description"));
+	}
+	
+	/**
+	 * Tests if have all entries for the generate test output
+	 */
+	@Test
+	public void testHaveAllEntriesForGenerateTestOutput() {
+		assertNotNull(_bundle.getString("generateTestOut_noConsoleOut"));
+		assertNotNull(_bundle.getString("generateTestOut_noErrorOut"));
+		assertNotNull(_bundle.getString("generateTestOut_noExecOut"));
 	}
 
 }

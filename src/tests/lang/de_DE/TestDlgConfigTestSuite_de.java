@@ -17,23 +17,24 @@
 * sind dem Lizenztext zu entnehmen.
 */ 
 
-package tests.lang.en;
+package tests.lang.de_DE;
 
 import static org.junit.Assert.*;
 
+import java.util.Locale;
+
 import org.junit.Before;
 import org.junit.Test;
-import org.testsuite.app.DlgConfigLibrary;
 
 /**
- * Tests the English language file for the DlgConfigLibrary class on
+ * Tests the German language file for the DlgConfigTestSuite class on
  * completeness.
  * 
  * @author René Majewski
  *
  * @version 0.1
  */
-public class TestDlgConfigLibrary extends TestDlgConfig {
+public class TestDlgConfigTestSuite_de extends tests.lang.en.TestDlgConfigTestSuite {
 
 	/**
 	 * Initialize the tests
@@ -41,21 +42,14 @@ public class TestDlgConfigLibrary extends TestDlgConfig {
 	@Override
 	@Before
 	public void setUp() throws Exception {
-		_bundleFile = DlgConfigLibrary.BUNDLE_FILE;
+		_locale = Locale.GERMANY;
 		super.setUp();
-		System.out.println(_bundle.getLocale());
 	}
 
-	/**
-	 * Tests if have entries for the dialog components.
-	 */
 	@Override
 	@Test
-	public void testEntriesForComponents() {
-		assertNotNull(_bundle.getString("label_file_name"));
-		assertNotNull(_bundle.getString("label_path"));
-		assertNotNull(_bundle.getString("label_name"));
-		assertNotNull(_bundle.getString("label_version"));
+	public void testHaveRightLocale() {
+		assertEquals(Locale.GERMANY, _bundle.getLocale());
 	}
 
 }

@@ -46,6 +46,12 @@ import org.testsuite.data.Config;
  */
 public class TestCore {
 	/**
+	 * The name of resource bundle file
+	 */
+	public static final String BUNDLE_FILE = 
+			"resources.lang.org.testsuite.core.TestCore";
+	
+	/**
 	 * Saves the configuration.
 	 */
 	private Config _config;
@@ -65,8 +71,7 @@ public class TestCore {
 	 */
 	public TestCore() {
 		try {
-			_bundle = ResourceBundle.getBundle(
-					"resources.lang.org.testsuite.core.TestCore");
+			_bundle = ResourceBundle.getBundle(BUNDLE_FILE);
 		} catch (MissingResourceException e) {
 			e.printStackTrace();
 		}

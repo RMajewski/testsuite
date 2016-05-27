@@ -21,9 +21,6 @@ package tests.lang.en;
 
 import static org.junit.Assert.*;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.testsuite.app.App;
@@ -34,36 +31,17 @@ import org.testsuite.app.App;
  * @author René Majewski
  *
  */
-public class TestApp {
-
-	/**
-	 * Saves the instance of the resource bundle
-	 */
-	protected ResourceBundle _bundle;
-	
-	/**
-	 * Saves the used locale
-	 */
-	protected Locale _locale;
-
+public class TestApp extends TestLang {
 	/**
 	 * Initalize the tests 
 	 */
+	@Override
 	@Before
 	public void setUp() throws Exception {
-		if (_locale == null)
-			_locale = Locale.ENGLISH;
-		_bundle = ResourceBundle.getBundle(App.BUNDLE_FILE, _locale);
+		_bundleFile = App.BUNDLE_FILE;
+		super.setUp();
 	}
-	
-	/**
-	 * Tests if the right language.
-	 */
-	@Test
-	public void testHaveRightLocale() {
-		assertEquals(Locale.ENGLISH, _locale);
-	}
-	
+
 	/**
 	 * If all entries for the buttons?
 	 */

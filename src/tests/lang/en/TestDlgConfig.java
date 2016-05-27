@@ -21,9 +21,6 @@ package tests.lang.en;
 
 import static org.junit.Assert.*;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,38 +32,15 @@ import org.junit.Test;
  *
  * @version 0.1
  */
-public abstract class TestDlgConfig {
-	/**
-	 * Saves the instance of resource bundle
-	 */
-	protected ResourceBundle _bundle;
-	
-	/**
-	 * Saves the used locale
-	 */
-	protected Locale _locale;
-	
-	/**
-	 * Saves the used bundle file
-	 */
-	protected String _bundleFile;
+public abstract class TestDlgConfig extends TestLang{
 	
 	/**
 	 * Initialize the tests
 	 */
+	@Override
 	@Before
 	public void setUp() throws Exception {
-		if (_locale == null)
-			_locale = Locale.ENGLISH;
-		_bundle = ResourceBundle.getBundle(_bundleFile, _locale);
-	}
-	
-	/**
-	 * Tests if the right language.
-	 */
-	@Test
-	public void testHaveRightLocale() {
-		assertEquals(Locale.ENGLISH, _locale);
+		super.setUp();
 	}
 
 	/**

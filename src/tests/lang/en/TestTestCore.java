@@ -17,24 +17,21 @@
 * sind dem Lizenztext zu entnehmen.
 */ 
 
-package tests.lang.de_DE;
+package tests.lang.en;
 
 import static org.junit.Assert.*;
 
-import java.util.Locale;
-
 import org.junit.Before;
 import org.junit.Test;
+import org.testsuite.core.TestCore;
 
 /**
- * Tests the German language file for the DlgConfigTestSuite class on
- * completeness.
+ * Tests the English language file for the TestCore class on completeness.
  * 
  * @author René Majewski
  *
- * @version 0.1
  */
-public class TestDlgConfigTestSuite extends tests.lang.en.TestDlgConfigTestSuite {
+public class TestTestCore extends TestLang {
 
 	/**
 	 * Initialize the tests
@@ -42,14 +39,16 @@ public class TestDlgConfigTestSuite extends tests.lang.en.TestDlgConfigTestSuite
 	@Override
 	@Before
 	public void setUp() throws Exception {
-		_locale = Locale.GERMANY;
+		_bundleFile = TestCore.BUNDLE_FILE;
 		super.setUp();
 	}
 
-	@Override
+	/**
+	 * Test if have all entries for HTML result
+	 */
 	@Test
-	public void testHaveRightLocale() {
-		assertEquals(Locale.GERMANY, _bundle.getLocale());
+	public void testHaveAllEntriesForHtmlResult() {
+		assertNotNull(_bundle.getString("html_result"));
 	}
 
 }

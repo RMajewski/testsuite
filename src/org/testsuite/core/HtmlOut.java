@@ -40,6 +40,12 @@ import org.testsuite.helper.HelperCalendar;
  */
 public class HtmlOut {
 	/**
+	 * Saves the name of resource bundle file
+	 */
+	public static final String BUNDLE_FILE = 
+			"resources.lang.org.testsuite.core.HtmlOut";
+	
+	/**
 	 * Saves the output file
 	 */
 	private String _htmlFile;
@@ -70,8 +76,7 @@ public class HtmlOut {
 		if ((fileName == null) || fileName.isEmpty())
 			throw new IllegalArgumentException();
 		
-		_bundle = ResourceBundle.getBundle(
-				"resources.lang.org.testsuite.core.HtmlOut");
+		_bundle = ResourceBundle.getBundle(BUNDLE_FILE);
 		
 		// Daten speichern
 		_htmlFile = fileName;

@@ -19,35 +19,30 @@
 
 package tests.lang.de_DE;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Locale;
-
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests the German language file for the DlgConfigtest class on
- * completeness.
+ * Tests the German language files for the app class on completeness.
  * 
  * @author René Majewski
- *
+ * 
  * @version 0.1
  */
-public class TestDlgConfigTest extends tests.lang.en.TestDlgConfigTest {
+public class TestApp_de extends tests.lang.en.TestApp {
 
-	/**
-	 * Initialize the tests
-	 */
 	@Override
 	@Before
 	public void setUp() throws Exception {
 		_locale = Locale.GERMANY;
 		super.setUp();
 	}
-
+	
 	/**
-	 * Tests hase the right locale
+	 * Tests if the right language.
 	 */
 	@Override
 	@Test

@@ -34,7 +34,7 @@ import org.junit.Test;;
  *
  * @version 0.1
  */
-public class TestDlgConfigTestRunner
+public class TestDlgConfigTestRunner_de
 		extends tests.lang.en.TestDlgConfigTestRunner {
 
 	/**
