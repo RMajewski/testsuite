@@ -63,6 +63,26 @@
 				</tr>
 				<tr>
 					<td>check</td>
+					<td>haveButtonForSaveTheConfigurationFile</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>haveButtonForValidateTheConfiguration</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>haveButtonForTestsAllIgnore</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>haveButtonForTestsAllExecute</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
 					<td>isButtonForLoadTheConfigurationFileEnable</td>
 					<td>true</td>
 				</tr>
@@ -75,6 +95,26 @@
 					<td>check</td>
 					<td>isButtonForExitTheAppEnable</td>
 					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isButtonForSaveTheConfigurationFileEnable</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isButtonForValidateTheConfigurationEnable</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isButtonForTestsAllIgnoreEnable</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isButtonForTestsAllExecuteEnable</td>
+					<td>false</td>
 				</tr>
 				<tr>
 					<td>check</td>

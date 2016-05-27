@@ -1,0 +1,138 @@
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Test the TestSuiteApp (save configuration file)</title>
+	</head>
+	<body>
+		<h2>Tests for the TestSuiteApp (save configuration file)</h2>
+		<p>There is a configuration file loaded. It is appropriate, the test
+		file already exists, delete it. Then click on the button "Save 
+		configuration". In the following dialogue, the name of the file is given
+		and click "Save". Now check whether the stored file exists and that the
+		XML is valid. Then again clicked on the button "Save configuration". It
+		is again indicated and checked whether a new dialog opens, where asked
+		whether the file should be overwritten the file. Here is clicked no.</p>
+		<table border="1" cellpadding="1" cellspacing="1" style="width: *;">
+			<tbody>
+				<tr>
+					<td colspan="3">fit.ActionFixture</td>
+				</tr>
+				<tr>
+					<td>start</td>
+					<td>tests.fixtures.app.FixtureApp</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isButtonForSaveTheConfigurationFileEnable</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>loadConfigurationFile</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isButtonForSaveTheConfigurationFileEnable</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>deleteTestSaveFile</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushButtonSaveConfigurationFile</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isDialogVisible</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushDialogCancel</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isDialogVisible</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushButtonSaveConfigurationFile</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isDialogVisible</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>enter</td>
+					<td>enterFileName</td>
+					<td>result/test.xml</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushDialogSave</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isDialogVisible</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getConfigurationSaveFileName</td>
+					<td>result/test.xml</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>existsConfigurationFile</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isConfigurationFileValide</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushButtonSaveConfigurationFile</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>enter</td>
+					<td>enterFileName</td>
+					<td>result/test.xml</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushDialogSaveFileExists</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isDialogForOverridingFileVisible</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushDialogNoOverride</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isDialogForOverridingFileVisible</td>
+					<td>false</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>

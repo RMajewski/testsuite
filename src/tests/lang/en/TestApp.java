@@ -109,6 +109,14 @@ public class TestApp extends TestLang {
 		assertNotNull(_bundle.getString("popup_tree_testsuite_mnemonic"));
 		assertNotNull(_bundle.getString("popup_tree_test"));
 		assertNotNull(_bundle.getString("popup_tree_test_mnemonic"));
+		assertNotNull(_bundle.getString("popup_tree_ignore_all_tests"));
+		assertNotNull(_bundle.getString("popup_tree_ignore_all_tests_mnemonic"));
+		assertNotNull(_bundle.getString("popup_tree_execute_all_tests"));
+		assertNotNull(_bundle.getString(
+				"popup_tree_execute_all_tests_mnemonic"));
+		assertNotNull(_bundle.getString("popup_tree_ignore_all_other_tests"));
+		assertNotNull(_bundle.getString(
+				"popup_tree_ignore_all_other_tests_mnemonic"));
 	}
 	
 	/**

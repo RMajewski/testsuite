@@ -19,6 +19,7 @@
 
 package tests.fixtures.app;
 
+import java.io.File;
 import java.text.ParseException;
 import java.util.ResourceBundle;
 
@@ -127,6 +128,62 @@ public class FixtureApp extends ActionFixture {
 	}
 	
 	/**
+	 * Determines whether the button for save configuration file is visible.
+	 */
+	public boolean haveButtonForSaveTheConfigurationFile() {
+		return _tests.isConfigSaveButtonVisible();
+	}
+	
+	/**
+	 * Determines whether the button for save configuration file is enabled.
+	 */
+	public boolean isButtonForSaveTheConfigurationFileEnable() {
+		return _tests.isConfigSaveButtonEnabled();
+	}
+	
+	/**
+	 * Determines whether the button for validate configuration is visible.
+	 */
+	public boolean haveButtonForValidateTheConfiguration() {
+		return _tests.isConfigSaveButtonVisible();
+	}
+	
+	/**
+	 * Determines whether the button for validate configuration is enabled.
+	 */
+	public boolean isButtonForValidateTheConfigurationEnable() {
+		return _tests.isConfigSaveButtonEnabled();
+	}
+	
+	/**
+	 * Determines whether the button for all tests select ignore is visible.
+	 */
+	public boolean haveButtonForTestsAllIgnore() {
+		return _tests.isAllTestsIgnoreButtonVisible();
+	}
+	
+	/**
+	 * Determines whether the button for all tests select ignore is enabled.
+	 */
+	public boolean isButtonForTestsAllIgnoreEnable() {
+		return _tests.isAllTestsIgnoreButtonEnabled();
+	}
+	
+	/**
+	 * Determines whether the button for all tests select execute is visible.
+	 */
+	public boolean haveButtonForTestsAllExecute() {
+		return _tests.isAllTestsExecuteButtonVisible();
+	}
+	
+	/**
+	 * Determines whether the button for all tests select execute is enabled.
+	 */
+	public boolean isButtonForTestsAllExecuteEnable() {
+		return _tests.isAllTestsExecuteButtonEnabled();
+	}
+	
+	/**
 	 * Determines whether the button for exit the app is visible.
 	 */
 	public boolean haveButtonForExitTheApp() {
@@ -163,6 +220,14 @@ public class FixtureApp extends ActionFixture {
 	}
 	
 	/**
+	 * Click on the save configuration file button an determined the dialog.
+	 */
+	public void pushButtonSaveConfigurationFile() {
+		_tests.pushNoBlockButtonSaveConfigurationFile();
+		_tests.determineDialog(TestApp.DIALOG_CONFIG_FILE_SAVE);
+	}
+	
+	/**
 	 * Showing der dialog?
 	 */
 	public boolean isDialogVisible() {
@@ -193,6 +258,22 @@ public class FixtureApp extends ActionFixture {
 	}
 	
 	/**
+	 * Click on the open button into the dialog.
+	 */
+	public void pushDialogSave() {
+		_tests.pushDialogButton(10);
+	}
+	
+	/**
+	 * Click on the open button into the dialog.
+	 */
+	public void pushDialogSaveFileExists() {
+		_tests.pushNoBlockDialogButton(10);
+		_tests.waitForDialog2(ResourceBundle.getBundle(App.BUNDLE_FILE)
+				.getString("fileExistsTitle"));
+	}
+	
+	/**
 	 * Returns the number of nodes in the tree.
 	 */
 	public int getTreeRootItemCount() {
@@ -203,7 +284,14 @@ public class FixtureApp extends ActionFixture {
 	 * Return the name of selected configuration file.
 	 */
 	public String getConfigurationFileName() {
-		return _tests.getConfigurationFileName();
+		return _tests.getConfigurationFileName(2);
+	}
+
+	/**
+	 * Return the name of selected configuration file.
+	 */
+	public String getConfigurationSaveFileName() {
+		return _tests.getConfigurationFileName(1);
 	}
 	
 	/**
@@ -333,6 +421,18 @@ public class FixtureApp extends ActionFixture {
 	
 	public boolean isConfigurationtTestSelected() {
 		return _tests.isPopupItemEnabled(2, 3);
+	}
+	
+	public boolean isIgnoreAllOtherTestsEnabled() {
+		return _tests.isPopupItemEnabled(4);
+	}
+	
+	public boolean isIgnoreAllSelectedTestsEnabled() {
+		return _tests.isPopupItemEnabled(5);
+	}
+	
+	public boolean isExecuteAllSelectedTestsEnabled() {
+		return _tests.isPopupItemEnabled(6);
 	}
 	
 	public void selectRootElementInTree() {
@@ -914,5 +1014,23 @@ public class FixtureApp extends ActionFixture {
 		_tests.pushNoBlockTreePopupItem(1, 1);
 		_tests.waitForDialog2(ResourceBundle.getBundle(App.BUNDLE_FILE)
 				.getString("delete_test_runner_title"));
+	}
+	
+	public void deleteTestSaveFile() {
+		File file = new File("result/test.xml");
+		if (file.exists())
+			file.delete();
+	}
+	
+	public boolean isDialogForOverridingFileVisible() {
+		return _tests.isDialog2Visible();
+	}
+	
+	public void pushDialogNoOverride() {
+		_tests.getDialog2Button(1).push();
+	}
+	
+	public boolean isConfigurationFileValide() {
+		return _tests.isConfigurationFileValide();
 	}
 }

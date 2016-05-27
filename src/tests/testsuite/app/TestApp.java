@@ -21,11 +21,20 @@ package tests.testsuite.app;
 
 import java.awt.Component;
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ResourceBundle;
 
 import javax.swing.JCheckBox;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.xml.XMLConstants;
+import javax.xml.bind.Validator;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 
 import org.netbeans.jemmy.ClassReference;
 import org.netbeans.jemmy.Scenario;
@@ -49,6 +58,9 @@ import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
 import org.testsuite.data.Library;
 import org.testsuite.data.TestSuite;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
 /**
  * Tests the test suite app.
@@ -62,6 +74,11 @@ public class TestApp implements Scenario {
 	 * Saves the type for configuration file open dialog.
 	 */
 	public static final int DIALOG_CONFIG_FILE_OPEN = 1;
+	
+	/**
+	 * Saves the type for configuration file save dialog.
+	 */
+	public static final int DIALOG_CONFIG_FILE_SAVE = 2;
 	
 	/**
 	 * Saves the instance of the main window.
@@ -109,6 +126,26 @@ public class TestApp implements Scenario {
 	private JButtonOperator _btnExit;
 	
 	/**
+	 * Saves the instance of button for validate configuration
+	 */
+	private JButtonOperator _btnConfigValidate;
+	
+	/**
+	 * Saves the instance of button for save configuration
+	 */
+	private JButtonOperator _btnConfigSave;
+	
+	/**
+	 * Saves the instance of button for all tests select ignore
+	 */
+	private JButtonOperator _btnAllTestsIgnore;
+	
+	/**
+	 * Saves the instance of button for all tests select execute
+	 */
+	private JButtonOperator _btnAllTestsExecute;
+	
+	/**
 	 * Saves the instance of open configuration file dialog.
 	 */
 	private JFileChooserOperator _fileChooser;
@@ -151,8 +188,16 @@ public class TestApp implements Scenario {
 		_progress = new JProgressBarOperator(_wnd);
 		_btnRun = new JButtonOperator(_wnd, _bundle.getString("btnRun"));
 		_btnCancel = new JButtonOperator(_wnd, _bundle.getString("btnCancel"));
-		_btnLoad = new JButtonOperator(_wnd, _bundle.getString("btnLoad"));
+		_btnLoad = new JButtonOperator(_wnd, _bundle.getString("btnConfigLoad"));
 		_btnExit = new JButtonOperator(_wnd, _bundle.getString("btnExit"));
+		_btnConfigSave = new JButtonOperator(_wnd, 
+				_bundle.getString("btnConfigSave"));
+		_btnConfigValidate = new JButtonOperator(_wnd, 
+				_bundle.getString("btnConfigValidate"));
+		_btnAllTestsIgnore = new JButtonOperator(_wnd, 
+				_bundle.getString("btnAllTestsIgnore"));
+		_btnAllTestsExecute = new JButtonOperator(_wnd, 
+				_bundle.getString("btnAllTestsExecute"));
 	}
 	
 	/**
@@ -226,6 +271,62 @@ public class TestApp implements Scenario {
 	}
 	
 	/**
+	 * Determines whether the button for save configuration file is visible.
+	 */
+	public boolean isConfigSaveButtonVisible() {
+		return _btnConfigSave.isVisible();
+	}
+	
+	/**
+	 * Determines whether the button for save configuration file is enabled.
+	 */
+	public boolean isConfigSaveButtonEnabled() {
+		return _btnConfigSave.isEnabled();
+	}
+	
+	/**
+	 * Determines whether the button for validate configuration is visible.
+	 */
+	public boolean isConfigValidateButtonVisible() {
+		return _btnConfigValidate.isVisible();
+	}
+	
+	/**
+	 * Determines whether the button for validate configuration is enabled.
+	 */
+	public boolean isConfigValidateButtonEnabled() {
+		return _btnConfigValidate.isEnabled();
+	}
+	
+	/**
+	 * Determines whether the button for all tests select ignore is visible.
+	 */
+	public boolean isAllTestsIgnoreButtonVisible() {
+		return _btnAllTestsIgnore.isVisible();
+	}
+	
+	/**
+	 * Determines whether the button for all tests select ignore is enabled.
+	 */
+	public boolean isAllTestsIgnoreButtonEnabled() {
+		return _btnAllTestsIgnore.isEnabled();
+	}
+	
+	/**
+	 * Determines whether the button for all tests select execute is visible.
+	 */
+	public boolean isAllTestsExecuteButtonVisible() {
+		return _btnAllTestsExecute.isVisible();
+	}
+	
+	/**
+	 * Determines whether the button for all tests select execute is enabled.
+	 */
+	public boolean isAllTestsExecuteButtonEnabled() {
+		return _btnAllTestsExecute.isEnabled();
+	}
+	
+	/**
 	 * Determines whether the button for exit the app is visible.
 	 */
 	public boolean isExitButtonVisible() {
@@ -261,13 +362,22 @@ public class TestApp implements Scenario {
 	}
 	
 	/**
+	 * Click on save configuration file button.
+	 */
+	public void pushNoBlockButtonSaveConfigurationFile() {
+		_btnConfigSave.pushNoBlock();
+	}
+	
+	/**
 	 * Gets the specified dialog.
 	 * 
 	 * @param type Type of the dialog.
 	 */
 	public void determineDialog(int type) {
+		// OPT Adjust method.
 		switch (type) {
 			case DIALOG_CONFIG_FILE_OPEN:
+			case DIALOG_CONFIG_FILE_SAVE:
 				_fileChooser = new JFileChooserOperator();
 			break;
 		}
@@ -300,6 +410,19 @@ public class TestApp implements Scenario {
 	}
 	
 	/**
+	 * Click on the the button on dialog.
+	 * 
+	 * @param index The button index
+	 */
+	public void pushNoBlockDialogButton(int index) {
+		JButtonOperator btn;
+		if (_fileChooser != null) {
+			btn = new JButtonOperator(_fileChooser, index);
+			btn.pushNoBlock();
+		}
+	}
+	
+	/**
 	 * Sets the text in text field in the dialog.
 	 * 
 	 * @param text Text to sets into the text field.
@@ -323,13 +446,20 @@ public class TestApp implements Scenario {
 	/**
 	 * Returns the the name selected configuration file.
 	 * 
+	 * @param lastPath Paths that you want to include.
+	 * 
 	 * @return File name of configuration file.
 	 */
-	public String getConfigurationFileName() {
+	public String getConfigurationFileName(int lastPaths) {
 		File file = _fileChooser.getSelectedFile();
-		String[] tmp = file.getPath().split("/");
-		int length = tmp.length - 1;
-		return tmp[length - 2] + "/" + tmp[length - 1] + "/" + tmp[length];
+		String[] tmp = file.getPath().split(File.separator);
+		StringBuilder ret = new StringBuilder();
+		for (int i = tmp.length - 1 - lastPaths; i < tmp.length; i++) {
+			ret.append(tmp[i]);
+			if (i < tmp.length - 1)
+				ret.append(File.separator);
+		}
+		return ret.toString();
 	}
 	
 	/**
@@ -340,6 +470,33 @@ public class TestApp implements Scenario {
 	public boolean existsConfigurationFile() {
 		File file = _fileChooser.getSelectedFile();
 		return file.exists();
+	}
+	
+	/**
+	 * Returns whether the selected configuration file validated.
+	 * 
+	 * @return Validated the configuration file?
+	 */
+	public boolean isConfigurationFileValide() {
+		try {
+			SAXParserFactory factory = SAXParserFactory.newInstance();
+			factory.setValidating(false);
+			factory.setNamespaceAware(true);
+			
+			SchemaFactory schema = SchemaFactory.newInstance(
+					"http://www.w3.org/2001/XMLSchema");
+			factory.setSchema(schema.newSchema(getClass().getClassLoader()
+					.getResource("resources/xml/config.xsd")));
+			
+			SAXParser parser = factory.newSAXParser();
+			
+			XMLReader reader = parser.getXMLReader();
+			reader.parse(new InputSource("result/test.xml"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 	
 	/**
@@ -566,6 +723,10 @@ public class TestApp implements Scenario {
 	
 	public Library getSelectedConfigurationLibrary() {
 		return (Library)new JListOperator(_dlg, 0).getModel().getElementAt(0);
+	}
+	
+	public boolean isDialog2Visible() {
+		return _dlg2.isVisible();
 	}
 	
 	/**

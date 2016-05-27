@@ -188,6 +188,24 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 			"App.tree.delete.ConfigGeneral";
 	
 	/**
+	 * Saves the string of action command to selected tests select as ignore
+	 */
+	private static final String TREE_IGNORE_SELECTED_TESTS = 
+			"App.tree.ignoreSelectedTests";
+	
+	/**
+	 * Saves the string of action command to selected tests select as execute
+	 */
+	private static final String TREE_EXECUTE_SELECTED_TESTS =
+			"App.tree.executeSelectedTests";
+	
+	/**
+	 * Saves the string of action command to other tests select as ignore
+	 */
+	private static final String TREE_IGNORE_ALL_OTHER_TESTS =
+			"App.tree.ignoreOtherTests";
+	
+	/**
 	 * Saves the title of the main window
 	 */
 	public static final String WND_TITLE = "TestSuiteApp";
@@ -440,6 +458,38 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		item.setActionCommand(CONFIG_TEST);
 		item.setEnabled(false);
 		menu.add(item);
+		
+		// Ignore all other Tests
+		item = new JMenuItem(
+				_bundle.getString("popup_tree_ignore_all_other_tests"));
+		item.setMnemonic(
+				_bundle.getString("popup_tree_ignore_all_other_tests_mnemonic")
+				.charAt(0));
+		item.setActionCommand(TREE_IGNORE_ALL_OTHER_TESTS);
+		item.addActionListener(this);
+		item.setEnabled(false);
+		popup.addSeparator();
+		popup.add(item);
+		
+		// Ignore all selected Tests
+		item = new JMenuItem(_bundle.getString("popup_tree_ignore_all_tests"));
+		item.setMnemonic(
+				_bundle.getString("popup_tree_ignore_all_tests_mnemonic")
+				.charAt(0));
+		item.setActionCommand(TREE_IGNORE_SELECTED_TESTS);
+		item.addActionListener(this);
+		item.setEnabled(false);
+		popup.add(item);
+		
+		// Execute all selected Tests
+		item = new JMenuItem(_bundle.getString("popup_tree_execute_all_tests"));
+		item.setMnemonic(
+				_bundle.getString("popup_tree_execute_all_tests_mnemonic")
+				.charAt(0));
+		item.setActionCommand(TREE_EXECUTE_SELECTED_TESTS);
+		item.addActionListener(this);
+		item.setEnabled(false);
+		popup.add(item);
 
 		// Return the popup menu
 		return popup;
@@ -552,7 +602,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 			 */
 			@Override
 			public void valueChanged(TreeSelectionEvent e) {
-				// OPT This code into a separate method?
+				// OPT *.setEnable(false) into a separate method and let stand here only * .setEnabled (true) 
 				JPopupMenu popup = _tree.getComponentPopupMenu();
 				JMenu insert = (JMenu)popup.getComponent(0);
 				JMenu delete = (JMenu)popup.getComponent(1);
@@ -575,6 +625,10 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 					config.getItem(1).setEnabled(false);
 					config.getItem(2).setEnabled(false);
 					config.getItem(3).setEnabled(false);
+					
+					popup.getComponent(4).setEnabled(false);
+					popup.getComponent(5).setEnabled(false);
+					popup.getComponent(6).setEnabled(false);
 				}
 				
 				// selected test runner
@@ -594,6 +648,10 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 					config.getItem(1).setEnabled(true);
 					config.getItem(2).setEnabled(false);
 					config.getItem(3).setEnabled(false);
+					
+					popup.getComponent(4).setEnabled(true);
+					popup.getComponent(5).setEnabled(true);
+					popup.getComponent(6).setEnabled(true);
 				}
 				
 				// selected test suite
@@ -613,8 +671,13 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 					config.getItem(1).setEnabled(false);
 					config.getItem(2).setEnabled(true);
 					config.getItem(3).setEnabled(false);
+					
+					popup.getComponent(4).setEnabled(true);
+					popup.getComponent(5).setEnabled(true);
+					popup.getComponent(6).setEnabled(true);
 				}
 				
+				// selected test
 				else if ((e.getPath().getLastPathComponent() instanceof Test) &&
 						e.isAddedPath()) {
 					insert.getItem(0).setEnabled(false);
@@ -631,6 +694,10 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 					config.getItem(1).setEnabled(false);
 					config.getItem(2).setEnabled(false);
 					config.getItem(3).setEnabled(true);
+					
+					popup.getComponent(4).setEnabled(true);
+					popup.getComponent(5).setEnabled(false);
+					popup.getComponent(6).setEnabled(false);
 				}
 				
 				// Not defined
@@ -649,6 +716,10 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 					config.getItem(1).setEnabled(false);
 					config.getItem(2).setEnabled(false);
 					config.getItem(3).setEnabled(false);
+					
+					popup.getComponent(4).setEnabled(false);
+					popup.getComponent(5).setEnabled(false);
+					popup.getComponent(6).setEnabled(false);
 				}
 			}
 			

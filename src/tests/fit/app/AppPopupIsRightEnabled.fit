@@ -104,6 +104,21 @@
 					<td>isConfigurationtTestSelected</td>
 					<td>false</td>
 				</tr>
+				<tr>
+					<td>check</td>
+					<td>isIgnoreAllOtherTestsEnabled</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isIgnoreAllSelectedTestsEnabled</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isExecuteAllSelectedTestsEnabled</td>
+					<td>false</td>
+				</tr>
 				
 				<tr>
 					<td>press</td>
@@ -173,6 +188,21 @@
 				<tr>
 					<td>check</td>
 					<td>isConfigurationtTestSelected</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isIgnoreAllOtherTestsEnabled</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isIgnoreAllSelectedTestsEnabled</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isExecuteAllSelectedTestsEnabled</td>
 					<td>false</td>
 				</tr>
 
@@ -246,6 +276,21 @@
 					<td>isConfigurationtTestSelected</td>
 					<td>false</td>
 				</tr>
+				<tr>
+					<td>check</td>
+					<td>isIgnoreAllOtherTestsEnabled</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isIgnoreAllSelectedTestsEnabled</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isExecuteAllSelectedTestsEnabled</td>
+					<td>true</td>
+				</tr>
 
 				<tr>
 					<td>press</td>
@@ -317,6 +362,21 @@
 					<td>isConfigurationtTestSelected</td>
 					<td>false</td>
 				</tr>
+				<tr>
+					<td>check</td>
+					<td>isIgnoreAllOtherTestsEnabled</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isIgnoreAllSelectedTestsEnabled</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isExecuteAllSelectedTestsEnabled</td>
+					<td>true</td>
+				</tr>
 
 				<tr>
 					<td>press</td>
@@ -387,6 +447,21 @@
 					<td>check</td>
 					<td>isConfigurationtTestSelected</td>
 					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isIgnoreAllOtherTestsEnabled</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isIgnoreAllSelectedTestsEnabled</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isExecuteAllSelectedTestsEnabled</td>
+					<td>false</td>
 				</tr>
 			</tbody>
 		</table>
