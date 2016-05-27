@@ -111,7 +111,7 @@ public class ConfigParser {
 					case XMLStreamConstants.START_ELEMENT:
 						StartElement element = event.asStartElement();
 						data = new String();
-						switch (element.getName().toString()) {
+						switch (element.getName().getLocalPart()) {
 							case "config":
 								config = true;
 								break;
@@ -179,7 +179,7 @@ public class ConfigParser {
 						
 					case XMLStreamConstants.END_ELEMENT:
 						EndElement eelement = event.asEndElement();
-						switch(eelement.getName().toString()) {
+						switch(eelement.getName().getLocalPart()) {
 							case "config":
 								config = false;
 								break;

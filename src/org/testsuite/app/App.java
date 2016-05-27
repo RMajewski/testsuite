@@ -810,7 +810,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				JFileChooser fc = new JFileChooser();
 				fc.setDialogTitle(_bundle.getString("configFileOpenTitle"));
 				fc.setFileFilter(new FileNameExtensionFilter(
-						"Konfigurationsdatei", "xml"));
+						_bundle.getString("configFileFilter"), "xml"));
 				fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
 				int state = fc.showOpenDialog(this);
 				File file = fc.getSelectedFile();
@@ -838,7 +838,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 								.getTestsCount();
 						_pBar.setMaximum(tests);
 						_pBar.setValue(0);
-					}
+					} 
 				}
 				break;
 				
