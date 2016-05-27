@@ -729,6 +729,10 @@ public class TestApp implements Scenario {
 		return _dlg2.isVisible();
 	}
 	
+	public void pushButtonValidateConfiguration() {
+		_btnConfigValidate.push();
+	}
+	
 	/**
 	 * Start the jemmy tests.
 	 */

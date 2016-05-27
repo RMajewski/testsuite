@@ -941,6 +941,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				
 			case AC_CONFIG_VALIDATE:
 				((TestRunnerModel)_tree.getModel()).validateConfiguration();
+				_tree.updateUI();
 				break;
 				
 			case AC_RUN:

@@ -1033,4 +1033,18 @@ public class FixtureApp extends ActionFixture {
 	public boolean isConfigurationFileValide() {
 		return _tests.isConfigurationFileValide();
 	}
+	
+	public void changeTestName() {
+		_tests.selectElementInTree(3);
+		_tests.openTreePopup();
+		_tests.pushNoBlockTreePopupItem(2, 3);
+		_tests.waitForDialog(ResourceBundle.getBundle(DlgConfigTest.BUNDLE_FILE)
+				.getString("dialog_title"));
+		_tests.getDialogTextField(0).setText("Test");
+		_tests.getDialogButton(0).push();
+	}
+	
+	public void pushButtonValidateConfiguration() {
+		_tests.pushButtonValidateConfiguration();
+	}
 }
