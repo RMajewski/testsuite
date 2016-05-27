@@ -22,6 +22,7 @@ package tests.testsuite.app;
 import java.awt.Component;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.swing.JCheckBox;
@@ -54,9 +55,11 @@ import org.netbeans.jemmy.operators.JTreeOperator;
 import org.testsuite.app.App;
 import org.testsuite.app.DlgConfigGeneral;
 import org.testsuite.app.TestRunnerModel;
+import org.testsuite.core.JunitTestRunner;
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
 import org.testsuite.data.Library;
+import org.testsuite.data.Test;
 import org.testsuite.data.TestSuite;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -542,6 +545,10 @@ public class TestApp implements Scenario {
 		_tree.expandRow(2);
 	}
 	
+	public void treeExpand(int row) {
+		_tree.expandRow(row);
+	}
+	
 	/**
 	 * Performs a double click on the specified check box.
 	 * 
@@ -587,7 +594,7 @@ public class TestApp implements Scenario {
 	}
 	
 	public void openTreePopup() {
-		_tree.clickMouse();
+		_tree.clickMouse(0, 0, 1);
 		_tree.clickForPopup();
 		_popup = new JPopupMenuOperator();
 	}
@@ -649,6 +656,10 @@ public class TestApp implements Scenario {
 	public void pushTreePopupItem(int menu, int item) {
 		JMenuOperator mo = new JMenuOperator((JMenu)_popup.getComponent(menu));
 		_popup.pushMenu(mo.getText() + "|" + mo.getItem(item).getText());
+	}
+	
+	public void pushTreePopupItem(int item) {
+		_popup.pushMenu(((JMenuItem)_popup.getComponent(item)).getText());
 	}
 	
 	public void waitForDialog(String name) {
@@ -731,6 +742,80 @@ public class TestApp implements Scenario {
 	
 	public void pushButtonValidateConfiguration() {
 		_btnConfigValidate.push();
+	}
+	
+	public void generateTestConfiguration() {
+		TestSuite suite1 = new TestSuite();
+		suite1.addTest(new Test("Test1"));
+		suite1.addTest(new Test("Test2"));
+		
+		TestSuite suite2 = new TestSuite();
+		suite2.addTest(new Test("Test3"));
+		suite2.addTest(new Test("Test4"));
+		
+		TestSuite suite3 = new TestSuite();
+		suite3.addTest(new Test("Test5"));
+		suite3.addTest(new Test("Test6"));
+
+		JunitTestRunner runner1 = new JunitTestRunner();
+		runner1.addTestSuite(suite1);
+		runner1.addTestSuite(suite2);
+		
+		JunitTestRunner runner2 = new JunitTestRunner();
+		runner2.addTestSuite(suite3);
+		
+		List<TestRunner> list = ((TestRunnerModel)_tree.getModel())
+				.getTestRunnerList();
+		list.add(runner1);
+		list.add(runner2);
+		((TestRunnerModel)_tree.getModel()).setListOfTestRunner(list);
+	}
+	
+	public void pushButtonIgnoreAllTests() {
+		_btnAllTestsIgnore.push();
+	}
+	
+	public boolean isAllSelectedTestsIgnore() {
+		if (_tree.getLastSelectedPathComponent() instanceof TestRunner) {
+			TestRunner runner = (TestRunner)_tree.getLastSelectedPathComponent();
+			for (int suite = 0; suite < runner.testSuiteCount(); suite++)
+				for (int test = 0; test < runner.getTestSuite(suite).testCount(); test++)
+					if (runner.getTestSuite(suite).getTest(test).isExecuted())
+						return false;
+		} else if (_tree.getLastSelectedPathComponent() instanceof TestSuite) {
+			TestSuite suite = (TestSuite)_tree.getLastSelectedPathComponent();
+			for (int test = 0; test < suite.testCount(); test++)
+				if (suite.getTest(test).isExecuted())
+					return false;
+			
+		}
+		return true;
+	}
+	
+	public boolean isAllTestsIgnore() {
+		boolean ret = true;
+		
+		List<TestRunner> list = ((TestRunnerModel)_tree.getModel()).getTestRunnerList();
+		for (int runner = 0; runner < list.size(); runner++)
+			for (int suite = 0; suite < list.get(runner).testSuiteCount(); suite++)
+				for (int test = 0; test < list.get(runner).getTestSuite(suite).testCount(); test++)
+					if (list.get(runner).getTestSuite(suite).getTest(test).isExecuted())
+						return false;
+		
+		return ret;
+	}
+	
+	public int getIgnoredTests() {
+		int ret = 0;
+
+		List<TestRunner> list = ((TestRunnerModel)_tree.getModel()).getTestRunnerList();
+		for (int runner = 0; runner < list.size(); runner++)
+			for (int suite = 0; suite < list.get(runner).testSuiteCount(); suite++)
+				for (int test = 0; test < list.get(runner).getTestSuite(suite).testCount(); test++)
+					if (list.get(runner).getTestSuite(suite).getTest(test).isExecuted())
+						ret++;
+		
+		return ret;
 	}
 	
 	/**

@@ -81,6 +81,14 @@ public class Test extends Data {
 	}
 	
 	/**
+	 * Initialize the data of this class
+	 */
+	public Test(String name) {
+		this();
+		setName(name);
+	}
+	
+	/**
 	 * Sets the start time
 	 * 
 	 * @param time Start time of the test

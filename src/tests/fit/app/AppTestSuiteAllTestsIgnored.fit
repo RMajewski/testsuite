@@ -1,0 +1,72 @@
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Test the TestSuiteApp (test suite ignore all tests)</title>
+	</head>
+	<body>
+		<h2>Tests for the TestSuiteApp (test suite ignore all tests)</h2>
+		<p>
+			It is written in the tree a first configuration. Now the 
+			TestSuite is selected and checked whether the pop-up menu entry
+			"Ignore all tests" enabled is. After this is clicked. Now is checked
+			if all the tests are marked as ignore.
+		</p>
+		<table border="1" cellpadding="1" cellspacing="1" style="width: *;">
+			<tbody>
+				<tr>
+					<td colspan="3">fit.ActionFixture</td>
+				</tr>
+				<tr>
+					<td>start</td>
+					<td>tests.fixtures.app.FixtureApp</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>openPopup</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isIgnoreAllSelectedTestsEnabled</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>generateTestConfiguration</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>selectTestSuiteInTree</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>openPopup</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isIgnoreAllSelectedTestsEnabled</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushIgnoreAllSelectedTests</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isAllSelectedTestsIgnore</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getIgnoredTests</td>
+					<td>4</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>

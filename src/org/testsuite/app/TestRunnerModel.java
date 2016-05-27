@@ -62,7 +62,6 @@ public class TestRunnerModel implements TreeModel {
 	 */
 	public void setListOfTestRunner(List<TestRunner> list) {
 		_testRunner = list;
-		validateConfiguration();
 		
 		fireTreeStructureChanged();
 	}

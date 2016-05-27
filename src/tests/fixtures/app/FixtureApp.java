@@ -1047,4 +1047,31 @@ public class FixtureApp extends ActionFixture {
 	public void pushButtonValidateConfiguration() {
 		_tests.pushButtonValidateConfiguration();
 	}
+	
+	public void generateTestConfiguration() {
+		_tests.generateTestConfiguration();
+		
+		_tests.treeExpand(0);
+		_tests.treeExpand(1);
+		_tests.treeExpand(2);
+		_tests.treeExpand(5);
+		_tests.treeExpand(8);
+		_tests.treeExpand(9);
+	}
+	
+	public void pushIgnoreAllSelectedTests() {
+		_tests.pushTreePopupItem(5);
+	}
+	
+	public boolean isAllSelectedTestsIgnore() {
+		return _tests.isAllSelectedTestsIgnore();
+	}
+	
+	public boolean isAllTestsIgnore() {
+		return _tests.isAllTestsIgnore();
+	}
+	
+	public int getIgnoredTests() {
+		return _tests.getIgnoredTests();
+	}
 }
