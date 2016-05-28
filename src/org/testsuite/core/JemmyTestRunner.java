@@ -116,9 +116,11 @@ public class JemmyTestRunner extends TestRunner {
 		if ((_suites.get(suite).getTest(test).getExitStatus() == 0) &&
 				_suites.get(suite).getTest(test).isExists())
 			cl = " class=\"pass\"";
+		
 		else if ((_suites.get(suite).getTest(test).getExitStatus() != 0) &&
 				_suites.get(suite).getTest(test).isExists())
 			cl = " class=\"wrong\"";
+		
 		if (!_suites.get(suite).getTest(test).isExecuted() ||
 				_suites.get(suite).getTest(test).isTerminated())
 			cl = " class=\"ignore\"";

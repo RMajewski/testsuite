@@ -19,10 +19,17 @@
 
 package tests.testsuite.core;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ResourceBundle;
 
@@ -141,7 +148,6 @@ public class TestJunitTestRunner {
 		String resultSuite = "1";
 		String console = "console";
 		String error = "error";
-		String exec = "exec";
 		String packageName = "package";
 		int ok = 1;
 		int fail = 2;
@@ -189,14 +195,23 @@ public class TestJunitTestRunner {
 		
 		assertEquals(ret, method.invoke(_runner, 0, 0, html));
 		
-		InOrder order = inOrder(test, suite);
+		InOrder order = inOrder(test, suite, _config);
+		order.verify(test).getOk();
+		order.verify(test).getFail();
+		order.verify(test).isExecuted();
+		order.verify(test).isTerminated();
 		order.verify(test).isExists();
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
 		order.verify(test).getIn();
 		order.verify(test).getError();
+		order.verify(suite).getPackage();
+		order.verify(test).getName();
 		order.verify(test).isExecuted();
+		order.verify(test).isTerminated();
+		order.verify(test).getOk();
+		order.verify(test).getFail();
 		order.verify(test).getDurationTimeFormattedString();
 		
 		verify(suite, times(16)).getTest(0);
@@ -219,7 +234,6 @@ public class TestJunitTestRunner {
 		String resultSuite = "1";
 		String console = "console";
 		String error = "error";
-		String exec = "exec";
 		int ok = 1;
 		int fail = 2;
 		int suiteId = 0;
@@ -260,14 +274,18 @@ public class TestJunitTestRunner {
 		assertEquals(ret, method.invoke(_runner, 0, 0, html));
 		
 		InOrder order = inOrder(test, suite);
+		order.verify(test).getOk();
+		order.verify(test).getFail();
+		order.verify(test).isExecuted();
 		order.verify(test).isExists();
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
 		order.verify(test).getIn();
 		order.verify(test).getError();
+		order.verify(suite).getPackage();
+		order.verify(test).getName();
 		order.verify(test).isExecuted();
-		order.verify(test, never()).getDurationTimeFormattedString();
 		
 		verify(suite, times(11)).getTest(0);
 	}
@@ -322,15 +340,14 @@ public class TestJunitTestRunner {
 		
 		assertEquals(ret, method.invoke(_runner, 0, 0, html));
 		
-		InOrder order = inOrder(test, suite);
+		InOrder order = inOrder(test, suite, _config);
+		order.verify(test).getOk();
+		order.verify(test).getFail();
+		order.verify(test).isExecuted();
 		order.verify(test).isExists();
+		order.verify(_config).getPathSrc();
+		order.verify(suite).getPackage();
 		order.verify(test).getName();
-		order.verify(suite, never()).getId();
-		order.verify(test, never()).getId();
-		order.verify(test, never()).getIn();
-		order.verify(test, never()).getError();
-		order.verify(test, never()).isExecuted();
-		order.verify(test, never()).getDurationTime();
 		
 		verify(suite, times(5)).getTest(0);
 	}

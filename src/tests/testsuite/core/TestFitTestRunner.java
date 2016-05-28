@@ -197,10 +197,26 @@ public class TestFitTestRunner {
 		
 		assertEquals(ret, method.invoke(_runner, 0, 0, html));
 		
-		// FIXME Adapted the InOrder list
-		InOrder order = inOrder(test, suite);
+		InOrder order = inOrder(test, suite, _config);
+		order.verify(test).getOk();
+		order.verify(test).getFail();
+		order.verify(test).getIgnore();
+		order.verify(test).getException();
+		order.verify(test).isExecuted();
+		order.verify(test).isTerminated();
 		order.verify(test).isExists();
-		order.verify(test, times(4)).getName();
+		order.verify(test).isExecuted();
+		order.verify(test).isTerminated();
+		order.verify(_config).getPathSuitesResult();
+		order.verify(suite).getPackage();
+		order.verify(test).getName();
+		order.verify(test).getName();
+		order.verify(suite).getId();
+		order.verify(test).getId();
+		order.verify(test).getIn();
+		order.verify(test).getError();
+		order.verify(suite).getPackage();
+		order.verify(test).getName();
 		order.verify(test).isExecuted();
 		order.verify(test).isTerminated();
 		order.verify(test).getOk();
@@ -276,16 +292,22 @@ public class TestFitTestRunner {
 		
 		assertEquals(ret, method.invoke(_runner, 0, 0, html));
 		
-		// FIXME Adapted the InOrder list
 		InOrder order = inOrder(test, suite);
-		order.verify(test).isExists();
-		order.verify(test, times(3)).getName();
+		order.verify(test).getOk();
+		order.verify(test).getFail();
+		order.verify(test).getIgnore();
+		order.verify(test).getException();
 		order.verify(test).isExecuted();
-		order.verify(test, never()).getOk();
-		order.verify(test, never()).getFail();
-		order.verify(test, never()).getIgnore();
-		order.verify(test, never()).getException();
-		order.verify(test, never()).getDurationTimeFormattedString();
+		order.verify(test).isExists();
+		order.verify(test).isExecuted();
+		order.verify(test).getName();
+		order.verify(suite).getId();
+		order.verify(test).getId();
+		order.verify(test).getIn();
+		order.verify(test).getError();
+		order.verify(suite).getPackage();
+		order.verify(test).getName();
+		order.verify(test).isExecuted();
 		
 		verify(suite, times(14)).getTest(0);
 	}
@@ -338,15 +360,17 @@ public class TestFitTestRunner {
 		
 		assertEquals(ret, method.invoke(_runner, 0, 0, html));
 		
-		InOrder order = inOrder(test);
+		InOrder order = inOrder(test, suite, _config);
+		order.verify(test).getOk();
+		order.verify(test).getFail();
+		order.verify(test).getIgnore();
+		order.verify(test).getException();
+		order.verify(test).isExecuted();
+		order.verify(test).isTerminated();
 		order.verify(test).isExists();
+		order.verify(_config).getPathSrc();
+		order.verify(suite).getPackage();
 		order.verify(test).getName();
-		order.verify(test, never()).isExecuted();
-		order.verify(test, never()).getOk();
-		order.verify(test, never()).getFail();
-		order.verify(test, never()).getIgnore();
-		order.verify(test, never()).getException();
-		order.verify(test, never()).getDurationTimeFormattedString();
 		
 		verify(suite, times(8)).getTest(0);
 	}

@@ -22,18 +22,13 @@ package tests.testsuite.core;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.util.ResourceBundle;
 
@@ -41,18 +36,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
-import org.mockito.Matchers;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.testsuite.core.HtmlOut;
 import org.testsuite.core.JemmyTestRunner;
-import org.testsuite.core.JunitTestRunner;
 import org.testsuite.data.Config;
-import org.testsuite.data.Junit;
 import org.testsuite.data.Library;
-import org.testsuite.data.TestEvent;
-import org.testsuite.data.TestEventListener;
 import org.testsuite.data.TestSuite;
 
 /**
@@ -154,7 +143,6 @@ public class TestJemmyTestRunner {
 				System.lineSeparator();
 		String console = "console";
 		String error = "error";
-		String exec = "exec";
 		String testName = "Test1";
 		String packageName = "tests";
 		int suiteId = 0;
@@ -198,13 +186,20 @@ public class TestJemmyTestRunner {
 		assertEquals(ret, method.invoke(_runner, 0, 0, html));
 		
 		InOrder order = inOrder(test, suite);
+		order.verify(test).getExitStatus();
+		order.verify(test).isExists();
+		order.verify(test).isExecuted();
+		order.verify(test).isTerminated();
 		order.verify(test).isExists();
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
 		order.verify(test).getIn();
 		order.verify(test).getError();
+		order.verify(suite).getPackage();
+		order.verify(test).getName();
 		order.verify(test).isExecuted();
+		order.verify(test).isTerminated();
 		order.verify(test).getExitStatus();
 		order.verify(test).getDurationTimeFormattedString();
 		
@@ -231,7 +226,6 @@ public class TestJemmyTestRunner {
 				System.lineSeparator();
 		String console = "console";
 		String error = "error";
-		String exec = "exec";
 		String testName = "Test1";
 		int suiteId = 0;
 		int testId = 0;
@@ -271,13 +265,21 @@ public class TestJemmyTestRunner {
 		assertEquals(ret, method.invoke(_runner, 0, 0, html));
 		
 		InOrder order = inOrder(test, suite);
+		order.verify(test).getExitStatus();
+		order.verify(test).getExitStatus();
+		order.verify(test).isExists();
+		order.verify(test).isExecuted();
+		order.verify(test).isTerminated();
 		order.verify(test).isExists();
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
 		order.verify(test).getIn();
 		order.verify(test).getError();
+		order.verify(suite).getPackage();
+		order.verify(test).getName();
 		order.verify(test).isExecuted();
+		order.verify(test).isTerminated();
 		order.verify(test).getExitStatus();
 		order.verify(test).getDurationTimeFormattedString();
 		
@@ -296,7 +298,6 @@ public class TestJemmyTestRunner {
 		String extension = "java";
 		String console = "console";
 		String error = "error";
-		String exec = "exec";
 		int suiteId = 0;
 		int testId = 0;
 		boolean executed = true;
@@ -334,12 +335,17 @@ public class TestJemmyTestRunner {
 		
 		assertEquals(ret, method.invoke(_runner, 0, 0, html));
 		
-		InOrder order = inOrder(test);
+		InOrder order = inOrder(test, suite, _config);
+		order.verify(test).getExitStatus();
 		order.verify(test).isExists();
+		order.verify(test).isExecuted();
+		order.verify(test).isTerminated();
+		order.verify(test).isExists();
+		order.verify(_config).getPathSrc();
+		order.verify(suite).getPackage();
 		order.verify(test).getName();
 		
 		verify(suite, times(7)).getTest(0);
-		verify(suite).getPackage();
 	}
 	
 	/**
@@ -354,7 +360,6 @@ public class TestJemmyTestRunner {
 		String extension = "java";
 		String console = "console";
 		String error = "error";
-		String exec = "exec";
 		int suiteId = 0;
 		int testId = 0;
 		boolean executed = false; 
