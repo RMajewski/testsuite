@@ -231,7 +231,7 @@ public class TestTestCore {
 		when(file.exists()).thenReturn(true);
 		
 		PowerMockito.whenNew(File.class)
-			.withArguments(pathResult + File.separator)
+			.withAnyArguments()
 			.thenReturn(file);
 		
 		when(_config.isCreateHtml()).thenReturn(true);

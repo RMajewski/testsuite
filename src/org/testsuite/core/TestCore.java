@@ -146,7 +146,6 @@ public class TestCore {
 		if (_config.isCreateHtml()) {
 			String htmlFile = _config.getPathResult() + File.separator;
 			
-			// FIXME In Tests einbinden (File mocken)
 			File file = new File(htmlFile);
 			if (!file.exists())
 				file.mkdirs();
