@@ -602,7 +602,8 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 			 */
 			@Override
 			public void valueChanged(TreeSelectionEvent e) {
-				// OPT *.setEnable(false) into a separate method and let stand here only * .setEnabled (true) 
+				disabledAllPopupMenuItems();
+				
 				JPopupMenu popup = _tree.getComponentPopupMenu();
 				JMenu insert = (JMenu)popup.getComponent(0);
 				JMenu delete = (JMenu)popup.getComponent(1);
@@ -613,41 +614,20 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 					e.isAddedPath()) {
 					insert.getItem(0).setEnabled(true);
 					insert.getItem(1).setEnabled(true);
-					insert.getItem(2).setEnabled(false);
-					insert.getItem(3).setEnabled(false);
 
 					delete.getItem(0).setEnabled(true);
-					delete.getItem(1).setEnabled(false);
-					delete.getItem(2).setEnabled(false);
-					delete.getItem(3).setEnabled(false);
 
 					config.getItem(0).setEnabled(true);
-					config.getItem(1).setEnabled(false);
-					config.getItem(2).setEnabled(false);
-					config.getItem(3).setEnabled(false);
-					
-					popup.getComponent(4).setEnabled(false);
-					popup.getComponent(5).setEnabled(false);
-					popup.getComponent(6).setEnabled(false);
 				}
 				
 				// selected test runner
 				else if ((e.getPath().getLastPathComponent() instanceof 
 						TestRunner) && e.isAddedPath()) {
-					insert.getItem(0).setEnabled(false);
-					insert.getItem(1).setEnabled(false);
 					insert.getItem(2).setEnabled(true);
-					insert.getItem(3).setEnabled(false);
 
-					delete.getItem(0).setEnabled(false);
 					delete.getItem(1).setEnabled(true);
-					delete.getItem(2).setEnabled(false);
-					delete.getItem(3).setEnabled(false);
 
-					config.getItem(0).setEnabled(false);
 					config.getItem(1).setEnabled(true);
-					config.getItem(2).setEnabled(false);
-					config.getItem(3).setEnabled(false);
 					
 					popup.getComponent(4).setEnabled(true);
 					popup.getComponent(5).setEnabled(true);
@@ -657,20 +637,11 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				// selected test suite
 				else if ((e.getPath().getLastPathComponent() instanceof
 						TestSuite) && e.isAddedPath()) {
-					insert.getItem(0).setEnabled(false);
-					insert.getItem(1).setEnabled(false);
-					insert.getItem(2).setEnabled(false);
 					insert.getItem(3).setEnabled(true);
 
-					delete.getItem(0).setEnabled(false);
-					delete.getItem(1).setEnabled(false);
 					delete.getItem(2).setEnabled(true);
-					delete.getItem(3).setEnabled(false);
 
-					config.getItem(0).setEnabled(false);
-					config.getItem(1).setEnabled(false);
 					config.getItem(2).setEnabled(true);
-					config.getItem(3).setEnabled(false);
 					
 					popup.getComponent(4).setEnabled(true);
 					popup.getComponent(5).setEnabled(true);
@@ -680,46 +651,11 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				// selected test
 				else if ((e.getPath().getLastPathComponent() instanceof Test) &&
 						e.isAddedPath()) {
-					insert.getItem(0).setEnabled(false);
-					insert.getItem(1).setEnabled(false);
-					insert.getItem(2).setEnabled(false);
-					insert.getItem(3).setEnabled(false);
-
-					delete.getItem(0).setEnabled(false);
-					delete.getItem(1).setEnabled(false);
-					delete.getItem(2).setEnabled(false);
 					delete.getItem(3).setEnabled(true);
 
-					config.getItem(0).setEnabled(false);
-					config.getItem(1).setEnabled(false);
-					config.getItem(2).setEnabled(false);
 					config.getItem(3).setEnabled(true);
 					
 					popup.getComponent(4).setEnabled(true);
-					popup.getComponent(5).setEnabled(false);
-					popup.getComponent(6).setEnabled(false);
-				}
-				
-				// Not defined
-				else {
-					insert.getItem(0).setEnabled(false);
-					insert.getItem(1).setEnabled(false);
-					insert.getItem(2).setEnabled(false);
-					insert.getItem(3).setEnabled(false);
-
-					delete.getItem(0).setEnabled(false);
-					delete.getItem(1).setEnabled(false);
-					delete.getItem(2).setEnabled(false);
-					delete.getItem(3).setEnabled(false);
-
-					config.getItem(0).setEnabled(false);
-					config.getItem(1).setEnabled(false);
-					config.getItem(2).setEnabled(false);
-					config.getItem(3).setEnabled(false);
-					
-					popup.getComponent(4).setEnabled(false);
-					popup.getComponent(5).setEnabled(false);
-					popup.getComponent(6).setEnabled(false);
 				}
 			}
 			
@@ -1265,6 +1201,35 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		} catch (Exception er) {
 			er.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Disabled all pop-up menu items
+	 */
+	private void disabledAllPopupMenuItems() {
+		JPopupMenu popup = _tree.getComponentPopupMenu();
+		JMenu insert = (JMenu)popup.getComponent(0);
+		JMenu delete = (JMenu)popup.getComponent(1);
+		JMenu config = (JMenu)popup.getComponent(2);
+
+		insert.getItem(0).setEnabled(false);
+		insert.getItem(1).setEnabled(false);
+		insert.getItem(2).setEnabled(false);
+		insert.getItem(3).setEnabled(false);
+
+		delete.getItem(0).setEnabled(false);
+		delete.getItem(1).setEnabled(false);
+		delete.getItem(2).setEnabled(false);
+		delete.getItem(3).setEnabled(false);
+
+		config.getItem(0).setEnabled(false);
+		config.getItem(1).setEnabled(false);
+		config.getItem(2).setEnabled(false);
+		config.getItem(3).setEnabled(false);
+		
+		popup.getComponent(4).setEnabled(false);
+		popup.getComponent(5).setEnabled(false);
+		popup.getComponent(6).setEnabled(false);
 	}
 
 	/**
