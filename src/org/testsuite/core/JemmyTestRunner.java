@@ -21,13 +21,10 @@ package org.testsuite.core;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.testsuite.data.Config;
 import org.testsuite.data.Test;
 import org.testsuite.data.TestSuite;
+import org.testsuite.helper.HelperCalendar;
 
 /**
  * Executes the jemmy tests.
@@ -233,10 +230,8 @@ public class JemmyTestRunner extends TestRunner {
 		ret.append("</td>");
 		ret.append(System.lineSeparator());
 		
-		// OPT Insert in HelperCalendar
-		DateFormat df = new SimpleDateFormat("HH:mm:ss.SSS");
 		ret.append(td);
-		ret.append(df.format(new Date(duration - 3600000)));
+		ret.append(HelperCalendar.timeToString(duration));
 		ret.append("</td>");
 		ret.append(System.lineSeparator());
 		
@@ -420,10 +415,8 @@ public class JemmyTestRunner extends TestRunner {
 		ret.append("</td>");
 		ret.append(System.lineSeparator());
 		
-		// OPT Insert in HelperCalendar
-		DateFormat df = new SimpleDateFormat("HH:mm:ss.SSS");
 		ret.append("\t\t\t\t\t\t<td colspan=\"2\">");
-		ret.append(df.format(new Date(duration - 3600000)));
+		ret.append(HelperCalendar.timeToString(duration));
 		ret.append("</td>");
 		ret.append(System.lineSeparator());
 

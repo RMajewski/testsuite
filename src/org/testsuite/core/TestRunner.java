@@ -26,8 +26,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +41,7 @@ import org.testsuite.data.Test;
 import org.testsuite.data.TestEvent;
 import org.testsuite.data.TestEventListener;
 import org.testsuite.data.TestSuite;
+import org.testsuite.helper.HelperCalendar;
 
 /**
  * From this class all TestRunner be derived.
@@ -1068,10 +1067,8 @@ public abstract class TestRunner {
 		ret.append("</td>");
 		ret.append(System.lineSeparator());
 		
-		// OPT Insert in HelperCalendar
-		DateFormat df = new SimpleDateFormat("HH:mm:ss.SSS");
 		ret.append(td);
-		ret.append(df.format(new Date(duration - 3600000)));
+		ret.append(HelperCalendar.timeToString(duration));
 		ret.append("</td>");
 		ret.append(System.lineSeparator());
 

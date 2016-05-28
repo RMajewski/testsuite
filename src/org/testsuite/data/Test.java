@@ -19,9 +19,7 @@
 
 package org.testsuite.data;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.testsuite.helper.HelperCalendar;
 
 /**
  * In this class, the data are stored into a text.
@@ -194,9 +192,7 @@ public class Test extends Data {
 	 * @return Duration time as formatted string.
 	 */
 	public String getDurationTimeFormattedString() {
-		// OPT Insert in  HelperCalendar
-		DateFormat df = new SimpleDateFormat("HH:mm:ss.SSS");
-		return df.format(new Date(getDurationTime() - 3600000));
+		return HelperCalendar.timeToString(getDurationTime());
 	}
 	
 	/**
