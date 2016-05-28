@@ -151,6 +151,17 @@ public class TestHelperCalendar {
 	}
 	
 	/**
+	 * Tests if the specified long value right into a readable string converted.
+	 * 
+	 * @see org.testsuite.helper.HelperCalendar#timeToString(long)
+	 */
+	@Test
+	public void testTimeToString() {
+		long time = 1000;
+		assertEquals("00:00:01.000", HelperCalendar.timeToString(time));
+	}
+	
+	/**
 	 * Tests if the value returned is correct. It tested 12 different ways.
 	 * 
 	 * @see org.testsuite.helper.HelperCalendar#enStringToMonth(String)

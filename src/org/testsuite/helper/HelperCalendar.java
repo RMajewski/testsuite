@@ -20,28 +20,28 @@
 package org.testsuite.helper;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
- * Implementiert Methoden, die beim Umgang mit den Kaler-Objekten behilflich
- * sind.
+ * Implements methods that can assist in managing the cellar objects.
+ * 
+ * In version 0.2, a method is implemented, the formatted test time correctly.
  * 
  * @author René Majewski
  * 
- * @version 0.1
- * @since 0.2
+ * @version 0.2
  */
 public class HelperCalendar {
 
 	/**
-	 * Initalisiert den Kalender. Das Datum wird auf den 1. Januar des
-	 * angegeben Jahres gesetzt. Die Stunden, Minuten, Sekunden und
-	 * Millisekunden werde auf 0 gesetzt.
+	 * Initialize the calendar. The date is set to January 1 of the given year.
+	 * The hours, minutes, seconds and milliseconds will set to 0.
 	 * 
-	 * @param year Jahr, welches der Kalender-Instanz zugeordnet werden soll.
+	 * @param year Year that the calendar instance should be assigned.
 	 * 
-	 * @return Erzeugte und initalisierte Instanz des Kalenders
+	 * @return Generated and initialized instance of the calendar
 	 */
 	public static GregorianCalendar createCalendar(int year) {
 		// Kalender Instanz erzeugen
@@ -53,11 +53,11 @@ public class HelperCalendar {
 	}
 	
 	/**
-	 * Wandelt ein Datum (long-Wert) in eine lesbare Zeichenkette um.
+	 * Converts a date (long value) in a readable string around.
 	 * 
-	 * @param date long-Wert, der umgewandelt werden soll
+	 * @param date Long value to be converted
 	 * 
-	 * @return Lesbare Zeichenkette.
+	 * @return Readable string.
 	 */
 	public static String dateToString(long date) {
 		return DateFormat.getDateInstance(DateFormat.MEDIUM).format(
@@ -65,12 +65,11 @@ public class HelperCalendar {
 	}
 	
 	/**
-	 * Wandelt ein long-Wert in Datum und Zeit in einer lesbaren Zeichenkette
-	 * um.
+	 * Converts a long value in the date and time in a readable string.
 	 * 
-	 * @param datetime long-Wert, der umgewandelt werden soll
+	 * @param datetime Long value to be converted
 	 * 
-	 * @return Lesbare Zeichenkette
+	 * @return Readable string.
 	 */
 	public static String datetimeToString(long datetime) {
 		return DateFormat.getDateTimeInstance(DateFormat.MEDIUM,
@@ -78,14 +77,24 @@ public class HelperCalendar {
 	}
 	
 	/**
-	 * Ermittelt aus der angegebenen Monats-Nummer der englischen Monats-Namen.
-	 * Ist die Nummer außerhalb des gültigen Bereiches wird eine leere
-	 * Zeichenkette zurück gegeben.
+	 * Converts a long value from the time in a readable string.
 	 * 
-	 * @param month Monats-Nummer, die in einen Monats-Namen umgewandelt werden
-	 * soll.
+	 * @param time Long value to be converted
 	 * 
-	 * @return Englischer Monats-Name
+	 * @return Readable String
+	 */
+	public static String timeToString(long time) {
+		return new SimpleDateFormat("HH:mm:ss.SSS")
+				.format(new Date(time - 3600000));
+	}
+	
+	/**
+	 * Calculated from the specified month number of the English month names. If
+	 * the number is out of range, an empty string is returned.
+	 * 
+	 * @param month Month number to be converted to a month name.
+	 * 
+	 * @return English Month Name
 	 */
 	public static String enMonthToString(int month) {
 		switch (month) {
@@ -132,13 +141,12 @@ public class HelperCalendar {
 	}
 	
 	/**
-	 * Ermittelt aus den englischen Monats-Namen die Nummer des Monats. Wird ein
-	 * falscher Monatsname angegeben, so wird -1 zurück gegeben.
+	 * Calculated from the English name of the month the number of the month. If
+	 * an incorrect month name is specified, -1 is returned.
 	 * 
-	 * @param name Monatsname, der in eine Monats-Nummer umgewandelt werden
-	 * soll.
+	 * @param name Month name to be converted into a monthly number.
 	 * 
-	 * @return Monats-Nummer, die ermittelt wurde.
+	 * @return Month number, which was determined.
 	 */
 	public static int enStringToMonth(String name) {
 		if (name == null || name.isEmpty())
