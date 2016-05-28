@@ -29,6 +29,17 @@ import java.util.EventListener;
  * @version 0.1
  */
 public interface TestEventListener extends EventListener {
+	/**
+	 * Called when a test is complete.
+	 * 
+	 * @param te Data of this event.
+	 */
 	public void testExecutedCompleted(TestEvent te);
+	
+	/**
+	 * Called when all tests are complete.
+	 * 
+	 * @param te Data of this event.
+	 */
 	public void testEnd(TestEvent te);
 }

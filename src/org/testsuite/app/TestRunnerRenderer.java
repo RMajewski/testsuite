@@ -86,6 +86,12 @@ public class TestRunnerRenderer implements TreeCellRenderer {
 		_label.setOpaque(true);
 	}
 
+	/**
+	 * Returns either the label or the check box. Depending on what is needed.
+	 * There are set according to the properties.
+	 * 
+	 * @return The element, which is to be displayed.
+	 */
 	@Override
 	public Component getTreeCellRendererComponent(JTree tree, Object value,
 			boolean selected, boolean expanded, boolean leaf,

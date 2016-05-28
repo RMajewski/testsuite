@@ -76,12 +76,23 @@ public class TestRunnerModel implements TreeModel {
 
 	/**
 	 * Adds a TreeModelListener to the list of TreeModelListener.
+	 * 
+	 * @param l Listener to be added to the list of listeners
 	 */
 	@Override
 	public void addTreeModelListener(TreeModelListener l) {
 		_treeModelListener.add(l);
 	}
 
+	/**
+	 * Determines what to output
+	 * 
+	 * @param parent Parent element in the tree
+	 * 
+	 * @param index Child element that should be returned.
+	 * 
+	 * @return Object what to output
+	 */
 	@Override
 	public Object getChild(Object parent, int index) {
 		if (parent instanceof List<?>)
@@ -95,6 +106,13 @@ public class TestRunnerModel implements TreeModel {
 		return null;
 	}
 
+	/**
+	 * Determines number of children from parent element.
+	 * 
+	 * @param parent Parent element in the tree
+	 * 
+	 * @return Number of childs
+	 */
 	@Override
 	public int getChildCount(Object parent) {
 		if (parent instanceof List<?>)
@@ -106,16 +124,31 @@ public class TestRunnerModel implements TreeModel {
 		return 0;
 	}
 
+	/**
+	 * Is not needed.
+	 */
 	@Override
 	public int getIndexOfChild(Object parent, Object child) {
-		return -1;
+		return 0;
 	}
 
+	/**
+	 * Returns the root element of the tree
+	 * 
+	 * @return Root element of the tree
+	 */
 	@Override
 	public Object getRoot() {
 		return _testRunner;
 	}
 
+	/**
+	 * Determines whether the tree element is a node or a leaf.
+	 * 
+	 * @param node Tree element is to be determined in which, if it is a leaf.
+	 * 
+	 * @return True if node is a leaf. False if it is not a leaf.
+	 */
 	@Override
 	public boolean isLeaf(Object node) {
 		return node instanceof org.testsuite.data.Test;
@@ -132,18 +165,27 @@ public class TestRunnerModel implements TreeModel {
 		_treeModelListener.remove(l);
 	}
 
+	/**
+	 * Is not needed.
+	 */
 	@Override
 	public void valueForPathChanged(TreePath path, Object newValue) {
-		// TODO Auto-generated method stub
-
 	}
 	
+	/**
+	 * Called when the tree has changed.
+	 */
 	public void fireTreeStructureChanged() {
 		for (int i = 0; i < _treeModelListener.size(); i++)
 			_treeModelListener.elementAt(i).treeStructureChanged(
 					new TreeModelEvent(this, new Object[] {"TestRunner"}));
 	}
 	
+	/**
+	 * Called when a node has changed.
+	 * 
+	 * @param path Specifies which node has changed.
+	 */
 	public void fireTreeNodesChanged(TreePath path) {
 		int index = getChildCount(path.getLastPathComponent());
 		
@@ -154,6 +196,11 @@ public class TestRunnerModel implements TreeModel {
 							new Object[] {path.getLastPathComponent()}));
 	}
 	
+	/**
+	 * Returns the list of TestRunner
+	 * 
+	 * @return List of TestRunner
+	 */
 	public List<TestRunner> getTestRunnerList() {
 		return _testRunner;
 	}
