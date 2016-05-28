@@ -26,7 +26,7 @@ import org.junit.Test;
 import org.testsuite.data.TestEvent;
 
 /**
- * Tests the class {@link org.testsuite.data.TextEvent}.
+ * Tests the class {@link org.testsuite.data.TestEvent}.
  * 
  * @author René Majewski
  *

@@ -49,8 +49,6 @@ public class FitTestRunner extends TestRunner {
 	/**
 	 * Initialis the data of the class.
 	 * 
-	 * @param extension Extension of the test files.
-	 * 
 	 * @param config The configuration
 	 */
 	public FitTestRunner(Config config) {
@@ -540,8 +538,6 @@ public class FitTestRunner extends TestRunner {
 	
 	/**
 	 * Creates the command to execute.
-	 * 
-	 * @param test Name of the test class or name of file
 	 * 
 	 * @param suite The actual test suite
 	 * 

@@ -61,7 +61,7 @@ public class TestTestSuite {
 	/**
 	 * Tests whether the data has been correctly initialized.
 	 * 
-	 * @see org.testsuite.data.TestSuite#TestSuiteData()
+	 * @see org.testsuite.data.TestSuite#TestSuite()
 	 */
 	@Test
 	public void testJunitData() {

@@ -59,7 +59,7 @@ public class TestJunitData {
 	/**
 	 * Tests whether the data has been correctly initialized.
 	 * 
-	 * @see org.testsuite.data.Junit#JunitData()
+	 * @see org.testsuite.data.Junit#Junit()
 	 */
 	@Test
 	public void testJunitData() {

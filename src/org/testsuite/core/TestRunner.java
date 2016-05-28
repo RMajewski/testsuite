@@ -309,7 +309,7 @@ public abstract class TestRunner {
 	/**
 	 * Adds a path to the list.
 	 * 
-	 * @param library Path, which is to be added to the list.
+	 * @param path Path, which is to be added to the list.
 	 */
 	public void addClassPath(String path) {
 		if ((path == null) || path.isEmpty())
@@ -399,18 +399,18 @@ public abstract class TestRunner {
 	
 	
 	/**
-	 * Specifies the last test suite id firmly.
+	 * Return the last test suite id firmly.
 	 * 
-	 * @param test The new last test suite id
+	 * @return The last test suite id
 	 */
 	public int getLastSuiteId() {
 		return _lastSuiteId;
 	}
 	
 	/**
-	 * Gets the last test suite id.
+	 * Sets the last test suite id.
 	 * 
-	 * @return The last test suite id.
+	 * @param lastSuiteId The last id for test suite
 	 */
 	public void setLastSuiteId(int lastSuiteId) {
 		_lastSuiteId = lastSuiteId;

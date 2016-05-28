@@ -40,7 +40,7 @@ import org.testsuite.data.Library;
 import org.testsuite.data.TestSuite;
 
 /**
- * Tests the class {@link org.testsuite.JunitTestRunner}.
+ * Tests the class {@link org.testsuite.core.JunitTestRunner}.
  * 
  * $java -Duser.language=de -Duser.country=DE
  * 

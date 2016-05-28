@@ -47,7 +47,7 @@ public class TestTest {
 	/**
 	 * Verifies that was correctly initialized.
 	 * 
-	 * @see org.testsuite.data.Test#TestData()
+	 * @see org.testsuite.data.Test#Test()
 	 */
 	@Test
 	public void testTestData() {
@@ -139,7 +139,7 @@ public class TestTest {
 	/**
 	 * Tests if the error string can be set correctly.
 	 * 
-	 * @see org.testsuite.data.Test#setError(InputStream)
+	 * @see org.testsuite.data.Test#setError(String)
 	 */
 	@Test
 	public void testSetError() {
@@ -161,7 +161,7 @@ public class TestTest {
 	/**
 	 * Tests if the console string can be set correctly.
 	 * 
-	 * @see org.testsuite.data.Test#setStringConsole(InputStream)
+	 * @see org.testsuite.data.Test#setStringConsole(String)
 	 */
 	@Test
 	public void testSetIn() {
@@ -189,7 +189,7 @@ public class TestTest {
 	/**
 	 * Tests if the time has been properly formatted.
 	 * 
-	 * @see org.testsuite.data.Test#getDurationTimeString()
+	 * @see org.testsuite.data.Test#getDurationTimeFormattedString()
 	 */
 	@Test
 	public void testGetDurationTimeFormattedString() {

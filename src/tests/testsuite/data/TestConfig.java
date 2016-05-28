@@ -30,7 +30,7 @@ import org.testsuite.data.Config;
  * 
  * @author René Majewski
  * 
- * @versionb 0.1
+ * @version 0.1
  */
 public class TestConfig {
 	/**

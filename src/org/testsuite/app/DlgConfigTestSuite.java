@@ -145,8 +145,6 @@ public class DlgConfigTestSuite extends DlgConfig {
 	
 	/**
 	 * Returns the name of test suite
-	 * 
-	 * @param Name of test suite
 	 */
 	public String getTestSuiteName() {
 		return _txtName.getText();
@@ -154,8 +152,6 @@ public class DlgConfigTestSuite extends DlgConfig {
 	
 	/**
 	 * Returns the name of package
-	 * 
-	 * @return Name of package
 	 */
 	public String getPackageName() {
 		return _txtPackage.getText();

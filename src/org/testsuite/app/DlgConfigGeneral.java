@@ -116,8 +116,8 @@ public class DlgConfigGeneral extends DlgConfig {
 	 * Initialize the class an create the layout. 
 	 * 
 	 * @param owner Window that called this dialog.
-	 * 
-	 * @param runner The object of test runner that you want to configure.
+	 *
+	 * @param config The general configuration
 	 */
 	@SuppressWarnings("serial")
 	public DlgConfigGeneral(JFrame owner, Config config) {

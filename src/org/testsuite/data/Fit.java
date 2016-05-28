@@ -40,7 +40,7 @@ public class Fit extends Junit {
 	/**
 	 * Initializes the data of the class
 	 * 
-	 * @see Test#TestData()
+	 * @see Test#Test()
 	 */
 	public Fit() {
 		super();

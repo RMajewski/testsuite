@@ -40,7 +40,7 @@ public class Junit extends Test {
 	/**
 	 * Initializes the data of the class
 	 * 
-	 * @see Test#TestData()
+	 * @see Test#Test()
 	 */
 	public Junit() {
 		super();

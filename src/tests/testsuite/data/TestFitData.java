@@ -60,7 +60,7 @@ public class TestFitData {
 	/**
 	 * Tests whether the data has been correctly initialized.
 	 * 
-	 * @see org.testsuite.data.Fit#FitData()
+	 * @see org.testsuite.data.Fit#Fit()
 	 */
 	@Test
 	public void testFitData() {

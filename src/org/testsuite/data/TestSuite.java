@@ -114,7 +114,7 @@ public class TestSuite extends Data {
 	/**
 	 * Specifies the last test id firmly.
 	 * 
-	 * @param test The new last test id
+	 * @param last The new last test id
 	 */
 	public void setLastTestId(int last) {
 		_lastTestId = last;

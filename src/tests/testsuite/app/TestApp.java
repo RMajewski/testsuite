@@ -449,9 +449,7 @@ public class TestApp implements Scenario {
 	/**
 	 * Returns the the name selected configuration file.
 	 * 
-	 * @param lastPath Paths that you want to include.
-	 * 
-	 * @return File name of configuration file.
+	 * @param lastPaths Paths that you want to include.
 	 */
 	public String getConfigurationFileName(int lastPaths) {
 		File file = _fileChooser.getSelectedFile();
