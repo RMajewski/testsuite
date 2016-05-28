@@ -17,7 +17,7 @@
 				</tr>
 				<tr>
 					<td>start</td>
-					<td>tests.fixtures.app.FixtureApp</td>
+					<td>tests.fixtures.app.FixtureAppConfigurationLoad</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
@@ -32,17 +32,17 @@
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>isDialogVisible</td>
+					<td>isFileDialogVisible</td>
 					<td>true</td>
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>pushDialogCancel</td>
+					<td>pushFileDialogCancel</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>isDialogVisible</td>
+					<td>isFileDialogVisible</td>
 					<td>false</td>
 				</tr>
 				<tr>
@@ -52,7 +52,7 @@
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>isDialogVisible</td>
+					<td>isFileDialogVisible</td>
 					<td>true</td>
 				</tr>
 				<tr>
@@ -62,12 +62,12 @@
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>pushDialogOpen</td>
+					<td>pushFileDialogOpen</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>isDialogVisible</td>
+					<td>isFileDialogVisible</td>
 					<td>false</td>
 				</tr>
 				<tr>
