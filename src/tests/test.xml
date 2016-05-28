@@ -46,6 +46,7 @@
 			<name>Test org.testsuite.Core</name>
 			<package>tests.testsuite.core</package>
 			<test>TestConfigParser</test>
+			<test>TestConfigSaver</test>
 			<test>TestTestRunner</test>
 			<test>TestFitTestRunner</test>
 			<test>TestJemmyTestRunner</test>
@@ -86,16 +87,22 @@
 			<test>TestDlgConfigTest</test>
 			<test>TestDlgConfigTestRunner</test>
 			<test>TestDlgConfigTestSuite</test>
+			<test>TestHtmlOut</test>
+			<test>TestTestCore</test>
+			<test>TestTestRunner</test>
 		</testSuite>
 		<testSuite>
 			<name>Tests the German language files</name>
 			<package>tests.lang.de_DE</package>
-			<test>TestApp</test>
-			<test>TestDlgConfigGeneral</test>
-			<test>TestDlgConfigLibrary</test>
-			<test>TestDlgConfigTest</test>
-			<test>TestDlgConfigTestRunner</test>
-			<test>TestDlgConfigTestSuite</test>
+			<test>TestApp_de</test>
+			<test>TestDlgConfigGeneral_de</test>
+			<test>TestDlgConfigLibrary_de</test>
+			<test>TestDlgConfigTest_de</test>
+			<test>TestDlgConfigTestRunner_de</test>
+			<test>TestDlgConfigTestSuite_de</test>
+			<test>TestHtmlOut_de</test>
+			<test>TestTestCore_de</test>
+			<test>TestTestRunner_de</test>
 		</testSuite>
 	</testGroup>
 	
@@ -114,7 +121,9 @@
 			<name>Test the class org.testsuite.app.App</name>
 			<package>tests.fit.app</package>
 			<test>AppElementsCreated</test>
-			<test>AppLoadConfiguration</test>
+			<test>AppConfigurationLoad</test>
+			<test>AppConfigurationSave</test>
+			<test>AppConfigurationValidate</test>
 			<test>AppTree</test>
 			<test>AppRunTests</test>
 			<test>AppCancelRunTests</test>
@@ -125,16 +134,25 @@
 			<test>AppGeneralConfigurationProperties</test>
 			<test>AppTreeInsertTestRunner</test>
 			<test>AppTreeDeleteTestRunner</test>
+			<test>AppTestRunnerAllOtherTestsIgnored</test>
+			<test>AppTestRunnerAllTestsExecuted</test>
+			<test>AppTestRunnerAllTestsIgnored</test>
 			<test>AppTestRunnerConfiguration</test>
 			<test>AppTestRunnerConfigurationClasspathPopup</test>
 			<test>AppTestRunnerConfigurationLibraryPopup</test>
 			<test>AppLibraryConfiguration</test>
 			<test>AppTreeInsertTestSuite</test>
 			<test>AppTreeDeleteTestSuite</test>
+			<test>AppTestSuiteAllOtherTestsIgnored</test>
+			<test>AppTestSuiteAllTestsExecuted</test>
+			<test>AppTestSuiteAllTestsIgnored</test>
 			<test>AppTestSuiteConfiguration</test>
 			<test>AppTreeInsertTest</test>
 			<test>AppTreeDeleteTest</test>
 			<test>AppTestConfiguration</test>
+			<test>AppTestAllOtherTestsIgnored</test>
+			<test>AppAllTestsExecuted</test>
+			<test>AppAllTestsIgnored</test>
 		</testSuite>
 	</testGroup>
 </configurationFile>

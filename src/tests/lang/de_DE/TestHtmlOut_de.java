@@ -34,7 +34,7 @@ import tests.lang.en.TestHtmlOut;
  * @author René Majewski
  *
  */
-public class TestHtmlout_de extends TestHtmlOut {
+public class TestHtmlOut_de extends TestHtmlOut {
 
 	/**
 	 * Initialize the tests

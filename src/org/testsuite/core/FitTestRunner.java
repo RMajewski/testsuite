@@ -319,6 +319,12 @@ public class FitTestRunner extends TestRunner {
 		if (((Fit)_suites.get(suite).getTest(test)).getFail() > 0)
 			cl = " class=\"wrong\"";
 		
+		if (((Fit)_suites.get(suite).getTest(test)).getIgnore() > 0)
+			cl = " class=\"ignore\"";
+		
+		if (((Fit)_suites.get(suite).getTest(test)).getException() > 0)
+			cl = " class=\"exception\"";
+		
 		if (!_suites.get(suite).getTest(test).isExecuted() ||
 				_suites.get(suite).getTest(test).isTerminated())
 			cl = " class=\"ignore\"";
