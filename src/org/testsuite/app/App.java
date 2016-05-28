@@ -334,7 +334,6 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				"popup_tree_insert_config_mnemonic").charAt(0));
 		item.addActionListener(this);
 		item.setActionCommand(TREE_INSERT_CONFIG_GENERAL);
-		item.setEnabled(false);
 		menu.add(item);
 		
 		// Insert -> TestRunner
@@ -344,7 +343,6 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				"popup_tree_testrunner_mnemonic").charAt(0));
 		item.addActionListener(this);
 		item.setActionCommand(TREE_INSERT_TEST_RUNNER);
-		item.setEnabled(false);
 		menu.add(item);
 		
 		// Insert -> TestSuite
@@ -354,7 +352,6 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				"popup_tree_testsuite_mnemonic").charAt(0));
 		item.addActionListener(this);
 		item.setActionCommand(TREE_INSERT_TEST_SUITE);
-		item.setEnabled(false);
 		menu.add(item);
 		
 		// Insert -> Test
@@ -364,7 +361,6 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				"popup_tree_test_mnemonic").charAt(0));
 		item.addActionListener(this);
 		item.setActionCommand(TREE_INSERT_TEST);
-		item.setEnabled(false);
 		menu.add(item);
 		
 		// Delete menu
@@ -380,7 +376,6 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				"popup_tree_config_mnemonic").charAt(0));
 		item.addActionListener(this);
 		item.setActionCommand(TREE_DELETE_CONFIG_GENERAL);
-		item.setEnabled(false);
 		menu.add(item);
 		
 		// Delete -> TestRunner
@@ -390,7 +385,6 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				"popup_tree_testrunner_mnemonic").charAt(0));
 		item.addActionListener(this);
 		item.setActionCommand(TREE_DELETE_TEST_RUNNER);
-		item.setEnabled(false);
 		menu.add(item);
 		
 		// Delete -> TestSuite
@@ -400,7 +394,6 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				"popup_tree_testsuite_mnemonic").charAt(0));
 		item.addActionListener(this);
 		item.setActionCommand(TREE_DELETE_TEST_SUITE);
-		item.setEnabled(false);
 		menu.add(item);
 		
 		// Delete -> Test
@@ -410,7 +403,6 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				"popup_tree_test_mnemonic").charAt(0));
 		item.addActionListener(this);
 		item.setActionCommand(TREE_DELETE_TEST);
-		item.setEnabled(false);
 		menu.add(item);
 		
 		// Delete menu
@@ -426,7 +418,6 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				"popup_tree_config_mnemonic").charAt(0));
 		item.addActionListener(this);
 		item.setActionCommand(CONFIG_GENERAL);
-		item.setEnabled(false);
 		menu.add(item);
 		
 		// Configuration -> TestRunner
@@ -436,7 +427,6 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				"popup_tree_testrunner_mnemonic").charAt(0));
 		item.addActionListener(this);
 		item.setActionCommand(CONFIG_TEST_RUNNER);
-		item.setEnabled(false);
 		menu.add(item);
 		
 		// Configuration -> TestSuite
@@ -446,7 +436,6 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				"popup_tree_testsuite_mnemonic").charAt(0));
 		item.addActionListener(this);
 		item.setActionCommand(CONFIG_TEST_SUITE);
-		item.setEnabled(false);
 		menu.add(item);
 		
 		// Configuration -> Test
@@ -456,7 +445,6 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				"popup_tree_test_mnemonic").charAt(0));
 		item.addActionListener(this);
 		item.setActionCommand(CONFIG_TEST);
-		item.setEnabled(false);
 		menu.add(item);
 		
 		// Ignore all other Tests
@@ -467,7 +455,6 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				.charAt(0));
 		item.setActionCommand(TREE_IGNORE_ALL_OTHER_TESTS);
 		item.addActionListener(this);
-		item.setEnabled(false);
 		popup.addSeparator();
 		popup.add(item);
 		
@@ -478,7 +465,6 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				.charAt(0));
 		item.setActionCommand(TREE_IGNORE_SELECTED_TESTS);
 		item.addActionListener(this);
-		item.setEnabled(false);
 		popup.add(item);
 		
 		// Execute all selected Tests
@@ -488,9 +474,8 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				.charAt(0));
 		item.setActionCommand(TREE_EXECUTE_SELECTED_TESTS);
 		item.addActionListener(this);
-		item.setEnabled(false);
 		popup.add(item);
-
+		
 		// Return the popup menu
 		return popup;
 	}
@@ -526,6 +511,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		_tree.setModel(new TestRunnerModel());
 		_tree.setCellRenderer(new TestRunnerRenderer(_config));
 		_tree.setComponentPopupMenu(treePopup());
+		disabledAllPopupMenuItems();
 		_tree.addMouseListener(new MouseListener() {
 
 			/**
@@ -833,11 +819,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 						((TestRunnerModel)_tree.getModel())
 								.validateConfiguration();
 						_config = parser.getConfig();
-						_btnRun.setEnabled(true);
-						_btnConfigSave.setEnabled(true);
-						_btnConfigValidate.setEnabled(true);
-						_btnAllTestsIgnore.setEnabled(true);
-						_btnAllTestsExecute.setEnabled(true);
+						setButtonsEnable(true);
 						
 						int tests = 0;
 						for (int index = 0; 
@@ -886,14 +868,10 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				_thread = new TestRun(((TestRunnerModel)_tree.getModel())
 					.getTestRunnerList(), this);
 				// OPT Into own function with boolean as parameter
-				_btnExit.setEnabled(false);
-				_btnRun.setEnabled(false);
 				_btnCancel.setEnabled(true);
+				_btnExit.setEnabled(false);
 				_btnConfigLoad.setEnabled(false);
-				_btnConfigSave.setEnabled(false);
-				_btnConfigValidate.setEnabled(false);
-				_btnAllTestsIgnore.setEnabled(false);
-				_btnAllTestsExecute.setEnabled(false);
+				setButtonsEnable(false);
 				_txtMessage.setText(new String());
 				_thread.start();				
 				break;
@@ -950,12 +928,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				((TestRunnerModel)_tree.getModel()).getTestRunnerList().add(
 						new JunitTestRunner(_config));
 				_tree.updateUI();
-				// OPT Into a separate method with boolean as parameter
-				_btnConfigValidate.setEnabled(true);
-				_btnConfigSave.setEnabled(true);
-				_btnAllTestsIgnore.setEnabled(true);
-				_btnAllTestsExecute.setEnabled(true);
-				_btnRun.setEnabled(true);
+				setButtonsEnable(true);
 				break;
 				
 			case TREE_INSERT_TEST_SUITE:
@@ -981,12 +954,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 						.clear();
 					_config.clear();
 					_tree.updateUI();
-					// Opt Into separate method with boolean as parameter
-					_btnConfigValidate.setEnabled(false);
-					_btnConfigSave.setEnabled(false);
-					_btnAllTestsIgnore.setEnabled(false);
-					_btnAllTestsExecute.setEnabled(false);
-					_btnRun.setEnabled(false);
+					setButtonsEnable(false);
 				}
 				break;
 				
@@ -1009,12 +977,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 					if (_config.isEmpty() && 
 							(((TestRunnerModel)_tree.getModel())
 									.getTestRunnerList().size() == 0)) {
-						// Opt Into separate method with boolean as parameter
-						_btnConfigValidate.setEnabled(false);
-						_btnConfigSave.setEnabled(false);
-						_btnAllTestsIgnore.setEnabled(false);
-						_btnAllTestsExecute.setEnabled(false);
-						_btnRun.setEnabled(false);
+						setButtonsEnable(false);
 					}
 				}
 				break;
@@ -1148,18 +1111,17 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				_txtMessage.getRows());
 	}
 	
+	/**
+	 * All tests have been completed
+	 */
 	@Override
 	public void testEnd(TestEvent te) {
 		_thread = null;
 		_pBar.setValue(0);
-		_btnExit.setEnabled(true);
-		_btnRun.setEnabled(true);
 		_btnCancel.setEnabled(false);
+		_btnExit.setEnabled(true);
 		_btnConfigLoad.setEnabled(true);
-		_btnConfigSave.setEnabled(true);
-		_btnConfigValidate.setEnabled(true);
-		_btnAllTestsIgnore.setEnabled(true);
-		_btnAllTestsExecute.setEnabled(true);
+		setButtonsEnable(true);
 
 		// Create HTML ouput
 		String htmlFile = _config.getPathResult() + File.separator;
@@ -1230,6 +1192,27 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		popup.getComponent(4).setEnabled(false);
 		popup.getComponent(5).setEnabled(false);
 		popup.getComponent(6).setEnabled(false);
+	}
+	
+	/**
+	 * Enabled or disabled following buttons:
+	 * <ul>
+	 * <li>{@link #_btnRun}</li>
+	 * <li>{@link #_btnConfigSave}</li>
+	 * <li>{@link #_btnConfigValidate}</li>
+	 * <li>{@link #_btnAllTestsIgnore}</li>
+	 * <li>{@link #_btnAllTestsExecute}</li>
+	 * </ul>
+	 * 
+	 * @param enable True if the buttons should be enabled. False if the buttons
+	 * should be disabled.
+	 */
+	private void setButtonsEnable(boolean enable) {
+		_btnConfigValidate.setEnabled(enable);
+		_btnConfigSave.setEnabled(enable);
+		_btnAllTestsIgnore.setEnabled(enable);
+		_btnAllTestsExecute.setEnabled(enable);
+		_btnRun.setEnabled(enable);
 	}
 
 	/**

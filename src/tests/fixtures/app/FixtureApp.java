@@ -1094,4 +1094,14 @@ public class FixtureApp extends ActionFixture {
 	public void pushButtonExecuteAllTests() {
 		_tests.pushButtonExecuteAllTests();
 	}
+	
+	public void waitForTestsCompleted() {
+		while (_tests.getValueOfProgressBar() != 0) {}
+	}
+	
+	public void pushDeleteGeneralConfiguration() {
+		_tests.pushNoBlockTreePopupItem(1, 0);
+		_tests.waitForDialog2(ResourceBundle.getBundle(App.BUNDLE_FILE)
+				.getString("delete_config_general_title"));
+	}
 }
