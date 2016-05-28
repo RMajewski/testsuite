@@ -1057,6 +1057,10 @@ public class FixtureApp extends ActionFixture {
 		_tests.treeExpand(5);
 		_tests.treeExpand(8);
 		_tests.treeExpand(9);
+		
+		_tests.selectElementInTree(0);
+		_tests.openTreePopup();
+		_tests.pushTreePopupItem(0, 1);
 	}
 	
 	public void pushIgnoreAllSelectedTests() {
@@ -1081,5 +1085,13 @@ public class FixtureApp extends ActionFixture {
 	
 	public void pushIgnoreAllOtherTests() {
 		_tests.pushTreePopupItem(4);
+	}
+	
+	public void pushButtonIgnoreAllTests() {
+		_tests.pushButtonIgnoreAllTests();
+	}
+	
+	public void pushButtonExecuteAllTests() {
+		_tests.pushButtonExecuteAllTests();
 	}
 }

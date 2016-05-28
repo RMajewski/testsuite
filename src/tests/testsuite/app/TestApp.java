@@ -775,6 +775,10 @@ public class TestApp implements Scenario {
 		_btnAllTestsIgnore.push();
 	}
 	
+	public void pushButtonExecuteAllTests() {
+		_btnAllTestsExecute.push();
+	}
+	
 	public boolean isAllSelectedTestsIgnore() {
 		if (_tree.getLastSelectedPathComponent() instanceof TestRunner) {
 			TestRunner runner = (TestRunner)_tree.getLastSelectedPathComponent();

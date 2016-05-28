@@ -962,6 +962,26 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				_thread.start();				
 				break;
 				
+			case AC_ALL_TESTS_IGNORE:
+				// OPT Into a separate method with boolean as parameter
+				List<TestRunner> list = 
+					((TestRunnerModel)_tree.getModel()).getTestRunnerList();
+				for (int i = 0; i < list.size(); i++)
+					for (int j = 0; j < list.get(i).testSuiteCount(); j++)
+						for (int k = 0; k < list.get(i).getTestSuite(j).testCount(); k++)
+							list.get(i).getTestSuite(j).getTest(k).setExecuted(false);
+				break;
+				
+			case AC_ALL_TESTS_EXECUTE:
+				// OPT Into a separate method with boolean as parameter
+				list = 
+					((TestRunnerModel)_tree.getModel()).getTestRunnerList();
+				for (int i = 0; i < list.size(); i++)
+					for (int j = 0; j < list.get(i).testSuiteCount(); j++)
+						for (int k = 0; k < list.get(i).getTestSuite(j).testCount(); k++)
+							list.get(i).getTestSuite(j).getTest(k).setExecuted(true);
+				break;
+				
 			case CONFIG_GENERAL:
 				configGeneral();
 				break;
@@ -1126,7 +1146,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 			case TREE_IGNORE_ALL_OTHER_TESTS:
 				// OPT Into a method with boolean as parameter
 				if (_tree.getLastSelectedPathComponent() instanceof TestRunner) {
-					List<TestRunner> list = 
+					list = 
 							((TestRunnerModel)_tree.getModel())
 							.getTestRunnerList();
 					for (int i = 0; i < list.size(); i++) {
@@ -1139,7 +1159,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 								runner.getTestSuite(suite).getTest(j).setExecuted(false);
 					}
 				} else if (_tree.getLastSelectedPathComponent() instanceof TestSuite) {
-					List<TestRunner> list = 
+					list = 
 							((TestRunnerModel)_tree.getModel())
 							.getTestRunnerList();
 					for (int i = 0; i < list.size(); i++) {
@@ -1154,7 +1174,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 						}
 					}
 				} else if (_tree.getLastSelectedPathComponent() instanceof Test) {
-					List<TestRunner> list = 
+					list = 
 							((TestRunnerModel)_tree.getModel())
 							.getTestRunnerList();
 					for (int i = 0; i < list.size(); i++) {

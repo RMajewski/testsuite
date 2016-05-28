@@ -1,0 +1,71 @@
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Test the TestSuiteApp (execute all tests)</title>
+	</head>
+	<body>
+		<h2>Tests for the TestSuiteApp (execute all tests)</h2>
+		<p>
+			It is written in the tree a first configuration. Now checked 
+			whether the button "Execute all tests" enabled is. After this is
+			clicked. Now is checked if all the tests are marked as ignore.
+		</p>
+		<table border="1" cellpadding="1" cellspacing="1" style="width: *;">
+			<tbody>
+				<tr>
+					<td colspan="3">fit.ActionFixture</td>
+				</tr>
+				<tr>
+					<td>start</td>
+					<td>tests.fixtures.app.FixtureApp</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isButtonForTestsAllExecuteEnable</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>generateTestConfiguration</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isButtonForTestsAllExecuteEnable</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushButtonIgnoreAllTests</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isAllTestsIgnore</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getExecutedTests</td>
+					<td>0</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushButtonExecuteAllTests</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isAllTestsIgnore</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getExecutedTests</td>
+					<td>6</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>
