@@ -209,7 +209,7 @@ public class TestFitTestRunner {
 		order.verify(test).getException();
 		order.verify(test).getDurationTimeFormattedString();
 		
-		verify(suite, times(21)).getTest(0);
+		verify(suite, times(23)).getTest(0);
 	}
 	
 	/**
@@ -287,7 +287,7 @@ public class TestFitTestRunner {
 		order.verify(test, never()).getException();
 		order.verify(test, never()).getDurationTimeFormattedString();
 		
-		verify(suite, times(12)).getTest(0);
+		verify(suite, times(14)).getTest(0);
 	}
 	
 	/**
@@ -348,7 +348,7 @@ public class TestFitTestRunner {
 		order.verify(test, never()).getException();
 		order.verify(test, never()).getDurationTimeFormattedString();
 		
-		verify(suite, times(6)).getTest(0);
+		verify(suite, times(8)).getTest(0);
 	}
 	
 	/**
