@@ -19,18 +19,11 @@
 
 package org.testsuite.core;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import javax.swing.Timer;
 
 import org.testsuite.data.Config;
 import org.testsuite.data.Fit;
@@ -67,182 +60,10 @@ public class FitTestRunner extends TestRunner {
 		super(config);
 	}
 
-	// OPT delete run_old
-	/**
-	 * Executes the Fit tests
-	 * 
-	 * @deprecated Since version 0.3 in the test runner class.
-	 */
-	public void run_old() {
-		for (int suite = 0; suite < _suites.size(); suite++) {
-			// Test-Suite Name
-			System.out.println(_suites.get(suite).getName());
-			
-			for (int test = 0; test < _suites.get(suite).testCount(); test++) {
-				// Name der Fit-Datei
-				String fit = composeFileName(_config.getPathSrc() + "." + 
-						_suites.get(suite).getPackage(), 
-						_suites.get(suite).getTest(test).getName(),
-						_fileExtension);
-				String result = new String();
-				
-				// Überprüfen, ob Datei existiert
-				if (!_suites.get(suite).isExists() || 
-						!_suites.get(suite).getTest(test).isExists()) {
-					_suites.get(suite).getTest(test).setExitStatus(100);
-					System.out.print(fit + " ");
-					System.out.println(result = _bundle.getString("run_notFound"));
-					fireTestExecutedCompleted(this, 
-							_suites.get(suite).getPackage(),
-							_suites.get(suite).getTest(test).getName(),
-							_suites.get(suite).getId(),
-							_suites.get(suite).getTest(test).getId(), result);
-					continue;
-				}
-				
-				// Überprüfen, ob der Test nicht ausgeführt werden soll
-				if (!_suites.get(suite).getTest(test).isExecuted()) {
-					System.out.print(fit + " ");
-					System.out.println(result = _bundle.getString(
-							"createHtmlColumn_noneExecuted"));
-					fireTestExecutedCompleted(this, 
-							_suites.get(suite).getPackage(),
-							_suites.get(suite).getTest(test).getName(),
-							_suites.get(suite).getId(),
-							_suites.get(suite).getTest(test).getId(), result);
-					continue;
-				}
-				
-				// Überprüfen ob das Result-Verzeichnis existiert
-				// OPT -- Begin -- Into run in TestRunner class
-				String resultPath = _config.getPathResult() + File.separator + 
-						_config.getPathSuitesResult() + File.separator + 
-						_suites.get(suite).getPackage().replaceAll("\\.", 
-								File.separator);
-				File r = new File(resultPath);
-				if (!r.exists()) {
-					// Verzeichnis anlegen
-					r.mkdirs();
-				}
-				// OPT -- End -- Into run in TestRunner class
-				
-				// Name der Result-Datei ermitteln und als Endung html
-				String resultFileName = resultPath + File.separator + 
-						_suites.get(suite).getTest(test).getName() + ".html";
-				
-				// Ausführen
-				try {
-					// OPT -- Begin -- Into run in TestRunner class
-					_suites.get(suite).getTest(test).setStart(new Date().getTime());
-
-					System.out.print(fit + ": ");
-					String exec = "java -cp " + createClasspath() +
-							createProperty() + "fit.FileRunner " + fit + " " +
-							resultFileName;
-					final Process p = Runtime.getRuntime().exec(exec);
-
-					Timer timer = new Timer((int)_config.getMaxDuration(),
-							new ActionListener() {
-								@Override
-								public void actionPerformed(ActionEvent e) {
-									p.destroy();
-								}
-					});
-					timer.start();
-					
-					int exit = p.waitFor();
-					timer.stop();
-					// OPT -- End -- Into run in TestRunner class
-					
-					// Endzeit ermitteln
-					_suites.get(suite).getTest(test).setEnd(new Date().getTime());
-					
-					// Überpüfen ob Exit-Status 0 ist
-					_suites.get(suite).getTest(test).setExitStatus(exit);
-					if (exit == 143) {
-						result = _bundle.getString("run_terminated");
-						_suites.get(suite).getTest(test).setTerminated(true);
-					} else if (exit == 0)
-						result = _bundle.getString("run_pass");
-					else
-						result = _bundle.getString("run_failure");
-					
-					
-					// Dauer ausgeben
-					result += " (" + _bundle.getString("run_duration") + " " +
-							_suites.get(suite).getTest(test).getDurationTime() + 
-							" ms)";
-					System.out.println(result);
-					
-					// Console speichern
-					_suites.get(suite).getTest(test).setStringConsole(
-							inputStreamToString(p.getInputStream()));
-
-					// Error auslesen
-					// OPT -- Begin -- Into the console evaluation method
-					InputStream is = p.getErrorStream();
-					BufferedReader br = new BufferedReader(new InputStreamReader(is));
-					StringBuilder error = new StringBuilder();
-					String line;
-					if (br.ready()) {
-						while ((line = br.readLine()) != null) {
-							error.append(line);
-							error.append(System.lineSeparator());
-							if ((line.indexOf("right") > -1) &&
-									(line.indexOf("wrong") > -1)) {
-								String[] tmp = line.split(" ");
-								((Fit)_suites.get(suite).getTest(test)).setOk(
-										Integer.valueOf(tmp[0]));
-								((Fit)_suites.get(suite).getTest(test)).setFail(
-										Integer.valueOf(tmp[2]));
-								((Fit)_suites.get(suite).getTest(test)).setIgnore(
-										Integer.valueOf(tmp[4]));
-								((Fit)_suites.get(suite).getTest(test)).setException(
-										Integer.valueOf(tmp[6]));
-							}
-						}
-					}
-					_suites.get(suite).getTest(test).setError(
-							replaceHtmlEntities(error.toString()));
-					// OPT -- End -- Into the console evaluation method
-				} catch (IOException e) {
-					e.printStackTrace();
-					_suites.get(suite).getTest(test).setExitStatus(100);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					_suites.get(suite).getTest(test).setExitStatus(100);
-				}
-				fireTestExecutedCompleted(this, 
-						_suites.get(suite).getPackage(),
-						_suites.get(suite).getTest(test).getName(),
-						_suites.get(suite).getId(),
-						_suites.get(suite).getTest(test).getId(), result);
-				
-			} // for über die Fit-Tests
-			
-		} // for über die Fit-Suites
-	}
-	
-	/**
-	 * Sets the full file name with path together.
-	 * 
-	 * @param path Directory where the file is located
-	 * 
-	 * @param name Name of file
-	 * 
-	 * @param extension Extension of file
-	 * 
-	 * @return Directory and file as a string
-	 */
-	private String composeFileName(String path, String name, String extension) {
-		return new String(path + "." + name).replaceAll("\\.", "/") + 
-				"." + extension;
-	}
-
 	/**
 	 * Creates the column headers.
 	 * 
-	 * @param suite The index for des test suite.
+	 * @param suite The index for test suite.
 	 */
 	@Override
 	protected String createHtmlTableHead(int suite) {
@@ -292,7 +113,7 @@ public class FitTestRunner extends TestRunner {
 	}
 
 	/**
-	 * 
+	 * Creates from the data of the current test the HTML output.
 	 * 
 	 * @param suite The index for the test suite.
 	 * 
@@ -767,6 +588,11 @@ public class FitTestRunner extends TestRunner {
 		return ret.toString();
 	}
 	
+	/**
+	 * Detected from the error output was carried the test.
+	 * 
+	 * @param test The actual test
+	 */
 	@Override
 	protected void evaluation(Test test) {
 		String[] lines = test.getError().split("<br/>");

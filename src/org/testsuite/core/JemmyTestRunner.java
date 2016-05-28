@@ -19,15 +19,11 @@
 
 package org.testsuite.core;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import javax.swing.Timer;
 
 import org.testsuite.data.Config;
 import org.testsuite.data.Test;
@@ -61,111 +57,11 @@ public class JemmyTestRunner extends TestRunner {
 		super(config);
 	}
 
-	// OPT delete run_old
 	/**
-	 * Executes the jemmy tests
+	 * Creates the column headers.
 	 * 
-	 * @deprecated Since version 0.3 in the test runner class.
+	 * @param suite The index for test suite.
 	 */
-	public void run_old() {
-		for (int suite = 0; suite < _suites.size(); suite++) {
-			// Test-Suite Name
-			System.out.println(_suites.get(suite).getName());
-			
-			// gui-Tests ausführen
-			for (int test = 0; test < _suites.get(suite).testCount(); test++) {
-				String name = _suites.get(suite).getPackage() + "." +
-						_suites.get(suite).getTest(test).getName();
-				String result = new String();
-				
-				// Überprüfen, ob Datei existiert
-				if (!_suites.get(suite).isExists() || 
-						!_suites.get(suite).getTest(test).isExists()) {
-					_suites.get(suite).getTest(test).setExitStatus(100);
-					System.out.print(name + " ");
-					System.out.println(result = _bundle.getString("run_notFound"));
-					fireTestExecutedCompleted(this, 
-							_suites.get(suite).getPackage(),
-							_suites.get(suite).getTest(test).getName(),
-							_suites.get(suite).getId(),
-							_suites.get(suite).getTest(test).getId(), result);
-					continue;
-				}
-				
-				// Überprüft, ob der Test nicht ausgeführt werden soll
-				if (!_suites.get(suite).getTest(test).isExecuted()) {
-					System.out.print(name + " ");
-					System.out.println(result = _bundle.getString(
-							"createHtmlColumn_noneExecuted"));
-					fireTestExecutedCompleted(this, 
-							_suites.get(suite).getPackage(),
-							_suites.get(suite).getTest(test).getName(),
-							_suites.get(suite).getId(),
-							_suites.get(suite).getTest(test).getId(), result);
-					continue;
-				}
-				
-				try {
-					_suites.get(suite).getTest(test).setStart(
-							new Date().getTime());
-
-					System.out.print(name + ": ");
-					// OPT -- Begin -- Into run in TestRunner class
-					final Process p = Runtime.getRuntime().exec("java -cp " +
-							createClasspath() + createProperty() + name);
-
-					Timer timer = new Timer((int)_config.getMaxDuration(),
-							new ActionListener() {
-								@Override
-								public void actionPerformed(ActionEvent e) {
-									p.destroy();
-								}
-					});
-					// OPT -- End -- Into run in TestRunner class
-					
-					timer.start();
-					int exit = p.waitFor();
-					timer.stop();
-					
-					// Ausgabe wie der Test verlaufen ist
-					_suites.get(suite).getTest(test).setEnd(new Date().getTime());
-					_suites.get(suite).getTest(test).setExitStatus(exit);
-					if (exit == 143) {
-						result = _bundle.getString("run_terminated");
-						_suites.get(suite).getTest(test).setTerminated(true);
-					} else if (exit == 0)
-						result = _bundle.getString("run_pass");
-					else
-						result = _bundle.getString("run_failure");
-					
-					result += " (" + _bundle.getString("run_duration") + " " +
-							String.valueOf(
-									_suites.get(suite).getTest(test)
-									.getDurationTime()) + " ms)";
-					System.out.println(result);
-					
-					// Console-Ausgabe und Error-Ausgabe speichern
-					_suites.get(suite).getTest(test).setError(
-							inputStreamToString(p.getErrorStream()));
-					_suites.get(suite).getTest(test).setStringConsole(
-							inputStreamToString(p.getInputStream()));
-				} catch (IOException e) {
-					e.printStackTrace();
-					_suites.get(suite).getTest(test).setExitStatus(100);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					_suites.get(suite).getTest(test).setExitStatus(100);
-				}
-				
-				fireTestExecutedCompleted(this, 
-						_suites.get(suite).getPackage(),
-						_suites.get(suite).getTest(test).getName(),
-						_suites.get(suite).getId(),
-						_suites.get(suite).getTest(test).getId(), result);
-			}
-		}
-	}
-
 	@Override
 	protected String createHtmlTableHead(int suite) {
 		StringBuilder ret = new StringBuilder("\t\t\t\t\t\t<th style=\"");
@@ -198,6 +94,15 @@ public class JemmyTestRunner extends TestRunner {
 		return ret.toString();
 	}
 
+	/**
+	 * Creates from the data of the current test the HTML output.
+	 * 
+	 * @param suite The index for the test suite.
+	 * 
+	 * @param test The index for the test.
+	 * 
+	 * @param html The instance of HtmlOut.
+	 */
 	@Override
 	protected String createHtmlColumn(int suite, int test, HtmlOut html) 
 			throws IOException{

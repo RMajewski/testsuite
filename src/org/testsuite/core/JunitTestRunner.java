@@ -19,18 +19,11 @@
 
 package org.testsuite.core;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import javax.swing.Timer;
 
 import org.testsuite.data.Config;
 import org.testsuite.data.Junit;
@@ -65,155 +58,11 @@ public class JunitTestRunner extends TestRunner {
 		super(config);
 	}
 
-	// OPT delete run_old
 	/**
-	 * Executes the junit tests.
+	 * Creates the column headers.
 	 * 
-	 * @deprecated Since version 0.3 in the test runner class.
+	 * @param suite The index for test suite.
 	 */
-	public void run_old() {
-		for (int suite = 0; suite < _suites.size(); suite++) {
-			// Test-Suite Name
-			System.out.println(_suites.get(suite).getName());
-			
-			// juni-Tests ausführen
-			for (int test = 0; test < _suites.get(suite).testCount(); test++) {
-				String name = _suites.get(suite).getPackage() + "." +
-							_suites.get(suite).getTest(test).getName();
-				String result = new String();
-
-				// OPT -- Begin -- Into run in TestRunner class
-				// Überprüfen, ob Datei existiert
-				if (!_suites.get(suite).isExists() || 
-						!_suites.get(suite).getTest(test).isExists()) {
-					_suites.get(suite).getTest(test).setExitStatus(100);
-					result = _bundle.getString("run_notFound");
-					System.out.print(name + " ");
-					System.out.println(result);
-					fireTestExecutedCompleted(this, 
-							_suites.get(suite).getPackage(),
-							_suites.get(suite).getTest(test).getName(),
-							_suites.get(suite).getId(),
-							_suites.get(suite).getTest(test).getId(), result);
-					continue;
-				}
-				
-				// Überprüfen, ob der Test nicht ausgeführt werden soll
-				if (!_suites.get(suite).getTest(test).isExecuted()) {
-					System.out.print(name + " ");
-					result = _bundle.getString(
-							"createHtmlColumn_noneExecuted");
-					System.out.println(result);
-					fireTestExecutedCompleted(this, 
-							_suites.get(suite).getPackage(),
-							_suites.get(suite).getTest(test).getName(),
-							_suites.get(suite).getId(),
-							_suites.get(suite).getTest(test).getId(), result);
-				continue;
-				}
-				// OPT -- End -- Into run in TestRunner class
-			
-				try {
-					_suites.get(suite).getTest(test).setStart(
-							new Date().getTime());
-
-					System.out.print(name + ": ");
-					// OPT -- Begin -- Into run in TestRunner class
-					final Process p = Runtime.getRuntime().exec("java -cp " +
-							createClasspath() + createProperty() +
-							"org.junit.runner.JUnitCore " +
-							name);
-
-					Timer timer = new Timer((int)_config.getMaxDuration(),
-							new ActionListener() {
-								@Override
-								public void actionPerformed(ActionEvent e) {
-									p.destroy();
-								}
-					});
-					timer.start();
-					
-					int exit = p.waitFor();
-					timer.stop();
-					_suites.get(suite).getTest(test).setExitStatus(exit);
-					// OPT -- End -- Into run in TestRunner class
-					
-					// Ausgabe wie der Test verlaufen ist
-					_suites.get(suite).getTest(test).setEnd(
-							new Date().getTime());
-
-					if (exit == 143){
-						result = _bundle.getString("run_terminated");
-						_suites.get(suite).getTest(test).setTerminated(true);
-					} else  if (exit == 0)
-						result = _bundle.getString("run_pass");
-					else
-						result = _bundle.getString("run_failure");
-
-					result += " (" + _bundle.getString("run_duration") +" " + 
-							String.valueOf(
-									_suites.get(suite).getTest(test)
-									.getDurationTime()) + " ms)";
-					System.out.println(result);
-					
-					// Console-Ausgabe und Error-Ausgabe speichern
-					_suites.get(suite).getTest(test).setError(
-							inputStreamToString(p.getErrorStream()));
-
-					// OPT -- Begin -- Into the error evaluation method
-					InputStream is = p.getInputStream();
-					BufferedReader br = new BufferedReader(new InputStreamReader(is));
-					String line;
-					StringBuilder console = new StringBuilder();
-					if (br.ready()) {
-						while ((line = br.readLine()) != null) {
-							console.append(line);
-							console.append(System.lineSeparator());
-							if (line.indexOf("OK (") > -1) {
-								String ok = new String("OK (");
-								
-								String tmp = line.substring(ok.length(),
-										line.indexOf(" test"));
-								((Junit)_suites.get(suite).getTest(test)).setOk(
-										Integer.valueOf(tmp));
-							} else if (line.indexOf("Tests run") > -1) {
-								String ok = new String("Tests run: ");
-								String fail = new String(",  Failures: ");
-								int indexOk = ok.length();
-								int indexFail = line.indexOf(fail);
-	
-								((Junit)_suites.get(suite).getTest(test)).setOk(
-										Integer.valueOf(line.substring(indexOk, 
-												indexFail)));
-								
-								indexFail += fail.length();
-								((Junit)_suites.get(suite).getTest(test)).setFail(
-										Integer.valueOf(line.substring(indexFail)));
-							}
-						}
-					}
-					_suites.get(suite).getTest(test).setStringConsole(
-							replaceHtmlEntities(console.toString()));
-					// OPT -- End -- Into the error evaluation method
-				} catch (IOException e) {
-					e.printStackTrace();
-					_suites.get(suite).getTest(test).setExitStatus(100);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					_suites.get(suite).getTest(test).setExitStatus(100);
-				}
-				
-				fireTestExecutedCompleted(this, 
-						_suites.get(suite).getPackage(),
-						_suites.get(suite).getTest(test).getName(),
-						_suites.get(suite).getId(),
-						_suites.get(suite).getTest(test).getId(), result);
-			} // for über alle Tests
-			
-			System.out.println();
-		} // for über alle Test-Suites
-	}
-
 	@Override
 	protected String createHtmlTableHead(int suite) {
 		StringBuilder ret = new StringBuilder("\t\t\t\t\t\t<th style=\"");
@@ -250,6 +99,15 @@ public class JunitTestRunner extends TestRunner {
 		return ret.toString();
 	}
 
+	/**
+	 * Creates from the data of the current test the HTML output.
+	 * 
+	 * @param suite The index for the test suite.
+	 * 
+	 * @param test The index for the test.
+	 * 
+	 * @param html The instance of HtmlOut.
+	 */
 	@Override
 	protected String createHtmlColumn(int suite, int test, HtmlOut html)
 		throws IOException {
@@ -614,6 +472,12 @@ public class JunitTestRunner extends TestRunner {
 		return ret.toString();
 	}
 	
+	
+	/**
+	 * Detected from the console output was carried the test.
+	 * 
+	 * @param test The actual test
+	 */
 	@Override
 	protected void evaluation(Test test) {
 		String[] lines = test.getIn().split("<br/>");
