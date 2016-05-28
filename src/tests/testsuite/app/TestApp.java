@@ -805,7 +805,7 @@ public class TestApp implements Scenario {
 		return ret;
 	}
 	
-	public int getIgnoredTests() {
+	public int getExecutedTests() {
 		int ret = 0;
 
 		List<TestRunner> list = ((TestRunnerModel)_tree.getModel()).getTestRunnerList();

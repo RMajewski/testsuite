@@ -1105,7 +1105,22 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 					for (int i = 0; i < suite.testCount(); i++)
 						suite.getTest(i).setExecuted(false);
 				}
+				break;
 				
+			case TREE_EXECUTE_SELECTED_TESTS:
+				// OPT Into a method with boolean as parameter
+				if (_tree.getLastSelectedPathComponent() instanceof TestRunner) {
+					TestRunner runner = 
+							(TestRunner)_tree.getLastSelectedPathComponent();
+					for (int suite = 0; suite < runner.testSuiteCount(); suite++)
+						for (int i = 0; i < runner.getTestSuite(suite).testCount(); i++)
+							runner.getTestSuite(suite).getTest(i).setExecuted(true);
+				} else if (_tree.getLastSelectedPathComponent() instanceof TestSuite) {
+					TestSuite suite = 
+							(TestSuite)_tree.getLastSelectedPathComponent();
+					for (int i = 0; i < suite.testCount(); i++)
+						suite.getTest(i).setExecuted(true);
+				}
 				break;
 		}
 	}

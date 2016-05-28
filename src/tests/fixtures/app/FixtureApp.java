@@ -1071,7 +1071,11 @@ public class FixtureApp extends ActionFixture {
 		return _tests.isAllTestsIgnore();
 	}
 	
-	public int getIgnoredTests() {
-		return _tests.getIgnoredTests();
+	public int getExecutedTests() {
+		return _tests.getExecutedTests();
+	}
+	
+	public void pushExecuteAllSelectedTests() {
+		_tests.pushTreePopupItem(6);
 	}
 }

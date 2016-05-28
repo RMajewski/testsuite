@@ -1,14 +1,14 @@
 <html>
 	<head>
 		<meta charset="UTF-8" />
-		<title>Test the TestSuiteApp (test suite ignore all tests)</title>
+		<title>Test the TestSuiteApp (test runner execute all tests)</title>
 	</head>
 	<body>
-		<h2>Tests for the TestSuiteApp (test suite ignore all tests)</h2>
+		<h2>Tests for the TestSuiteApp (test runner execute all tests)</h2>
 		<p>
 			It is written in the tree a first configuration. Now the 
-			TestSuite is selected and checked whether the pop-up menu entry
-			"Ignore all tests" enabled is. After this is clicked. Now is checked
+			TestRunner is selected and checked whether the pop-up menu entry
+			"Execute all tests" enabled is. After this is clicked. Now is checked
 			if all the tests are marked as ignore.
 		</p>
 		<table border="1" cellpadding="1" cellspacing="1" style="width: *;">
@@ -28,7 +28,7 @@
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>isIgnoreAllSelectedTestsEnabled</td>
+					<td>isExecuteAllSelectedTestsEnabled</td>
 					<td>false</td>
 				</tr>
 				<tr>
@@ -38,7 +38,7 @@
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>selectTestSuiteInTree</td>
+					<td>selectTestRunnerInTree</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
@@ -48,7 +48,7 @@
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>isIgnoreAllSelectedTestsEnabled</td>
+					<td>isExecuteAllSelectedTestsEnabled</td>
 					<td>true</td>
 				</tr>
 				<tr>
@@ -62,9 +62,24 @@
 					<td>true</td>
 				</tr>
 				<tr>
+					<td>press</td>
+					<td>openPopup</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushExecuteAllSelectedTests</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isAllSelectedTestsIgnore</td>
+					<td>false</td>
+				</tr>
+				<tr>
 					<td>check</td>
 					<td>getExecutedTests</td>
-					<td>4</td>
+					<td>6</td>
 				</tr>
 			</tbody>
 		</table>

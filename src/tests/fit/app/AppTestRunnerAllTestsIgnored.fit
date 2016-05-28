@@ -63,7 +63,7 @@
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>getIgnoredTests</td>
+					<td>getExecutedTests</td>
 					<td>2</td>
 				</tr>
 			</tbody>
