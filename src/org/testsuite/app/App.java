@@ -1122,6 +1122,56 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 						suite.getTest(i).setExecuted(true);
 				}
 				break;
+				
+			case TREE_IGNORE_ALL_OTHER_TESTS:
+				// OPT Into a method with boolean as parameter
+				if (_tree.getLastSelectedPathComponent() instanceof TestRunner) {
+					List<TestRunner> list = 
+							((TestRunnerModel)_tree.getModel())
+							.getTestRunnerList();
+					for (int i = 0; i < list.size(); i++) {
+						TestRunner runner = list.get(i);
+						if (runner == 
+								(TestRunner)_tree.getLastSelectedPathComponent())
+							continue;
+						for (int suite = 0; suite < runner.testSuiteCount(); suite++)
+							for (int j = 0; j < runner.getTestSuite(suite).testCount(); j++)
+								runner.getTestSuite(suite).getTest(j).setExecuted(false);
+					}
+				} else if (_tree.getLastSelectedPathComponent() instanceof TestSuite) {
+					List<TestRunner> list = 
+							((TestRunnerModel)_tree.getModel())
+							.getTestRunnerList();
+					for (int i = 0; i < list.size(); i++) {
+						TestRunner runner = list.get(i);
+						for (int j = 0; j < runner.testSuiteCount(); j++) {
+							TestSuite suite = runner.getTestSuite(j);
+							if (suite == 
+									(TestSuite)_tree.getLastSelectedPathComponent())
+								continue;
+							for (int k = 0; k < suite.testCount(); k++)
+								suite.getTest(k).setExecuted(false);
+						}
+					}
+				} else if (_tree.getLastSelectedPathComponent() instanceof Test) {
+					List<TestRunner> list = 
+							((TestRunnerModel)_tree.getModel())
+							.getTestRunnerList();
+					for (int i = 0; i < list.size(); i++) {
+						TestRunner runner = list.get(i);
+						for (int j = 0; j < runner.testSuiteCount(); j++) {
+							TestSuite suite = runner.getTestSuite(j);
+							for (int k = 0; k < suite.testCount(); k++) {
+								if (suite.getTest(k) == 
+										(Test)_tree
+										.getLastSelectedPathComponent())
+									continue;
+								suite.getTest(k).setExecuted(false);
+							}
+						}
+					}
+				}
+				break;
 		}
 	}
 

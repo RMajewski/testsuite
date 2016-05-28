@@ -1078,4 +1078,8 @@ public class FixtureApp extends ActionFixture {
 	public void pushExecuteAllSelectedTests() {
 		_tests.pushTreePopupItem(6);
 	}
+	
+	public void pushIgnoreAllOtherTests() {
+		_tests.pushTreePopupItem(4);
+	}
 }

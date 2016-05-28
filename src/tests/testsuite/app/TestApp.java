@@ -787,7 +787,9 @@ public class TestApp implements Scenario {
 			for (int test = 0; test < suite.testCount(); test++)
 				if (suite.getTest(test).isExecuted())
 					return false;
-			
+		} else if (_tree.getLastSelectedPathComponent() instanceof Test) {
+			if (((Test)_tree.getLastSelectedPathComponent()).isExecuted())
+				return false;
 		}
 		return true;
 	}
