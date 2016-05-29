@@ -17,7 +17,8 @@ public class Parse {
     public Parse more;
     public Parse parts;
 
-    public Parse (String tag, String body, Parse parts, Parse more) {
+    @SuppressWarnings("hiding")
+	public Parse (String tag, String body, Parse parts, Parse more) {
         this.leader = "\n";
         this.tag = "<"+tag+">";
         this.body = body;
@@ -33,11 +34,13 @@ public class Parse {
         this (text, tags, 0, 0);
     }
 
-    public Parse (String text, String tags[]) throws ParseException {
+    @SuppressWarnings("hiding")
+	public Parse (String text, String tags[]) throws ParseException {
         this (text, tags, 0, 0);
     }
 
-    public Parse (String text, String tags[], int level, int offset) throws ParseException {
+    @SuppressWarnings("hiding")
+	public Parse (String text, String tags[], int level, int offset) throws ParseException {
         String lc = text.toLowerCase();
         int startTag = lc.indexOf("<"+tags[level]);
         int endTag = lc.indexOf(">", startTag) + 1;

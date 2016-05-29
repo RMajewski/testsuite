@@ -12,13 +12,16 @@ public class TimedActionFixture extends ActionFixture {
 
     // Traversal ////////////////////////////////
 
-    public void doTable(Parse table) {
+    @Override
+	public void doTable(Parse table) {
         super.doTable(table);
         table.parts.parts.last().more = td("time");
         table.parts.parts.last().more = td("split");
     }
 
-    public void doCells(Parse cells) {
+    @SuppressWarnings("hiding")
+	@Override
+	public void doCells(Parse cells) {
         Date start  = time();
         super.doCells(cells);
         long split = time().getTime() - start.getTime();

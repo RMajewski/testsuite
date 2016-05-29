@@ -8,11 +8,13 @@ import java.lang.reflect.Method;
 public class ActionFixture extends Fixture {
     protected Parse cells;
     public static Fixture actor;
-    protected static Class empty[] = {};
+    protected static Class<?> empty[] = {};
 
     // Traversal ////////////////////////////////
 
-    public void doCells(Parse cells) {
+    @SuppressWarnings("hiding")
+	@Override
+	public void doCells(Parse cells) {
         this.cells = cells;
         try {
             Method action = getClass().getMethod(cells.text(), empty);
@@ -28,9 +30,10 @@ public class ActionFixture extends Fixture {
         actor = (Fixture)(Class.forName(cells.more.text()).newInstance());
     }
 
-    public void enter() throws Exception {
+    @SuppressWarnings("hiding")
+	public void enter() throws Exception {
         Method method = method(1);
-        Class type = method.getParameterTypes()[0];
+        Class<?> type = method.getParameterTypes()[0];
         String text = cells.more.more.text();
         Object args[] = {TypeAdapter.on(actor, type).parse(text)};
         method.invoke(actor, args);
@@ -47,11 +50,13 @@ public class ActionFixture extends Fixture {
 
     // Utility //////////////////////////////////
 
-    protected Method method(int args) throws NoSuchMethodException {
+    @SuppressWarnings("hiding")
+	protected Method method(int args) throws NoSuchMethodException {
         return method(camel(cells.more.text()), args);
     }
 
-    protected Method method(String test, int args) throws NoSuchMethodException {
+    @SuppressWarnings("hiding")
+	protected Method method(String test, int args) throws NoSuchMethodException {
         Method methods[] = actor.getClass().getMethods();
         Method result = null;
         for (int i=0; i<methods.length; i++) {

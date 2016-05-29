@@ -10,12 +10,14 @@ public class ColumnFixture extends Fixture {
 
     // Traversal ////////////////////////////////
 
-    public void doRows(Parse rows) {
+    @Override
+	public void doRows(Parse rows) {
         bind(rows.parts);
         super.doRows(rows.more);
     }
 
-    public void doRow(Parse row) {
+    @Override
+	public void doRow(Parse row) {
         hasExecuted = false;
         try {
             reset();
@@ -28,7 +30,8 @@ public class ColumnFixture extends Fixture {
         }
     }
 
-    public void doCell(Parse cell, int column) {
+    @Override
+	public void doCell(Parse cell, int column) {
         TypeAdapter a = columnBindings[column];
         try {
             String text = cell.text();
@@ -46,7 +49,8 @@ public class ColumnFixture extends Fixture {
         }
     }
 
-    public void check(Parse cell, TypeAdapter a) {
+    @Override
+	public void check(Parse cell, TypeAdapter a) {
         if (!hasExecuted) {
             try {
                 execute();
@@ -97,7 +101,7 @@ public class ColumnFixture extends Fixture {
         return TypeAdapter.on(this, getTargetClass().getField(camel(name)));
     }
 
-    protected Class getTargetClass() {
+    protected Class<? extends ColumnFixture> getTargetClass() {
         return getClass();
     }
 }

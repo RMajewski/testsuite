@@ -5,11 +5,13 @@ package fit;
 
 // Warning: not (yet) a general number usable in all calculations.
 
+@SuppressWarnings("serial")
 public class ScientificDouble extends Number implements Comparable {
     protected double value;
     protected double precision;
 
-    public ScientificDouble(double value) {
+    @SuppressWarnings("hiding")
+	public ScientificDouble(double value) {
         this.value = value;
         this.precision = 0;
     }
@@ -39,11 +41,13 @@ public class ScientificDouble extends Number implements Comparable {
 
 
 
-    public boolean equals(Object obj) {
+    @Override
+	public boolean equals(Object obj) {
         return compareTo(obj) == 0;
     }
 
-    public int compareTo(Object obj) {
+    @Override
+	public int compareTo(Object obj) {
         double other = ((Number)obj).doubleValue();
         double diff = value-other;
         // System.out.println(value+" "+precision+" "+diff);
@@ -55,23 +59,28 @@ public class ScientificDouble extends Number implements Comparable {
         return 0;
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return Double.toString(value);
     }
 
-    public double doubleValue() {
+    @Override
+	public double doubleValue() {
         return value;
     }
 
-    public float floatValue() {
+    @Override
+	public float floatValue() {
         return (float)value;
     }
 
-    public long longValue() {
+    @Override
+	public long longValue() {
         return (long)value;
     }
 
-    public int intValue() {
+    @Override
+	public int intValue() {
         return (int)value;
     }
 }

@@ -10,7 +10,7 @@ import java.text.DateFormat;
 
 public class Fixture {
 
-    public Map summary = new HashMap();
+    public Map<String, Object> summary = new HashMap<String, Object>();
     public Counts counts = new Counts();
     protected String[] args;
 
@@ -18,7 +18,8 @@ public class Fixture {
         long start = System.currentTimeMillis();
         long elapsed = 0;
 
-        public String toString() {
+        @Override
+		public String toString() {
             elapsed = (System.currentTimeMillis()-start);
             if (elapsed > 600000) {
                 return d(3600000)+":"+d(600000)+d(60000)+":"+d(10000)+d(1000);
@@ -120,7 +121,7 @@ public class Fixture {
 
 	/* Added by Rick Mugridge, from FitNesse */
 	protected void getArgsForTable(Parse table) {
-	    ArrayList argumentList = new ArrayList();
+	    ArrayList<String> argumentList = new ArrayList<String>();
 	    Parse parameters = table.parts.parts.more;
 	    for (; parameters != null; parameters = parameters.more)
 	        argumentList.add(parameters.text());
@@ -154,7 +155,8 @@ public class Fixture {
         }
     }
 
-    public void doCell(Parse cell, int columnNumber) {
+    @SuppressWarnings("unused")
+	public void doCell(Parse cell, int columnNumber) {
         ignore(cell);
     }
 
@@ -245,7 +247,7 @@ public class Fixture {
         return b.toString();
     }
 
-    public Object parse (String s, Class type) throws Exception {
+    public Object parse (String s, Class<?> type) throws Exception {
         if (type.equals(String.class))              {return s;}
         if (type.equals(Date.class))                {return DateFormat.getDateInstance().parse(s);}
         if (type.equals(ScientificDouble.class))    {return ScientificDouble.valueOf(s);}

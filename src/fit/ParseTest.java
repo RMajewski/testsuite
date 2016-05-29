@@ -50,6 +50,7 @@ public class ParseTest extends TestCase {
 		assertEquals("four", p.parts.last().leaf().body);
 	}
 	
+	@SuppressWarnings("unused")
 	public void testParseException () {
 		try {
 			Parse p = new Parse("leader<table><tr><th>one</th><th>two</th><th>three</th></tr><tr><td>four</td></tr></table>trailer");
@@ -96,7 +97,7 @@ public class ParseTest extends TestCase {
 		assertEquals("a>b & b>c &&", Parse.unescape("a&gt;b&nbsp;&amp;&nbsp;b>c &&"));
 		assertEquals("&amp;&amp;", Parse.unescape("&amp;amp;&amp;amp;"));
 		assertEquals("a>b & b>c &&", Parse.unescape("a&gt;b&nbsp;&amp;&nbsp;b>c &&"));
-		assertEquals("\"\"'", Parse.unescape("“”’"));
+		assertEquals("\"\"'", Parse.unescape("ï¿½ï¿½ï¿½"));
 	}
 
 	public void testWhitespaceIsCondensed() {

@@ -31,7 +31,8 @@ public class FileRunnerTest extends TestCase {
     private void testHtml(String html) {
         FileRunner runner = new FileRunner();
         runner.fixture = new Fixture() {
-            public void doTables(Parse tables) {
+            @Override
+			public void doTables(Parse tables) {
                 tempParse = tables;
             }
         };

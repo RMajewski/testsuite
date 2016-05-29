@@ -11,12 +11,12 @@ public class TypeAdapter {
     public Fixture fixture;
     public Field field;
     public Method method;
-    public Class type;
+    public Class<?> type;
 
 
     // Factory //////////////////////////////////
 
-    public static TypeAdapter on(Fixture target, Class type) {
+    public static TypeAdapter on(Fixture target, Class<?> type) {
         TypeAdapter a = adapterFor(type);
         a.init(target, type);
         return a;
@@ -36,7 +36,7 @@ public class TypeAdapter {
         return a;
     }
 
-    public static TypeAdapter adapterFor(Class type) throws UnsupportedOperationException {
+    public static TypeAdapter adapterFor(Class<?> type) throws UnsupportedOperationException {
         if (type.isPrimitive()) {
 
             if (type.equals(byte.class)) return new ByteAdapter();
@@ -65,9 +65,9 @@ public class TypeAdapter {
 
     // Accessors ////////////////////////////////
 
-    protected void init (Fixture fixture, Class type) {
-        this.fixture = fixture;
-        this.type = type;
+    protected void init (Fixture fix, Class<?> tp) {
+        this.fixture = fix;
+        this.type = tp;
     }
 
     public Object get() throws IllegalAccessException, InvocationTargetException {
@@ -107,37 +107,43 @@ public class TypeAdapter {
     // Subclasses ///////////////////////////////
 
     static class ByteAdapter extends ClassByteAdapter {
-        public void set(Object i) throws IllegalAccessException {
+        @Override
+		public void set(Object i) throws IllegalAccessException {
             field.setByte(target, ((Byte)i).byteValue());
         }
     }
 
     static class ClassByteAdapter extends TypeAdapter {
-        public Object parse(String s) {
+        @Override
+		public Object parse(String s) {
             return new Byte(Byte.parseByte(s));
         }
     }
 
     static class ShortAdapter extends ClassShortAdapter {
-        public void set(Object i) throws IllegalAccessException {
+        @Override
+		public void set(Object i) throws IllegalAccessException {
             field.setShort(target, ((Short)i).shortValue());
         }
     }
 
     static class ClassShortAdapter extends TypeAdapter {
-        public Object parse(String s) {
+        @Override
+		public Object parse(String s) {
             return new Short(Short.parseShort(s));
         }
     }
 
     static class IntAdapter extends ClassIntegerAdapter {
-        public void set(Object i) throws IllegalAccessException {
+        @Override
+		public void set(Object i) throws IllegalAccessException {
             field.setInt(target, ((Integer)i).intValue());
         }
     }
 
     static class ClassIntegerAdapter extends TypeAdapter {
-        public Object parse(String s) {
+        @Override
+		public Object parse(String s) {
             return new Integer(Integer.parseInt(s));
         }
     }
@@ -149,76 +155,89 @@ public class TypeAdapter {
     }
 
     static class ClassLongAdapter extends TypeAdapter {
-        public Object parse(String s) {
+        @Override
+		public Object parse(String s) {
             return new Long(Long.parseLong(s));
         }
     }
 
     static class FloatAdapter extends ClassFloatAdapter {
-        public void set(Object i) throws IllegalAccessException {
+        @Override
+		public void set(Object i) throws IllegalAccessException {
             field.setFloat(target, ((Number)i).floatValue());
         }
-        public Object parse(String s) {
+        @Override
+		public Object parse(String s) {
             return new Float(Float.parseFloat(s));
         }
     }
 
     static class ClassFloatAdapter extends TypeAdapter {
-        public Object parse(String s) {
+        @Override
+		public Object parse(String s) {
             return new Float(Float.parseFloat(s));
         }
     }
 
     static class DoubleAdapter extends ClassDoubleAdapter {
-        public void set(Object i) throws IllegalAccessException {
+        @Override
+		public void set(Object i) throws IllegalAccessException {
             field.setDouble(target, ((Number)i).doubleValue());
         }
-        public Object parse(String s) {
+        @Override
+		public Object parse(String s) {
             return new Double(Double.parseDouble(s));
         }
     }
 
     static class ClassDoubleAdapter extends TypeAdapter {
-        public Object parse(String s) {
+        @Override
+		public Object parse(String s) {
             return new Double(Double.parseDouble(s));
         }
     }
 
     static class CharAdapter extends ClassCharacterAdapter {
-        public void set(Object i) throws IllegalAccessException {
+        @Override
+		public void set(Object i) throws IllegalAccessException {
             field.setChar(target, ((Character)i).charValue());
         }
     }
 
     static class ClassCharacterAdapter extends TypeAdapter {
-        public Object parse(String s) {
+        @Override
+		public Object parse(String s) {
             return new Character(s.charAt(0));
         }
     }
 
     static class BooleanAdapter extends ClassBooleanAdapter {
-        public void set(Object i) throws IllegalAccessException {
+        @Override
+		public void set(Object i) throws IllegalAccessException {
             field.setBoolean(target, ((Boolean)i).booleanValue());
         }
     }
 
     static class ClassBooleanAdapter extends TypeAdapter {
-        public Object parse(String s) {
+        @Override
+		public Object parse(String s) {
             return new Boolean(s);
         }
     }
 
     static class ArrayAdapter extends TypeAdapter {
-        Class componentType;
+        Class<?> componentType;
         TypeAdapter componentAdapter;
 
-        protected void init(Fixture target, Class type) {
-            super.init(target, type);
-            componentType = type.getComponentType();
-            componentAdapter = on(target, componentType);
+        @Override
+		protected void init(Fixture trg, Class<?> tp) {
+            super.init(trg, tp);
+            componentType = tp.getComponentType();
+            componentAdapter = on(trg, componentType);
         }
 
-        public Object parse(String s) throws Exception {
+        @Override
+		public Object parse(String s) throws Exception {
             StringTokenizer t = new StringTokenizer(s, ",");
             Object array = Array.newInstance(componentType, t.countTokens());
             for (int i=0; t.hasMoreTokens(); i++) {
@@ -227,7 +246,8 @@ public class TypeAdapter {
             return array;
         }
 
-        public String toString(Object o) {
+        @Override
+		public String toString(Object o) {
             if (o==null) return "";
             int length = Array.getLength(o);
             StringBuffer b = new StringBuffer(5*length);
@@ -240,7 +260,8 @@ public class TypeAdapter {
             return b.toString();
         }
 
-        public boolean equals(Object a, Object b) {
+        @Override
+		public boolean equals(Object a, Object b) {
             int length = Array.getLength(a);
             if (length != Array.getLength(b)) return false;
             for (int i=0; i<length; i++) {

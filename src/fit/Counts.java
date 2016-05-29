@@ -9,7 +9,8 @@ public class Counts {
     public int ignores = 0;
     public int exceptions = 0;
 
-    public String toString() {
+    @Override
+	public String toString() {
         return
             right + " right, " +
             wrong + " wrong, " +

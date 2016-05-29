@@ -58,7 +58,8 @@ public class FileRunner {
         output = new PrintWriter(new BufferedWriter(new FileWriter(out)));
     }
 
-    protected String read(File input) throws IOException {
+    @SuppressWarnings("hiding")
+	protected String read(File input) throws IOException {
         char chars[] = new char[(int) (input.length())];
         FileReader in = new FileReader(input);
         in.read(chars);

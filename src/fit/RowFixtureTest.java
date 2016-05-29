@@ -6,12 +6,15 @@ package fit;
 import junit.framework.TestCase;
 import java.util.LinkedList;
 
+import fit.RowFixtureTest.BusinessObject;
+
 public class RowFixtureTest extends TestCase {
 
     class BusinessObject {
         private String[] strs;
 
-        public BusinessObject(String[] strs) {
+        @SuppressWarnings("hiding")
+		public BusinessObject(String[] strs) {
             this.strs = strs;
         }
 
@@ -41,9 +44,9 @@ public class RowFixtureTest extends TestCase {
                                                   BusinessObject.class.getMethod("getStrings", new Class[0]));
         fixture.columnBindings = new TypeAdapter[]{arrayAdapter };
 
-        LinkedList computed = new LinkedList();
+        LinkedList<BusinessObject> computed = new LinkedList<BusinessObject>();
         computed.add(new BusinessObject(new String[] { "1" }));
-        LinkedList expected = new LinkedList();
+        LinkedList<Parse> expected = new LinkedList<Parse>();
         expected.add(new Parse("tr","",new Parse("td","1",null,null),null));
         fixture.match(expected, computed,0);
         assertEquals("right", 1, fixture.counts.right);
@@ -53,12 +56,14 @@ public class RowFixtureTest extends TestCase {
     }
 
     private class TestRowFixture extends RowFixture {
-        public Object[] query() throws Exception  // get rows to be compared
+        @Override
+		public Object[] query() throws Exception  // get rows to be compared
         {
             return new Object[0];
         }
 
-        public Class getTargetClass()             // get expected type of row
+        @Override
+		public Class<BusinessObject> getTargetClass()             // get expected type of row
         {
             return BusinessObject.class;
         }
