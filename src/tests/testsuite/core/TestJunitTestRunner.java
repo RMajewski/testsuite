@@ -24,7 +24,6 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -166,6 +165,7 @@ public class TestJunitTestRunner {
 				System.lineSeparator();
 		
 		when(_config.getPathSuitesResult()).thenReturn(resultSuite);
+		when(_config.classPathsAsParameterJVM()).thenReturn(new String());
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
@@ -246,6 +246,7 @@ public class TestJunitTestRunner {
 				"wurde nicht ausgeführt</td>" + System.lineSeparator();
 		
 		when(_config.getPathSuitesResult()).thenReturn(resultSuite);
+		when(_config.classPathsAsParameterJVM()).thenReturn(new String());
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
@@ -409,13 +410,14 @@ public class TestJunitTestRunner {
 		String libName2 = "lib2.jar";
 		String propName = "testing=\"true\"";
 		String pathLib = "lib";
-		String classPath = "bin";
-		String ret = "java -cp " + classPath + File.pathSeparator + pathLib +
-				File.separator + libName1 + File.pathSeparator + pathLib +
-				File.separator + libName2 + " -D" + propName +
-				" org.junit.runner.JUnitCore " + name;
+		String classPath1 = "bin";
+		String classPath2 = "classpath";
+		String ret = "java -cp " + classPath2 + File.pathSeparator + classPath1 +
+				File.pathSeparator + pathLib + File.separator + libName1 + 
+				File.pathSeparator + pathLib + File.separator + libName2 + 
+				" -D" + propName + " org.junit.runner.JUnitCore " + name;
 		
-		_runner.addClassPath(classPath);
+		_runner.addClassPath(classPath1);
 		
 		Library lib1 = mock(Library.class);
 		when(lib1.getFileName()).thenReturn(libName1);
@@ -434,6 +436,7 @@ public class TestJunitTestRunner {
 		when(_config.getPathLibrary()).thenReturn(pathLib);
 		when(_config.propertyCount()).thenReturn(1);
 		when(_config.getProperty(0)).thenReturn(propName);
+		when(_config.classPathsAsParameterJVM()).thenReturn(classPath2);
 		
 		Method method = 
 				JunitTestRunner.class.getDeclaredMethod("exec", 

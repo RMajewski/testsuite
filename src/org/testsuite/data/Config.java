@@ -19,6 +19,7 @@
 
 package org.testsuite.data;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -247,6 +248,25 @@ public class Config {
 		if ((classpath == null) || classpath.isEmpty())
 			throw new IllegalArgumentException();
 		_listClasspath.remove(_listClasspath.indexOf(classpath));
+	}
+	
+	/**
+	 * Returns all class paths as parameter for the JVM.
+	 * 
+	 * @return All class paths as parameter for the JVM
+	 */
+	public String classPathsAsParameterJVM() {
+		StringBuilder ret = new StringBuilder();
+		
+		if (_listClasspath.size() > 0) {
+			for (int i = 0; i < _listClasspath.size(); i++) {
+				if (i > 0)
+					ret.append(File.pathSeparator);
+				ret.append(_listClasspath.get(i));
+			}
+		}
+		
+		return ret.toString();
 	}
 
 	/**

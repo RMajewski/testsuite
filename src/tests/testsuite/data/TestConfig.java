@@ -21,6 +21,8 @@ package tests.testsuite.data;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.testsuite.data.Config;
@@ -290,13 +292,27 @@ public class TestConfig {
 	}
 	
 	/**
-	 * Tests if the property is returned correctly.
+	 * Tests if the class path is returned correctly.
 	 */
 	@Test
 	public void testGetClasspath() {
 		String name = "test";
 		_config.addClassPath(name);
 		assertEquals(name, _config.getClassPath(0));
+	}
+	
+	/**
+	 * Tests if the class paths is returned correctly for the class path
+	 * parameter from JVM. 
+	 */
+	@Test
+	public void testClassPathsAsParameterJVM() {
+		String cp1 = "classpath1";
+		String cp2 = "classpath2";
+		String ret = cp1 + File.pathSeparator + cp2;
+		_config.addClassPath(cp1);
+		_config.addClassPath(cp2);
+		assertEquals(ret, _config.classPathsAsParameterJVM());
 	}
 	
 	/**

@@ -668,9 +668,16 @@ public abstract class TestRunner {
 		
 		boolean sep = false;
 		boolean space = false;
+		String cp = _config.classPathsAsParameterJVM();
+		
+		if (!cp.isEmpty()) {
+			ret.append(cp);
+			sep = true;
+			space = true;
+		}
 		
 		for (int path = 0; path < _classpath.size(); path++) {
-			if (path > 0)
+			if (sep)
 				ret.append(File.pathSeparator);
 			ret.append(_classpath.get(path));
 			sep = true;

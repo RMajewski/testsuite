@@ -168,6 +168,7 @@ public class TestFitTestRunner {
 				"</td>" + System.lineSeparator();
 		
 		when(_config.getPathSuitesResult()).thenReturn(resultSuite);
+		when(_config.classPathsAsParameterJVM()).thenReturn(new String());
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
@@ -263,6 +264,7 @@ public class TestFitTestRunner {
 				System.lineSeparator();
 		
 		when(_config.getPathSuitesResult()).thenReturn(resultSuite);
+		when(_config.classPathsAsParameterJVM()).thenReturn(new String());
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
@@ -425,7 +427,8 @@ public class TestFitTestRunner {
 		String libName2 = "lib2.jar";
 		String propName = "testing=\"true\"";
 		String pathLib = "lib";
-		String classPath = "bin";
+		String classPath1 = "bin";
+		String classPath2 = "classpath";
 		String srcPath = "src";
 		String resultPath = "result";
 		String suitePath = "0000000";
@@ -433,10 +436,10 @@ public class TestFitTestRunner {
 		String packageName = "package1.package2";
 		String testName = "test";
 		String name = packageName + "." + testName;
-		String ret = "java -cp " + classPath + File.pathSeparator + pathLib +
-				File.separator + libName1 + File.pathSeparator + pathLib +
-				File.separator + libName2 + " -D" + propName +
-				" fit.FileRunner " + srcPath + File.separator + 
+		String ret = "java -cp " + classPath2 + File.pathSeparator + classPath1 + 
+				File.pathSeparator + pathLib + File.separator + libName1 + 
+				File.pathSeparator + pathLib + File.separator + libName2 + 
+				" -D" + propName + " fit.FileRunner " + srcPath + File.separator +
 				name.replaceAll("\\.", File.separator) + "." + extension + 
 				" " + resultPath + File.separator + suitePath + 
 				File.separator + packageName.replaceAll("\\.", File.separator) + 
@@ -450,7 +453,7 @@ public class TestFitTestRunner {
 		when(suite.getTest(0)).thenReturn(test);
 		when(suite.getPackage()).thenReturn(packageName);
 		
-		_runner.addClassPath(classPath);
+		_runner.addClassPath(classPath1);
 		_runner.setFileExtension(extension);
 		
 		Library lib1 = mock(Library.class);
@@ -473,6 +476,7 @@ public class TestFitTestRunner {
 		when(_config.getPathSrc()).thenReturn(srcPath);
 		when(_config.getPathResult()).thenReturn(resultPath);
 		when(_config.getPathSuitesResult()).thenReturn(suitePath);
+		when(_config.classPathsAsParameterJVM()).thenReturn(classPath2);
 		
 		Method method = 
 				FitTestRunner.class.getDeclaredMethod("exec", 

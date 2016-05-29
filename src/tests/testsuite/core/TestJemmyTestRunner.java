@@ -166,6 +166,8 @@ public class TestJemmyTestRunner {
 						int.class, int.class, HtmlOut.class);
 		method.setAccessible(true);
 		
+		when(_config.classPathsAsParameterJVM()).thenReturn(new String());
+		
 		org.testsuite.data.Test test = mock(org.testsuite.data.Test.class);
 		when(test.isExists()).thenReturn(true);
 		when(test.isExecuted()).thenReturn(true);
@@ -248,7 +250,9 @@ public class TestJemmyTestRunner {
 				JemmyTestRunner.class.getDeclaredMethod("createHtmlColumn", 
 						int.class, int.class, HtmlOut.class);
 		method.setAccessible(true);
-		
+
+		when(_config.classPathsAsParameterJVM()).thenReturn(new String());
+
 		org.testsuite.data.Test test = mock(org.testsuite.data.Test.class);
 		when(test.isExists()).thenReturn(true);
 		when(test.getName()).thenReturn(testName);
@@ -394,6 +398,7 @@ public class TestJemmyTestRunner {
 		_runner.addTestSuite(suite);
 		
 		when(_config.getPathSrc()).thenReturn(srcName);
+		when(_config.classPathsAsParameterJVM()).thenReturn(new String());
 		
 		assertEquals(ret, method.invoke(_runner, 0, 0, html));
 		
@@ -466,13 +471,14 @@ public class TestJemmyTestRunner {
 		String libName2 = "lib2.jar";
 		String propName = "testing=\"true\"";
 		String pathLib = "lib";
-		String classPath = "bin";
-		String ret = "java -cp " + classPath + File.pathSeparator + pathLib +
-				File.separator + libName1 + File.pathSeparator + pathLib +
-				File.separator + libName2 + " -D" + propName + " " +
-				name;
+		String classPath1 = "bin";
+		String classPath2 = "classpath";
+		String ret = "java -cp " + classPath2 + File.pathSeparator + classPath1 +
+				File.pathSeparator + pathLib + File.separator + libName1 + 
+				File.pathSeparator + pathLib + File.separator + libName2 + 
+				" -D" + propName + " " + name;
 		
-		_runner.addClassPath(classPath);
+		_runner.addClassPath(classPath1);
 		
 		Library lib1 = mock(Library.class);
 		when(lib1.getFileName()).thenReturn(libName1);
@@ -491,6 +497,7 @@ public class TestJemmyTestRunner {
 		when(_config.getPathLibrary()).thenReturn(pathLib);
 		when(_config.propertyCount()).thenReturn(1);
 		when(_config.getProperty(0)).thenReturn(propName);
+		when(_config.classPathsAsParameterJVM()).thenReturn(classPath2);
 		
 		Method method = 
 				JemmyTestRunner.class.getDeclaredMethod("exec", 
