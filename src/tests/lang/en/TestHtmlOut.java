@@ -50,6 +50,7 @@ public class TestHtmlOut extends TestLang {
 	public void testHaveAllEntriesForHtmlHead() {
 		assertNotNull(_bundle.getString("htmlHead_head"));
 		assertNotNull(_bundle.getString("htmlHead_description"));
+		assertNotNull(_bundle.getString("htmlHead_include"));
 	}
 	
 	/**

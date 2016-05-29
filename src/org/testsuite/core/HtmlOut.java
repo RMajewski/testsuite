@@ -128,7 +128,9 @@ public class HtmlOut {
 		_bw.newLine();
 		_bw.write("<html>"); _bw.newLine();
 		_bw.write("\t<head>"); _bw.newLine();
-		_bw.write("\t\t<title>Ergebnisse der Tests vom ");
+		_bw.write("\t\t<title>");
+		_bw.write(_bundle.getString("htmlHead_head"));
+		_bw.write(" ");
 		_bw.write(date);
 		_bw.write("</title>"); _bw.newLine();
 		_bw.write("\t\t<meta http-equiv=\"content-type\" "
@@ -155,6 +157,21 @@ public class HtmlOut {
 		_bw.write("\t\t<p>");
 		_bw.write(_bundle.getString("htmlHead_description"));
 		_bw.write("</p>");
+		_bw.newLine();
+		_bw.write("\t\t<div class=\"include\">");
+		_bw.newLine();
+		_bw.write("\t\t\t<p>");
+		_bw.newLine();
+		_bw.write(_bundle.getString("htmlHead_include"));
+		_bw.write("</p>");
+		_bw.newLine();
+		_bw.write("\t\t\t<ul>");
+		_bw.newLine();
+		_bw.write("\t\t\t<li>Fit framework (Version 1.1)</li>");
+		_bw.newLine();
+		_bw.write("\t\t\t</ul>");
+		_bw.newLine();
+		_bw.write("\t\t</div>");
 		_bw.newLine();
 	}
 	
