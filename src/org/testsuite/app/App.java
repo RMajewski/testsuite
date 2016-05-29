@@ -76,9 +76,12 @@ import javax.swing.JFileChooser;
  * configuration is stored. It can also be entered a completely new
  * configuration.
  * 
+ * In version 0.3, the pop-up menu entries are from the tree only enabled when
+ * no test is run.
+ * 
  * @author René Majewski
  *
- * @version 0.2
+ * @version 0.3
  */
 @SuppressWarnings("serial")
 public class App extends JFrame implements ActionListener, TestEventListener {
@@ -297,6 +300,12 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 	private Thread _thread;
 	
 	/**
+	 * Saves whether a test is run
+	 */
+	private boolean _run;
+	
+	
+	/**
 	 * Initializes the main window.
 	 */
 	public App() {
@@ -311,6 +320,8 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		_bundle = ResourceBundle.getBundle(BUNDLE_FILE);
 		
 		_config = new Config();
+		
+		_run = false;
 		
 		createLayout();
 	}
@@ -595,54 +606,57 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				JMenu delete = (JMenu)popup.getComponent(1);
 				JMenu config = (JMenu)popup.getComponent(2);
 				
-				// selected root element
-				if ((e.getPath().getLastPathComponent() instanceof List<?>) &&
-					e.isAddedPath()) {
-					insert.getItem(0).setEnabled(true);
-					insert.getItem(1).setEnabled(true);
-
-					delete.getItem(0).setEnabled(true);
-
-					config.getItem(0).setEnabled(true);
-				}
-				
-				// selected test runner
-				else if ((e.getPath().getLastPathComponent() instanceof 
-						TestRunner) && e.isAddedPath()) {
-					insert.getItem(2).setEnabled(true);
-
-					delete.getItem(1).setEnabled(true);
-
-					config.getItem(1).setEnabled(true);
+				// Not run!!!
+				if (!_run) {
+					// selected root element
+					if ((e.getPath().getLastPathComponent() instanceof List<?>) 
+							&& e.isAddedPath()) {
+						insert.getItem(0).setEnabled(true);
+						insert.getItem(1).setEnabled(true);
+	
+						delete.getItem(0).setEnabled(true);
+	
+						config.getItem(0).setEnabled(true);
+					}
 					
-					popup.getComponent(4).setEnabled(true);
-					popup.getComponent(5).setEnabled(true);
-					popup.getComponent(6).setEnabled(true);
-				}
-				
-				// selected test suite
-				else if ((e.getPath().getLastPathComponent() instanceof
-						TestSuite) && e.isAddedPath()) {
-					insert.getItem(3).setEnabled(true);
-
-					delete.getItem(2).setEnabled(true);
-
-					config.getItem(2).setEnabled(true);
+					// selected test runner
+					else if ((e.getPath().getLastPathComponent() instanceof 
+							TestRunner) && e.isAddedPath()) {
+						insert.getItem(2).setEnabled(true);
+	
+						delete.getItem(1).setEnabled(true);
+	
+						config.getItem(1).setEnabled(true);
+						
+						popup.getComponent(4).setEnabled(true);
+						popup.getComponent(5).setEnabled(true);
+						popup.getComponent(6).setEnabled(true);
+					}
 					
-					popup.getComponent(4).setEnabled(true);
-					popup.getComponent(5).setEnabled(true);
-					popup.getComponent(6).setEnabled(true);
-				}
-				
-				// selected test
-				else if ((e.getPath().getLastPathComponent() instanceof Test) &&
-						e.isAddedPath()) {
-					delete.getItem(3).setEnabled(true);
-
-					config.getItem(3).setEnabled(true);
+					// selected test suite
+					else if ((e.getPath().getLastPathComponent() instanceof
+							TestSuite) && e.isAddedPath()) {
+						insert.getItem(3).setEnabled(true);
+	
+						delete.getItem(2).setEnabled(true);
+	
+						config.getItem(2).setEnabled(true);
+						
+						popup.getComponent(4).setEnabled(true);
+						popup.getComponent(5).setEnabled(true);
+						popup.getComponent(6).setEnabled(true);
+					}
 					
-					popup.getComponent(4).setEnabled(true);
-				}
+					// selected test
+					else if ((e.getPath().getLastPathComponent() instanceof 
+							Test) && e.isAddedPath()) {
+						delete.getItem(3).setEnabled(true);
+	
+						config.getItem(3).setEnabled(true);
+						
+						popup.getComponent(4).setEnabled(true);
+					}
+				} // Not run !!!
 			}
 			
 		});
@@ -867,13 +881,14 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 			case AC_RUN:
 				_thread = new TestRun(((TestRunnerModel)_tree.getModel())
 					.getTestRunnerList(), this);
-				// OPT Into own function with boolean as parameter
 				_btnCancel.setEnabled(true);
 				_btnExit.setEnabled(false);
 				_btnConfigLoad.setEnabled(false);
 				setButtonsEnable(false);
 				_txtMessage.setText(new String());
-				_thread.start();				
+				_thread.start();
+				_run = true;
+				disabledAllPopupMenuItems();
 				break;
 				
 			case AC_ALL_TESTS_IGNORE:
@@ -1163,6 +1178,9 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		} catch (Exception er) {
 			er.printStackTrace();
 		}
+		
+		// No test run
+		_run = false;
 	}
 	
 	/**

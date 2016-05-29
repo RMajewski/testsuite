@@ -30,7 +30,7 @@
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>generateTestConfiguration</td>
+					<td>loadConfigurationFile</td>
 					<td>&nbsp;</td>
 				</tr>
 
@@ -199,6 +199,102 @@
 					<td>check</td>
 					<td>isExecuteAllSelectedTestsEnabled</td>
 					<td>false</td>
+				</tr>
+
+				<tr>
+					<td>press</td>
+					<td>closePopup</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushButtonRun</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>openPopup</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isInsertGeneralConfigurationSelected</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isInsertTestRunnerSelected</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isInsertTestSuiteSelected</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isInsertTestSelected</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isDeleteGeneralConfigurationSelected</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isDeleteTestRunnerSelected</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isDeleteTestSuiteSelected</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isDeleteTestSelected</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isConfigurationGeneralConfigurationSelected</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isConfigurationInsertTestRunnerSelected</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isConfigurtionInsertTestSuiteSelected</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isConfigurationtTestSelected</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isIgnoreAllOtherTestsEnabled</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isIgnoreAllSelectedTestsEnabled</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isExecuteAllSelectedTestsEnabled</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>waitForTestsCompleted</td>
+					<td>&nbsp;</td>
 				</tr>
 
 				<tr>

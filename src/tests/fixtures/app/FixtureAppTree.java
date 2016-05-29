@@ -298,4 +298,10 @@ public class FixtureAppTree extends FixtureApp {
 		return _tests.isPopupItemEnabled(2, 3);
 	}
 
+	/**
+	 * Click on the HTML output area, to exit the pop-up menu.
+	 */
+	public void closePopup() {
+		_tests.closePopup();
+	}
 }

@@ -988,4 +988,10 @@ public class TestApp implements Scenario {
 				.getTestRunnerList().get(0));
 	}
 
+	/**
+	 * Click on the HTML output area, to exit the pop-up menu.
+	 */
+	public void closePopup() {
+		_txtHtml.clickMouse();
+	}
 }
