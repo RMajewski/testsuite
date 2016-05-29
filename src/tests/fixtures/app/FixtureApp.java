@@ -22,6 +22,7 @@ package tests.fixtures.app;
 import java.util.ResourceBundle;
 
 import org.testsuite.app.App;
+import org.testsuite.app.DlgConfigGeneral;
 
 import fit.ActionFixture;
 import tests.testsuite.app.TestApp;
@@ -203,7 +204,7 @@ public class FixtureApp extends ActionFixture {
 	 * Click on the open button into the file dialog.
 	 */
 	public void pushFileDialogOpen() {
-		_tests.pushDialogButton(10);
+		_tests.pushFileDialogButton(10);
 	}
 	
 	/**
@@ -280,7 +281,7 @@ public class FixtureApp extends ActionFixture {
 	 * Click an the cancel button into the file dialog.
 	 */
 	public void pushFileDialogCancel() {
-		_tests.pushDialogButton(9);
+		_tests.pushFileDialogButton(9);
 	}
 	
 	/**
@@ -296,7 +297,57 @@ public class FixtureApp extends ActionFixture {
 	 * Click on the open button into the file dialog.
 	 */
 	public void pushFileDialogSave() {
-		_tests.pushDialogButton(10);
+		_tests.pushFileDialogButton(10);
+	}
+	
+	/**
+	 * Determines whether the button for save configuration file is enabled.
+	 */
+	public boolean isButtonForSaveTheConfigurationFileEnable() {
+		return _tests.isConfigSaveButtonEnabled();
+	}
+	
+	/**
+	 * Determines whether the button for validate configuration is enabled.
+	 */
+	public boolean isButtonForValidateTheConfigurationEnable() {
+		return _tests.isConfigSaveButtonEnabled();
+	}
+	
+	/**
+	 * Determines whether the main window is visible.
+	 */
+	public boolean isVisible() {
+		return _tests.isMainWindowVisible();
+	}
+	
+	/**
+	 * Open the dialog for the general configuration.
+	 */
+	public void pushConfigurationGeneralConfiguration() {
+		_tests.pushNoBlockTreePopupItem(2, 0);
+		_tests.waitForDialog(ResourceBundle.getBundle(
+				DlgConfigGeneral.BUNDLE_FILE).getString("dialog_title"));
+	}
+	
+	/**
+	 * Click on the tree pop-up item "TestRunner" in the menu "Insert"
+	 */
+	public void pushInsertTestRunner() {
+		_tests.pushTreePopupItem(0, 1);
 	}
 
+	/**
+	 * Expand all tree nodes
+	 */
+	public void expandTree() {
+		_tests.treeExpandAll();
+	}
+	
+	/**
+	 * Select the TestRunner in the tree
+	 */
+	public void selectTestRunnerInTree() {
+		_tests.selectElementInTree(1);
+	}
 }

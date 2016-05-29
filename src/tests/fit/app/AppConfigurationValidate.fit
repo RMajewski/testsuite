@@ -15,7 +15,7 @@
 				</tr>
 				<tr>
 					<td>start</td>
-					<td>tests.fixtures.app.FixtureApp</td>
+					<td>tests.fixtures.app.FixtureAppConfigurationValidate</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>

@@ -36,15 +36,6 @@ import org.testsuite.app.DlgConfigGeneral;
 public class FixtureAppChangeGeneralConfiguration extends FixtureApp {
 	
 	/**
-	 * Open the dialog for the general configuration.
-	 */
-	public void pushConfigurationGeneralConfiguration() {
-		_tests.pushNoBlockTreePopupItem(2, 0);
-		_tests.waitForDialog(ResourceBundle.getBundle(
-				DlgConfigGeneral.BUNDLE_FILE).getString("dialog_title"));
-	}
-	
-	/**
 	 * Determines whether the text field for the library path exists.
 	 * 
 	 * @return In existence the text field for the library path?

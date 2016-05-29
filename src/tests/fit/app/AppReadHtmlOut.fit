@@ -14,7 +14,7 @@
 				</tr>
 				<tr>
 					<td>start</td>
-					<td>tests.fixtures.app.FixtureApp</td>
+					<td>tests.fixtures.app.FixtureAppReadHtmlOut</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
@@ -29,7 +29,7 @@
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>waitForTestsEnd</td>
+					<td>waitForTestsCompleted</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>

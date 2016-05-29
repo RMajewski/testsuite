@@ -19,12 +19,17 @@
 
 package tests.testsuite.app;
 
+import java.awt.Component;
 import java.io.File;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javax.swing.JCheckBox;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.validation.SchemaFactory;
 
 import org.netbeans.jemmy.ClassReference;
 import org.netbeans.jemmy.Scenario;
@@ -49,6 +54,8 @@ import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
 import org.testsuite.data.Test;
 import org.testsuite.data.TestSuite;
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
 
 /**
  * Tests the test suite app.
@@ -176,6 +183,16 @@ public class TestApp implements Scenario {
 	}
 	
 	/**
+	 * Returns whether the selected configuration file exists.
+	 * 
+	 * @return Exists the configuration file?
+	 */
+	public boolean existsConfigurationFile() {
+		File file = _fileChooser.getSelectedFile();
+		return file.exists();
+	}
+	
+	/**
 	 * Sets the text in text field in the dialog.
 	 * 
 	 * @param text Text to sets into the text field.
@@ -218,6 +235,89 @@ public class TestApp implements Scenario {
 	}
 	
 	/**
+	 * Returns the the name selected configuration file.
+	 * 
+	 * @param lastPaths Paths that you want to include.
+	 */
+	public String getConfigurationFileName(int lastPaths) {
+		File file = _fileChooser.getSelectedFile();
+		String[] tmp = file.getPath().split(File.separator);
+		StringBuilder ret = new StringBuilder();
+		for (int i = tmp.length - 1 - lastPaths; i < tmp.length; i++) {
+			ret.append(tmp[i]);
+			if (i < tmp.length - 1)
+				ret.append(File.separator);
+		}
+		return ret.toString();
+	}
+
+	/**
+	 * Returns the specified button from dialog 2
+	 *  
+	 * @param index Index at which the button is located.
+	 * 
+	 * @return The specified button
+	 */
+	public JButtonOperator getDialog2Button(int index) {
+		return new JButtonOperator(_dlg2, index);
+	}
+	
+	/**
+	 * Returns the specified text field from dialog 2
+	 * 
+	 * @param index Index at which the text field is located.
+	 * 
+	 * @return The specified text field
+	 */
+	public JTextFieldOperator getDialog2TextField(int index) {
+		return new JTextFieldOperator(_dlg2, index);
+	}
+	
+	/**
+	 * Returns the specified button
+	 *  
+	 * @param index Index at which the button is located.
+	 * 
+	 * @return The specified button
+	 */
+	public JButtonOperator getDialogButton(int index) {
+		return new JButtonOperator(_dlg, index);
+	}
+	
+	/**
+	 * Returns the specified check box
+	 * 
+	 * @param index Index at which the check box is located.
+	 * 
+	 * @return The specified check box
+	 */
+	public JCheckBoxOperator getDialogCheckBox(int index) {
+		return new JCheckBoxOperator(_dlg, index);
+	}
+	
+	/**
+	 * Returns the specified list
+	 * 
+	 * @param index Index at which the list is located.
+	 * 
+	 * @return The specified list
+	 */
+	public JListOperator getDialogList(int index) {
+		return new JListOperator(_dlg, index);
+	}
+	
+	/**
+	 * Returns the specified text field
+	 * 
+	 * @param index Index at which the text field is located.
+	 * 
+	 * @return The specified text field
+	 */
+	public JTextFieldOperator getDialogTextField(int index) {
+		return new JTextFieldOperator(_dlg, index);
+	}
+	
+	/**
 	 * Determines the number of tests to executed.
 	 * 
 	 * @return Number of tests to executed.
@@ -236,6 +336,15 @@ public class TestApp implements Scenario {
 	}
 	
 	/**
+	 * Return the general configuration
+	 * 
+	 * @return The general configuration
+	 */
+	public Config getGeneralConfiguration() {
+		return ((DlgConfigGeneral)_dlg.getSource()).getConfig();
+	}
+	
+	/**
 	 * Determines the maximum value of progress bar
 	 * 
 	 * @return Maximum value of press bar.
@@ -243,7 +352,16 @@ public class TestApp implements Scenario {
 	public int getMaximumOfProgressBar() {
 		return _progress.getMaximum();
 	}
-
+	
+	/**
+	 * Returns the number of nodes in the tree.
+	 * 
+	 * @return Number of nodes in the tree.
+	 */
+	public int getTreeRootItemCount() {
+		return _tree.getModel().getChildCount(_tree.getModel().getRoot());
+	}
+	
 	/**
 	 * Determines the actual value of progress bar
 	 * 
@@ -259,7 +377,7 @@ public class TestApp implements Scenario {
 	public void interceptFileChooserDialog() {
 		_fileChooser = new JFileChooserOperator();
 	}
-	
+
 	/**
 	 * Determines whether the button for all tests select execute is enabled.
 	 */
@@ -321,10 +439,46 @@ public class TestApp implements Scenario {
 	}
 	
 	/**
+	 * Returns whether the selected configuration file validated.
+	 * 
+	 * @return Validated the configuration file?
+	 */
+	public boolean isConfigurationFileValide() {
+		try {
+			SAXParserFactory factory = SAXParserFactory.newInstance();
+			factory.setValidating(false);
+			factory.setNamespaceAware(true);
+			
+			SchemaFactory schema = SchemaFactory.newInstance(
+					"http://www.w3.org/2001/XMLSchema");
+			factory.setSchema(schema.newSchema(getClass().getClassLoader()
+					.getResource("resources/xml/config.xsd")));
+			
+			SAXParser parser = factory.newSAXParser();
+			
+			XMLReader reader = parser.getXMLReader();
+			reader.parse(new InputSource("result/test.xml"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	/**
 	 * Determines whether the button for validate configuration is enabled.
 	 */
 	public boolean isConfigValidateButtonEnabled() {
 		return _btnConfigValidate.isEnabled();
+	}
+	
+	/**
+	 * Determines whether the dialog 2 is visible or not.
+	 * 
+	 * @return Is the dialog 2 visible?
+	 */
+	public boolean isDialog2Visible() {
+		return _dlg2.isVisible();
 	}
 	
 	/**
@@ -335,17 +489,40 @@ public class TestApp implements Scenario {
 	}
 	
 	/**
+	 * Returns is the file dialog showing or not.
+	 * 
+	 * @return Is the file dialog showing?
+	 */
+	public boolean isFileDialogShowing() {
+		if (_fileChooser != null) {
+			return _fileChooser.isShowing();
+		}
+		
+		return false;
+	}
+	
+	/**
 	 * Determines whether the button for load configuration file is enabled.
 	 */
 	public boolean isLoadButtonEnabled() {
 		return _btnLoad.isEnabled();
 	}
-
+	
 	/**
 	 * Determines whether the button for run tests is enabled.
 	 */
 	public boolean isRunButtonEnabled() {
 		return _btnRun.isEnabled();
+	}
+	
+	/**
+	 * Open the pop-up from specified list.
+	 * 
+	 * @param list List of the pop-up menu to open.
+	 */
+	public void openConfigPopup(int list) {
+		getDialogList(list).clickForPopup();
+		_popup = new JPopupMenuOperator();
 	}
 	
 	/**
@@ -386,11 +563,11 @@ public class TestApp implements Scenario {
 	}
 	
 	/**
-	 * Click on the cancel button on dialog.
+	 * Click on the specified button on file dialog.
 	 * 
 	 * @param index The button index
 	 */
-	public void pushDialogButton(int index) {
+	public void pushFileDialogButton(int index) {
 		JButtonOperator btn;
 		if (_fileChooser != null) {
 			btn = new JButtonOperator(_fileChooser, index);
@@ -403,6 +580,39 @@ public class TestApp implements Scenario {
 	 */
 	public void pushNoBlockButtonLoadConfigurationFile() {
 		_btnLoad.pushNoBlock();
+	}
+
+	/**
+	 * Click on save configuration file button.
+	 */
+	public void pushNoBlockButtonSaveConfigurationFile() {
+		_btnConfigSave.pushNoBlock();
+	}
+	
+	/**
+	 * Click on the specified pop-up menu item and open dialog 2.
+	 * 
+	 * @param index Specified pop-up menu item
+	 * 
+	 * @param name Name of the dialog
+	 */
+	public void pushNoBlockConfigPopup(int index, String name) {
+		new JMenuItemOperator((JMenuItem)_popup.getComponent(index))
+			.pushNoBlock();
+		_dlg2 = new JDialogOperator(_wnd, name);
+	}
+	
+	/**
+	 * Click on the specified button on file dialog.
+	 * 
+	 * @param index The button index
+	 */
+	public void pushNoBlockFileDialogButton(int index) {
+		JButtonOperator btn;
+		if (_fileChooser != null) {
+			btn = new JButtonOperator(_fileChooser, index);
+			btn.pushNoBlock();
+		}
 	}
 	
 	/**
@@ -454,7 +664,7 @@ public class TestApp implements Scenario {
 	public void treeExpand(int row) {
 		_tree.expandRow(row);
 	}
-	
+
 	/**
 	 * Tree expand.
 	 */
@@ -474,150 +684,169 @@ public class TestApp implements Scenario {
 	}
 	
 	/**
-	 * Returns the specified button
+	 * Wait until the dialog has been opened.
 	 *  
-	 * @param index Index at which the button is located.
-	 * 
-	 * @return The specified button
+	 * @param name Name of the Dialog
 	 */
-	public JButtonOperator getDialogButton(int index) {
-		return new JButtonOperator(_dlg, index);
-	}
-	
-	/**
-	 * Returns the specified button from dialog 2
-	 *  
-	 * @param index Index at which the button is located.
-	 * 
-	 * @return The specified button
-	 */
-	public JButtonOperator getDialog2Button(int index) {
-		return new JButtonOperator(_dlg2, index);
-	}
-	
-	/**
-	 * Returns the specified text field
-	 * 
-	 * @param index Index at which the text field is located.
-	 * 
-	 * @return The specified text field
-	 */
-	public JTextFieldOperator getDialogTextField(int index) {
-		return new JTextFieldOperator(_dlg, index);
-	}
-	
-	/**
-	 * Returns the specified text field from dialog 2
-	 * 
-	 * @param index Index at which the text field is located.
-	 * 
-	 * @return The specified text field
-	 */
-	public JTextFieldOperator getDialog2TextField(int index) {
-		return new JTextFieldOperator(_dlg2, index);
-	}
-	
-	/**
-	 * Returns the specified check box
-	 * 
-	 * @param index Index at which the check box is located.
-	 * 
-	 * @return The specified check box
-	 */
-	public JCheckBoxOperator getDialogCheckBox(int index) {
-		return new JCheckBoxOperator(_dlg, index);
-	}
-	
-	/**
-	 * Returns the specified list
-	 * 
-	 * @param index Index at which the list is located.
-	 * 
-	 * @return The specified list
-	 */
-	public JListOperator getDialogList(int index) {
-		return new JListOperator(_dlg, index);
-	}
-
-	/**
-	 * Open the pop-up from specified list.
-	 * 
-	 * @param list List of the pop-up menu to open.
-	 */
-	public void openConfigPopup(int list) {
-		getDialogList(list).clickForPopup();
-		_popup = new JPopupMenuOperator();
-	}
-	
-	/**
-	 * Click on the specified pop-up menu item and open dialog 2.
-	 * 
-	 * @param index Specified pop-up menu item
-	 * 
-	 * @param name Name of the dialog
-	 */
-	public void pushNoBlockConfigPopup(int index, String name) {
-		new JMenuItemOperator((JMenuItem)_popup.getComponent(index))
-			.pushNoBlock();
+	public void waitForDialog2(String name) {
 		_dlg2 = new JDialogOperator(_wnd, name);
 	}
 	
 	/**
-	 * Return the general configuration
+	 * Determines whether the specified check box from the tree is enabled.
 	 * 
-	 * @return The general configuration
-	 */
-	public Config getGeneralConfiguration() {
-		return ((DlgConfigGeneral)_dlg.getSource()).getConfig();
-	}
-	
-	/**
-	 * Returns the number of nodes in the tree.
+	 * @param index Specifying the check box.
 	 * 
-	 * @return Number of nodes in the tree.
+	 * @return If the check box is enabled?
 	 */
-	public int getTreeRootItemCount() {
-		return _tree.getModel().getChildCount(_tree.getModel().getRoot());
-	}
-	
-	/**
-	 * Returns is the file dialog showing or not.
-	 * 
-	 * @return Is the file dialog showing?
-	 */
-	public boolean isFileDialogShowing() {
-		if (_fileChooser != null) {
-			return _fileChooser.isShowing();
+	public boolean isCheckBoxFromTreeEnabled(int index) {
+		Component c = _tree.getRenderedComponent(_tree.getPathForRow(index));
+		if (c instanceof JCheckBox) {
+			JCheckBoxOperator checkbox = new JCheckBoxOperator((JCheckBox)c);
+			return checkbox.isEnabled();
 		}
 		
 		return false;
 	}
 	
 	/**
-	 * Returns the the name selected configuration file.
-	 * 
-	 * @param lastPaths Paths that you want to include.
+	 * Click on the button "Validate configuration"
 	 */
-	public String getConfigurationFileName(int lastPaths) {
-		File file = _fileChooser.getSelectedFile();
-		String[] tmp = file.getPath().split(File.separator);
-		StringBuilder ret = new StringBuilder();
-		for (int i = tmp.length - 1 - lastPaths; i < tmp.length; i++) {
-			ret.append(tmp[i]);
-			if (i < tmp.length - 1)
-				ret.append(File.separator);
-		}
-		return ret.toString();
+	public void pushButtonValidateConfiguration() {
+		_btnConfigValidate.push();
 	}
 	
 	/**
-	 * Returns whether the selected configuration file exists.
+	 * Checks whether the HTML file was created.
 	 * 
-	 * @return Exists the configuration file?
+	 * @return Was HTML file created?
 	 */
-	public boolean existsConfigurationFile() {
-		File file = _fileChooser.getSelectedFile();
+	public boolean existsResultHtmlFile() throws Exception{
+		Config config = ((App)_wnd.getSource()).getConfig();
+		String html = config.getPathResult() + File.separator +
+				_bundle.getString("html_result") + "_" +
+				config.getPathSuitesResult() + ".html";
+		
+		System.out.println(html);
+		File file = new File(html);
 		return file.exists();
 	}
 	
+	/**
+	 * Determines whether the main window is visible.
+	 */
+	public boolean isMainWindowVisible() {
+		return _wnd.isVisible();
+	}
+	
+	/**
+	 * Determines whether the tree is enabled.
+	 */
+	public boolean isTreeEnabled() {
+		return _tree.isEnabled();
+	}
+	
+	/**
+	 * Determines whether the text pane for html output is enabled.
+	 */
+	public boolean isTextPaneEnabled() {
+		return _txtHtml.isEnabled();
+	}
+	
+	/**
+	 * Determines whether the text pane for html output is editable.
+	 */
+	public boolean isTextPaneEditable() {
+		return _txtHtml.isEditable();
+	}
+	
+	/**
+	 * Determines whether the progress bar is enabled.
+	 */
+	public boolean isProgressBarEnabled() {
+		return _progress.isEnabled();
+	}
+	
+	/**
+	 * Determines whether the button for run tests is visible.
+	 */
+	public boolean isRunButtonVisible() {
+		return _btnRun.isVisible();
+	}
+	
+	/**
+	 * Determines whether the button for cancel tests is visible.
+	 */
+	public boolean isCancelButtonVisible() {
+		return _btnCancel.isVisible();
+	}
+	
+	/**
+	 * Determines whether the button for load configuration file is visible.
+	 */
+	public boolean isLoadButtonVisible() {
+		return _btnLoad.isVisible();
+	}
+	
+	/**
+	 * Determines whether the button for save configuration file is visible.
+	 */
+	public boolean isConfigSaveButtonVisible() {
+		return _btnConfigSave.isVisible();
+	}
+	
+	/**
+	 * Determines whether the button for validate configuration is visible.
+	 */
+	public boolean isConfigValidateButtonVisible() {
+		return _btnConfigValidate.isVisible();
+	}
+	
+	/**
+	 * Determines whether the button for exit the app is visible.
+	 */
+	public boolean isExitButtonVisible() {
+		return _btnExit.isVisible();
+	}
+	
+	/**
+	 * Click on the exit button
+	 */
+	public void pushExitButton() {
+		_btnExit.push();
+	}
+	
+	/**
+	 * Checks if the specified pop.up menu entry named specified.
+	 * 
+	 * @param item Specified pop-up menu entry.
+	 * 
+	 * @param text Text he is supposed to have.
+	 * 
+	 * @return Wearing the specified pop-up menu listing the given text?
+	 */
+	public boolean havePopupItem(int item, String text) {
+		return ((JMenuItem)_popup.getComponent(item)).getText().equals(text);
+	}
+	
+	/**
+	 * Determines whether the specified pop-up menu item is enabled or not.
+	 * 
+	 * @param item Specified pop-up menu entry.
+	 * 
+	 * @return If the specified pop-up menu entry enabled?
+	 */
+	public boolean isPopupItemEnabled(int item) {
+		return ((JMenuItem)_popup.getComponent(item)).isEnabled();
+	}
+	
+	/**
+	 * Determines the number of rows in the HTML output.
+	 * 
+	 * @return Number of rows in the HTML output.
+	 */
+	public int rowsFromHtmlTextEditor() {
+		return _txtHtml.getRows();
+	}
+
 }

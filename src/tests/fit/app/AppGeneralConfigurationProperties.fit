@@ -25,7 +25,7 @@
 				</tr>
 				<tr>
 					<td>start</td>
-					<td>tests.fixtures.app.FixtureApp</td>
+					<td>tests.fixtures.app.FixtureAppGeneralConfigurationProperties</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>

@@ -20,25 +20,21 @@
 package tests.fixtures.app;
 
 /**
- * Implements the fixtures for testing buttons are correct enabled or disabled.
+ * Implements the fixtures for testing the read HTML output.
  * 
  * @author René Majewski
  *
  * @version 0.1
  */
-public class FixtureAppButtonRightEnabled extends FixtureApp {	
+public class FixtureAppReadHtmlOut extends FixtureApp {
 	/**
-	 * Determines whether the button for save configuration file is enabled.
+	 * Determines whether lines are included in the text field for HTML output.
+	 * 
+	 * @return Exist line in HTML output?
 	 */
-	public boolean isButtonForSaveTheConfigurationFileEnable() {
-		return _tests.isConfigSaveButtonEnabled();
-	}
-	
-	/**
-	 * Determines whether the button for validate configuration is enabled.
-	 */
-	public boolean isButtonForValidateTheConfigurationEnable() {
-		return _tests.isConfigSaveButtonEnabled();
+	public boolean drawsHtmlFileIntoApp() throws InterruptedException {
+		Thread.sleep(500);
+		return _tests.rowsFromHtmlTextEditor() > 0;
 	}
 
 }
