@@ -48,6 +48,7 @@ import org.testsuite.data.Junit;
 import org.testsuite.data.Library;
 import org.testsuite.data.TestEvent;
 import org.testsuite.data.TestEventListener;
+import org.testsuite.data.TestSelectEvent;
 import org.testsuite.data.TestSuite;
 
 /**
@@ -1154,6 +1155,10 @@ public class TestTestRunner extends TestRunnerHelper {
 
 			@Override
 			public void testEnd(TestEvent te) {
+			}
+
+			@Override
+			public void testSelectTest(TestSelectEvent tse) {
 			}
 		});
 		

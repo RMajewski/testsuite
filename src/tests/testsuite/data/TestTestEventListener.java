@@ -24,6 +24,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.testsuite.data.TestEvent;
 import org.testsuite.data.TestEventListener;
+import org.testsuite.data.TestSelectEvent;
 
 /**
  * Tests the interface {@link org.testsuite.data.TestEventListener}
@@ -42,6 +43,26 @@ public class TestTestEventListener {
 		assertEquals("testExecutedCompleted", 
 				TestEventListener.class.getDeclaredMethod(
 						"testExecutedCompleted", TestEvent.class).getName());
+	}
+
+	/**
+	 * Verifies that test event has the testEnd method.
+	 */
+	@Test
+	public void testHasEventTestEnd() throws Exception {
+		assertEquals("testEnd", 
+				TestEventListener.class.getDeclaredMethod(
+						"testEnd", TestEvent.class).getName());
+	}
+
+	/**
+	 * Verifies that test event has the testSelectTest method.
+	 */
+	@Test
+	public void testHasEventTestSelectTest() throws Exception {
+		assertEquals("testSelectTest", 
+				TestEventListener.class.getDeclaredMethod(
+						"testSelectTest", TestSelectEvent.class).getName());
 	}
 
 }

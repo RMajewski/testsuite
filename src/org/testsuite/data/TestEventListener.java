@@ -30,6 +30,13 @@ import java.util.EventListener;
  */
 public interface TestEventListener extends EventListener {
 	/**
+	 * Called before a test started
+	 * 
+	 * @param te Data of this event.
+	 */
+	public void testSelectTest(TestSelectEvent tse);
+
+	/**
 	 * Called when a test is complete.
 	 * 
 	 * @param te Data of this event.

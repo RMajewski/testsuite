@@ -40,6 +40,7 @@ import org.testsuite.data.Config;
 import org.testsuite.data.Test;
 import org.testsuite.data.TestEvent;
 import org.testsuite.data.TestEventListener;
+import org.testsuite.data.TestSelectEvent;
 import org.testsuite.data.TestSuite;
 
 import java.awt.BorderLayout;
@@ -59,6 +60,7 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -77,7 +79,7 @@ import javax.swing.JFileChooser;
  * configuration.
  * 
  * In version 0.3, the pop-up menu entries are from the tree only enabled when
- * no test is run.
+ * no test is run. And the test which run is selected.
  * 
  * @author René Majewski
  *
@@ -600,6 +602,8 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 			@Override
 			public void valueChanged(TreeSelectionEvent e) {
 				disabledAllPopupMenuItems();
+				
+//				System.out.println(_tree.getSelectionPath());
 				
 				JPopupMenu popup = _tree.getComponentPopupMenu();
 				JMenu insert = (JMenu)popup.getComponent(0);
@@ -1181,6 +1185,23 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		
 		// No test run
 		_run = false;
+	}
+
+	/**
+	 * Select the test in tree which is actually run.
+	 * 
+	 * @param tse Data of this event
+	 */
+	@Override
+	public void testSelectTest(TestSelectEvent tse) {
+		TestRunner runner = ((TestRunnerModel)_tree.getModel())
+				.getTestRunnerList().get(tse.getIndexTestRunner());
+		Object[] path = { ((TestRunnerModel)_tree.getModel())
+					.getTestRunnerList(), runner, 
+				runner.getTestSuite(tse.getIndexTestSuite()),
+				runner.getTestSuite(tse.getIndexTestSuite())
+					.getTest(tse.getIndexTest())};
+		_tree.setSelectionPath(new TreePath(path));
 	}
 	
 	/**

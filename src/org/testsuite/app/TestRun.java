@@ -24,6 +24,7 @@ import java.util.List;
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.TestEvent;
 import org.testsuite.data.TestEventListener;
+import org.testsuite.data.TestSelectEvent;
 
 /**
  * Thread in which the tests are run.
@@ -72,6 +73,8 @@ public class TestRun extends Thread {
 				for (int test = 0; test < _testRunner.get(runner).getTestSuite(suite).testCount(); test++) {
 					if (isInterrupted())
 						break Runner;
+					_listener.testSelectTest(new TestSelectEvent(this, runner, 
+							suite, test));
 					_testRunner.get(runner).run(
 							_testRunner.get(runner).getTestSuite(suite),
 							_testRunner.get(runner).getTestSuite(suite)
