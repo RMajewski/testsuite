@@ -44,6 +44,7 @@ public class FileRunner {
         tables.print(output);
     }
 
+    /* Changed by René Majewski */
     public void args(String[] argv) throws IOException {
         if (argv.length != 2) {
             System.err.println("usage: java fit.FileRunner input-file output-file");
@@ -55,6 +56,12 @@ public class FileRunner {
         fixture.summary.put("input update", new Date(in.lastModified()));
         fixture.summary.put("output file", out.getAbsolutePath());
         input = read(in);
+        
+        // Create result directory if not exists
+        File path = new File(out.getParent());
+        if (!path.exists())
+        	path.mkdirs();
+        
         output = new PrintWriter(new BufferedWriter(new FileWriter(out)));
     }
 
