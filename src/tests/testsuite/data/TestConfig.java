@@ -252,6 +252,98 @@ public class TestConfig {
 		_config.setCreateHtml(true);
 		assertTrue(_config.isCreateHtml());
 	}
+	
+	/**
+	 * Verifies that the correct number of class path is returned.
+	 */
+	@Test
+	public void testClasspathCount() {
+		assertEquals(0, _config.classPathCount());
+	}
+	
+	/**
+	 * Tests whether the error IllegalArgumentException appears when zero is
+	 * passed as a parameter.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testAddClasspathWithNullAsParameter() {
+		_config.addClassPath(null);
+	}
+	
+	/**
+	 * Tests whether the error IllegalArgumentException appears when empty 
+	 * string is passed as a parameter.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testAddClasspathWithEptyStringAsParameter() {
+		_config.addClassPath(new String());
+	}
+	
+	/**
+	 * Checks whether a class path can be added to the list.
+	 */
+	@Test
+	public void testAddClasspath() {
+		String name = "test";
+		_config.addClassPath(name);
+		assertEquals(1, _config.classPathCount());
+	}
+	
+	/**
+	 * Tests if the property is returned correctly.
+	 */
+	@Test
+	public void testGetClasspath() {
+		String name = "test";
+		_config.addClassPath(name);
+		assertEquals(name, _config.getClassPath(0));
+	}
+	
+	/**
+	 * Verifies that the correct system property was deleted.
+	 */
+	@Test
+	public void testRemoveClasspath() {
+		String prop1 = "Test1";
+		String prop2 = "Test2";
+		String prop3 = "Test3";
+		
+		_config.addClassPath(prop1);
+		_config.addClassPath(prop2);
+		_config.addClassPath(prop3);
+		
+		assertEquals(3, _config.classPathCount());
+		
+		_config.removeClassPath(prop2);
+		
+		assertEquals(2, _config.classPathCount());
+		assertEquals(prop1, _config.getClassPath(0));
+		assertEquals(prop3, _config.getClassPath(1));
+	}
+	
+	/**
+	 * Verifies that the correct system property has changed.
+	 */
+	@Test
+	public void testChangeClasspath() {
+		String prop1 = "Test1";
+		String prop2 = "Test2";
+		String prop3 = "Test3";
+		
+		_config.addClassPath(prop1);
+		_config.addClassPath(prop2);
+		_config.addClassPath(prop3);
+		
+		assertEquals(3, _config.classPathCount());
+		
+		_config.changeClassPath(prop2, "Test4");
+		
+		assertEquals(3, _config.classPathCount());
+		assertEquals(prop1, _config.getClassPath(0));
+		assertEquals("Test4", _config.getClassPath(1));
+		assertEquals(prop3, _config.getClassPath(2));
+	}
+	
 	/**
 	 * Verifies that the correct number of libraries is returned.
 	 */
@@ -261,7 +353,7 @@ public class TestConfig {
 	}
 	
 	/**
-	 * Checks whether a library can be added to the list.
+	 * Checks whether a property can be added to the list.
 	 */
 	@Test
 	public void testAddPropery() {

@@ -25,9 +25,11 @@ import java.util.List;
 /**
  * Saves the configuration from the configuration file.
  * 
+ * In the version 0.2 added a list for class paths
+ * 
  * @author René Majewski
  *
- * @version 0.1
+ * @version 0.2
  */
 public class Config {
 	/**
@@ -52,6 +54,8 @@ public class Config {
 	
 	/**
 	 * Saves the class path.
+	 * 
+	 * @deprecated Use {@link #_listClasspath}
 	 */
 	private String _classpath;
 	
@@ -66,6 +70,11 @@ public class Config {
 	private List<String> _property;
 	
 	/**
+	 * Saves the list of class paths.
+	 */
+	private List<String> _listClasspath;
+	
+	/**
 	 * Saves the maximum duration for a test.
 	 */
 	private long _maxDuration;
@@ -75,6 +84,7 @@ public class Config {
 	 */
 	public Config() {
 		_property = new ArrayList<String>();
+		_listClasspath = new ArrayList<String>();
 		_pathSuitesResult = new String();
 		_classpath = new String();
 		clear();
@@ -165,7 +175,7 @@ public class Config {
 	 * 
 	 * @return Classpath
 	 * 
-	 * @deprecated
+	 * @deprecated Use {@link #getClassPath(int)}
 	 */
 	public String getClasspath() {
 		return _classpath;
@@ -176,12 +186,67 @@ public class Config {
 	 * 
 	 * @param classpath The new classpath
 	 * 
-	 * @deprecated
+	 * @deprecated Use {@link #addClassPath(String)}
 	 */
 	public void setClasspath(String classpath) {
 		if ((classpath == null) || classpath.isEmpty())
 			throw new IllegalArgumentException();
 		_classpath = classpath;
+	}
+	
+	/**
+	 * Added a class path to the list.
+	 * 
+	 * @param classpath The new class path, which is to be added to the list.
+	 */
+	public void addClassPath(String classpath) {
+		if ((classpath == null) || classpath.isEmpty())
+			throw new IllegalArgumentException();
+		_listClasspath.add(classpath);
+	}
+	
+	/**
+	 * Change the specified class path
+	 * 
+	 * @param oldClasspath Old class path
+	 * 
+	 * @param newClasspath Changed class path
+	 */
+	public void changeClassPath(String oldClasspath, String newClasspath) {
+		int index = _listClasspath.indexOf(oldClasspath);
+		_listClasspath.remove(index);
+		_listClasspath.add(index, newClasspath);
+	}
+	
+	/**
+	 * Returns the specified class path from the list
+	 * 
+	 * @param index Place where the class path is.
+	 * 
+	 * @return The specified class path.
+	 */
+	public String getClassPath(int index) {
+		return _listClasspath.get(index);
+	}
+	
+	/**
+	 * Returns the count of class paths.
+	 * 
+	 * @return Count of class paths.
+	 */
+	public int classPathCount() {
+		return _listClasspath.size();
+	}
+	
+	/**
+	 * Remove the class path from the list of class paths
+	 * 
+	 * @param classpath Class path that is to be deleted
+	 */
+	public void removeClassPath(String classpath) {
+		if ((classpath == null) || classpath.isEmpty())
+			throw new IllegalArgumentException();
+		_listClasspath.remove(_listClasspath.indexOf(classpath));
 	}
 
 	/**
@@ -295,5 +360,6 @@ public class Config {
 		_createHtml = false;
 		_maxDuration = 0;
 		_property.clear();
+		_listClasspath.clear();
 	}
 }
