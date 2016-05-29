@@ -65,6 +65,11 @@
 				</tr>
 				<tr>
 					<td>check</td>
+					<td>haveListClassPaths</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
 					<td>haveButtonAccept</td>
 					<td>true</td>
 				</tr>
@@ -104,6 +109,11 @@
 					<td>test="test"</td>
 				</tr>
 				<tr>
+					<td>enter</td>
+					<td>addClassPath</td>
+					<td>path1</td>
+				</tr>
+				<tr>
 					<td>press</td>
 					<td>pushAccept</td>
 					<td>&nbsp;</td>
@@ -135,8 +145,13 @@
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>getListItem0</td>
+					<td>getSystemPropertyItem0</td>
 					<td>test="test"</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getClassPathItem0</td>
+					<td>path1</td>
 				</tr>
 			</tbody>
 		</table>

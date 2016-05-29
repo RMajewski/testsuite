@@ -57,10 +57,11 @@ public class TestDlgConfigGeneral extends TestDlgConfig {
 		assertNotNull(_bundle.getString("label_html_out"));
 		assertNotNull(_bundle.getString("label_max_duration"));
 		assertNotNull(_bundle.getString("label_system_property"));
+		assertNotNull(_bundle.getString("label_system_classpath"));
 	}
 	
 	/**
-	 * Tests if have all entries for the po-up menu items for the system
+	 * Tests if have all entries for the pop-up menu items for the system
 	 * properties.
 	 */
 	@Test
@@ -84,5 +85,32 @@ public class TestDlgConfigGeneral extends TestDlgConfig {
 		assertNotNull(_bundle.getString("change_property_message"));
 		assertNotNull(_bundle.getString("delete_property_title"));
 		assertNotNull(_bundle.getString("delete_property_message"));
+	}
+	
+	/**
+	 * Tests if have all entries for the pop-up menu items for the class paths.
+	 */
+	@Test
+	public void testEntriesForPopupItemsForClassPaths() {
+		assertNotNull(_bundle.getString("insert_classpath"));
+		assertNotNull(_bundle.getString("insert_classpath_mnemonic"));
+		assertNotNull(_bundle.getString("change_classpath"));
+		assertNotNull(_bundle.getString("change_classpath_mnemonic"));
+		assertNotNull(_bundle.getString("delete_classpath"));
+		assertNotNull(_bundle.getString("delete_classpath_mnemonic"));
+	}
+	
+	/**
+	 * Tests if have all entries for dialogs for class paths.
+	 */
+	@Test
+	public void testEntriesForDialogsForClasspaths() {
+		assertNotNull(_bundle.getString("insert_classpath_title"));
+		assertNotNull(_bundle.getString("insert_classpath_message"));
+		assertNotNull(_bundle.getString("change_classpath_title"));
+		assertNotNull(_bundle.getString("change_classpath_message"));
+		assertNotNull(_bundle.getString("delete_classpath_title"));
+		assertNotNull(_bundle.getString("delete_classpath_message"));
+		
 	}
 }

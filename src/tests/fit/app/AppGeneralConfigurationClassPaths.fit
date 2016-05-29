@@ -1,22 +1,22 @@
 <html>
 	<head>
 		<meta charset="UTF-8" />
-		<title>Test the TestSuiteApp (general configuration properties)</title>
+		<title>Test the TestSuiteApp (general configuration class paths)</title>
 	</head>
 	<body>
-		<h2>Tests for the TestSuiteApp (general configuration properties)</h2>
+		<h2>Tests for the TestSuiteApp (general configuration class paths)</h2>
 		<p>Dialog DlgConfigGeneral is opened. Here the pop-up menu for the
-		system properties opens. It should have three entries and be only the 
+		class path opens. It should have three entries and be only the 
 		first entry is enabled. Now is clicked the first entry. In the following
-		dialog the name of the property to enter and click OK. Now a new
-		property should be visible in the list of properties. These will be
+		dialog the name of the class path to enter and click OK. Now a new
+		class path should be visible in the list of class paths. These will be
 		selected. It should items two and three enabled in the pop-up menu. It
-		is clicked the second pop-up mennu item. In the next window the new
-		name of the property is entered and clicked Ok. Now the name itself 
-		should haven changed the property in the list. Finally clicked on third
+		is clicked the second pop-up menu item. In the next window the new
+		name of the class path is entered and clicked Ok. Now the name itself 
+		should haven changed the class path in the list. Finally clicked on third
 		pop-up menu item. In the next dialog click on No. It should have not
 		changed in the list. Now is clicked again on the third pop-up menu. In 
-		it the following dialog is clicked Yes. As now no property in the
+		it the following dialog is clicked Yes. As now no class paths in the
 		list</p>
 		<table border="1" cellpadding="1" cellspacing="1" style="width: *;">
 			<tbody>
@@ -25,7 +25,7 @@
 				</tr>
 				<tr>
 					<td>start</td>
-					<td>tests.fixtures.app.FixtureAppGeneralConfigurationProperties</td>
+					<td>tests.fixtures.app.FixtureAppGeneralConfigurationClasspaths</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
@@ -45,162 +45,162 @@
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>getGeneralConfigurationPropertyCount</td>
+					<td>getGeneralConfigurationClasspathCount</td>
 					<td>0</td>
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>openGeneralConfigurationPropertyPopup</td>
+					<td>openGeneralConfigurationClasspathPopup</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>haveGeneralConfigurationPropertyPopupInsert</td>
+					<td>haveGeneralConfigurationClasspathPopupInsert</td>
 					<td>true</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>haveGeneralConfigurationPropertyPopupChange</td>
+					<td>haveGeneralConfigurationClasspathPopupChange</td>
 					<td>true</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>haveGeneralConfigurationPropertyPopupDelete</td>
+					<td>haveGeneralConfigurationClasspathPopupDelete</td>
 					<td>true</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>isGeneralConfigurationPropertyPopupInsertEnabled</td>
+					<td>isGeneralConfigurationClasspathPopupInsertEnabled</td>
 					<td>true</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>isGeneralConfigurationPropertyPopupChangeEnabled</td>
+					<td>isGeneralConfigurationClasspathPopupChangeEnabled</td>
 					<td>false</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>isGeneralConfigurationPropertyPopupDeleteEnabled</td>
+					<td>isGeneralConfigurationClasspathPopupDeleteEnabled</td>
 					<td>false</td>
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>pushGeneralConfigurationPropertyPopupInsert</td>
+					<td>pushGeneralConfigurationClasspathPopupInsert</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td>enter</td>
-					<td>setGeneralConfigurationPropertyDialogNameText</td>
-					<td>test="test"</td>
+					<td>setGeneralConfigurationClasspathDialogNameText</td>
+					<td>classpath1</td>
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>pushGeneralConfigurationPropertyDialogOk</td>
+					<td>pushGeneralConfigurationClasspathDialogOk</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>getGeneralConfigurationPropertyCount</td>
+					<td>getGeneralConfigurationClasspathCount</td>
 					<td>1</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>getGeneralConfigurationProperty0Name</td>
-					<td>test="test"</td>
+					<td>getGeneralConfigurationClasspath0Name</td>
+					<td>classpath1</td>
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>selectGeneralConfigurationPropertyItem0</td>
+					<td>selectGeneralConfigurationClasspathItem0</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>isGeneralConfigurationPropertyPopupInsertEnabled</td>
+					<td>isGeneralConfigurationClasspathPopupInsertEnabled</td>
 					<td>true</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>isGeneralConfigurationPropertyPopupChangeEnabled</td>
+					<td>isGeneralConfigurationClasspathPopupChangeEnabled</td>
 					<td>true</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>isGeneralConfigurationPropertyPopupDeleteEnabled</td>
+					<td>isGeneralConfigurationClasspathPopupDeleteEnabled</td>
 					<td>true</td>
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>pushGeneralConfigurationPropertyPopupChange</td>
+					<td>pushGeneralConfigurationClasspathPopupChange</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td>enter</td>
-					<td>setGeneralConfigurationPropertyDialogNameText</td>
-					<td>test1="test1"</td>
+					<td>setGeneralConfigurationClasspathDialogNameText</td>
+					<td>classpath2</td>
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>pushGeneralConfigurationPropertyDialogOk</td>
+					<td>pushGeneralConfigurationClasspathDialogOk</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>getGeneralConfigurationPropertyCount</td>
+					<td>getGeneralConfigurationClasspathCount</td>
 					<td>1</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>getGeneralConfigurationProperty0Name</td>
-					<td>test1="test1"</td>
+					<td>getGeneralConfigurationClasspath0Name</td>
+					<td>classpath2</td>
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>pushGeneralConfigurationPropertyPopupDelete</td>
+					<td>pushGeneralConfigurationClasspathPopupDelete</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>pushGeneralConfigurationPropertyDialogNo</td>
+					<td>pushGeneralConfigurationClasspathDialogNo</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>getGeneralConfigurationPropertyCount</td>
+					<td>getGeneralConfigurationClasspathCount</td>
 					<td>1</td>
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>pushGeneralConfigurationPropertyPopupDelete</td>
+					<td>pushGeneralConfigurationClasspathPopupDelete</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>pushGeneralConfigurationPropertyDialogYes</td>
+					<td>pushGeneralConfigurationClasspathDialogYes</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>getGeneralConfigurationPropertyCount</td>
+					<td>getGeneralConfigurationClasspathCount</td>
 					<td>0</td>
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>openGeneralConfigurationPropertyPopup</td>
+					<td>openGeneralConfigurationClasspathPopup</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>isGeneralConfigurationPropertyPopupInsertEnabled</td>
+					<td>isGeneralConfigurationClasspathPopupInsertEnabled</td>
 					<td>true</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>isGeneralConfigurationPropertyPopupChangeEnabled</td>
+					<td>isGeneralConfigurationClasspathPopupChangeEnabled</td>
 					<td>false</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>isGeneralConfigurationPropertyPopupDeleteEnabled</td>
+					<td>isGeneralConfigurationClasspathPopupDeleteEnabled</td>
 					<td>false</td>
 				</tr>
 			</tbody>

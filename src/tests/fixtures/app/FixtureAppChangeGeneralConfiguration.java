@@ -90,6 +90,15 @@ public class FixtureAppChangeGeneralConfiguration extends FixtureApp {
 	}
 	
 	/**
+	 * Determines whether the list for class paths exists.
+	 * 
+	 * @return In existence the list for the class paths?
+	 */
+	public boolean haveListClassPaths() {
+		return _tests.getDialogList(1).isEnabled();
+	}
+	
+	/**
 	 * Set the text on text field for library path.
 	 * 
 	 * @param path The new library path
@@ -150,6 +159,20 @@ public class FixtureAppChangeGeneralConfiguration extends FixtureApp {
 	}
 	
 	/**
+	 * Insert a class path to the list of class paths.
+	 * 
+	 * @param str Class path which inserted in the list.
+	 */
+	public void addClassPath(String str) {
+		_tests.openConfigPopup(1);
+		_tests.pushNoBlockConfigPopup(0, 
+				ResourceBundle.getBundle(DlgConfigGeneral.BUNDLE_FILE)
+					.getString("insert_classpath_title"));
+		_tests.getDialog2TextField(0).setText(str);
+		_tests.getDialog2Button(0).push();
+	}
+	
+	/**
 	 * Returns the library path from general configuration
 	 * 
 	 * @return Library path from general configuration
@@ -195,13 +218,25 @@ public class FixtureAppChangeGeneralConfiguration extends FixtureApp {
 	 }
 		
 	/**
-	 * Gets the entry 0 of the list
+	 * Gets the entry 0 of the list with system properties
 	 * 
-	 * @return Entry 0 of the list
+	 * @return Entry 0 of the list with system properties
 	 */
-	 public String getListItem0() {
+	 public String getSystemPropertyItem0() {
 		 if (_tests.getGeneralConfiguration().propertyCount() > 0)
 			 return _tests.getGeneralConfiguration().getProperty(0);
+		 
+		 return new String();
+	 }
+	 
+	 /**
+	  * Gets the entry 0 of the list with class paths.
+	  * 
+	  * @return Entry 0 of the list with class paths.
+	  */
+	 public String getClassPathItem0() {
+		 if (_tests.getGeneralConfiguration().classPathCount() > 0)
+			 return _tests.getGeneralConfiguration().getClassPath(0);
 		 
 		 return new String();
 	 }

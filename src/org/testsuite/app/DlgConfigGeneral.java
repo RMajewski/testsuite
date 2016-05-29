@@ -78,6 +78,21 @@ public class DlgConfigGeneral extends DlgConfig {
 	private static final String PROPERTY_DELETE = "App.delete.Property";
 	
 	/**
+	 * Saves the action command for the insert a new class path
+	 */
+	private static final String CLASSPATH_INSERT = "App.insert.ClassPath";
+	
+	/**
+	 * Saves the action command for the change a class path
+	 */
+	private static final String CLASSPATH_CHANGE = "App.change.ClassPath";
+	
+	/**
+	 * Saves the action command for the delete a class path
+	 */
+	private static final String CLASSPATH_DELETE = "App.delete.ClassPath";
+	
+	/**
 	 * Saves the instance of text field for library path.
 	 */
 	private JTextField _txtLibraryPath;
@@ -108,6 +123,11 @@ public class DlgConfigGeneral extends DlgConfig {
 	private JList<String> _listProperties;
 	
 	/**
+	 * Saves the instance of list for class paths.
+	 */
+	private JList<String> _listClassPaths;
+	
+	/**
 	 * Saves the object of the general configuration
 	 */
 	private Config _config;
@@ -130,10 +150,10 @@ public class DlgConfigGeneral extends DlgConfig {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] {250, 150, 200};
 		gridBagLayout.rowHeights = new int[] {30, 30, 30, 30, 30, 30, 30, 30, 
-				30};
+				30, 30, 30, 30, 30, 30, 30};
 		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 
-				0.0, 0.0, 0.0};
+				0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 		getContentPane().setLayout(gridBagLayout);
 		
 		JLabel label = new JLabel(_bundle.getString("label_library_path"));
@@ -278,6 +298,57 @@ public class DlgConfigGeneral extends DlgConfig {
 		gbc.gridwidth = 2;
 		getContentPane().add(new JScrollPane(_listProperties), gbc);
 		
+		label = new JLabel(_bundle.getString("label_system_classpath"));
+		gbc = new GridBagConstraints();
+		gbc.anchor = GridBagConstraints.EAST;
+		gbc.insets = new Insets(5, 5, 5, 5);
+		gbc.gridx = 0;
+		gbc.gridy = 9;
+		getContentPane().add(label, gbc);
+		
+		_listClassPaths = new JList<String>();
+		_listClassPaths.setModel(new AbstractListModel<String>() {
+
+			@Override
+			public String getElementAt(int index) {
+				return _config.getClassPath(index);
+			}
+
+			@Override
+			public int getSize() {
+				return _config.classPathCount();
+			}
+			
+		});
+		_listClassPaths.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				// OPT Insert in a private method (Merge with LisSelectionListener from system properties)
+				if (e.getFirstIndex() > -1) {
+					_listClassPaths.getComponentPopupMenu().getComponent(1)
+						.setEnabled(true);
+					_listClassPaths.getComponentPopupMenu().getComponent(2)
+						.setEnabled(true);
+				} else {
+					_listClassPaths.getComponentPopupMenu().getComponent(1)
+					.setEnabled(false);
+					_listClassPaths.getComponentPopupMenu().getComponent(2)
+					.setEnabled(false);
+				}
+			}
+			
+		});
+		_listClassPaths.setComponentPopupMenu(createPopupForClassPaths());
+		gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.insets = new Insets(5, 5, 5, 5);
+		gbc.gridx = 1;
+		gbc.gridy = 9;
+		gbc.gridheight = 4;
+		gbc.gridwidth = 2;
+		getContentPane().add(new JScrollPane(_listClassPaths), gbc);
+		
 		JButton btn = new JButton(_bundle.getString("button_accept"));
 		btn.addActionListener(this);
 		btn.setActionCommand(BTN_ACCEPT);
@@ -286,7 +357,7 @@ public class DlgConfigGeneral extends DlgConfig {
 		gbc_btn.insets = new Insets(5, 5, 5, 5);
 		gbc_btn.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btn.gridx = 0;
-		gbc_btn.gridy = 9;
+		gbc_btn.gridy = 15;
 		getContentPane().add(btn, gbc_btn);
 		
 		btn = new JButton(_bundle.getString("button_cancel"));
@@ -297,7 +368,7 @@ public class DlgConfigGeneral extends DlgConfig {
 		gbc_btn.insets = new Insets(5, 5, 5, 5);
 		gbc_btn.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btn.gridx = 2;
-		gbc_btn.gridy = 9;
+		gbc_btn.gridy = 15;
 		getContentPane().add(btn, gbc_btn);
 		
 		setModal(true);
@@ -313,59 +384,108 @@ public class DlgConfigGeneral extends DlgConfig {
 	public void actionPerformed(ActionEvent ae) {
 		super.actionPerformed(ae);
 		
-		// Save the entered configuration
-		if (ae.getActionCommand().equals(BTN_ACCEPT)) {
-			_config.setCreateHtml(_cbHtml.isSelected());
-			_config.setPathLibrary(_txtLibraryPath.getText());
-			_config.setMaxDuration(
-					((Number)_txtMaxDuration.getValue()).longValue());
-			_config.setPathResult(_txtResultPath.getText());
-			_config.setPathSrc(_txtSrcPath.getText());
-		}
+		switch (ae.getActionCommand()) {
 		
-		// Insert a new system property
-		else if (ae.getActionCommand().equals(PROPERTY_INSERT)) {
-			String ncp = JOptionPane.showInputDialog(this, 
-					_bundle.getString("insert_property_message"),
-					_bundle.getString("insert_property_title"),
-					JOptionPane.OK_CANCEL_OPTION);
-			if ((ncp != null) && !ncp.isEmpty()) {
-				_config.addProperty(ncp);
-				_listProperties.updateUI();
-			}
-		}
+			// Save the entered configuration
+			case BTN_ACCEPT:
+				_config.setCreateHtml(_cbHtml.isSelected());
+				_config.setPathLibrary(_txtLibraryPath.getText());
+				_config.setMaxDuration(
+						((Number)_txtMaxDuration.getValue()).longValue());
+				_config.setPathResult(_txtResultPath.getText());
+				_config.setPathSrc(_txtSrcPath.getText());
+				break;
 		
-		// Change the selected property 
-		else if (ae.getActionCommand().equals(PROPERTY_CHANGE)) {
-			String ncp = JOptionPane.showInputDialog(this, 
-					_bundle.getString("change_property_message"),
-					_bundle.getString("change_property_title"),
-					JOptionPane.OK_CANCEL_OPTION);
-			if ((ncp != null) && !ncp.isEmpty()) {
-				_config.changeProperty(_listProperties.getSelectedValue(), ncp);
-				_listProperties.updateUI();
-			}
-		}
-		
-		// Delete the selected system property
-		else if (ae.getActionCommand().equals(PROPERTY_DELETE)) {
-			int ret = JOptionPane.showConfirmDialog(this, 
-					_bundle.getString("delete_property_message"),
-					_bundle.getString("delete_property_title"),
-					JOptionPane.YES_NO_OPTION, 
-					JOptionPane.QUESTION_MESSAGE);
-			if (ret == JOptionPane.YES_OPTION) {
-				_config.removeProperty(_listProperties.getSelectedValue());
-				_listProperties.updateUI();
-				if (_listProperties.getSelectedIndex() >= 
-						_listProperties.getModel().getSize()) {
-					_listProperties.clearSelection();
-					_listProperties.getComponentPopupMenu().getComponent(1)
-						.setEnabled(false);
-					_listProperties.getComponentPopupMenu().getComponent(2)
-					.setEnabled(false);
+			// Insert a new system property
+			case PROPERTY_INSERT:
+				String ncp = JOptionPane.showInputDialog(this, 
+						_bundle.getString("insert_property_message"),
+						_bundle.getString("insert_property_title"),
+						JOptionPane.OK_CANCEL_OPTION);
+				if ((ncp != null) && !ncp.isEmpty()) {
+					_config.addProperty(ncp);
+					_listProperties.updateUI();
 				}
-			}
+				break;
+		
+			// Change the selected property 
+			case PROPERTY_CHANGE:
+				ncp = JOptionPane.showInputDialog(this, 
+						_bundle.getString("change_property_message"),
+						_bundle.getString("change_property_title"),
+						JOptionPane.OK_CANCEL_OPTION);
+				if ((ncp != null) && !ncp.isEmpty()) {
+					_config.changeProperty(_listProperties.getSelectedValue(), ncp);
+					_listProperties.updateUI();
+				}
+				break;
+		
+			// Delete the selected system property
+			case PROPERTY_DELETE:
+				int ret = JOptionPane.showConfirmDialog(this, 
+						_bundle.getString("delete_property_message"),
+						_bundle.getString("delete_property_title"),
+						JOptionPane.YES_NO_OPTION, 
+						JOptionPane.QUESTION_MESSAGE);
+				if (ret == JOptionPane.YES_OPTION) {
+					_config.removeProperty(_listProperties.getSelectedValue());
+					_listProperties.updateUI();
+					if (_listProperties.getSelectedIndex() >= 
+							_listProperties.getModel().getSize()) {
+						_listProperties.clearSelection();
+						_listProperties.getComponentPopupMenu().getComponent(1)
+							.setEnabled(false);
+						_listProperties.getComponentPopupMenu().getComponent(2)
+						.setEnabled(false);
+					}
+				}
+				break;
+				
+			// Insert a new class path
+			case CLASSPATH_INSERT:
+				ncp = JOptionPane.showInputDialog(this, 
+						_bundle.getString("insert_classpath_message"),
+						_bundle.getString("insert_classpath_title"),
+						JOptionPane.OK_CANCEL_OPTION);
+				if ((ncp != null) && !ncp.isEmpty()) {
+					_config.addClassPath(ncp);
+					_listClassPaths.updateUI();
+				}
+				break;
+		
+			// Change the selected class path 
+			case CLASSPATH_CHANGE:
+				ncp = JOptionPane.showInputDialog(this, 
+						_bundle.getString("change_classpath_message"),
+						_bundle.getString("change_classpath_title"),
+						JOptionPane.OK_CANCEL_OPTION);
+				if ((ncp != null) && !ncp.isEmpty()) {
+					_config.changeClassPath(_listClassPaths.getSelectedValue(),
+							ncp);
+					_listClassPaths.updateUI();
+				}
+				break;
+		
+			// Delete the selected class path
+			case CLASSPATH_DELETE:
+				ret = JOptionPane.showConfirmDialog(this, 
+						_bundle.getString("delete_classpath_message"),
+						_bundle.getString("delete_classpath_title"),
+						JOptionPane.YES_NO_OPTION, 
+						JOptionPane.QUESTION_MESSAGE);
+				if (ret == JOptionPane.YES_OPTION) {
+					_config.removeClassPath(_listClassPaths.getSelectedValue());
+					_listClassPaths.updateUI();
+					if (_listClassPaths.getSelectedIndex() >= 
+							_listClassPaths.getModel().getSize()) {
+						_listClassPaths.clearSelection();
+						_listClassPaths.getComponentPopupMenu().getComponent(1)
+							.setEnabled(false);
+						_listClassPaths.getComponentPopupMenu().getComponent(2)
+						.setEnabled(false);
+					}
+				}
+				break;
 		}
 	}
 	
@@ -394,6 +514,37 @@ public class DlgConfigGeneral extends DlgConfig {
 		item.setMnemonic(_bundle.getString("delete_property_mnemonic").charAt(0));
 		item.addActionListener(this);
 		item.setActionCommand(PROPERTY_DELETE);
+		item.setEnabled(false);
+		ret.add(item);
+		
+		return ret;
+	}
+	
+	/**
+	 * Create the pop-up menu for the class path list
+	 * 
+	 * @return Pop-up menu for the class path list
+	 */
+	private JPopupMenu createPopupForClassPaths() {
+		JPopupMenu ret = new JPopupMenu();
+		
+		JMenuItem item = new JMenuItem(_bundle.getString("insert_classpath"));
+		item.setMnemonic(_bundle.getString("insert_classpath_mnemonic").charAt(0));
+		item.addActionListener(this);
+		item.setActionCommand(CLASSPATH_INSERT);
+		ret.add(item);
+		
+		item = new JMenuItem(_bundle.getString("change_classpath"));
+		item.setMnemonic(_bundle.getString("change_classpath_mnemonic").charAt(0));
+		item.addActionListener(this);
+		item.setActionCommand(CLASSPATH_CHANGE);
+		item.setEnabled(false);
+		ret.add(item);
+		
+		item = new JMenuItem(_bundle.getString("delete_classpath"));
+		item.setMnemonic(_bundle.getString("delete_classpath_mnemonic").charAt(0));
+		item.addActionListener(this);
+		item.setActionCommand(CLASSPATH_DELETE);
 		item.setEnabled(false);
 		ret.add(item);
 		
