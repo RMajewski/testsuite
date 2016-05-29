@@ -18,7 +18,7 @@
 		TestSuite, so should "Delete TestSuite", "Insert Test" and 
 		"TestSuite Configuration" enabled his. Last time you click the Test.
 		Now only should "Delete Test" and "Test Configuration" enabled his.</p>
-		<table border="1" cellpadding="1" cellspacing="1" style="width: *;">
+		<table border="1" cellpadding="1" cellspacing="1" style="width: 100%;">
 			<tbody>
 				<tr>
 					<td colspan="3">fit.ActionFixture</td>

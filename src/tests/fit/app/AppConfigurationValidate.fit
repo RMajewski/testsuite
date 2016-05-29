@@ -8,7 +8,7 @@
 		<p>There is a configuration file loaded. Then click on the button
 		"Validate configuration". Now check whether the configuration is
 		validated.</p>
-		<table border="1" cellpadding="1" cellspacing="1" style="width: *;">
+		<table border="1" cellpadding="1" cellspacing="1" style="width: 100%;">
 			<tbody>
 				<tr>
 					<td colspan="3">fit.ActionFixture</td>

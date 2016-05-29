@@ -11,7 +11,7 @@
 			"Execute all tests" enabled is. After this is clicked. Now is checked
 			if all the tests are marked as ignore.
 		</p>
-		<table border="1" cellpadding="1" cellspacing="1" style="width: *;">
+		<table border="1" cellpadding="1" cellspacing="1" style="width: 100%;">
 			<tbody>
 				<tr>
 					<td colspan="3">fit.ActionFixture</td>

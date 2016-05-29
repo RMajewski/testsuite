@@ -19,7 +19,7 @@
 			amendments have been adopted. Finally, it is checked whether the
 			selected library can be deleted.
 		</p>
-		<table border="1" cellpadding="1" cellspacing="1" style="width: *;">
+		<table border="1" cellpadding="1" cellspacing="1" style="width: 100%;">
 			<tbody>
 				<tr>
 					<td colspan="3">fit.ActionFixture</td>

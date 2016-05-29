@@ -7,7 +7,7 @@
 		<h2>Tests for the TestSuiteApp (tree enable checkboces)</h2>
 		<p>Tests if the tree, the checkboxes can be checked out. In addition, it
 		is tested whether at nonexistent tests the checkbox is not enabled.</p>
-		<table border="1" cellpadding="1" cellspacing="1" style="width: *;">
+		<table border="1" cellpadding="1" cellspacing="1" style="width: 100%;">
 			<tbody>
 				<tr>
 					<td colspan="3">fit.ActionFixture</td>

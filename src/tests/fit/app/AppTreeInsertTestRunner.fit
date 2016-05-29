@@ -6,7 +6,7 @@
 	<body>
 		<h2>Tests for the TestSuiteApp (insert test runner in the tree)</h2>
 		<p>Tests if a test runner is inserted into the tree.</p>
-		<table border="1" cellpadding="1" cellspacing="1" style="width: *;">
+		<table border="1" cellpadding="1" cellspacing="1" style="width: 100%;">
 			<tbody>
 				<tr>
 					<td colspan="3">fit.ActionFixture</td>
