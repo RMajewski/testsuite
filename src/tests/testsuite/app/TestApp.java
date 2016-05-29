@@ -49,6 +49,7 @@ import org.netbeans.jemmy.operators.JTreeOperator;
 import org.testsuite.app.App;
 import org.testsuite.app.DlgConfigGeneral;
 import org.testsuite.app.TestRunnerModel;
+import org.testsuite.core.JemmyTestCase;
 import org.testsuite.core.JunitTestRunner;
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
@@ -66,7 +67,7 @@ import org.xml.sax.XMLReader;
  *
  * @version 0.3
  */
-public class TestApp implements Scenario {
+public class TestApp extends JemmyTestCase {
 	
 	/**
 	 * Saves the instance of button for all tests select execute
@@ -157,6 +158,8 @@ public class TestApp implements Scenario {
 	 * Initializes the tests.
 	 */
 	public TestApp() {
+		super(null);
+		
 		try {
 			new ClassReference("org.testsuite.app.App").startApplication();
 			_bundle = ResourceBundle.getBundle(App.BUNDLE_FILE);
