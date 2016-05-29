@@ -42,6 +42,16 @@ public class ActionFixture extends Fixture {
     public void press() throws Exception {
         method(0).invoke(actor, empty);
     }
+    
+    /* Added by René Majewski */
+    @SuppressWarnings("hiding")
+	public void run() throws Exception {
+    	Method method = method(1);
+    	Class<?> type = method.getParameterTypes()[0];
+    	String text = cells.more.more.text();
+    	Object args[] =  {TypeAdapter.on(actor, type).parse(text)};
+    	method.invoke(actor, args);
+    }
 
     public void check() throws Exception {
         TypeAdapter adapter = TypeAdapter.on(actor, method(0));

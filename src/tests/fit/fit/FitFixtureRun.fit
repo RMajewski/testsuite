@@ -1,0 +1,77 @@
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Test the Fix frame work (ActionFixure: run)</title>
+	</head>
+	<body>
+		<h2>Test the Fix frame work (ActionFixure: run)</h2>
+		<p>Test the run function from ActionFixture.</p>
+		<table border="1" cellpadding="1" cellspacing="1" style="width: 100%;">
+			<tbody>
+				<tr>
+					<td colspan="3">fit.ActionFixture</td>
+				</tr>
+				<tr>
+					<td>start</td>
+					<td>tests.fixtures.fit.FixtureRun</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isReadRightParamterOnRun</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>run</td>
+					<td>testString</td>
+					<td>test</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isReadRightParamterOnRun</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>run</td>
+					<td>testInteger</td>
+					<td>1</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isReadRightParamterOnRun</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>run</td>
+					<td>testBoolean</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isReadRightParamterOnRun</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>run</td>
+					<td>testDouble</td>
+					<td>10.8</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isReadRightParamterOnRun</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>run</td>
+					<td>testLong</td>
+					<td>90909064017133441</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isReadRightParamterOnRun</td>
+					<td>true</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>
