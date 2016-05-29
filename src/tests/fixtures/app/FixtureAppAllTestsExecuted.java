@@ -48,4 +48,13 @@ public class FixtureAppAllTestsExecuted extends FixtureApp {
 		_tests.pushButtonExecuteAllTests();
 	}
 
+	/**
+	 * Insert a TestRunner in the tree
+	 */
+	public void insertTestRunner() {
+		_tests.selectElementInTree(0);
+		_tests.openTreePopup();
+		_tests.pushTreePopupItem(0, 1);
+	}
+
 }

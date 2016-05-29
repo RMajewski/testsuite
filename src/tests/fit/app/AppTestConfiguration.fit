@@ -20,62 +20,12 @@
 				</tr>
 				<tr>
 					<td>start</td>
-					<td>tests.fixtures.app.FixtureApp</td>
+					<td>tests.fixtures.app.FixtureAppTestConfiguration</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>selectRootElementInTree</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>press</td>
-					<td>openPopup</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>press</td>
-					<td>pushInsertTestRunner</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>press</td>
-					<td>expandTree</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>press</td>
-					<td>selectTestRunnerInTree</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>press</td>
-					<td>openPopup</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>press</td>
-					<td>pushInsertTestSuite</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>press</td>
-					<td>selectTestSuiteInTree</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>press</td>
-					<td>openPopup</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>press</td>
-					<td>pushInsertTest</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>press</td>
-					<td>expandTree</td>
+					<td>generateTestConfiguration</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
@@ -135,7 +85,7 @@
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>pushConfigurationButtanAccept</td>
+					<td>pushAccept</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>

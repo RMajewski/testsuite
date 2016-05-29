@@ -26,7 +26,7 @@
 				</tr>
 				<tr>
 					<td>start</td>
-					<td>tests.fixtures.app.FixtureApp</td>
+					<td>tests.fixtures.app.FixtureAppTestRunnerConfigurationLibraryPopup</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
@@ -91,7 +91,7 @@
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>getConfigurationTestRunnerLibraryCount</td>
+					<td>getTestRunnerLibraryCount</td>
 					<td>1</td>
 				</tr>
 				<tr>
@@ -131,7 +131,7 @@
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>getConfigurationTestRunnerLibraryCount</td>
+					<td>getTestRunnerLibraryCount</td>
 					<td>1</td>
 				</tr>
 				<tr>
@@ -151,12 +151,12 @@
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>pushGeneralConfigurationPropertyDialogNo</td>
+					<td>pushDialogButtonNo</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>getConfigurationTestRunnerLibraryCount</td>
+					<td>getTestRunnerLibraryCount</td>
 					<td>1</td>
 				</tr>
 				<tr>
@@ -166,12 +166,12 @@
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>pushGeneralConfigurationPropertyDialogYes</td>
+					<td>pushDialogButtonYes</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td>check</td>
-					<td>getConfigurationTestRunnerLibraryCount</td>
+					<td>getTestRunnerLibraryCount</td>
 					<td>0</td>
 				</tr>
 				<tr>

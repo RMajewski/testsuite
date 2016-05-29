@@ -285,6 +285,17 @@ public class TestApp implements Scenario {
 	}
 	
 	/**
+	 * Returns the specified text area
+	 * 
+	 * @param index Index at which the text area is located.
+	 * 
+	 * @return The specified text area
+	 */
+	public JTextAreaOperator getDialogTextArea(int index) {
+		return new JTextAreaOperator(_dlg, index);
+	}
+	
+	/**
 	 * Returns the specified check box
 	 * 
 	 * @param index Index at which the check box is located.
@@ -351,6 +362,15 @@ public class TestApp implements Scenario {
 	 */
 	public int getMaximumOfProgressBar() {
 		return _progress.getMaximum();
+	}
+	
+	/**
+	 * Determines the minimum value of progress bar
+	 * 
+	 * @return Minimum value of press bar.
+	 */
+	public int getMinimumOfProgressBar() {
+		return _progress.getMinimum();
 	}
 	
 	/**
@@ -640,6 +660,15 @@ public class TestApp implements Scenario {
 	}
 	
 	/**
+	 * Clicked on the specified pop-up menu from tree the specified menu item.
+	 * 
+	 * @param item Pop-up menu item to be clicked on.
+	 */
+	public void pushTreePopupItem(int item) {
+		_popup.pushMenu(((JMenuItem)_popup.getComponent(item)).getText());
+	}
+	
+	/**
 	 * Is not needed.
 	 */
 	@Override
@@ -841,12 +870,122 @@ public class TestApp implements Scenario {
 	}
 	
 	/**
+	 * Determines whether the specified pop-up menu item is enabled or not.
+	 * 
+	 * @param menu Specified pop-up menu
+	 * 
+	 * @param item Specified pop-up menu entry.
+	 * 
+	 * @return If the specified pop-up menu entry enabled?
+	 */
+	public boolean isPopupItemEnabled(int menu, int item) {
+		JMenuOperator mo = new JMenuOperator((JMenu)_popup.getComponent(menu));
+		return mo.getItem(item).isEnabled();
+	}
+
+	/**
 	 * Determines the number of rows in the HTML output.
 	 * 
 	 * @return Number of rows in the HTML output.
 	 */
 	public int rowsFromHtmlTextEditor() {
 		return _txtHtml.getRows();
+	}
+	
+	/**
+	 * Verifies that all selected tests are ignored.
+	 * 
+	 * @return All selected tests are ignored?
+	 */
+	public boolean isAllSelectedTestsIgnore() {
+		if (_tree.getLastSelectedPathComponent() instanceof TestRunner) {
+			TestRunner runner = (TestRunner)_tree.getLastSelectedPathComponent();
+			for (int suite = 0; suite < runner.testSuiteCount(); suite++)
+				for (int test = 0; test < runner.getTestSuite(suite).testCount(); test++)
+					if (runner.getTestSuite(suite).getTest(test).isExecuted())
+						return false;
+		} else if (_tree.getLastSelectedPathComponent() instanceof TestSuite) {
+			TestSuite suite = (TestSuite)_tree.getLastSelectedPathComponent();
+			for (int test = 0; test < suite.testCount(); test++)
+				if (suite.getTest(test).isExecuted())
+					return false;
+		} else if (_tree.getLastSelectedPathComponent() instanceof Test) {
+			if (((Test)_tree.getLastSelectedPathComponent()).isExecuted())
+				return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Returns the selected test in tree
+	 * 
+	 * @return Selected test in tree
+	 */
+	public org.testsuite.data.Test getTreeSelectedTest() {
+		return ((org.testsuite.data.Test)_tree.getLastSelectedPathComponent());
+	}
+	
+	/**
+	 * Returns the selected TestRunner in tree
+	 * 
+	 * @return Selected TestRunner in tree
+	 */
+	public TestRunner getTreeSelectedTestRunner() {
+		return (TestRunner)_tree.getLastSelectedPathComponent();
+	}
+	
+	/**
+	 * Returns the selected test suite in tree
+	 * 
+	 * @return Selected TestSuite in tree
+	 */
+	public TestSuite getTreeSelectedTestSuite() {
+		return (TestSuite)_tree.getLastSelectedPathComponent();
+	}
+	
+	/**
+	 * Determines whether the specified check box from the tree is selected.
+	 * 
+	 * @param index Specifying the check box.
+	 * 
+	 * @return If the check box is selected?
+	 */
+	public boolean isCheckBoxFromTreeSelected(int index) {
+		Component c = _tree.getRenderedComponent(_tree.getPathForRow(index));
+		if (c instanceof JCheckBox) {
+			JCheckBoxOperator checkbox = new JCheckBoxOperator((JCheckBox)c);
+			return checkbox.isSelected();
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Performs a double click on the specified check box.
+	 * 
+	 * @param index Specifying the check box.
+	 */
+	public void doubleClickOnCheckBoxFromTree(int index) {
+		_tree.clickOnPath(_tree.getPathForRow(index), 2);
+	}
+	
+	/**
+	 * Determined by the selected test suite the number of items.
+	 * 
+	 * @return Number of items.
+	 */
+	public int getTreeTestSuiteItemCount() {
+		return _tree.getChildCount(_tree.getLastSelectedPathComponent());
+	}
+	
+	/**
+	 * Finds of selected TestRunner the number of items.
+	 * 
+	 * @return Number of items.
+	 */
+	public int getTreeTestRunnerItemCount() {
+		return _tree.getChildCount(((TestRunnerModel)_tree.getModel())
+				.getTestRunnerList().get(0));
 	}
 
 }

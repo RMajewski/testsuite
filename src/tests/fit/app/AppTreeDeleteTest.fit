@@ -13,42 +13,12 @@
 				</tr>
 				<tr>
 					<td>start</td>
-					<td>tests.fixtures.app.FixtureApp</td>
+					<td>tests.fixtures.app.FixtureAppTree</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>selectRootElementInTree</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>press</td>
-					<td>openPopup</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>press</td>
-					<td>pushInsertTestRunner</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>press</td>
-					<td>expandTree</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>press</td>
-					<td>selectTestRunnerInTree</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>press</td>
-					<td>openPopup</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>press</td>
-					<td>pushInsertTestSuite</td>
+					<td>generateTestConfiguration</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
@@ -57,19 +27,9 @@
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
-					<td>press</td>
-					<td>openPopup</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>press</td>
-					<td>pushInsertTest</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
 					<td>check</td>
 					<td>getTreeTestSuiteItemCount</td>
-					<td>1</td>
+					<td>2</td>
 				</tr>
 				<tr>
 					<td>press</td>
@@ -93,7 +53,7 @@
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>pushGeneralConfigurationPropertyDialogNo</td>
+					<td>pushDialogButtonNo</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
@@ -104,7 +64,7 @@
 				<tr>
 					<td>check</td>
 					<td>getTreeTestSuiteItemCount</td>
-					<td>1</td>
+					<td>2</td>
 				</tr>
 				<tr>
 					<td>press</td>
@@ -128,7 +88,7 @@
 				</tr>
 				<tr>
 					<td>press</td>
-					<td>pushGeneralConfigurationPropertyDialogYes</td>
+					<td>pushDialogButtonYes</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
@@ -139,7 +99,7 @@
 				<tr>
 					<td>check</td>
 					<td>getTreeTestSuiteItemCount</td>
-					<td>0</td>
+					<td>1</td>
 				</tr>
 			</tbody>
 		</table>

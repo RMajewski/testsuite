@@ -22,7 +22,6 @@ package tests.fixtures.app;
 import java.util.ResourceBundle;
 
 import org.testsuite.app.DlgConfigLibrary;
-import org.testsuite.app.DlgConfigTestRunner;
 import org.testsuite.data.Library;
 
 /**
@@ -33,15 +32,6 @@ import org.testsuite.data.Library;
  * @version 0.1
  */
 public class FixtureAppLibraryConfiguration extends FixtureApp {
-	
-	/**
-	 * Click on the tree pop-up item TestRunner in menu configuration
-	 */
-	public void pushConfigurationTestRunner() {
-		_tests.pushNoBlockTreePopupItem(2, 1);
-		_tests.waitForDialog(ResourceBundle.getBundle(
-				DlgConfigTestRunner.BUNDLE_FILE).getString("dialog_title"));
-	}
 
 	/**
 	 * Open the pop-up menu from library list

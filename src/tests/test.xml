@@ -129,7 +129,7 @@
 			<test>AppCancelRunTests</test>
 			<test>AppCreateHtmlOut</test>
 			<test>AppReadHtmlOut</test>
-			<test>AppPopupIsRightEnabled</test>
+			<test>AppTreePopupIsRightEnabled</test>
 			<test>AppChangeGeneralConfiguration</test>
 			<test>AppGeneralConfigurationProperties</test>
 			<test>AppTreeInsertTestRunner</test>

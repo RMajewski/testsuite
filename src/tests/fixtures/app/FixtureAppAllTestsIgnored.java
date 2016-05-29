@@ -26,7 +26,7 @@ package tests.fixtures.app;
  *
  * @version 0.1
  */
-public class FixtureAppAllTestsIgnored extends FixtureApp {
+public class FixtureAppAllTestsIgnored extends FixtureAppAllTestsExecuted {
 	
 	/**
 	 * Determines whether the button for all tests select ignore is visible.

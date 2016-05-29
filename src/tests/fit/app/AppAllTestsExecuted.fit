@@ -31,6 +31,11 @@
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
+					<td>press</td>
+					<td>insertTestRunner</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
 					<td>check</td>
 					<td>isButtonForTestsAllExecuteEnable</td>
 					<td>true</td>

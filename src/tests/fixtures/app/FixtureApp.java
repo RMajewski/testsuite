@@ -23,6 +23,8 @@ import java.util.ResourceBundle;
 
 import org.testsuite.app.App;
 import org.testsuite.app.DlgConfigGeneral;
+import org.testsuite.app.DlgConfigLibrary;
+import org.testsuite.app.DlgConfigTestRunner;
 
 import fit.ActionFixture;
 import tests.testsuite.app.TestApp;
@@ -61,10 +63,6 @@ public class FixtureApp extends ActionFixture {
 		_tests.treeExpand(5);
 		_tests.treeExpand(8);
 		_tests.treeExpand(9);
-		
-		_tests.selectElementInTree(0);
-		_tests.openTreePopup();
-		_tests.pushTreePopupItem(0, 1);
 	}
 	
 	/**
@@ -85,6 +83,15 @@ public class FixtureApp extends ActionFixture {
 		return _tests.getMaximumOfProgressBar();
 	}
 	
+	/**
+	 * Determines the minimum value of progress bar
+	 * 
+	 * @return Minimum value of press bar.
+	 */
+	public int getMinimumOfProgressBar() {
+		return _tests.getMinimumOfProgressBar();
+	}
+
 	/**
 	 * Determines the actual value of progress bar
 	 * 
@@ -198,6 +205,13 @@ public class FixtureApp extends ActionFixture {
 	 */
 	public void pushDialogButtonYes() {
 		_tests.getDialog2Button(0).push();
+	}
+	
+	/**
+	 * Click on "No" button in the dialog
+	 */
+	public void pushDialogButtonNo() {
+		_tests.getDialog2Button(1).push();
 	}
 	
 	/**
@@ -350,4 +364,149 @@ public class FixtureApp extends ActionFixture {
 	public void selectTestRunnerInTree() {
 		_tests.selectElementInTree(1);
 	}
+	
+	/**
+	 * Determines whether the tree pop-up item for "All other Tests ignored" is 
+	 * enabled.
+	 */
+	public boolean isIgnoreAllOtherTestsEnabled() {
+		return _tests.isPopupItemEnabled(4);
+	}
+	
+	/**
+	 * Select the test in the tree
+	 */
+	public void selectTestInTree() {
+		_tests.selectElementInTree(3);
+	}
+	
+	/**
+	 * Click on the tree pop-up menu item "All other tests ignored"
+	 */
+	public void pushIgnoreAllOtherTests() {
+		_tests.pushTreePopupItem(4);
+	}
+
+	/**
+	 * Verifies that all selected tests are ignored.
+	 * 
+	 * @return All selected tests are ignored?
+	 */
+	public boolean isAllSelectedTestsIgnore() {
+		return _tests.isAllSelectedTestsIgnore();
+	}
+	
+	/**
+	 * Determines whether the tree pop-up menu item execute all selected tests
+	 * enabled.
+	 * 
+	 * @return Is the tree pop-up menu item execute all selected tests enabled? 
+	 */
+	public boolean isExecuteAllSelectedTestsEnabled() {
+		return _tests.isPopupItemEnabled(6);
+	}
+	
+	/**
+	 * Click on the tree pop-up menu item "Ignore all selected tests"
+	 */
+	public void pushIgnoreAllSelectedTests() {
+		_tests.pushTreePopupItem(5);
+	}
+	
+	/**
+	 * Click on the tree pop-up menu item "Execute all selected tests"
+	 */
+	public void pushExecuteAllSelectedTests() {
+		_tests.pushTreePopupItem(6);
+	}
+	
+	/**
+	 * Determines whether the tree pop-up item for "All selected Tests ignored"
+	 * is enabled.	/**
+	 * Click in the the tree pop-up menu configuration the menu item
+	 * "TestRunner".
+	 */
+	public void pushConfigurationTestRunner() {
+		_tests.pushNoBlockTreePopupItem(2, 1);
+		_tests.waitForDialog(ResourceBundle.getBundle(
+				DlgConfigTestRunner.BUNDLE_FILE).getString("dialog_title"));
+	}
+	
+	/**
+	 * Returns the selected TestRunner count of class path list
+	 * 
+	 * @return Selected TestRunner count of class path
+	 */
+	public int getTestRunnerClasspathCount() {
+		return _tests.getTreeSelectedTestRunner().classPathCount();
+	}
+	
+	/**
+	 * Insert a library in the libraries list.
+	 */
+	public void insertConfigurationTestRunnerLibraryItem() {
+		_tests.getDialogList(0).clickMouse();
+		_tests.openConfigPopup(0);
+		_tests.pushNoBlockConfigPopup(0, 
+				ResourceBundle.getBundle(DlgConfigLibrary.BUNDLE_FILE)
+					.getString("dialog_title"));
+		_tests.getDialog2TextField(0).setText("test.jar");
+		_tests.getDialog2Button(0).push();
+	}
+	
+	/**
+	 * Insert a class path in the class paths list.
+	 */
+	public void insertConfigurationTestRunnerClasspathItem() {
+		_tests.getDialogList(1).clickMouse();
+		_tests.openConfigPopup(1);
+		_tests.pushNoBlockConfigPopup(0, 
+				ResourceBundle.getBundle(DlgConfigTestRunner.BUNDLE_FILE)
+					.getString("insert_classpath_title"));
+		_tests.getDialog2TextField(0).setText("bin");
+		_tests.getDialog2Button(0).push();
+	}
+	
+	/**
+	 * Returns the selected TestRunner first library list item names
+	 * 
+	 * @return Selected TestRunner first library item names
+	 */
+	public String getTestRunnerLibraryItem0Name() {
+		return _tests.getTreeSelectedTestRunner().getLibrary(0).getFileName();
+	}
+	
+	/**
+	 * Returns the selected TestRunner first class path list item
+	 * 
+	 * @return Selected TestRunner first class path item
+	 */
+	public String getTestRunnerClasspathItem0() {
+		return _tests.getTreeSelectedTestRunner().getClassPath(0);
+	}
+	
+	/**
+	 * Returns the selected TestRunner description
+	 * 
+	 * @return Selected TestRunner description
+	 */
+	public int getTestRunnerLibraryCount() {
+		return _tests.getTreeSelectedTestRunner().libraryCount();
+	}
+	
+	/**
+	 * Select the TestSuite in the tree
+	 */
+	public void selectTestSuiteInTree() {
+		_tests.selectElementInTree(2);
+	}
+	
+	/**
+	 * Determines whether the tree pop-up item for "All selected Tests ignored"
+	 * is enabled.
+	 */
+	public boolean isIgnoreAllSelectedTestsEnabled() {
+		return _tests.isPopupItemEnabled(5);
+	}
+
 }
