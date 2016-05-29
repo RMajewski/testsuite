@@ -139,6 +139,21 @@ public class ConfigSaver {
 			bw.newLine();
 		}
 		
+		if (config.classPathCount() > 0) {
+			bw.write("\t\t<classpath>");
+			bw.newLine();
+
+			for (int i = 0; i < config.classPathCount(); i++) {
+				bw.write("\t\t\t<path>");
+				bw.write(config.getClassPath(i));
+				bw.write("</path>");
+				bw.newLine();
+			}
+			
+			bw.write("\t\t</classpath>");
+			bw.newLine();
+		}
+		
 		bw.write("\t</config>");
 		bw.newLine();
 	}
@@ -186,7 +201,7 @@ public class ConfigSaver {
 			bw.newLine();
 		}
 
-		if (runner.libraryCount() > 0) {
+		if (runner.classPathCount() > 0) {
 			bw.write("\t\t<classpath>");
 			bw.newLine();
 

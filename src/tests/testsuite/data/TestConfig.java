@@ -521,12 +521,23 @@ public class TestConfig {
 	}
 	
 	/**
+	 * Checks whether the configuration is not empty, if a class path is in
+	 * the list of class paths.
+	 */
+	@Test
+	public void testIsNotEmptyListOfClasspathHavOneProperty() {
+		_config.addClassPath("Test");
+		assertFalse(_config.isEmpty());
+	}
+	
+	/**
 	 * Tests whether the proper configuration entries have been reset.
 	 */
 	@Test
 	public void testClear() {
 		_config.setClasspath("Test");
 		_config.addProperty("Test");
+		_config.addClassPath("test");
 		_config.setPathLibrary("Test");
 		_config.setMaxDuration(100l);
 		_config.setCreateHtml(true);
@@ -541,6 +552,7 @@ public class TestConfig {
 		assertTrue(_config.getPathSrc().isEmpty());
 		assertEquals(0, _config.propertyCount());
 		assertEquals(0, _config.getMaxDuration());
+		assertEquals(0, _config.classPathCount());
 		assertFalse(_config.isCreateHtml());
 		
 		assertEquals("Test", _config.getClasspath());

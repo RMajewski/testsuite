@@ -347,7 +347,7 @@ public class Config {
 	public boolean isEmpty() {
 		return (_pathLibrary.isEmpty() && _pathResult.isEmpty() &&
 				_pathSrc.isEmpty() && !_createHtml && (_maxDuration == 0) && 
-				_property.isEmpty());
+				_property.isEmpty() && _listClasspath.isEmpty());
 	}
 	
 	/**
