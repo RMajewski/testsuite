@@ -263,8 +263,10 @@ public class ConfigParser {
 								break;
 								
 							case "path":
-								if (classPath && (runner != null))
+								if (classPath && !config && (runner != null))
 									runner.addClassPath(data);
+								else if (classPath && config)
+									_config.addClassPath(data);
 								break;
 								
 							case "testSuite":

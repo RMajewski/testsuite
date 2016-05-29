@@ -12,6 +12,9 @@
 		<systemProperty>
 			<property>testing="true"</property>
 		</systemProperty>
+		<classpath>
+			<path>classpath1</path>
+		</classpath>
 	</config>
 	
 	<testGroup>
