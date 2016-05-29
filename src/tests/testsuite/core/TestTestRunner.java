@@ -789,8 +789,10 @@ public class TestTestRunner extends TestRunnerHelper {
 		String name1 = "test1.jar";
 		String pathLib2 = "lib2";
 		String name2 = "test2.jar";
-		
+
+		String classpath = "classpath";
 		when(_config.getPathLibrary()).thenReturn(pathLib1);
+		when(_config.classPathsAsParameterJVM()).thenReturn(classpath);
 		
 		Library lib1 = mock(Library.class);
 		when(lib1.getFileName()).thenReturn(name1);
@@ -802,13 +804,15 @@ public class TestTestRunner extends TestRunnerHelper {
 		when(lib2.getPath()).thenReturn(pathLib2);
 		_runner.addLibrary(lib2);
 		
-		String ret = path1 + File.pathSeparator + path2 + File.pathSeparator +
-				path3 + File.pathSeparator + pathLib1 + File.separator + name1 +
-				File.pathSeparator + pathLib2 + File.separator + name2 + " ";
+		String ret = classpath + File.pathSeparator + path1 + File.pathSeparator +
+				path2 + File.pathSeparator + path3 + File.pathSeparator +
+				pathLib1 + File.separator + name1 + File.pathSeparator + 
+				pathLib2 + File.separator + name2 + " ";
 		
 		assertEquals(ret, createClasspath.invoke(_runner, null));
 		
 		verify(_config, times(2)).getPathLibrary();
+		verify(_config).classPathsAsParameterJVM();
 		
 		verify(lib1).getFileName();
 		verify(lib1).getPath();
