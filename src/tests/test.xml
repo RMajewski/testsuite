@@ -109,7 +109,6 @@
 		<extension>fit</extension>
 		<libraries>
 			<library version="2.3.1.1" name="jemmy">jemmy.jar</library>
-			<library version="1.1" name="fit">fit.jar</library>
 		</libraries>
 		<testSuite>
 			<name>Test the class org.testsuite.app.App</name>
