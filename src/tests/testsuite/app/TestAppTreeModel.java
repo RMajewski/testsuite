@@ -812,4 +812,24 @@ public class TestAppTreeModel {
 				vel._errors[ValidationEvent.TYPE_TEST_NOT_EXISTS - 1]);
 	}
 
+	/**
+	 * Tests if the ValidationError is triggered by Type 
+	 * TYPE_TEST_RUNNER_NO_TEST_SUITE.
+	 */
+	@Test
+	public void testValidateConfigurationErrorOfTestRunnerNoTestSuite() 
+			throws Exception {
+		Config config = mock(Config.class);
+		
+		VEL vel = new VEL();
+		_model.addValidationEventListener(vel);
+		_model.setListOfTestRunner(generateConfiguration(config));
+		
+		when(_model.getTestRunnerList().get(0).testSuiteCount()).thenReturn(0);
+		
+		_model.validateConfiguration(config);
+		assertEquals(1, 
+				vel._errors[ValidationEvent.TYPE_TEST_RUNNER_NO_TEST_SUITE - 1]);
+	}
+
 }

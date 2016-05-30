@@ -20,11 +20,14 @@
 package org.testsuite.app;
 
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.UIManager;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -60,12 +63,14 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.swing.JProgressBar;
+import javax.swing.AbstractListModel;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
@@ -85,7 +90,8 @@ import javax.swing.JFileChooser;
  * @version 0.3
  */
 @SuppressWarnings("serial")
-public class App extends JFrame implements ActionListener, TestEventListener {
+public class App extends JFrame 
+implements ActionListener, TestEventListener, ValidationEventListener {
 	/**
 	 * Saves the string of action command for the configuration load button.
 	 */
@@ -296,6 +302,22 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 	private JScrollPane _spMessage;
 	
 	/**
+	 * Saves the instance of the validation error list
+	 */
+	private List<ValidationEvent> _listValidationError;
+	
+	/**
+	 * Saves the instance of the list to draw validation errors
+	 */
+	private JList<ValidationEvent> _lstValidationError;
+	
+	/**
+	 * Saves the instance of the JScrollPane for list of validation errors and
+	 * html output.
+	 */
+	private JScrollPane _spHtml;
+	
+	/**
 	 * Saves the thread of run tests.
 	 */
 	private Thread _thread;
@@ -317,6 +339,8 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		_listValidationError = new ArrayList<ValidationEvent>();
 		
 		_bundle = ResourceBundle.getBundle(BUNDLE_FILE);
 		
@@ -520,9 +544,13 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		getContentPane().add(splitPane, BorderLayout.CENTER);
 		
 		_tree = new JTree();
-		_tree.setModel(new AppTreeModel());
+		AppTreeModel atm = new AppTreeModel();
+		atm.addValidationEventListener(this);
+		_tree.setModel(atm);
 		_tree.setCellRenderer(new TestRunnerRenderer(_config));
 		_tree.setComponentPopupMenu(treePopup());
+		_tree.setExpandsSelectedPaths(true);
+		_tree.setScrollsOnExpand(true);
 		disabledAllPopupMenuItems();
 		_tree.addMouseListener(new MouseListener() {
 
@@ -602,8 +630,6 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 			public void valueChanged(TreeSelectionEvent e) {
 				disabledAllPopupMenuItems();
 				
-//				System.out.println(_tree.getSelectionPath());
-				
 				JPopupMenu popup = _tree.getComponentPopupMenu();
 				JMenu insert = (JMenu)popup.getComponent(0);
 				JMenu delete = (JMenu)popup.getComponent(1);
@@ -666,14 +692,44 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		
 		splitPane.setLeftComponent(new JScrollPane(_tree));
 		
-		JScrollPane scrollPane = new JScrollPane();
-		splitPane.setRightComponent(scrollPane);
+		_spHtml = new JScrollPane();
+		splitPane.setRightComponent(_spHtml);
 		
 		_txtHtml = new JEditorPane();
 		_txtHtml.setContentType("text/html");
 		_txtHtml.setEditorKit(new HTMLEditorKit());
 		_txtHtml.setEditable(false);
-		scrollPane.setViewportView(_txtHtml);
+		
+		_lstValidationError = new JList<ValidationEvent>();
+		_lstValidationError.setCellRenderer(new ValidationEventRenderer());
+		_lstValidationError.setModel(new AbstractListModel<ValidationEvent>() {
+
+			@Override
+			public ValidationEvent getElementAt(int index) {
+				return _listValidationError.get(index);
+			}
+
+			@Override
+			public int getSize() {
+				return _listValidationError.size();
+			}
+			
+		});
+		_lstValidationError.addListSelectionListener(
+				new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent lse) {
+				if (lse.getFirstIndex() >= 0) {
+					_tree.getSelectionModel().setSelectionPath(
+							_listValidationError.get(lse.getFirstIndex())
+							.getSelectionPath());
+				}
+			}
+			
+		});
+		
+		_spHtml.setViewportView(_lstValidationError);
 		
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.SOUTH);
@@ -877,9 +933,12 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				break;
 				
 			case AC_CONFIG_VALIDATE:
+				_listValidationError.clear();
+				_spHtml.setViewportView(_lstValidationError);
 				((AppTreeModel)_tree.getModel()).validateConfiguration(
 						_config);
 				_tree.updateUI();
+				
 				break;
 				
 			case AC_RUN:
@@ -1178,6 +1237,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		try {
 			f = new File(htmlFile);
 			if (f.exists())
+				_spHtml.setViewportView(_txtHtml);
 				_txtHtml.setPage(f.toURI().toURL());
 		} catch (Exception er) {
 			er.printStackTrace();
@@ -1261,5 +1321,14 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 	 */
 	public static void main(String[] args) {
 		new App();
+	}
+
+	/**
+	 * Saves the Validation event data in the list for validation errors.
+	 */
+	@Override
+	public void validationError(ValidationEvent ve) {
+		_listValidationError.add(ve);
+		_lstValidationError.updateUI();
 	}
 }

@@ -104,7 +104,7 @@ public class AppTreeModel implements TreeModel {
 	 * @param config The global configuration
 	 */
 	public void validateConfiguration(Config config) {
-		Object[] path = {_testRunner};
+		Object[] path = {getRoot()};
 		
 		// General configuration: source path
 		if (config.getPathSrc().isEmpty())
@@ -146,7 +146,7 @@ public class AppTreeModel implements TreeModel {
 			_testRunner.get(runner).checkFileExists();
 
 			// Create path
-			path = new Object[]{_testRunner, _testRunner.get(runner)};
+			path = new Object[]{getRoot(), _testRunner.get(runner)};
 			
 			// No description
 			if (_testRunner.get(runner).getDescription().isEmpty())
@@ -174,10 +174,15 @@ public class AppTreeModel implements TreeModel {
 							ValidationEvent.TYPE_TEST_RUNNER_CLASSPATH_NOT_EXISTS,
 							new int[]{cp});
 			
+			// No TestSuite
+			if (_testRunner.get(runner).testSuiteCount() == 0)
+				fireValidationError(new TreePath(path),
+						ValidationEvent.TYPE_TEST_RUNNER_NO_TEST_SUITE, null);
+			
 			// TestSuite
 			for (int suite = 0; suite < _testRunner.get(runner).testSuiteCount();
 					suite++) {
-				path = new Object[]{_testRunner, _testRunner.get(runner),
+				path = new Object[]{getRoot(), _testRunner.get(runner),
 						_testRunner.get(runner).getTestSuite(suite)};
 				// No name
 				if (_testRunner.get(runner).getTestSuite(suite).getName().isEmpty())
@@ -204,7 +209,7 @@ public class AppTreeModel implements TreeModel {
 				for (int test = 0; test < _testRunner.get(runner)
 						.getTestSuite(suite).testCount(); test++) {
 					// Path
-					path = new Object[]{_testRunner, _testRunner.get(runner),
+					path = new Object[]{getRoot(), _testRunner.get(runner),
 							_testRunner.get(runner).getTestSuite(suite),
 							_testRunner.get(runner).getTestSuite(suite)
 							.getTest(test)};

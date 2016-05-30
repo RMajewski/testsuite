@@ -88,6 +88,11 @@ public class ValidationEvent extends EventObject {
 	public static final int TYPE_TEST_RUNNER_CLASSPATH_NOT_EXISTS = ++_typeCount;
 	
 	/**
+	 * Specifies that a TestSuite in TestRunner was not specified.
+	 */
+	public static final int TYPE_TEST_RUNNER_NO_TEST_SUITE = ++_typeCount;
+	
+	/**
 	 * Specifies that the name of test suite was not specified.
 	 */
 	public static final int TYPE_TEST_SUITE_NAME = ++_typeCount;

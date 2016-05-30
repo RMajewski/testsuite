@@ -98,7 +98,7 @@ public class TestValidationEvent {
 	 */
 	@Test
 	public void testTypeCount() {
-		assertEquals(16, ValidationEvent.typeCount());
+		assertEquals(17, ValidationEvent.typeCount());
 	}
 	
 	/**
@@ -309,6 +309,18 @@ public class TestValidationEvent {
 	public void testTypeTestSuitePackageNotExists() {
 		assertTrue(ValidationEvent.TYPE_TEST_SUITE_PACKAGE_NOT_EXISTS > 0);
 		assertTrue(ValidationEvent.TYPE_TEST_SUITE_PACKAGE_NOT_EXISTS <= 
+				ValidationEvent.typeCount());
+	}
+	
+	/**
+	 * Tests whether the type 
+	 * {@link org.testsuite.app.ValidationEvent#TYPE_TEST_RUNNER_NO_TEST_SUITE}
+	 * is greater than 0 and less than typeCount().
+	 */
+	@Test
+	public void testTypeTestRunnerNoTestSuite() {
+		assertTrue(ValidationEvent.TYPE_TEST_RUNNER_NO_TEST_SUITE > 0);
+		assertTrue(ValidationEvent.TYPE_TEST_RUNNER_NO_TEST_SUITE <= 
 				ValidationEvent.typeCount());
 	}
 }

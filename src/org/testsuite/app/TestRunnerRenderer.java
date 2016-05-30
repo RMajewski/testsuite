@@ -98,7 +98,7 @@ public class TestRunnerRenderer implements TreeCellRenderer {
 			int row, boolean hasFocus) {
 		if (value instanceof org.testsuite.data.Test) {
 			if (selected)
-				_check.setBackground(new Color(0xcf, 0xff, 0xcf));
+				_check.setBackground(Colors.backgroundSelection);
 			else
 				_check.setBackground(tree.getBackground());
 			
@@ -113,7 +113,7 @@ public class TestRunnerRenderer implements TreeCellRenderer {
 		}
 		
 		if (selected)
-			_label.setBackground(new Color(0xcf, 0xff, 0xcf));
+			_label.setBackground(Colors.backgroundSelection);
 		else
 			_label.setBackground(tree.getBackground());
 		
@@ -136,7 +136,7 @@ public class TestRunnerRenderer implements TreeCellRenderer {
 			if ((value instanceof List<?>) && ((List<?>)value).isEmpty() &&
 					_config.isEmpty()) {
 				_label.setText(_bundle.getString("tree_null_node"));
-				_label.setBackground(new Color(0xff, 0xcf, 0xcf));
+				_label.setBackground(Colors.backgroundEmptyTree);
 			} else if ((value instanceof List<?>) && ((List<?>)value).isEmpty() &&
 					!_config.isEmpty()) {
 				_label.setText(_bundle.getString("tree_insert_test_runner"));
