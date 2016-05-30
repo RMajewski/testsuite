@@ -29,6 +29,7 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.testsuite.core.TestRunner;
+import org.testsuite.data.Config;
 import org.testsuite.data.TestSuite;
 
 /**
@@ -69,7 +70,11 @@ public class TestRunnerModel implements TreeModel {
 	/**
 	 * Validate the configuration
 	 */
-	public void validateConfiguration() {
+	public void validateConfiguration(Config _config) {
+		// General configuration
+		
+		
+		// If tests exists
 		for (int runner = 0; runner < _testRunner.size(); runner++)
 			_testRunner.get(runner).checkFileExists();
 	}

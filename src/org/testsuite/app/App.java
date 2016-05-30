@@ -60,7 +60,6 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -835,7 +834,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 						((TestRunnerModel)_tree.getModel()).setListOfTestRunner(
 								parser.getTestRunnerList());
 						((TestRunnerModel)_tree.getModel())
-								.validateConfiguration();
+								.validateConfiguration(_config);
 						_config = parser.getConfig();
 						setButtonsEnable(true);
 						
@@ -878,7 +877,8 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				break;
 				
 			case AC_CONFIG_VALIDATE:
-				((TestRunnerModel)_tree.getModel()).validateConfiguration();
+				((TestRunnerModel)_tree.getModel()).validateConfiguration(
+						_config);
 				_tree.updateUI();
 				break;
 				

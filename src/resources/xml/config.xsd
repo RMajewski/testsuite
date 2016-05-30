@@ -18,7 +18,7 @@
 	<xsd:complexType name="configType">
 		<xsd:sequence>
 			<xsd:element name="resultPath" minOccurs="0" type="xsd:string"/>
-			<xsd:element name="srcPath" type="xsd:string"/>
+			<xsd:element name="srcPath" minOccurs="1" type="xsd:string"/>
 			<xsd:element name="libPath" minOccurs="0" type="xsd:string"/>
 			<xsd:element name="maxDuration" minOccurs="0" type="xsd:long"/>
 			<xsd:element name="htmlOut" minOccurs="0" type="xsd:boolean"/>
@@ -56,7 +56,7 @@
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="classpath" minOccurs="0" type="classpathType" />
-			<xsd:element name="testSuite" minOccurs="0" maxOccurs="unbounded" type="testSuiteType" />
+			<xsd:element name="testSuite" minOccurs="1" maxOccurs="unbounded" type="testSuiteType" />
 		</xsd:sequence>
 	</xsd:complexType>
 	
