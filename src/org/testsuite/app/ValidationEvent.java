@@ -43,7 +43,12 @@ public class ValidationEvent extends EventObject {
 	public static final int TYPE_CONFIG_PATH_SRC = ++_typeCount;
 	
 	/**
-	 * Specifies that the path for the source file was not exists.
+	 * Specifies that the TestRunner in general configuration was not specified.
+	 */
+	public static final int TYPE_CONFIG_NO_TEST_RUNNER = ++_typeCount;
+	
+	/**
+	 * Specifies that the path for the source files was not exists.
 	 */
 	public static final int TYPE_CONFIG_PATH_SRC_NOT_EXISTS = ++_typeCount;
 	
@@ -101,6 +106,11 @@ public class ValidationEvent extends EventObject {
 	 * Specifies that the test of test suite was not specified.
 	 */
 	public static final int TYPE_TEST_SUITE_NO_TEST = ++_typeCount;
+	
+	/**
+	 * Specifies that the name of test was not specified.
+	 */
+	public static final int TYPE_TEST_NAME = ++_typeCount;
 	
 	/**
 	 * Specifies that the file of test is not exists.

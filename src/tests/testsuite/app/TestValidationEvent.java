@@ -98,7 +98,7 @@ public class TestValidationEvent {
 	 */
 	@Test
 	public void testTypeCount() {
-		assertEquals(14, ValidationEvent.typeCount());
+		assertEquals(16, ValidationEvent.typeCount());
 	}
 	
 	/**
@@ -129,6 +129,18 @@ public class TestValidationEvent {
 	public void testTypeConfigClassPathNotExists() {
 		assertTrue(ValidationEvent.TYPE_CONFIG_CLASSPATH_NOT_EXISTS > 0);
 		assertTrue(ValidationEvent.TYPE_CONFIG_CLASSPATH_NOT_EXISTS <= 
+				ValidationEvent.typeCount());
+	}
+	
+	/**
+	 * Tests whether the type 
+	 * {@link org.testsuite.app.ValidationEvent#TYPE_CONFIG_NO_TEST_RUNNER}
+	 * is greater than 0 and less than typeCount().
+	 */
+	@Test
+	public void testTypeConfigNoTestRunner() {
+		assertTrue(ValidationEvent.TYPE_CONFIG_NO_TEST_RUNNER > 0);
+		assertTrue(ValidationEvent.TYPE_CONFIG_NO_TEST_RUNNER <= 
 				ValidationEvent.typeCount());
 	}
 	
@@ -177,6 +189,18 @@ public class TestValidationEvent {
 	public void testTypeConfigPathSrcNotExists() {
 		assertTrue(ValidationEvent.TYPE_CONFIG_PATH_SRC_NOT_EXISTS > 0);
 		assertTrue(ValidationEvent.TYPE_CONFIG_PATH_SRC_NOT_EXISTS <= 
+				ValidationEvent.typeCount());
+	}
+	
+	/**
+	 * Tests whether the type 
+	 * {@link org.testsuite.app.ValidationEvent#TYPE_TEST_NAME}
+	 * is greater than 0 and less than typeCount().
+	 */
+	@Test
+	public void testTypeTestName() {
+		assertTrue(ValidationEvent.TYPE_TEST_NAME > 0);
+		assertTrue(ValidationEvent.TYPE_TEST_NAME <= 
 				ValidationEvent.typeCount());
 	}
 	

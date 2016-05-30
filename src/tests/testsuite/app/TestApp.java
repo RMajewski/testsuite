@@ -48,7 +48,7 @@ import org.netbeans.jemmy.operators.JTextFieldOperator;
 import org.netbeans.jemmy.operators.JTreeOperator;
 import org.testsuite.app.App;
 import org.testsuite.app.DlgConfigGeneral;
-import org.testsuite.app.TestRunnerModel;
+import org.testsuite.app.AppTreeModel;
 import org.testsuite.core.JemmyTestCase;
 import org.testsuite.core.JunitTestRunner;
 import org.testsuite.core.TestRunner;
@@ -230,11 +230,11 @@ public class TestApp extends JemmyTestCase {
 		JunitTestRunner runner2 = new JunitTestRunner();
 		runner2.addTestSuite(suite3);
 		
-		List<TestRunner> list = ((TestRunnerModel)_tree.getModel())
+		List<TestRunner> list = ((AppTreeModel)_tree.getModel())
 				.getTestRunnerList();
 		list.add(runner1);
 		list.add(runner2);
-		((TestRunnerModel)_tree.getModel()).setListOfTestRunner(list);
+		((AppTreeModel)_tree.getModel()).setListOfTestRunner(list);
 	}
 	
 	/**
@@ -339,7 +339,7 @@ public class TestApp extends JemmyTestCase {
 	public int getExecutedTests() {
 		int ret = 0;
 
-		List<TestRunner> list = ((TestRunnerModel)_tree.getModel()).getTestRunnerList();
+		List<TestRunner> list = ((AppTreeModel)_tree.getModel()).getTestRunnerList();
 		for (int runner = 0; runner < list.size(); runner++)
 			for (int suite = 0; suite < list.get(runner).testSuiteCount(); suite++)
 				for (int test = 0; test < list.get(runner).getTestSuite(suite).testCount(); test++)
@@ -423,7 +423,7 @@ public class TestApp extends JemmyTestCase {
 	public boolean isAllTestsIgnore() {
 		boolean ret = true;
 		
-		List<TestRunner> list = ((TestRunnerModel)_tree.getModel()).getTestRunnerList();
+		List<TestRunner> list = ((AppTreeModel)_tree.getModel()).getTestRunnerList();
 		for (int runner = 0; runner < list.size(); runner++)
 			for (int suite = 0; suite < list.get(runner).testSuiteCount(); suite++)
 				for (int test = 0; test < list.get(runner).getTestSuite(suite).testCount(); test++)
@@ -987,7 +987,7 @@ public class TestApp extends JemmyTestCase {
 	 * @return Number of items.
 	 */
 	public int getTreeTestRunnerItemCount() {
-		return _tree.getChildCount(((TestRunnerModel)_tree.getModel())
+		return _tree.getChildCount(((AppTreeModel)_tree.getModel())
 				.getTestRunnerList().get(0));
 	}
 

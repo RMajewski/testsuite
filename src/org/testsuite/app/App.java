@@ -520,7 +520,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		getContentPane().add(splitPane, BorderLayout.CENTER);
 		
 		_tree = new JTree();
-		_tree.setModel(new TestRunnerModel());
+		_tree.setModel(new AppTreeModel());
 		_tree.setCellRenderer(new TestRunnerRenderer(_config));
 		_tree.setComponentPopupMenu(treePopup());
 		disabledAllPopupMenuItems();
@@ -540,7 +540,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 					if (c instanceof org.testsuite.data.Test) {
 						((org.testsuite.data.Test)c).setExecuted(
 								!((org.testsuite.data.Test)c).isExecuted());
-						((TestRunnerModel)_tree.getModel())
+						((AppTreeModel)_tree.getModel())
 							.fireTreeNodesChanged(_tree.getSelectionPath());
 					}
 					
@@ -770,14 +770,14 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 		DlgConfigTestRunner dlg = new DlgConfigTestRunner(this, tr);
 		if (dlg.getExitStatus() == DlgConfig.EXIT_ACCEPT) {
 			if (dlg.isTestRunnerChanged()) {
-				int index = ((TestRunnerModel)_tree.getModel())
+				int index = ((AppTreeModel)_tree.getModel())
 							.getTestRunnerList().indexOf(tr);
-				((TestRunnerModel)_tree.getModel())
+				((AppTreeModel)_tree.getModel())
 					.getTestRunnerList().remove(index);
-				((TestRunnerModel)_tree.getModel())
+				((AppTreeModel)_tree.getModel())
 					.getTestRunnerList().add(index, 
 						dlg.getTestRunner());
-				((TestRunnerModel)_tree.getModel())
+				((AppTreeModel)_tree.getModel())
 					.fireTreeStructureChanged();
 			}
 		}
@@ -831,9 +831,9 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 							file.getPath());
 					
 					if (parser.parse()) {
-						((TestRunnerModel)_tree.getModel()).setListOfTestRunner(
+						((AppTreeModel)_tree.getModel()).setListOfTestRunner(
 								parser.getTestRunnerList());
-						((TestRunnerModel)_tree.getModel())
+						((AppTreeModel)_tree.getModel())
 								.validateConfiguration(_config);
 						_config = parser.getConfig();
 						setButtonsEnable(true);
@@ -871,19 +871,19 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 					}
 					
 					ConfigSaver.save(_config, 
-							((TestRunnerModel)_tree.getModel())
+							((AppTreeModel)_tree.getModel())
 							.getTestRunnerList(), file);
 				}
 				break;
 				
 			case AC_CONFIG_VALIDATE:
-				((TestRunnerModel)_tree.getModel()).validateConfiguration(
+				((AppTreeModel)_tree.getModel()).validateConfiguration(
 						_config);
 				_tree.updateUI();
 				break;
 				
 			case AC_RUN:
-				_thread = new TestRun(((TestRunnerModel)_tree.getModel())
+				_thread = new TestRun(((AppTreeModel)_tree.getModel())
 					.getTestRunnerList(), this);
 				_btnCancel.setEnabled(true);
 				_btnExit.setEnabled(false);
@@ -898,7 +898,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 			case AC_ALL_TESTS_IGNORE:
 				// OPT Into a separate method with boolean as parameter
 				List<TestRunner> list = 
-					((TestRunnerModel)_tree.getModel()).getTestRunnerList();
+					((AppTreeModel)_tree.getModel()).getTestRunnerList();
 				for (int i = 0; i < list.size(); i++)
 					for (int j = 0; j < list.get(i).testSuiteCount(); j++)
 						for (int k = 0; k < list.get(i).getTestSuite(j).testCount(); k++)
@@ -908,7 +908,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 			case AC_ALL_TESTS_EXECUTE:
 				// OPT Into a separate method with boolean as parameter
 				list = 
-					((TestRunnerModel)_tree.getModel()).getTestRunnerList();
+					((AppTreeModel)_tree.getModel()).getTestRunnerList();
 				for (int i = 0; i < list.size(); i++)
 					for (int j = 0; j < list.get(i).testSuiteCount(); j++)
 						for (int k = 0; k < list.get(i).getTestSuite(j).testCount(); k++)
@@ -944,7 +944,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				break;
 				
 			case TREE_INSERT_TEST_RUNNER:
-				((TestRunnerModel)_tree.getModel()).getTestRunnerList().add(
+				((AppTreeModel)_tree.getModel()).getTestRunnerList().add(
 						new JunitTestRunner(_config));
 				_tree.updateUI();
 				setButtonsEnable(true);
@@ -969,7 +969,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 						JOptionPane.YES_NO_OPTION, 
 						JOptionPane.QUESTION_MESSAGE);
 				if (ret == JOptionPane.YES_OPTION) {
-					((TestRunnerModel)_tree.getModel()).getTestRunnerList()
+					((AppTreeModel)_tree.getModel()).getTestRunnerList()
 						.clear();
 					_config.clear();
 					_tree.updateUI();
@@ -984,17 +984,17 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 						JOptionPane.YES_NO_OPTION, 
 						JOptionPane.QUESTION_MESSAGE);
 				if (ret == JOptionPane.YES_OPTION) {
-					int index = ((TestRunnerModel)_tree.getModel())
+					int index = ((AppTreeModel)_tree.getModel())
 							.getTestRunnerList().indexOf(
 									(TestRunner)_tree
 										.getLastSelectedPathComponent());
-					((TestRunnerModel)_tree.getModel()).getTestRunnerList()
+					((AppTreeModel)_tree.getModel()).getTestRunnerList()
 						.remove(index);
 					_tree.updateUI();
 					_tree.clearSelection();
 					
 					if (_config.isEmpty() && 
-							(((TestRunnerModel)_tree.getModel())
+							(((AppTreeModel)_tree.getModel())
 									.getTestRunnerList().size() == 0)) {
 						setButtonsEnable(false);
 					}
@@ -1065,7 +1065,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 				// OPT Into a method with boolean as parameter
 				if (_tree.getLastSelectedPathComponent() instanceof TestRunner) {
 					list = 
-							((TestRunnerModel)_tree.getModel())
+							((AppTreeModel)_tree.getModel())
 							.getTestRunnerList();
 					for (int i = 0; i < list.size(); i++) {
 						TestRunner runner = list.get(i);
@@ -1078,7 +1078,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 					}
 				} else if (_tree.getLastSelectedPathComponent() instanceof TestSuite) {
 					list = 
-							((TestRunnerModel)_tree.getModel())
+							((AppTreeModel)_tree.getModel())
 							.getTestRunnerList();
 					for (int i = 0; i < list.size(); i++) {
 						TestRunner runner = list.get(i);
@@ -1093,7 +1093,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 					}
 				} else if (_tree.getLastSelectedPathComponent() instanceof Test) {
 					list = 
-							((TestRunnerModel)_tree.getModel())
+							((AppTreeModel)_tree.getModel())
 							.getTestRunnerList();
 					for (int i = 0; i < list.size(); i++) {
 						TestRunner runner = list.get(i);
@@ -1156,7 +1156,7 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 			html.htmlHead();
 			
 			List<TestRunner> testRunner = 
-					((TestRunnerModel)_tree.getModel())
+					((AppTreeModel)_tree.getModel())
 					.getTestRunnerList();
 			
 			for (int runner = 0; runner < testRunner.size(); runner++) {
@@ -1194,9 +1194,9 @@ public class App extends JFrame implements ActionListener, TestEventListener {
 	 */
 	@Override
 	public void testSelectTest(TestSelectEvent tse) {
-		TestRunner runner = ((TestRunnerModel)_tree.getModel())
+		TestRunner runner = ((AppTreeModel)_tree.getModel())
 				.getTestRunnerList().get(tse.getIndexTestRunner());
-		Object[] path = { ((TestRunnerModel)_tree.getModel())
+		Object[] path = { ((AppTreeModel)_tree.getModel())
 					.getTestRunnerList(), runner, 
 				runner.getTestSuite(tse.getIndexTestSuite()),
 				runner.getTestSuite(tse.getIndexTestSuite())
