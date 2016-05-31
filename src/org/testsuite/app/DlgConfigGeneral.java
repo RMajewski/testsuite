@@ -530,15 +530,7 @@ public class DlgConfigGeneral extends DlgConfig {
 				if (ret == JOptionPane.YES_OPTION) {
 					_config.removeProperty(_listProperties.getSelectedValue());
 					_listProperties.updateUI();
-					// OPT Insert in a private method 
-					if (_listProperties.getSelectedIndex() >= 
-							_listProperties.getModel().getSize()) {
-						_listProperties.clearSelection();
-						_listProperties.getComponentPopupMenu().getComponent(1)
-							.setEnabled(false);
-						_listProperties.getComponentPopupMenu().getComponent(2)
-						.setEnabled(false);
-					}
+					listClearSelectionAfterDelete(_listProperties);
 				}
 				break;
 				
@@ -577,15 +569,7 @@ public class DlgConfigGeneral extends DlgConfig {
 				if (ret == JOptionPane.YES_OPTION) {
 					_config.removeClassPath(_listClassPaths.getSelectedValue());
 					_listClassPaths.updateUI();
-					// OPT Insert in a private method (Merge with system properties) 
-					if (_listClassPaths.getSelectedIndex() >= 
-							_listClassPaths.getModel().getSize()) {
-						_listClassPaths.clearSelection();
-						_listClassPaths.getComponentPopupMenu().getComponent(1)
-							.setEnabled(false);
-						_listClassPaths.getComponentPopupMenu().getComponent(2)
-						.setEnabled(false);
-					}
+					listClearSelectionAfterDelete(_listClassPaths);
 				}
 				break;
 				
@@ -624,15 +608,7 @@ public class DlgConfigGeneral extends DlgConfig {
 				if (ret == JOptionPane.YES_OPTION) {
 					_config.removeJavascriptFile(_listJavascript.getSelectedValue());
 					_listJavascript.updateUI();
-					// OPT Insert in a private method (Merge with system properties) 
-					if (_listJavascript.getSelectedIndex() >= 
-							_listJavascript.getModel().getSize()) {
-						_listJavascript.clearSelection();
-						_listJavascript.getComponentPopupMenu().getComponent(1)
-							.setEnabled(false);
-						_listJavascript.getComponentPopupMenu().getComponent(2)
-						.setEnabled(false);
-					}
+					listClearSelectionAfterDelete(_listJavascript);
 				}
 				break;
 				
@@ -671,15 +647,7 @@ public class DlgConfigGeneral extends DlgConfig {
 				if (ret == JOptionPane.YES_OPTION) {
 					_config.removeStylesheetFile(_listStylesheets.getSelectedValue());
 					_listStylesheets.updateUI();
-					// OPT Insert in a private method (Merge with system properties) 
-					if (_listStylesheets.getSelectedIndex() >= 
-							_listStylesheets.getModel().getSize()) {
-						_listStylesheets.clearSelection();
-						_listStylesheets.getComponentPopupMenu().getComponent(1)
-							.setEnabled(false);
-						_listStylesheets.getComponentPopupMenu().getComponent(2)
-						.setEnabled(false);
-					}
+					listClearSelectionAfterDelete(_listStylesheets);
 				}
 				break;
 		}
@@ -832,5 +800,21 @@ public class DlgConfigGeneral extends DlgConfig {
 	private void setPopupEnabled(JList<String> list, boolean enabled) {
 		list.getComponentPopupMenu().getComponent(1).setEnabled(enabled);
 		list.getComponentPopupMenu().getComponent(2).setEnabled(enabled);
+	}
+	
+	/**
+	 * Verifies that must be performed in the specified list clearSelection and
+	 * executes it if necessary. After the pop-up menu is the items "Change" and
+	 * "Delete" disabled.
+	 * 
+	 * @param list The list is to be executed clearSelection.
+	 */
+	private void listClearSelectionAfterDelete(JList<String> list) {
+		if (list.getSelectedIndex() >= 
+				list.getModel().getSize()) {
+			list.clearSelection();
+			list.getComponentPopupMenu().getComponent(1).setEnabled(false);
+			list.getComponentPopupMenu().getComponent(2).setEnabled(false);
+		}
 	}
 }
