@@ -186,6 +186,7 @@ public class DlgConfigGeneral extends DlgConfig {
 		_config = config;
 		
 		setSize(700, 730);
+		setLocationRelativeTo(owner);
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] {250, 150, 200};

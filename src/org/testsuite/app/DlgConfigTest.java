@@ -80,6 +80,7 @@ public class DlgConfigTest extends DlgConfig {
 		super(owner, BUNDLE_FILE);
 		
 		setSize(500, 250);
+		setLocationRelativeTo(owner);
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] {150, 150, 150};

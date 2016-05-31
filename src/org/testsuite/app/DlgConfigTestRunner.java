@@ -144,6 +144,7 @@ public class DlgConfigTestRunner extends DlgConfig {
 		_testRunnerChanged = false;
 		
 		setSize(600, 550);
+		setLocationRelativeTo(owner);
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] {250, 150, 200};
