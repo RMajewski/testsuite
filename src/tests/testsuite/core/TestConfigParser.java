@@ -162,6 +162,8 @@ public class TestConfigParser {
 		verify(_config).setCreateHtml(true);
 		verify(_config).addProperty("testing=\"true\"");
 		verify(_config).addClassPath("classpath1");
+		verify(_config).addJavascriptFile("out.js");
+		verify(_config).addStylesheetFile("out.css");
 		
 		List<TestRunner> list = _parser.getTestRunnerList();
 		

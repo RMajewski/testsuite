@@ -89,7 +89,10 @@ public class ConfigParser {
 					XMLInputFactory.newInstance().createXMLEventReader(is);
 			
 			String data = new String();
+			// OPT boolean variables in a int variable?
 			boolean config = false;
+			boolean stylesheet = false;
+			boolean javascript = false;
 			boolean testGroup = false;
 			boolean libraries = false;
 			boolean classPath = false;
@@ -168,6 +171,14 @@ public class ConfigParser {
 								else
 									executed = true;
 								break;
+							
+							case "javascript":
+								javascript = true;
+								break;
+								
+							case "stylesheet":
+								stylesheet = true;
+								break;
 						}
 						break;
 						
@@ -182,6 +193,14 @@ public class ConfigParser {
 						switch(eelement.getName().getLocalPart()) {
 							case "config":
 								config = false;
+								break;
+								
+							case "javascript":
+								javascript = false;
+								break;
+								
+							case "stylesheet":
+								stylesheet = false;
 								break;
 								
 							case "testGroup":
@@ -221,6 +240,13 @@ public class ConfigParser {
 							case "property":
 								if (config)
 									_config.addProperty(data);
+								break;
+								
+							case "file":
+								if (javascript && (_config != null))
+									_config.addJavascriptFile(data);
+								else if (stylesheet && (_config != null))
+									_config.addStylesheetFile(data);
 								break;
 								
 							// The test group
