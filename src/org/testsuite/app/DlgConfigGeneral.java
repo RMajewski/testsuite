@@ -692,26 +692,21 @@ public class DlgConfigGeneral extends DlgConfig {
 	 */
 	private JPopupMenu createPopupForProperties() {
 		JPopupMenu ret = new JPopupMenu();
-		
-		JMenuItem item = new JMenuItem(_bundle.getString("insert_property"));
-		item.setMnemonic(_bundle.getString("insert_property_mnemonic").charAt(0));
-		item.addActionListener(this);
-		item.setActionCommand(PROPERTY_INSERT);
-		ret.add(item);
-		
-		item = new JMenuItem(_bundle.getString("change_property"));
-		item.setMnemonic(_bundle.getString("change_property_mnemonic").charAt(0));
-		item.addActionListener(this);
-		item.setActionCommand(PROPERTY_CHANGE);
-		item.setEnabled(false);
-		ret.add(item);
-		
-		item = new JMenuItem(_bundle.getString("delete_property"));
-		item.setMnemonic(_bundle.getString("delete_property_mnemonic").charAt(0));
-		item.addActionListener(this);
-		item.setActionCommand(PROPERTY_DELETE);
-		item.setEnabled(false);
-		ret.add(item);
+
+		ret.add(createPopupMenuItem(
+				_bundle.getString("insert_property"),
+				_bundle.getString("insert_property_mnemonic").charAt(0),
+				PROPERTY_INSERT, true));
+
+		ret.add(createPopupMenuItem(
+				_bundle.getString("change_property"),
+				_bundle.getString("change_property_mnemonic").charAt(0),
+				PROPERTY_CHANGE, false));
+
+		ret.add(createPopupMenuItem(
+				_bundle.getString("delete_property"),
+				_bundle.getString("delete_property_mnemonic").charAt(0),
+				PROPERTY_DELETE, false));
 		
 		return ret;
 	}
@@ -723,26 +718,21 @@ public class DlgConfigGeneral extends DlgConfig {
 	 */
 	private JPopupMenu createPopupForClassPaths() {
 		JPopupMenu ret = new JPopupMenu();
-		
-		JMenuItem item = new JMenuItem(_bundle.getString("insert_classpath"));
-		item.setMnemonic(_bundle.getString("insert_classpath_mnemonic").charAt(0));
-		item.addActionListener(this);
-		item.setActionCommand(CLASSPATH_INSERT);
-		ret.add(item);
-		
-		item = new JMenuItem(_bundle.getString("change_classpath"));
-		item.setMnemonic(_bundle.getString("change_classpath_mnemonic").charAt(0));
-		item.addActionListener(this);
-		item.setActionCommand(CLASSPATH_CHANGE);
-		item.setEnabled(false);
-		ret.add(item);
-		
-		item = new JMenuItem(_bundle.getString("delete_classpath"));
-		item.setMnemonic(_bundle.getString("delete_classpath_mnemonic").charAt(0));
-		item.addActionListener(this);
-		item.setActionCommand(CLASSPATH_DELETE);
-		item.setEnabled(false);
-		ret.add(item);
+
+		ret.add(createPopupMenuItem(
+				_bundle.getString("insert_classpath"),
+				_bundle.getString("insert_classpath_mnemonic").charAt(0),
+				CLASSPATH_INSERT, true));
+
+		ret.add(createPopupMenuItem(
+				_bundle.getString("change_classpath"),
+				_bundle.getString("change_classpath_mnemonic").charAt(0),
+				CLASSPATH_CHANGE, false));
+
+		ret.add(createPopupMenuItem(
+				_bundle.getString("delete_classpath"),
+				_bundle.getString("delete_classpath_mnemonic").charAt(0),
+				CLASSPATH_DELETE, false));
 		
 		return ret;
 	}
@@ -754,26 +744,21 @@ public class DlgConfigGeneral extends DlgConfig {
 	 */
 	private JPopupMenu createPopupForJavascript() {
 		JPopupMenu ret = new JPopupMenu();
-		
-		JMenuItem item = new JMenuItem(_bundle.getString("insert_javascript"));
-		item.setMnemonic(_bundle.getString("insert_javascript_mnemonic").charAt(0));
-		item.addActionListener(this);
-		item.setActionCommand(JAVASCRIPT_INSERT);
-		ret.add(item);
-		
-		item = new JMenuItem(_bundle.getString("change_javascript"));
-		item.setMnemonic(_bundle.getString("change_javascript_mnemonic").charAt(0));
-		item.addActionListener(this);
-		item.setActionCommand(JAVASCRIPT_CHANGE);
-		item.setEnabled(false);
-		ret.add(item);
-		
-		item = new JMenuItem(_bundle.getString("delete_javascript"));
-		item.setMnemonic(_bundle.getString("delete_javascript_mnemonic").charAt(0));
-		item.addActionListener(this);
-		item.setActionCommand(JAVASCRIPT_DELETE);
-		item.setEnabled(false);
-		ret.add(item);
+
+		ret.add(createPopupMenuItem(
+				_bundle.getString("insert_javascript"),
+				_bundle.getString("insert_javascript_mnemonic").charAt(0),
+				JAVASCRIPT_INSERT, true));
+
+		ret.add(createPopupMenuItem(
+				_bundle.getString("change_javascript"),
+				_bundle.getString("change_javascript_mnemonic").charAt(0),
+				JAVASCRIPT_CHANGE, false));
+
+		ret.add(createPopupMenuItem(
+				_bundle.getString("delete_javascript"),
+				_bundle.getString("delete_javascript_mnemonic").charAt(0),
+				JAVASCRIPT_DELETE, false));
 		
 		return ret;
 	}
@@ -785,27 +770,45 @@ public class DlgConfigGeneral extends DlgConfig {
 	 */
 	private JPopupMenu createPopupForStylesheet() {
 		JPopupMenu ret = new JPopupMenu();
+
+		ret.add(createPopupMenuItem(
+				_bundle.getString("insert_stylesheet"),
+				_bundle.getString("insert_stylesheet_mnemonic").charAt(0),
+				STYLESHEET_INSERT, true));
+
+		ret.add(createPopupMenuItem(
+				_bundle.getString("change_stylesheet"),
+				_bundle.getString("change_stylesheet_mnemonic").charAt(0),
+				STYLESHEET_CHANGE, false));
+
+		ret.add(createPopupMenuItem(
+				_bundle.getString("delete_stylesheet"),
+				_bundle.getString("delete_stylesheet_mnemonic").charAt(0),
+				STYLESHEET_DELETE, false));
 		
-		JMenuItem item = new JMenuItem(_bundle.getString("insert_stylesheet"));
-		item.setMnemonic(_bundle.getString("insert_stylesheet_mnemonic").charAt(0));
-		item.addActionListener(this);
-		item.setActionCommand(STYLESHEET_INSERT);
-		ret.add(item);
-		
-		item = new JMenuItem(_bundle.getString("change_stylesheet"));
-		item.setMnemonic(_bundle.getString("change_stylesheet_mnemonic").charAt(0));
-		item.addActionListener(this);
-		item.setActionCommand(STYLESHEET_CHANGE);
-		item.setEnabled(false);
-		ret.add(item);
-		
-		item = new JMenuItem(_bundle.getString("delete_stylesheet"));
-		item.setMnemonic(_bundle.getString("delete_stylesheet_mnemonic").charAt(0));
-		item.addActionListener(this);
-		item.setActionCommand(STYLESHEET_DELETE);
-		item.setEnabled(false);
-		ret.add(item);
-		
+		return ret;
+	}
+	
+	/**
+	 * Creates a pop-up menu listing the following information.
+	 * 
+	 * @param text Text to be displayed.
+	 * 
+	 * @param mnemonic Mnemonic
+	 * 
+	 * @param actionCommand The action command
+	 * 
+	 * @param enabled If the pop-up menu item be enabled?
+	 * 
+	 * @return The pop-up menu item that was created.
+	 */
+	private JMenuItem createPopupMenuItem(String text, char mnemonic, 
+			String actionCommand, boolean enabled) {
+		JMenuItem ret = new JMenuItem(text);
+		ret.setMnemonic(mnemonic);
+		ret.addActionListener(this);
+		ret.setActionCommand(actionCommand);
+		ret.setEnabled(enabled);
 		return ret;
 	}
 	
