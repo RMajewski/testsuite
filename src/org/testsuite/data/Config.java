@@ -280,6 +280,15 @@ public class Config {
 		
 		return ret.toString();
 	}
+	
+	/**
+	 * Returns the list of class paths.
+	 * 
+	 * @return The List of class paths.
+	 */
+	public List<String> getClassPathList() {
+		return _listClasspath;
+	}
 
 	/**
 	 * Returns, to be creates in the HTML file for the results.

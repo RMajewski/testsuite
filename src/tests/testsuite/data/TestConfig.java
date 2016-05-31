@@ -22,6 +22,7 @@ package tests.testsuite.data;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -316,7 +317,7 @@ public class TestConfig {
 	}
 	
 	/**
-	 * Verifies that the correct system property was deleted.
+	 * Verifies that the correct class path was deleted.
 	 */
 	@Test
 	public void testRemoveClasspath() {
@@ -335,6 +336,14 @@ public class TestConfig {
 		assertEquals(2, _config.classPathCount());
 		assertEquals(prop1, _config.getClassPath(0));
 		assertEquals(prop3, _config.getClassPath(1));
+	}
+	
+	/**
+	 * Tests if the list of class path is returned correctly.
+	 */
+	@Test
+	public void testGetClassPathList() {
+		assertEquals(new ArrayList<String>(), _config.getClassPathList());
 	}
 	
 	/**

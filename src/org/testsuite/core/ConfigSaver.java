@@ -139,20 +139,7 @@ public class ConfigSaver {
 			bw.newLine();
 		}
 		
-		if (config.classPathCount() > 0) {
-			bw.write("\t\t<classpath>");
-			bw.newLine();
-
-			for (int i = 0; i < config.classPathCount(); i++) {
-				bw.write("\t\t\t<path>");
-				bw.write(config.getClassPath(i));
-				bw.write("</path>");
-				bw.newLine();
-			}
-			
-			bw.write("\t\t</classpath>");
-			bw.newLine();
-		}
+		writeClassPath(bw, config.getClassPathList());
 		
 		bw.write("\t</config>");
 		bw.newLine();
@@ -201,20 +188,7 @@ public class ConfigSaver {
 			bw.newLine();
 		}
 
-		if (runner.classPathCount() > 0) {
-			bw.write("\t\t<classpath>");
-			bw.newLine();
-
-			for (int i = 0; i < runner.classPathCount(); i++) {
-				bw.write("\t\t\t<path>");
-				bw.write(runner.getClassPath(i));
-				bw.write("</path>");
-				bw.newLine();
-			}
-			
-			bw.write("\t\t</classpath>");
-			bw.newLine();
-		}
+		writeClassPath(bw, runner.getClassPathList());
 
 		if (runner.testSuiteCount() > 0)
 			for (int i = 0; i < runner.classPathCount(); i++)
@@ -301,5 +275,30 @@ public class ConfigSaver {
 		
 		bw.write("\t\t</testSuite>");
 		bw.newLine();
+	}
+	
+	/**
+	 * Write the class paths into the BufferWriter
+	 * 
+	 * @param bw Opened buffered writer
+	 * 
+	 * @param list List of class paths.
+	 */
+	private static void writeClassPath(BufferedWriter bw, List<String> list) 
+			throws IOException{
+		if (list.size() > 0) {
+			bw.write("\t\t<classpath>");
+			bw.newLine();
+
+			for (int i = 0; i < list.size(); i++) {
+				bw.write("\t\t\t<path>");
+				bw.write(list.get(i));
+				bw.write("</path>");
+				bw.newLine();
+			}
+			
+			bw.write("\t\t</classpath>");
+			bw.newLine();
+		}
 	}
 }
