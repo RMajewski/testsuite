@@ -20,9 +20,9 @@
 package tests.testsuite.data;
 
 import static org.junit.Assert.*;
-import java.io.InputStream;
 import org.junit.Before;
 import org.junit.Test;
+
 /**
  * Tests the class {@link org.testsuite.data.Test}.
  * 
@@ -58,6 +58,7 @@ public class TestTest {
 		assertNull(_data.getError());
 		assertNull(_data.getIn());
 		assertFalse(_data.isExists());
+		assertTrue(_data.isJvm());
 	}
 	
 	/**
@@ -238,5 +239,22 @@ public class TestTest {
 	public void testSetTerminated() {
 		_data.setTerminated(true);
 		assertTrue(_data.isTerminated());
+	}
+	
+	/**
+	 * Tests if the test is run in a separate JVM returned correctly.
+	 */
+	@Test
+	public void testIsJvm() {
+		assertTrue(_data.isJvm());
+	}
+	
+	/**
+	 * Tests if the test can be run in a separate JVM correctly set.
+	 */
+	@Test
+	public void testSetJvm() {
+		_data.setJvm(false);
+		assertFalse(_data.isTerminated());
 	}
 }

@@ -65,6 +65,13 @@ public class Test extends Data {
 	private boolean _terminated;
 	
 	/**
+	 * Saves whether the test is run into a separate JVM.
+	 * 
+	 * Standard value is true.
+	 */
+	private boolean _jvm;
+	
+	/**
 	 * Initialize the data of this class
 	 */
 	public Test() {
@@ -76,6 +83,7 @@ public class Test extends Data {
 		_console = null;
 		_executed = true;
 		_terminated = false;
+		_jvm = true;
 	}
 	
 	/**
@@ -229,5 +237,23 @@ public class Test extends Data {
 	 */
 	public void setTerminated(boolean terminated) {
 		_terminated = terminated;
+	}
+	
+	/**
+	 * Return whether the test is run in a separate JVM.
+	 * 
+	 * @return If the test is run in a separate JVM?
+	 */
+	public boolean isJvm() {
+		return _jvm;
+	}
+	
+	/**
+	 * Saves whether the test is run in a separate JVM.
+	 * 
+	 * @param jvm If the test is run in a separate JVM?
+	 */
+	public void setJvm(boolean jvm) {
+		_jvm = jvm;
 	}
 }
