@@ -315,17 +315,7 @@ public class DlgConfigGeneral extends DlgConfig {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				if (e.getFirstIndex() > -1) {
-					_listProperties.getComponentPopupMenu().getComponent(1)
-						.setEnabled(true);
-					_listProperties.getComponentPopupMenu().getComponent(2)
-						.setEnabled(true);
-				} else {
-					_listProperties.getComponentPopupMenu().getComponent(1)
-					.setEnabled(false);
-				_listProperties.getComponentPopupMenu().getComponent(2)
-					.setEnabled(false);
-				}
+				setPopupEnabled(_listProperties, e.getFirstIndex() > -1);
 			}
 			
 		});
@@ -365,18 +355,7 @@ public class DlgConfigGeneral extends DlgConfig {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				// OPT Insert in a private method (Merge with LisSelectionListener from system properties)
-				if (e.getFirstIndex() > -1) {
-					_listClassPaths.getComponentPopupMenu().getComponent(1)
-						.setEnabled(true);
-					_listClassPaths.getComponentPopupMenu().getComponent(2)
-						.setEnabled(true);
-				} else {
-					_listClassPaths.getComponentPopupMenu().getComponent(1)
-					.setEnabled(false);
-					_listClassPaths.getComponentPopupMenu().getComponent(2)
-					.setEnabled(false);
-				}
+				setPopupEnabled(_listClassPaths, e.getFirstIndex() > -1);
 			}
 			
 		});
@@ -416,18 +395,7 @@ public class DlgConfigGeneral extends DlgConfig {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				// OPT Insert in a private method (Merge with LisSelectionListener from system properties)
-				if (e.getFirstIndex() > -1) {
-					_listJavascript.getComponentPopupMenu().getComponent(1)
-						.setEnabled(true);
-					_listJavascript.getComponentPopupMenu().getComponent(2)
-						.setEnabled(true);
-				} else {
-					_listJavascript.getComponentPopupMenu().getComponent(1)
-					.setEnabled(false);
-					_listJavascript.getComponentPopupMenu().getComponent(2)
-					.setEnabled(false);
-				}
+				setPopupEnabled(_listJavascript, e.getFirstIndex() > -1);
 			}
 			
 		});
@@ -467,18 +435,7 @@ public class DlgConfigGeneral extends DlgConfig {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				// OPT Insert in a private method (Merge with LisSelectionListener from system properties)
-				if (e.getFirstIndex() > -1) {
-					_listStylesheets.getComponentPopupMenu().getComponent(1)
-						.setEnabled(true);
-					_listStylesheets.getComponentPopupMenu().getComponent(2)
-						.setEnabled(true);
-				} else {
-					_listStylesheets.getComponentPopupMenu().getComponent(1)
-					.setEnabled(false);
-					_listStylesheets.getComponentPopupMenu().getComponent(2)
-					.setEnabled(false);
-				}
+				setPopupEnabled(_listStylesheets, e.getFirstIndex() > -1);
 			}
 			
 		});
@@ -859,5 +816,18 @@ public class DlgConfigGeneral extends DlgConfig {
 	 */
 	public Config getConfig() {
 		return _config;
+	}
+	
+	/**
+	 * Enabled or disabled from pop-up menu of the specified list the "Change" 
+	 * and the "Delete" menu item.
+	 *  
+	 * @param list The list, which enabled or disabled the pop-up menu items.
+	 * 
+	 * @param enabled If the menu items are enabled?
+	 */
+	private void setPopupEnabled(JList<String> list, boolean enabled) {
+		list.getComponentPopupMenu().getComponent(1).setEnabled(enabled);
+		list.getComponentPopupMenu().getComponent(2).setEnabled(enabled);
 	}
 }
