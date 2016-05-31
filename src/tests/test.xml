@@ -15,6 +15,12 @@
 		<classpath>
 			<path>bin</path>
 		</classpath>
+		<stylesheet>
+			<file>resources/html/out.css</file>
+		</stylesheet>
+		<javascript>
+			<file>resources/html/out.js</file>
+		</javascript>
 	</config>
 	
 	<testGroup>
