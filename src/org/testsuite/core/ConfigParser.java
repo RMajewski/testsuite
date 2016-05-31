@@ -89,7 +89,6 @@ public class ConfigParser {
 					XMLInputFactory.newInstance().createXMLEventReader(is);
 			
 			String data = new String();
-			// OPT boolean variables in a int variable?
 			boolean config = false;
 			boolean stylesheet = false;
 			boolean javascript = false;
