@@ -76,6 +76,16 @@ public class Config {
 	private List<String> _listClasspath;
 	
 	/**
+	 * Saves the list of java script files.
+	 */
+	private List<String> _listJavascript;
+	
+	/**
+	 * Saves the list of style sheet files.
+	 */
+	private List<String> _listStylesheet;
+	
+	/**
 	 * Saves the maximum duration for a test.
 	 */
 	private long _maxDuration;
@@ -86,6 +96,8 @@ public class Config {
 	public Config() {
 		_property = new ArrayList<String>();
 		_listClasspath = new ArrayList<String>();
+		_listJavascript = new ArrayList<String>();
+		_listStylesheet = new ArrayList<String>();
 		_pathSuitesResult = new String();
 		_classpath = new String();
 		clear();
@@ -361,13 +373,122 @@ public class Config {
 	}
 	
 	/**
+	 * Added a java script file to the list.
+	 * 
+	 * @param property The new java script file, which is to be added to the
+	 * list.
+	 */
+	public void addJavascriptFile(String name) {
+		if ((name == null) || name.isEmpty())
+			throw new IllegalArgumentException();
+		_listJavascript.add(name);
+	}
+	
+	/**
+	 * Returns the specified java script file from the list
+	 * 
+	 * @param index Place where the java script file is.
+	 * 
+	 * @return The specified java script file.
+	 */
+	public String getJavascriptFile(int index) {
+		return _listJavascript.get(index);
+	}
+	
+	/**
+	 * Remove the java script file from the list of java script files.
+	 * 
+	 * @param name Java script file that is to be deleted
+	 */
+	public void removeJavascriptFile(String name) {
+		_listJavascript.remove(name);		
+	}
+	
+	/**
+	 * Change the java script file
+	 * 
+	 * @param old Old java script file name
+	 * 
+	 * @param name Changed java script file name
+	 */
+	public void changeJavascriptFile(String old, String name) {
+		int index = _listJavascript.indexOf(old);
+		_listJavascript.remove(index);
+		_listJavascript.add(index, name);
+	}
+	
+	/**
+	 * Added a style sheet file to the list.
+	 * 
+	 * @param property The new style sheet file, which is to be added to the
+	 * list.
+	 */
+	public void addStylesheetFile(String name) {
+		if ((name == null) || name.isEmpty())
+			throw new IllegalArgumentException();
+		_listStylesheet.add(name);
+	}
+	
+	/**
+	 * Returns the specified style sheet file from the list
+	 * 
+	 * @param index Place where the style sheet file is.
+	 * 
+	 * @return The specified style sheet file.
+	 */
+	public String getStylesheetFile(int index) {
+		return _listStylesheet.get(index);
+	}
+	
+	/**
+	 * Remove the style sheet file from the list of java script files.
+	 * 
+	 * @param name style sheet file that is to be deleted
+	 */
+	public void removeStylesheetFile(String name) {
+		_listStylesheet.remove(name);		
+	}
+	
+	/**
+	 * Change the style sheet file
+	 * 
+	 * @param old Old java style sheet name
+	 * 
+	 * @param name Changed style sheet file name
+	 */
+	public void changeStylesheetFile(String old, String name) {
+		int index = _listStylesheet.indexOf(old);
+		_listStylesheet.remove(index);
+		_listStylesheet.add(index, name);
+	}
+	
+	/**
+	 * Returns the count of java script files.
+	 * 
+	 * @return Count of java script files.
+	 */
+	public int javascriptFileCount() {
+		return _listJavascript.size();
+	}
+	
+	/**
+	 * Returns the count of style sheet files.
+	 * 
+	 * @return Count of style sheet files.
+	 */
+	public int stylesheetFileCount() {
+		return _listStylesheet.size();
+	}
+	
+	/**
 	 * Return if no settings exist.
 	 * @return If no settings exist?
 	 */
 	public boolean isEmpty() {
 		return (_pathLibrary.isEmpty() && _pathResult.isEmpty() &&
 				_pathSrc.isEmpty() && !_createHtml && (_maxDuration == 0) && 
-				_property.isEmpty() && _listClasspath.isEmpty());
+				_property.isEmpty() && _listClasspath.isEmpty() && 
+				_listJavascript.isEmpty() && _listStylesheet.isEmpty());
 	}
 	
 	/**
@@ -381,5 +502,7 @@ public class Config {
 		_maxDuration = 0;
 		_property.clear();
 		_listClasspath.clear();
+		_listJavascript.clear();
+		_listStylesheet.clear();
 	}
 }

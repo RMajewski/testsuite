@@ -547,6 +547,148 @@ public class TestConfig {
 	}
 	
 	/**
+	 * Checks whether a java script file name can be added to the list.
+	 */
+	@Test
+	public void testAddJavascriptFile() {
+		String name = "test";
+		_config.addJavascriptFile(name);
+		assertEquals(1, _config.javascriptFileCount());
+	}
+	
+	/**
+	 * Tests whether the error IllegalArgumentException appears when zero is
+	 * passed as a parameter.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testAddJavascriptFileWithNullAsParameter() {
+		_config.addJavascriptFile(null);
+		assertEquals(0, _config.javascriptFileCount());
+	}
+	
+	/**
+	 * Tests whether the error IllegalArgumentException appears when empty 
+	 * string is passed as a parameter.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testAddJavascriptFileWithEmptyStringAsParameter() {
+		_config.addJavascriptFile(new String());
+		assertEquals(0, _config.javascriptFileCount());
+	}
+	
+	/**
+	 * Tests if the java script file name is returned correctly.
+	 */
+	@Test
+	public void testGetJavascriptFile() {
+		String name = "test";
+		_config.addJavascriptFile(name);
+		assertEquals(name, _config.getJavascriptFile(0));
+	}
+	
+	/**
+	 * Verifies that the correct number of java script file names is returned.
+	 */
+	@Test
+	public void testJavascriptFileCount() {
+		assertEquals(0, _config.javascriptFileCount());
+	}
+	
+	/**
+	 * Verifies that the correct java script file has changed.
+	 */
+	@Test
+	public void testChangeJavascriptFile() {
+		String name1 = "Test1";
+		String name2 = "Test2";
+		String name3 = "Test3";
+		
+		_config.addJavascriptFile(name1);
+		_config.addJavascriptFile(name2);
+		_config.addJavascriptFile(name3);
+		
+		assertEquals(3, _config.javascriptFileCount());
+		
+		_config.changeJavascriptFile(name2, "Test4");
+		
+		assertEquals(3, _config.javascriptFileCount());
+		assertEquals(name1, _config.getJavascriptFile(0));
+		assertEquals("Test4", _config.getJavascriptFile(1));
+		assertEquals(name3, _config.getJavascriptFile(2));
+	}
+	
+	/**
+	 * Checks whether a java script file name can be added to the list.
+	 */
+	@Test
+	public void testAddStylesheetFile() {
+		String name = "test";
+		_config.addStylesheetFile(name);
+		assertEquals(1, _config.stylesheetFileCount());
+	}
+	
+	/**
+	 * Tests whether the error IllegalArgumentException appears when zero is
+	 * passed as a parameter.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testAddStylesheetFileWithNullAsParameter() {
+		_config.addStylesheetFile(null);
+		assertEquals(0, _config.stylesheetFileCount());
+	}
+	
+	/**
+	 * Tests whether the error IllegalArgumentException appears when empty 
+	 * string is passed as a parameter.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testAddStylesheetFileWithEmptyStringAsParameter() {
+		_config.addStylesheetFile(new String());
+		assertEquals(0, _config.stylesheetFileCount());
+	}
+	
+	/**
+	 * Tests if the java script file name is returned correctly.
+	 */
+	@Test
+	public void testGetStylesheetFile() {
+		String name = "test";
+		_config.addStylesheetFile(name);
+		assertEquals(name, _config.getStylesheetFile(0));
+	}
+	
+	/**
+	 * Verifies that the correct number of java script file names is returned.
+	 */
+	@Test
+	public void testStylesheetFileCount() {
+		assertEquals(0, _config.stylesheetFileCount());
+	}
+	
+	/**
+	 * Verifies that the correct java script file has changed.
+	 */
+	@Test
+	public void testChangeStylesheetFile() {
+		String name1 = "Test1";
+		String name2 = "Test2";
+		String name3 = "Test3";
+		
+		_config.addStylesheetFile(name1);
+		_config.addStylesheetFile(name2);
+		_config.addStylesheetFile(name3);
+		
+		assertEquals(3, _config.stylesheetFileCount());
+		
+		_config.changeStylesheetFile(name2, "Test4");
+		
+		assertEquals(3, _config.stylesheetFileCount());
+		assertEquals(name1, _config.getStylesheetFile(0));
+		assertEquals("Test4", _config.getStylesheetFile(1));
+		assertEquals(name3, _config.getStylesheetFile(2));
+	}
+	
+	/**
 	 * Tests whether the proper configuration entries have been reset.
 	 */
 	@Test
