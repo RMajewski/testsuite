@@ -1215,7 +1215,7 @@ implements ActionListener, TestEventListener, ValidationEventListener {
 		try {
 			
 			HtmlOut html = new HtmlOut(htmlFile);
-			html.htmlHead();
+			html.htmlHead(_config);
 			
 			List<TestRunner> testRunner = 
 					((AppTreeModel)_tree.getModel())

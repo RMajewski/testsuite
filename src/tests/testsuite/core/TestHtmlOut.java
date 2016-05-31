@@ -34,6 +34,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.testsuite.core.HtmlOut;
+import org.testsuite.data.Config;
 
 /**
  * Test for the class {@link org.testsuite.core.HtmlOut}.
@@ -123,7 +124,11 @@ public class TestHtmlOut {
 	 */
 	@Test
 	public void testHtmlHead() throws IOException {
-		_html.htmlHead();
+		Config config = mock(Config.class);
+		when(config.javascriptFileCount()).thenReturn(0);
+		when(config.stylesheetFileCount()).thenReturn(0);
+		
+		_html.htmlHead(config);
 		
 		verify(_bufferedWriter, atLeastOnce()).newLine();
 		verify(_bufferedWriter, atLeastOnce()).write(Matchers.anyString());

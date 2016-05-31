@@ -29,6 +29,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import org.testsuite.data.Config;
 import org.testsuite.helper.HelperCalendar;
 
 /**
@@ -98,13 +99,13 @@ public class HtmlOut {
 		
 		try {
 			URL url = getClass().getClassLoader().getResource(name);
-			System.out.println(url);
 			BufferedReader bf = new BufferedReader(new FileReader(
 					url.getFile()));
 			if (bf.ready()) {
 				String line;
 				while ((line = bf.readLine()) != null) {
 					ret.append(line);
+					ret.append(System.lineSeparator());
 				}
 				bf.close();
 			}
@@ -117,9 +118,11 @@ public class HtmlOut {
 	/**
 	 * Returns the HTML head
 	 * 
+	 * @param config The general configuration
+	 * 
 	 * @throws IOException 
 	 */
-	public void htmlHead() throws IOException {
+	public void htmlHead(Config config) throws IOException {
 		String date = HelperCalendar.datetimeToString(new Date().getTime());
 		
 		_bw.write("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 "
@@ -136,15 +139,28 @@ public class HtmlOut {
 		_bw.write("\t\t<meta http-equiv=\"content-type\" "
 				+ "content=\"text/html; charset=UTF-8\">");
 		_bw.newLine();
-		
+
 		_bw.write("\t\t<style>"); _bw.newLine();
-		_bw.write(readFile("resources" + File.separator + "html" +
-				File.separator + "out.css")); _bw.newLine();
+		
+		if (config.javascriptFileCount() > 0)
+			for (int i = 0; i < config.stylesheetFileCount(); i++)
+				_bw.write(readFile(config.getStylesheetFile(i)));
+		else
+			_bw.write(readFile("resources" + File.separator + "html" +
+					File.separator + "out.css"));
+		
+		_bw.newLine();
 		_bw.write("\t\t</style>"); _bw.newLine();
 		
 		_bw.write("\t\t<script type=\"text/javascript\">"); _bw.newLine();
-		_bw.write(readFile("resources" + File.separator + "html" +
-				File.separator + "out.js")); _bw.newLine();
+		
+		if (config.javascriptFileCount() > 0)
+			for (int i = 0; i < config.javascriptFileCount(); i++)
+				_bw.write(readFile(config.getJavascriptFile(i)));
+		else
+			_bw.write(readFile("resources" + File.separator + "html" +
+					File.separator + "out.js"));
+		
 		_bw.write("\t\t</script>"); _bw.newLine();
 		
 		_bw.write("\t</head>"); _bw.newLine();

@@ -220,6 +220,8 @@ public class TestTestCore {
 		String pathResult = "result";
 		
 		when(_config.getPathResult()).thenReturn(pathResult);
+		when(_config.javascriptFileCount()).thenReturn(0);
+		when(_config.stylesheetFileCount()).thenReturn(0);
 		
 		HtmlOut html = mock(HtmlOut.class);
 		
@@ -252,7 +254,7 @@ public class TestTestCore {
 		PowerMockito.verifyNew(HtmlOut.class)
 			.withArguments(Matchers.anyString());
 		
-		verify(html).htmlHead();
+		verify(html).htmlHead(_config);
 		verify(html, times(3)).writeHtml(Matchers.anyString());
 		verify(html).htmlEnd();
 	}
@@ -286,7 +288,7 @@ public class TestTestCore {
 		PowerMockito.verifyNew(HtmlOut.class, never())
 			.withArguments(Matchers.anyString());
 		
-		verify(html, never()).htmlHead();
+		verify(html, never()).htmlHead(_config);
 		verify(html, never()).writeHtml(Matchers.anyString());
 		verify(html, never()).htmlEnd();
 	}

@@ -155,7 +155,7 @@ public class TestCore {
 			try {
 				
 				HtmlOut html = new HtmlOut(htmlFile);
-				html.htmlHead();
+				html.htmlHead(_config);
 				
 				for (int runner = 0; runner < _testRunner.size(); runner++) {
 					boolean line = true;
