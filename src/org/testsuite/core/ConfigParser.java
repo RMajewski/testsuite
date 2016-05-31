@@ -103,6 +103,7 @@ public class ConfigParser {
 			int suiteId = 0;
 			int testId = 0;
 			boolean executed = true;
+			boolean jvm = true;
 			
 			while(parser.hasNext()) {
 				XMLEvent event = parser.nextEvent();
@@ -160,16 +161,27 @@ public class ConfigParser {
 								break;
 								
 							case "test":
-								Iterator<?> atrs = element.getAttributes();
-								if (atrs.hasNext()) {
+								boolean read = false;
+								for (Iterator<?> atrs = element.getAttributes();
+										atrs.hasNext();) {
 									Attribute atr = (Attribute) atrs.next();
+									read = true;
+									
 									if (atr.getName().toString().equals(
 											"executed"))
 										executed = Boolean.parseBoolean(
 												atr.getValue().toString());
+									
+									else if (atr.getName().toString().equals(
+											"jvm"))
+										jvm = Boolean.parseBoolean(
+												atr.getValue().toString());
 								}
-								else
+								
+								if (!read) {
+									jvm = true;
 									executed = true;
+								}
 								break;
 							
 							case "javascript":
@@ -249,7 +261,7 @@ public class ConfigParser {
 									_config.addStylesheetFile(data);
 								break;
 								
-							// The test group
+							// The TestRunner
 							case "testRunner":
 								if (testGroup && (runner == null))
 									runner = (TestRunner)getClass()
@@ -295,6 +307,7 @@ public class ConfigParser {
 									_config.addClassPath(data);
 								break;
 								
+							// The TestSuite
 							case "testSuite":
 								if (testSuite && (runner != null) && 
 										(suite != null))
@@ -313,12 +326,14 @@ public class ConfigParser {
 									suite.setPackage(data);
 								break;
 								
+							// The Test
 							case "test":
 								if (testSuite && (suite != null) &&
 										(runner != null)) {
 									org.testsuite.data.Test test = 
 											runner.newTest(data, testId++);
 									test.setExecuted(executed);
+									test.setJvm(jvm);
 									suite.addTest(test);
 								}
 								break;

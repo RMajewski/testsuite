@@ -48,7 +48,7 @@
 		<testSuite>
 			<name>Test 2</name>
 			<package>test2</package>
-			<test>Test2Class</test>
+			<test jvm="false">Test2Class</test>
 			<test>Test3Class</test>
 		</testSuite>
 	</testGroup>
