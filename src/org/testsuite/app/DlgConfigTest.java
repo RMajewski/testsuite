@@ -58,13 +58,25 @@ public class DlgConfigTest extends DlgConfig {
 	 * Saves the instance of check box for execute test.
 	 */
 	private JCheckBox _cbExecute;
+	
+	/**
+	 * Saves the instance of check box for run test in a separate JVM.
+	 */
+	private JCheckBox _cbJvm;
 
 	/**
 	 * Initialize the class an create the layout. 
 	 * 
 	 * @param owner Window that called this dialog.
+	 * 
+	 * @param name The name of test
+	 * 
+	 * @param execute Execute the test?
+	 * 
+	 * @param jvm Run the test in a separate JVM?
 	 */
-	public DlgConfigTest(JFrame owner, String name, boolean execute) {
+	public DlgConfigTest(JFrame owner, String name, boolean execute, 
+			boolean jvm) {
 		super(owner, BUNDLE_FILE);
 		
 		setSize(500, 250);
@@ -106,6 +118,17 @@ public class DlgConfigTest extends DlgConfig {
 		gbc.gridwidth = 3;
 		getContentPane().add(_cbExecute, gbc);
 		
+		_cbJvm = new JCheckBox(_bundle.getString("label_jvm"));
+		_cbJvm.setSelected(jvm);
+		gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.insets = new Insets(5, 5, 5, 5);
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		gbc.gridheight = 1;
+		gbc.gridwidth = 3;
+		getContentPane().add(_cbJvm, gbc);
+		
 		JButton btn = new JButton(_bundle.getString("button_accept"));
 		btn.addActionListener(this);
 		btn.setActionCommand(BTN_ACCEPT);
@@ -114,7 +137,7 @@ public class DlgConfigTest extends DlgConfig {
 		gbc_btn.insets = new Insets(5, 5, 5, 5);
 		gbc_btn.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btn.gridx = 0;
-		gbc_btn.gridy = 4;
+		gbc_btn.gridy = 5;
 		getContentPane().add(btn, gbc_btn);
 		
 		btn = new JButton(_bundle.getString("button_cancel"));
@@ -125,7 +148,7 @@ public class DlgConfigTest extends DlgConfig {
 		gbc_btn.insets = new Insets(5, 5, 5, 5);
 		gbc_btn.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btn.gridx = 2;
-		gbc_btn.gridy = 4;
+		gbc_btn.gridy = 5;
 		getContentPane().add(btn, gbc_btn);
 		
 		setModal(true);
@@ -148,6 +171,15 @@ public class DlgConfigTest extends DlgConfig {
 	 */
 	public boolean isTestExecute() {
 		return _cbExecute.isSelected();
+	}
+	
+	/**
+	 * Returns whether the test should be run in a separate JVM.
+	 * 
+	 * @return Should the test be run in a separate JVM?
+	 */
+	public boolean isTestRunInJvm() {
+		return _cbJvm.isSelected();
 	}
 
 }

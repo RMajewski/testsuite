@@ -161,11 +161,9 @@ public class ConfigParser {
 								break;
 								
 							case "test":
-								boolean read = false;
 								for (Iterator<?> atrs = element.getAttributes();
 										atrs.hasNext();) {
 									Attribute atr = (Attribute) atrs.next();
-									read = true;
 									
 									if (atr.getName().toString().equals(
 											"executed"))
@@ -176,11 +174,6 @@ public class ConfigParser {
 											"jvm"))
 										jvm = Boolean.parseBoolean(
 												atr.getValue().toString());
-								}
-								
-								if (!read) {
-									jvm = true;
-									executed = true;
 								}
 								break;
 							
@@ -336,6 +329,8 @@ public class ConfigParser {
 									test.setJvm(jvm);
 									suite.addTest(test);
 								}
+								jvm = true;
+								executed = true;
 								break;
 						}
 						break;

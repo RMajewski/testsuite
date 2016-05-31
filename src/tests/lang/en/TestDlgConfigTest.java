@@ -53,6 +53,7 @@ public class TestDlgConfigTest extends TestDlgConfig {
 	public void testEntriesForComponents() {
 		assertNotNull(_bundle.getString("label_name"));
 		assertNotNull(_bundle.getString("label_execute"));
+		assertNotNull(_bundle.getString("label_jvm"));
 	}
 
 }

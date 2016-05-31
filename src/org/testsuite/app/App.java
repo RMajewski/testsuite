@@ -995,10 +995,11 @@ implements ActionListener, TestEventListener, ValidationEventListener {
 				TreePath path = _tree.getSelectionPath();
 				Test test = (Test)path.getLastPathComponent();
 				DlgConfigTest dlg = new DlgConfigTest(this, test.getName(), 
-						test.isExecuted());
+						test.isExecuted(), test.isJvm());
 				if (dlg.getExitStatus() == DlgConfigTest.EXIT_ACCEPT) {
 					test.setName(dlg.getTestName());
 					test.setExecuted(dlg.isTestExecute());
+					test.setJvm(dlg.isTestRunInJvm());
 				}
 				break;
 				
