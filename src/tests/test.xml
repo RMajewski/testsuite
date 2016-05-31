@@ -46,6 +46,13 @@
 			<library version="1.3.0" name="hamcrest" path="/usr/share/eclipse/plugins/">org.hamcrest.core_1.3.0.v201303031735.jar</library>
 		</libraries>
 		<testSuite>
+			<name>Test org.testsuite.App</name>
+			<package>tests.testsuite.app</package>
+			<test>TestAppTreeModel</test>
+			<test>TestDlgConfig</test>
+			<test>TestValidationEvent</test>
+		</testSuite>
+		<testSuite>
 			<name>Test org.testsuite.Core</name>
 			<package>tests.testsuite.core</package>
 			<test>TestConfigParser</test>
@@ -72,11 +79,6 @@
 			<test>TestTestSuite</test>
 		</testSuite>
 		<testSuite>
-			<name>Test org.testsuite.App</name>
-			<package>tests.testsuite.app</package>
-			<test>TestDlgConfig</test>
-		</testSuite>
-		<testSuite>
 			<name>Test org.testsuite.Helper</name>
 			<package>tests.testsuite.helper</package>
 			<test>TestHelperCalendar</test>
@@ -93,6 +95,7 @@
 			<test>TestHtmlOut</test>
 			<test>TestTestCore</test>
 			<test>TestTestRunner</test>
+			<test>TestValidationEventRenderer</test>
 		</testSuite>
 		<testSuite>
 			<name>Tests the German language files</name>
@@ -106,6 +109,7 @@
 			<test>TestHtmlOut_de</test>
 			<test>TestTestCore_de</test>
 			<test>TestTestRunner_de</test>
+			<test>TestValidationEventRenderer_de</test>
 		</testSuite>
 	</testGroup>
 	
@@ -117,9 +121,15 @@
 			<library version="2.3.1.1" name="jemmy">jemmy.jar</library>
 		</libraries>
 		<testSuite>
+			<name>Test fit</name>
+			<package>tests.fit.fit</package>
+			<test>FitFixtureRun</test>
+		</testSuite>
+		<testSuite>
 			<name>Test the class org.testsuite.app.App</name>
 			<package>tests.fit.app</package>
 			<test>AppElementsCreated</test>
+			<test>AppButtonsRightEnabled</test>
 			<test>AppConfigurationLoad</test>
 			<test>AppConfigurationSave</test>
 			<test>AppConfigurationValidate</test>
@@ -131,6 +141,9 @@
 			<test>AppTreePopupIsRightEnabled</test>
 			<test>AppChangeGeneralConfiguration</test>
 			<test>AppGeneralConfigurationProperties</test>
+			<test>AppGeneralConfigurationClassPaths</test>
+			<test>AppGeneralConfigurationJavascript</test>
+			<test>AppGeneralConfigurationStylesheet</test>
 			<test>AppTreeInsertTestRunner</test>
 			<test>AppTreeDeleteTestRunner</test>
 			<test>AppTestRunnerAllOtherTestsIgnored</test>

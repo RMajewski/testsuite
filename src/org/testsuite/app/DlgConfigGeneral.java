@@ -93,6 +93,36 @@ public class DlgConfigGeneral extends DlgConfig {
 	private static final String CLASSPATH_DELETE = "App.delete.ClassPath";
 	
 	/**
+	 * Saves the action command for the insert a new java script file
+	 */
+	private static final String JAVASCRIPT_INSERT = "App.insert.Javascript";
+	
+	/**
+	 * Saves the action command for the change a java script file
+	 */
+	private static final String JAVASCRIPT_CHANGE = "App.change.Javascript";
+	
+	/**
+	 * Saves the action command for the delete a java script file
+	 */
+	private static final String JAVASCRIPT_DELETE = "App.delete.Javascript";
+	
+	/**
+	 * Saves the action command for the insert a new style sheet file
+	 */
+	private static final String STYLESHEET_INSERT = "App.insert.Stylesheet";
+	
+	/**
+	 * Saves the action command for the change a style sheet file
+	 */
+	private static final String STYLESHEET_CHANGE = "App.change.Stylesheet";
+	
+	/**
+	 * Saves the action command for the delete a style sheet file
+	 */
+	private static final String STYLESHEET_DELETE = "App.delete.Stylesheet";
+	
+	/**
 	 * Saves the instance of text field for library path.
 	 */
 	private JTextField _txtLibraryPath;
@@ -128,6 +158,16 @@ public class DlgConfigGeneral extends DlgConfig {
 	private JList<String> _listClassPaths;
 	
 	/**
+	 * Saves the instance of list for java script files.
+	 */
+	private JList<String> _listJavascript;
+	
+	/**
+	 * Saves the instance of list for style sheet files.
+	 */
+	private JList<String> _listStylesheets;
+	
+	/**
 	 * Saves the object of the general configuration
 	 */
 	private Config _config;
@@ -145,15 +185,16 @@ public class DlgConfigGeneral extends DlgConfig {
 		
 		_config = config;
 		
-		setSize(600, 550);
+		setSize(700, 730);
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] {250, 150, 200};
 		gridBagLayout.rowHeights = new int[] {30, 30, 30, 30, 30, 30, 30, 30, 
-				30, 30, 30, 30, 30, 30, 30};
+				30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30};
 		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 
-				0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+				0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+				0.0, 0.0};
 		getContentPane().setLayout(gridBagLayout);
 		
 		JLabel label = new JLabel(_bundle.getString("label_library_path"));
@@ -349,6 +390,108 @@ public class DlgConfigGeneral extends DlgConfig {
 		gbc.gridwidth = 2;
 		getContentPane().add(new JScrollPane(_listClassPaths), gbc);
 		
+		label = new JLabel(_bundle.getString("label_javascript"));
+		gbc = new GridBagConstraints();
+		gbc.anchor = GridBagConstraints.EAST;
+		gbc.insets = new Insets(5, 5, 5, 5);
+		gbc.gridx = 0;
+		gbc.gridy = 13;
+		getContentPane().add(label, gbc);
+		
+		_listJavascript = new JList<String>();
+		_listJavascript.setModel(new AbstractListModel<String>() {
+
+			@Override
+			public String getElementAt(int index) {
+				return _config.getJavascriptFile(index);
+			}
+
+			@Override
+			public int getSize() {
+				return _config.javascriptFileCount();
+			}
+			
+		});
+		_listJavascript.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				// OPT Insert in a private method (Merge with LisSelectionListener from system properties)
+				if (e.getFirstIndex() > -1) {
+					_listJavascript.getComponentPopupMenu().getComponent(1)
+						.setEnabled(true);
+					_listJavascript.getComponentPopupMenu().getComponent(2)
+						.setEnabled(true);
+				} else {
+					_listJavascript.getComponentPopupMenu().getComponent(1)
+					.setEnabled(false);
+					_listJavascript.getComponentPopupMenu().getComponent(2)
+					.setEnabled(false);
+				}
+			}
+			
+		});
+		_listJavascript.setComponentPopupMenu(createPopupForJavascript());
+		gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.insets = new Insets(5, 5, 5, 5);
+		gbc.gridx = 1;
+		gbc.gridy = 13;
+		gbc.gridheight = 4;
+		gbc.gridwidth = 2;
+		getContentPane().add(new JScrollPane(_listJavascript), gbc);
+		
+		label = new JLabel(_bundle.getString("label_stylesheet"));
+		gbc = new GridBagConstraints();
+		gbc.anchor = GridBagConstraints.EAST;
+		gbc.insets = new Insets(5, 5, 5, 5);
+		gbc.gridx = 0;
+		gbc.gridy = 17;
+		getContentPane().add(label, gbc);
+		
+		_listStylesheets = new JList<String>();
+		_listStylesheets.setModel(new AbstractListModel<String>() {
+
+			@Override
+			public String getElementAt(int index) {
+				return _config.getStylesheetFile(index);
+			}
+
+			@Override
+			public int getSize() {
+				return _config.stylesheetFileCount();
+			}
+			
+		});
+		_listStylesheets.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				// OPT Insert in a private method (Merge with LisSelectionListener from system properties)
+				if (e.getFirstIndex() > -1) {
+					_listStylesheets.getComponentPopupMenu().getComponent(1)
+						.setEnabled(true);
+					_listStylesheets.getComponentPopupMenu().getComponent(2)
+						.setEnabled(true);
+				} else {
+					_listStylesheets.getComponentPopupMenu().getComponent(1)
+					.setEnabled(false);
+					_listStylesheets.getComponentPopupMenu().getComponent(2)
+					.setEnabled(false);
+				}
+			}
+			
+		});
+		_listStylesheets.setComponentPopupMenu(createPopupForStylesheet());
+		gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.insets = new Insets(5, 5, 5, 5);
+		gbc.gridx = 1;
+		gbc.gridy = 17;
+		gbc.gridheight = 4;
+		gbc.gridwidth = 2;
+		getContentPane().add(new JScrollPane(_listStylesheets), gbc);
+		
 		JButton btn = new JButton(_bundle.getString("button_accept"));
 		btn.addActionListener(this);
 		btn.setActionCommand(BTN_ACCEPT);
@@ -357,7 +500,7 @@ public class DlgConfigGeneral extends DlgConfig {
 		gbc_btn.insets = new Insets(5, 5, 5, 5);
 		gbc_btn.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btn.gridx = 0;
-		gbc_btn.gridy = 15;
+		gbc_btn.gridy = 22;
 		getContentPane().add(btn, gbc_btn);
 		
 		btn = new JButton(_bundle.getString("button_cancel"));
@@ -368,7 +511,7 @@ public class DlgConfigGeneral extends DlgConfig {
 		gbc_btn.insets = new Insets(5, 5, 5, 5);
 		gbc_btn.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btn.gridx = 2;
-		gbc_btn.gridy = 15;
+		gbc_btn.gridy = 22;
 		getContentPane().add(btn, gbc_btn);
 		
 		setModal(true);
@@ -378,7 +521,7 @@ public class DlgConfigGeneral extends DlgConfig {
 	/**
 	 * Responds to the click of a button or the click on a pop-up menu item.
 	 * 
-	 * @param ae Data auf the event
+	 * @param ae Data for the event
 	 */
 	@Override
 	public void actionPerformed(ActionEvent ae) {
@@ -430,6 +573,7 @@ public class DlgConfigGeneral extends DlgConfig {
 				if (ret == JOptionPane.YES_OPTION) {
 					_config.removeProperty(_listProperties.getSelectedValue());
 					_listProperties.updateUI();
+					// OPT Insert in a private method 
 					if (_listProperties.getSelectedIndex() >= 
 							_listProperties.getModel().getSize()) {
 						_listProperties.clearSelection();
@@ -476,12 +620,107 @@ public class DlgConfigGeneral extends DlgConfig {
 				if (ret == JOptionPane.YES_OPTION) {
 					_config.removeClassPath(_listClassPaths.getSelectedValue());
 					_listClassPaths.updateUI();
+					// OPT Insert in a private method (Merge with system properties) 
 					if (_listClassPaths.getSelectedIndex() >= 
 							_listClassPaths.getModel().getSize()) {
 						_listClassPaths.clearSelection();
 						_listClassPaths.getComponentPopupMenu().getComponent(1)
 							.setEnabled(false);
 						_listClassPaths.getComponentPopupMenu().getComponent(2)
+						.setEnabled(false);
+					}
+				}
+				break;
+				
+			// Insert a new java script file
+			case JAVASCRIPT_INSERT:
+				ncp = JOptionPane.showInputDialog(this, 
+						_bundle.getString("insert_javascript_message"),
+						_bundle.getString("insert_javascript_title"),
+						JOptionPane.OK_CANCEL_OPTION);
+				if ((ncp != null) && !ncp.isEmpty()) {
+					_config.addJavascriptFile(ncp);
+					_listJavascript.updateUI();
+				}
+				break;
+		
+			// Change the selected java script file
+			case JAVASCRIPT_CHANGE:
+				ncp = JOptionPane.showInputDialog(this, 
+						_bundle.getString("change_javascript_message"),
+						_bundle.getString("change_javascript_title"),
+						JOptionPane.OK_CANCEL_OPTION);
+				if ((ncp != null) && !ncp.isEmpty()) {
+					_config.changeJavascriptFile(
+							_listJavascript.getSelectedValue(), ncp);
+					_listJavascript.updateUI();
+				}
+				break;
+		
+			// Delete the selected class path
+			case JAVASCRIPT_DELETE:
+				ret = JOptionPane.showConfirmDialog(this, 
+						_bundle.getString("delete_javascript_message"),
+						_bundle.getString("delete_javascript_title"),
+						JOptionPane.YES_NO_OPTION, 
+						JOptionPane.QUESTION_MESSAGE);
+				if (ret == JOptionPane.YES_OPTION) {
+					_config.removeJavascriptFile(_listJavascript.getSelectedValue());
+					_listJavascript.updateUI();
+					// OPT Insert in a private method (Merge with system properties) 
+					if (_listJavascript.getSelectedIndex() >= 
+							_listJavascript.getModel().getSize()) {
+						_listJavascript.clearSelection();
+						_listJavascript.getComponentPopupMenu().getComponent(1)
+							.setEnabled(false);
+						_listJavascript.getComponentPopupMenu().getComponent(2)
+						.setEnabled(false);
+					}
+				}
+				break;
+				
+			// Insert a new style sheet file
+			case STYLESHEET_INSERT:
+				ncp = JOptionPane.showInputDialog(this, 
+						_bundle.getString("insert_stylesheet_message"),
+						_bundle.getString("insert_stylesheet_title"),
+						JOptionPane.OK_CANCEL_OPTION);
+				if ((ncp != null) && !ncp.isEmpty()) {
+					_config.addStylesheetFile(ncp);
+					_listStylesheets.updateUI();
+				}
+				break;
+		
+			// Change the selected java script file
+			case STYLESHEET_CHANGE:
+				ncp = JOptionPane.showInputDialog(this, 
+						_bundle.getString("change_stylesheet_message"),
+						_bundle.getString("change_stylesheet_title"),
+						JOptionPane.OK_CANCEL_OPTION);
+				if ((ncp != null) && !ncp.isEmpty()) {
+					_config.changeStylesheetFile(
+							_listStylesheets.getSelectedValue(), ncp);
+					_listStylesheets.updateUI();
+				}
+				break;
+		
+			// Delete the selected class path
+			case STYLESHEET_DELETE:
+				ret = JOptionPane.showConfirmDialog(this, 
+						_bundle.getString("delete_stylesheet_message"),
+						_bundle.getString("delete_stylesheet_title"),
+						JOptionPane.YES_NO_OPTION, 
+						JOptionPane.QUESTION_MESSAGE);
+				if (ret == JOptionPane.YES_OPTION) {
+					_config.removeStylesheetFile(_listStylesheets.getSelectedValue());
+					_listStylesheets.updateUI();
+					// OPT Insert in a private method (Merge with system properties) 
+					if (_listStylesheets.getSelectedIndex() >= 
+							_listStylesheets.getModel().getSize()) {
+						_listStylesheets.clearSelection();
+						_listStylesheets.getComponentPopupMenu().getComponent(1)
+							.setEnabled(false);
+						_listStylesheets.getComponentPopupMenu().getComponent(2)
 						.setEnabled(false);
 					}
 				}
@@ -545,6 +784,68 @@ public class DlgConfigGeneral extends DlgConfig {
 		item.setMnemonic(_bundle.getString("delete_classpath_mnemonic").charAt(0));
 		item.addActionListener(this);
 		item.setActionCommand(CLASSPATH_DELETE);
+		item.setEnabled(false);
+		ret.add(item);
+		
+		return ret;
+	}
+	
+	/**
+	 * Create the pop-up menu for the java script files list
+	 * 
+	 * @return Pop-up menu for the java script files list
+	 */
+	private JPopupMenu createPopupForJavascript() {
+		JPopupMenu ret = new JPopupMenu();
+		
+		JMenuItem item = new JMenuItem(_bundle.getString("insert_javascript"));
+		item.setMnemonic(_bundle.getString("insert_javascript_mnemonic").charAt(0));
+		item.addActionListener(this);
+		item.setActionCommand(JAVASCRIPT_INSERT);
+		ret.add(item);
+		
+		item = new JMenuItem(_bundle.getString("change_javascript"));
+		item.setMnemonic(_bundle.getString("change_javascript_mnemonic").charAt(0));
+		item.addActionListener(this);
+		item.setActionCommand(JAVASCRIPT_CHANGE);
+		item.setEnabled(false);
+		ret.add(item);
+		
+		item = new JMenuItem(_bundle.getString("delete_javascript"));
+		item.setMnemonic(_bundle.getString("delete_javascript_mnemonic").charAt(0));
+		item.addActionListener(this);
+		item.setActionCommand(JAVASCRIPT_DELETE);
+		item.setEnabled(false);
+		ret.add(item);
+		
+		return ret;
+	}
+	
+	/**
+	 * Create the pop-up menu for the java script files list
+	 * 
+	 * @return Pop-up menu for the java script files list
+	 */
+	private JPopupMenu createPopupForStylesheet() {
+		JPopupMenu ret = new JPopupMenu();
+		
+		JMenuItem item = new JMenuItem(_bundle.getString("insert_stylesheet"));
+		item.setMnemonic(_bundle.getString("insert_stylesheet_mnemonic").charAt(0));
+		item.addActionListener(this);
+		item.setActionCommand(STYLESHEET_INSERT);
+		ret.add(item);
+		
+		item = new JMenuItem(_bundle.getString("change_stylesheet"));
+		item.setMnemonic(_bundle.getString("change_stylesheet_mnemonic").charAt(0));
+		item.addActionListener(this);
+		item.setActionCommand(STYLESHEET_CHANGE);
+		item.setEnabled(false);
+		ret.add(item);
+		
+		item = new JMenuItem(_bundle.getString("delete_stylesheet"));
+		item.setMnemonic(_bundle.getString("delete_stylesheet_mnemonic").charAt(0));
+		item.addActionListener(this);
+		item.setActionCommand(STYLESHEET_DELETE);
 		item.setEnabled(false);
 		ret.add(item);
 		

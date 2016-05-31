@@ -1,0 +1,209 @@
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Test the TestSuiteApp (general configuration java script files)</title>
+	</head>
+	<body>
+		<h2>Tests for the TestSuiteApp (general configuration java script files)</h2>
+		<p>Dialog DlgConfigGeneral is opened. Here the pop-up menu for the
+		java script files opens. It should have three entries and be only the 
+		first entry is enabled. Now is clicked the first entry. In the following
+		dialog the name of the java script file to enter and click OK. Now a new
+		java script file should be visible in the list of java script files.
+		These will be selected. It should items two and three enabled in the
+		pop-up menu. It is clicked the second pop-up menu item. In the next
+		window the new name of the java script file is entered and clicked Ok.
+		Now the name itself should haven changed the java script file in the
+		list. Finally clicked on third pop-up menu item. In the next dialog
+		click on No. It should have not changed in the list. Now is clicked
+		again on the third pop-up menu. In it the following dialog is clicked 
+		Yes. As now no java script file in the list</p>
+		<table border="1" cellpadding="1" cellspacing="1" style="width: 100%;">
+			<tbody>
+				<tr>
+					<td colspan="3">fit.ActionFixture</td>
+				</tr>
+				<tr>
+					<td>start</td>
+					<td>tests.fixtures.app.FixtureAppGeneralConfigurationJavascript</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>selectRootElementInTree</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>openPopup</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushConfigurationGeneralConfiguration</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getGeneralConfigurationJavascriptCount</td>
+					<td>0</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>openGeneralConfigurationJavascriptPopup</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>haveGeneralConfigurationJavascriptPopupInsert</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>haveGeneralConfigurationJavascriptPopupChange</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>haveGeneralConfigurationJavascriptPopupDelete</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isGeneralConfigurationJavascriptPopupInsertEnabled</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isGeneralConfigurationJavascriptPopupChangeEnabled</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isGeneralConfigurationJavascriptPopupDeleteEnabled</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushGeneralConfigurationJavascriptPopupInsert</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>enter</td>
+					<td>setGeneralConfigurationJavascriptDialogNameText</td>
+					<td>out.js</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushGeneralConfigurationJavascriptDialogOk</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getGeneralConfigurationJavascriptCount</td>
+					<td>1</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getGeneralConfigurationJavascript0Name</td>
+					<td>out.js</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>selectGeneralConfigurationJavascriptItem0</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isGeneralConfigurationJavascriptPopupInsertEnabled</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isGeneralConfigurationJavascriptPopupChangeEnabled</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isGeneralConfigurationJavascriptPopupDeleteEnabled</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushGeneralConfigurationJavascriptPopupChange</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>enter</td>
+					<td>setGeneralConfigurationJavascriptDialogNameText</td>
+					<td>out2.js</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushGeneralConfigurationJavascriptDialogOk</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getGeneralConfigurationJavascriptCount</td>
+					<td>1</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getGeneralConfigurationJavascript0Name</td>
+					<td>out2.js</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushGeneralConfigurationJavascriptPopupDelete</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushGeneralConfigurationJavascriptDialogNo</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getGeneralConfigurationJavascriptCount</td>
+					<td>1</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushGeneralConfigurationJavascriptPopupDelete</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushGeneralConfigurationJavascriptDialogYes</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getGeneralConfigurationJavascriptCount</td>
+					<td>0</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>openGeneralConfigurationJavascriptPopup</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isGeneralConfigurationJavascriptPopupInsertEnabled</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isGeneralConfigurationJavascriptPopupChangeEnabled</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isGeneralConfigurationJavascriptPopupDeleteEnabled</td>
+					<td>false</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>

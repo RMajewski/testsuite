@@ -58,6 +58,8 @@ public class TestDlgConfigGeneral extends TestDlgConfig {
 		assertNotNull(_bundle.getString("label_max_duration"));
 		assertNotNull(_bundle.getString("label_system_property"));
 		assertNotNull(_bundle.getString("label_system_classpath"));
+		assertNotNull(_bundle.getString("label_javascript"));
+		assertNotNull(_bundle.getString("label_stylesheet"));
 	}
 	
 	/**
@@ -111,6 +113,62 @@ public class TestDlgConfigGeneral extends TestDlgConfig {
 		assertNotNull(_bundle.getString("change_classpath_message"));
 		assertNotNull(_bundle.getString("delete_classpath_title"));
 		assertNotNull(_bundle.getString("delete_classpath_message"));
+		
+	}
+	
+	/**
+	 * Tests if have all entries for the pop-up menu items for the java script
+	 * files.
+	 */
+	@Test
+	public void testEntriesForPopupItemsForJavascriptFiles() {
+		assertNotNull(_bundle.getString("insert_javascript"));
+		assertNotNull(_bundle.getString("insert_javascript_mnemonic"));
+		assertNotNull(_bundle.getString("change_javascript"));
+		assertNotNull(_bundle.getString("change_javascript_mnemonic"));
+		assertNotNull(_bundle.getString("delete_javascript"));
+		assertNotNull(_bundle.getString("delete_javascript_mnemonic"));
+	}
+	
+	/**
+	 * Tests if have all entries for dialogs for java script files.
+	 */
+	@Test
+	public void testEntriesForDialogsForJavascriptFiles() {
+		assertNotNull(_bundle.getString("insert_javascript_title"));
+		assertNotNull(_bundle.getString("insert_javascript_message"));
+		assertNotNull(_bundle.getString("change_javascript_title"));
+		assertNotNull(_bundle.getString("change_javascript_message"));
+		assertNotNull(_bundle.getString("delete_javascript_title"));
+		assertNotNull(_bundle.getString("delete_javascript_message"));
+		
+	}
+	
+	/**
+	 * Tests if have all entries for the pop-up menu items for the style sheet
+	 * files.
+	 */
+	@Test
+	public void testEntriesForPopupItemsForStylesheetFiles() {
+		assertNotNull(_bundle.getString("insert_stylesheet"));
+		assertNotNull(_bundle.getString("insert_stylesheet_mnemonic"));
+		assertNotNull(_bundle.getString("change_stylesheet"));
+		assertNotNull(_bundle.getString("change_stylesheet_mnemonic"));
+		assertNotNull(_bundle.getString("delete_stylesheet"));
+		assertNotNull(_bundle.getString("delete_stylesheet_mnemonic"));
+	}
+	
+	/**
+	 * Tests if have all entries for dialogs for style sheet files.
+	 */
+	@Test
+	public void testEntriesForDialogsForStylesheetFiles() {
+		assertNotNull(_bundle.getString("insert_stylesheet_title"));
+		assertNotNull(_bundle.getString("insert_stylesheet_message"));
+		assertNotNull(_bundle.getString("change_stylesheet_title"));
+		assertNotNull(_bundle.getString("change_stylesheet_message"));
+		assertNotNull(_bundle.getString("delete_stylesheet_title"));
+		assertNotNull(_bundle.getString("delete_stylesheet_message"));
 		
 	}
 }

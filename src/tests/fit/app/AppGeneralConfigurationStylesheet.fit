@@ -1,0 +1,209 @@
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Test the TestSuiteApp (general configuration style sheet files)</title>
+	</head>
+	<body>
+		<h2>Tests for the TestSuiteApp (general configuration style sheet files)</h2>
+		<p>Dialog DlgConfigGeneral is opened. Here the pop-up menu for the
+		style sheet files opens. It should have three entries and be only the 
+		first entry is enabled. Now is clicked the first entry. In the following
+		dialog the name of the style sheet file to enter and click OK. Now a new
+		style sheet file should be visible in the list of style sheet files.
+		These will be selected. It should items two and three enabled in the
+		pop-up menu. It is clicked the second pop-up menu item. In the next
+		window the new name of the style sheet file is entered and clicked Ok.
+		Now the name itself should haven changed the style sheet file in the
+		list. Finally clicked on third pop-up menu item. In the next dialog
+		click on No. It should have not changed in the list. Now is clicked
+		again on the third pop-up menu. In it the following dialog is clicked 
+		Yes. As now no style sheet file in the list</p>
+		<table border="1" cellpadding="1" cellspacing="1" style="width: 100%;">
+			<tbody>
+				<tr>
+					<td colspan="3">fit.ActionFixture</td>
+				</tr>
+				<tr>
+					<td>start</td>
+					<td>tests.fixtures.app.FixtureAppGeneralConfigurationStylesheet</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>selectRootElementInTree</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>openPopup</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushConfigurationGeneralConfiguration</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getGeneralConfigurationStylesheetCount</td>
+					<td>0</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>openGeneralConfigurationStylesheetPopup</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>haveGeneralConfigurationStylesheetPopupInsert</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>haveGeneralConfigurationStylesheetPopupChange</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>haveGeneralConfigurationStylesheetPopupDelete</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isGeneralConfigurationStylesheetPopupInsertEnabled</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isGeneralConfigurationStylesheetPopupChangeEnabled</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isGeneralConfigurationStylesheetPopupDeleteEnabled</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushGeneralConfigurationStylesheetPopupInsert</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>enter</td>
+					<td>setGeneralConfigurationStylesheetDialogNameText</td>
+					<td>out.css</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushGeneralConfigurationStylesheetDialogOk</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getGeneralConfigurationStylesheetCount</td>
+					<td>1</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getGeneralConfigurationStylesheet0Name</td>
+					<td>out.css</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>selectGeneralConfigurationStylesheetItem0</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isGeneralConfigurationStylesheetPopupInsertEnabled</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isGeneralConfigurationStylesheetPopupChangeEnabled</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isGeneralConfigurationStylesheetPopupDeleteEnabled</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushGeneralConfigurationStylesheetPopupChange</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>enter</td>
+					<td>setGeneralConfigurationStylesheetDialogNameText</td>
+					<td>out2.js</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushGeneralConfigurationStylesheetDialogOk</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getGeneralConfigurationStylesheetCount</td>
+					<td>1</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getGeneralConfigurationStylesheet0Name</td>
+					<td>out2.js</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushGeneralConfigurationStylesheetPopupDelete</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushGeneralConfigurationStylesheetDialogNo</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getGeneralConfigurationStylesheetCount</td>
+					<td>1</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushGeneralConfigurationStylesheetPopupDelete</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>pushGeneralConfigurationStylesheetDialogYes</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getGeneralConfigurationStylesheetCount</td>
+					<td>0</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>openGeneralConfigurationStylesheetPopup</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isGeneralConfigurationStylesheetPopupInsertEnabled</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isGeneralConfigurationStylesheetPopupChangeEnabled</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isGeneralConfigurationStylesheetPopupDeleteEnabled</td>
+					<td>false</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>
