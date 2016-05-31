@@ -25,6 +25,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JTree;
+import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -702,6 +703,7 @@ implements ActionListener, TestEventListener, ValidationEventListener {
 		
 		_lstValidationError = new JList<ValidationEvent>();
 		_lstValidationError.setCellRenderer(new ValidationEventRenderer());
+		_lstValidationError.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		_lstValidationError.setModel(new AbstractListModel<ValidationEvent>() {
 
 			@Override
@@ -720,10 +722,11 @@ implements ActionListener, TestEventListener, ValidationEventListener {
 
 			@Override
 			public void valueChanged(ListSelectionEvent lse) {
-				if (lse.getFirstIndex() >= 0) {
-					_tree.getSelectionModel().setSelectionPath(
-							_listValidationError.get(lse.getFirstIndex())
-							.getSelectionPath());
+				if (lse.getValueIsAdjusting()) {
+					TreePath path = _listValidationError.get(
+							_lstValidationError.getSelectedIndex()).
+							getSelectionPath();
+					_tree.getSelectionModel().setSelectionPath(path);
 				}
 			}
 			
