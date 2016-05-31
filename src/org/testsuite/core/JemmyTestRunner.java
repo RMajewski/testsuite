@@ -454,12 +454,28 @@ public class JemmyTestRunner extends TestRunner {
 	 * @return Command to execute
 	 */
 	@Override
-	public String exec(String name, TestSuite suite, Test test) {
+	protected String exec(String name, TestSuite suite, Test test) {
 		StringBuffer ret = new StringBuffer("java -cp ");
 		ret.append(createClasspath());
 		ret.append(createProperty());
 		ret.append(name);
 		
 		return ret.toString();
+	}
+	
+	/**
+	 * Without separate JVM no test is performed.
+	 * 
+	 * @param name Name of the test file
+	 * 
+	 * @param test The object of Test.
+	 * 
+	 * @param exit The exit status.
+	 * 
+	 * @return False, because no test was executed.
+	 */
+	@Override
+	protected boolean runWithoutJvm(String name, Test test, int exit) {
+		return false;
 	}
 }

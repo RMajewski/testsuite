@@ -546,7 +546,7 @@ public class FitTestRunner extends TestRunner {
 	 * @return Command to execute
 	 */
 	@Override
-	public String exec(String name, TestSuite suite, Test test) {
+	protected String exec(String name, TestSuite suite, Test test) {
 		StringBuilder ret = new StringBuilder("java -cp ");
 		ret.append(createClasspath());
 		ret.append(createProperty());
@@ -596,5 +596,21 @@ public class FitTestRunner extends TestRunner {
 				((Fit)test).setException(Integer.valueOf(tmp[6]));
 			}
 		}
+	}
+	
+	/**
+	 * Without separate JVM no test is performed.
+	 * 
+	 * @param name Name of the test file
+	 * 
+	 * @param test The object of Test.
+	 * 
+	 * @param exit The exit status.
+	 * 
+	 * @return False, because no test was executed.
+	 */
+	@Override
+	protected boolean runWithoutJvm(String name, Test test, int exit) {
+		return false;
 	}
 }

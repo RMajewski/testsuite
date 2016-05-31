@@ -46,9 +46,15 @@ import org.testsuite.helper.HelperCalendar;
 /**
  * From this class all TestRunner be derived.
  * 
+ * In version 0.2, a separate JVM is created by exec that method is overridden
+ * in child classes in which the test is executed.
+ * 
+ * In version 0.3 an additional method is generated, which must be overridden in
+ * child classes. This method is passed and executed the test.
+ * 
  * @author René Majewski
  *
- * @version 0.2
+ * @version 0.3
  */
 public abstract class TestRunner {
 	/**
@@ -65,6 +71,11 @@ public abstract class TestRunner {
 	 * Saves the exit status for executed ok
 	 */
 	public static final int EXIT_OK = 0;
+	
+	/**
+	 * Saves the exit status for no executed test.
+	 */
+	public static final int EXIT_NO_TEST = -1;
 	
 	/**
 	 * Saves the file for resource bundle
@@ -858,35 +869,48 @@ public abstract class TestRunner {
 		}
 		
 		try {
-			// Start time
-			test.setStart(new Date().getTime());
-			
 			System.out.print(name + ": ");
-
-			final Process p = Runtime.getRuntime().exec(exec(name, suite, test));
-
-			Timer timer = new Timer((int)_config.getMaxDuration(),
-					new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							p.destroy();
-						}
-			});
-
-			int exit = EXIT_TERMINATED_EXEC;
-			try {
-				timer.start();
-				exit = p.waitFor();
-				timer.stop();
-			} catch (InterruptedException e) {
-				System.out.println(" --- Interrupt --- ");
-				if (thread != null)
-					thread.interrupt();
-			}
 			
-			// End time
-			test.setEnd(new Date().getTime());
-			test.setExitStatus(exit);
+			int exit = EXIT_NO_TEST;
+			
+			if (!test.isJvm() && runWithoutJvm(name, test, exit))
+				exit = EXIT_OK;
+				
+			if (test.isJvm() || (!test.isJvm() && (exit == EXIT_NO_TEST))) {
+				final Process p = Runtime.getRuntime().exec(exec(name, suite, 
+						test));
+				test.setJvm(true);
+				
+				// Start time
+				test.setStart(new Date().getTime());
+
+				Timer timer = new Timer((int)_config.getMaxDuration(),
+						new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								p.destroy();
+							}
+				});
+	
+				exit = EXIT_TERMINATED_EXEC;
+				try {
+					timer.start();
+					exit = p.waitFor();
+					timer.stop();
+				} catch (InterruptedException e) {
+					System.out.println(" --- Interrupt --- ");
+					if (thread != null)
+						thread.interrupt();
+				}
+				
+				// End time
+				test.setEnd(new Date().getTime());
+				test.setExitStatus(exit);
+				
+				// Output from the console and the error
+				test.setError(inputStreamToString(p.getErrorStream()));
+				test.setStringConsole(inputStreamToString(p.getInputStream()));
+			}
 			
 			// Verifies exit status
 			if (exit == EXIT_TERMINATED_EXEC) {
@@ -901,10 +925,6 @@ public abstract class TestRunner {
 			result += " (" + _bundle.getString("run_duration") + " " +
 					String.valueOf(test.getDurationTime()) + " ms)";
 			System.out.println(result);
-			
-			// Output from the console and the error
-			test.setError(inputStreamToString(p.getErrorStream()));
-			test.setStringConsole(inputStreamToString(p.getInputStream()));
 			
 			// Evaluation output
 			evaluation(test);
@@ -1140,4 +1160,18 @@ public abstract class TestRunner {
 	 * @param test Name of the test class or name of file
 	 */
 	protected abstract String exec(String name, TestSuite suite, Test test);
+	
+	/**
+	 * Is called to executed the test without a separate JVM.
+	 * 
+	 * @param name Name of the test file
+	 * 
+	 * @param test The object of Test.
+	 * 
+	 * @param exit The exit status.
+	 * 
+	 * @return True if the test has been executed. False if the test was not
+	 * executed.
+	 */
+	protected abstract boolean runWithoutJvm(String name, Test test, int exit);
 }

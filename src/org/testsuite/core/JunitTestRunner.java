@@ -21,6 +21,13 @@ package org.testsuite.core;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.util.Date;
+
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
 import org.testsuite.data.Config;
 import org.testsuite.data.Junit;
 import org.testsuite.data.Test;
@@ -133,17 +140,21 @@ public class JunitTestRunner extends TestRunner {
 		StringBuilder ret = new StringBuilder(td);
 		
 		if (_suites.get(suite).getTest(test).isExists()) {
+			String command = new String();
+			
+			if (_suites.get(suite).getTest(test).isJvm())
+				command = exec(_suites.get(suite).getPackage() + "." + 
+						_suites.get(suite).getTest(test).getName(),
+						_suites.get(suite), 
+						_suites.get(suite).getTest(test));
+			
 			ret.append(_suites.get(suite).getTest(test).getName());
 			ret.append(System.lineSeparator());
 			ret.append(html.generateTestOut(
 					_suites.get(suite).getId(),
 					_suites.get(suite).getTest(test).getId(), 
 					_suites.get(suite).getTest(test).getIn(), 
-					_suites.get(suite).getTest(test).getError(),
-					exec(_suites.get(suite).getPackage() + "." + 
-							_suites.get(suite).getTest(test).getName(),
-							_suites.get(suite), 
-							_suites.get(suite).getTest(test))));
+					_suites.get(suite).getTest(test).getError(), command));
 			ret.append("\t\t\t\t\t\t</td>");
 			ret.append(System.lineSeparator());
 			
@@ -496,5 +507,44 @@ public class JunitTestRunner extends TestRunner {
 						lines[i].substring(indexFail)));
 			}
 		}
+	}
+	
+	/**
+	 * To executed the test without a separate JVM.
+	 * 
+	 * @param name Name of the test file
+	 * 
+	 * @param test The object of Test.
+	 * 
+	 * @param exit The exit status.
+	 * 
+	 * @return True if the test has been executed. False if not.
+	 */
+	@Override
+	protected boolean runWithoutJvm(String name, Test test, int exit) {
+		try {
+			test.setStart(new Date().getTime());
+			
+			Class<?> testclass = getClass().getClassLoader().loadClass(name);
+			Result result = JUnitCore.runClasses(testclass);
+			
+			test.setEnd(new Date().getTime());
+			
+			StringBuilder error = new StringBuilder();
+			for (Failure failure : result.getFailures()) {
+				error.append(failure.toString());
+				error.append(System.lineSeparator());
+			}
+			test.setError(error.toString());
+			test.setStringConsole(new String());
+			
+			((Junit)test).setFail(result.getFailureCount());
+			((Junit)test).setOk(result.getRunCount());
+			exit = EXIT_OK;
+		} catch (ClassNotFoundException e) {
+			return false;
+		}
+		
+		return true;
 	}
 }
