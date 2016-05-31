@@ -20,6 +20,7 @@
 package org.testsuite.app;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -135,6 +136,22 @@ public class AppTreeModel implements TreeModel {
 						ValidationEvent.TYPE_CONFIG_CLASSPATH_NOT_EXISTS,
 						new int[]{i});
 		
+		// General configuration: java script not exists
+		for (int i = 0; i < config.javascriptFileCount(); i++)
+			if (getClass().getClassLoader().getResource(
+					config.getJavascriptFile(i)) == null)
+				fireValidationError(new TreePath(path), 
+						ValidationEvent.TYPE_CONFIG_JAVASCRIPT_NOT_EXISTS,
+						new int[]{i});
+		
+		// General configuration: style sheet not exists
+		for (int i = 0; i < config.stylesheetFileCount(); i++)
+			if (getClass().getClassLoader().getResource(
+					config.getStylesheetFile(i)) == null)
+				fireValidationError(new TreePath(path), 
+						ValidationEvent.TYPE_CONFIG_STYLESHEET_NOT_EXISTS,
+						new int[]{i});
+		
 		// No TestRunner inserted
 		if (_testRunner.size() == 0)
 			fireValidationError(new TreePath(path),
@@ -160,8 +177,15 @@ public class AppTreeModel implements TreeModel {
 			
 			// Library not exists
 			for (int lib = 0; lib < _testRunner.get(runner).libraryCount(); lib++) {
-				if (!new File(_testRunner.get(runner).getLibrary(lib)
-						.getFileName()).exists())
+				String name = new String();
+				
+				if (_testRunner.get(runner).getLibrary(lib).getPath().isEmpty())
+					name = config.getPathLibrary();
+				else
+					name = _testRunner.get(runner).getLibrary(lib).getPath();
+				
+				if (!new File(name + File.separator + _testRunner.get(runner)
+						.getLibrary(lib).getFileName()).exists())
 					fireValidationError(new TreePath(path),
 							ValidationEvent.TYPE_TEST_RUNNER_LIBRARY_NOT_EXISTS,
 							new int[]{lib});

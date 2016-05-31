@@ -56,6 +56,8 @@ public class TestValidationEventRenderer extends TestLang {
 		assertNotNull(_bundle.getString("configPathResultNotExists"));
 		assertNotNull(_bundle.getString("configPathLibNotExists"));
 		assertNotNull(_bundle.getString("configClassPathNotExists"));
+		assertNotNull(_bundle.getString("configJavascriptNotExists"));
+		assertNotNull(_bundle.getString("configStylesheetNotExists"));
 	}
 	
 	/**

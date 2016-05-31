@@ -98,7 +98,7 @@ public class TestValidationEvent {
 	 */
 	@Test
 	public void testTypeCount() {
-		assertEquals(17, ValidationEvent.typeCount());
+		assertEquals(19, ValidationEvent.typeCount());
 	}
 	
 	/**
@@ -129,6 +129,30 @@ public class TestValidationEvent {
 	public void testTypeConfigClassPathNotExists() {
 		assertTrue(ValidationEvent.TYPE_CONFIG_CLASSPATH_NOT_EXISTS > 0);
 		assertTrue(ValidationEvent.TYPE_CONFIG_CLASSPATH_NOT_EXISTS <= 
+				ValidationEvent.typeCount());
+	}
+	
+	/**
+	 * Tests whether the type 
+	 * {@link org.testsuite.app.ValidationEvent#TYPE_CONFIG_JAVASCRIPT_NOT_EXISTS}
+	 * is greater than 0 and less than typeCount().
+	 */
+	@Test
+	public void testTypeConfigJavascriptNotExists() {
+		assertTrue(ValidationEvent.TYPE_CONFIG_JAVASCRIPT_NOT_EXISTS > 0);
+		assertTrue(ValidationEvent.TYPE_CONFIG_JAVASCRIPT_NOT_EXISTS <= 
+				ValidationEvent.typeCount());
+	}
+	
+	/**
+	 * Tests whether the type 
+	 * {@link org.testsuite.app.ValidationEvent#TYPE_CONFIG_STYLESHEET_NOT_EXISTS}
+	 * is greater than 0 and less than typeCount().
+	 */
+	@Test
+	public void testTypeConfigStylesheetNotExists() {
+		assertTrue(ValidationEvent.TYPE_CONFIG_STYLESHEET_NOT_EXISTS > 0);
+		assertTrue(ValidationEvent.TYPE_CONFIG_STYLESHEET_NOT_EXISTS <= 
 				ValidationEvent.typeCount());
 	}
 	

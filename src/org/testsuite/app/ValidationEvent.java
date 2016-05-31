@@ -68,6 +68,16 @@ public class ValidationEvent extends EventObject {
 	public static final int TYPE_CONFIG_CLASSPATH_NOT_EXISTS = ++_typeCount;
 	
 	/**
+	 * Specifies that a java script file was not exists.
+	 */
+	public static final int TYPE_CONFIG_JAVASCRIPT_NOT_EXISTS = ++_typeCount;
+	
+	/**
+	 * Specifies that a style sheet file was not exists.
+	 */
+	public static final int TYPE_CONFIG_STYLESHEET_NOT_EXISTS = ++_typeCount;
+	
+	/**
 	 * Specifies that the description for the test runner  was not specified.
 	 */
 	public static final int TYPE_TEST_RUNNER_DESCRIPTION = ++_typeCount;

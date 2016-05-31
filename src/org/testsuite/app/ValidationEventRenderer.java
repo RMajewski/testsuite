@@ -108,6 +108,18 @@ public class ValidationEventRenderer extends JLabel
 				_bundle.getString("configClassPathNotExists")
 				.replace("?",String.valueOf(ve.getIndexes()[0])));
 		
+		else if (ve.getType() == 
+				ValidationEvent.TYPE_CONFIG_JAVASCRIPT_NOT_EXISTS)
+			setText("Configuration: " + 
+				_bundle.getString("configJavascriptNotExists")
+				.replace("?", String.valueOf(ve.getIndexes()[0])));
+		
+		else if (ve.getType() == 
+				ValidationEvent.TYPE_CONFIG_STYLESHEET_NOT_EXISTS)
+			setText("Configuration: " + 
+				_bundle.getString("configStylesheetNotExists")
+				.replace("?", String.valueOf(ve.getIndexes()[0])));
+		
 		else if (ve.getType() == ValidationEvent.TYPE_TEST_RUNNER_DESCRIPTION)
 			setText("TestRunner: " + _bundle.getString("testRunnerDescription"));
 		
