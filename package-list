@@ -1,0 +1,16 @@
+fit
+org.testsuite.app
+org.testsuite.core
+org.testsuite.data
+org.testsuite.helper
+tests
+tests.fit
+tests.fixtures.app
+tests.fixtures.fit
+tests.fixtures.testsuite.core
+tests.lang.de_DE
+tests.lang.en
+tests.testsuite.app
+tests.testsuite.core
+tests.testsuite.data
+tests.testsuite.helper
