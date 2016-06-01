@@ -54,14 +54,4 @@ public abstract class JemmyTestCase implements Scenario {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void main(String[] args) {
-		new JemmyTestCase(null) {
-			@Override
-			public int runIt(Object arg0) {
-				return 0;
-			}
-			
-		};
-	}
 }

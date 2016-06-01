@@ -73,4 +73,9 @@ class TestRunnerImplementation extends TestRunner {
 	protected String createResultTestRunnerTable() {
 		return new String();
 	}
+
+	@Override
+	protected boolean runWithoutJvm(String name, Test test, int exit) {
+		return false;
+	}
 }

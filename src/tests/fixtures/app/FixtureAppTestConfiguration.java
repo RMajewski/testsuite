@@ -65,7 +65,7 @@ public class FixtureAppTestConfiguration extends FixtureApp {
 	 * @return In existence the check box for the execute test?
 	 */
 	public boolean haveConfigurationTestCheckBoxExecute() {
-		return _tests.getDialogTextField(0).isEnabled();
+		return _tests.getDialogCheckBox(0).isEnabled();
 	}
 	
 	 /**
@@ -78,6 +78,24 @@ public class FixtureAppTestConfiguration extends FixtureApp {
 	}
 	
 	/**
+	 * Determines whether the check box for the separate JVM exists.
+	 * 
+	 * @return In existence the check box for the separate JVM?
+	 */
+	public boolean haveConfigurationTestCheckBoxJvm() {
+		return _tests.getDialogCheckBox(1).isEnabled();
+	}
+	
+	 /**
+	  * Return is checked the check box for separate JVM.
+	  * 
+	  * @return Is checked the check box?
+	  */
+	public boolean isConfigurationTestCheckBoxJvm() {
+		return _tests.getDialogCheckBox(1).isSelected();
+	}
+	
+	/**
 	 * Check the check box for execute test.
 	 * 
 	 * @param bln Checked the check box?
@@ -87,12 +105,21 @@ public class FixtureAppTestConfiguration extends FixtureApp {
 	}
 	
 	/**
-	 * Set the text on text field for test name.
+	 * Set the selected on check box for executed the test.
 	 * 
-	 * @param path The new test name
+	 * @param execute Selected the check box?
 	 */
 	public void setConfigurationTestCheckBoxExecute(boolean execute) {
 		_tests.getDialogCheckBox(0).setSelected(execute);
+	}
+	
+	/**
+	 * Set the selected on check box for separate JVM.
+	 * 
+	 * @param execute Selected the check box?
+	 */
+	public void setConfigurationTestCheckBoxJvm(boolean execute) {
+		_tests.getDialogCheckBox(1).setSelected(execute);
 	}
 	
 	/**
@@ -111,6 +138,15 @@ public class FixtureAppTestConfiguration extends FixtureApp {
 	 */
 	public boolean isTestExecuteSelected() {
 		return _tests.getTreeSelectedTest().isExecuted();
+	}
+	
+	/**
+	 * Return the separate JVM from selected test in the tree
+	 * 
+	 * @return The separate JVM from selected test
+	 */
+	public boolean isTestJvmSelected() {
+		return _tests.getTreeSelectedTest().isJvm();
 	}
 
 }

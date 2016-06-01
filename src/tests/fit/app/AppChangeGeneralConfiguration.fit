@@ -70,6 +70,16 @@
 				</tr>
 				<tr>
 					<td>check</td>
+					<td>haveListJavascript</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>haveListStylesheet</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
 					<td>haveButtonAccept</td>
 					<td>true</td>
 				</tr>
@@ -114,6 +124,16 @@
 					<td>path1</td>
 				</tr>
 				<tr>
+					<td>enter</td>
+					<td>addJavascript</td>
+					<td>out.js</td>
+				</tr>
+				<tr>
+					<td>enter</td>
+					<td>addStylesheet</td>
+					<td>out.css</td>
+				</tr>
+				<tr>
 					<td>press</td>
 					<td>pushAccept</td>
 					<td>&nbsp;</td>
@@ -152,6 +172,16 @@
 					<td>check</td>
 					<td>getClassPathItem0</td>
 					<td>path1</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getJavascriptItem0</td>
+					<td>out.js</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getStylesheetItem0</td>
+					<td>out.css</td>
 				</tr>
 			</tbody>
 		</table>
