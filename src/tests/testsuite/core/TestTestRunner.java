@@ -979,6 +979,51 @@ public class TestTestRunner extends TestRunnerHelper {
 	}
 	
 	/**
+	 * Checks whether the TestSelectTest event has been sent to all
+	 * listeners.
+	 */
+	@Test
+	public void testFireTestSelectTest() {
+		TestEventListener listener1 = mock(TestEventListener.class);
+		_runner.addTestEventListener(listener1);
+		TestEventListener listener2 = mock(TestEventListener.class);
+		_runner.addTestEventListener(listener2);
+		
+		int runnerId = 0;
+		int suiteId = 1;
+		int testId = 19;
+		
+		_runner.fireTestSelectTest(this, runnerId, suiteId, testId);
+		
+		verify(listener1).testSelectTest(Matchers.any(TestSelectEvent.class));
+		verify(listener2).testSelectTest(Matchers.any(TestSelectEvent.class));
+	}
+	
+	/**
+	 * Checks whether the TestExecuteCompleted event has been sent to all
+	 * listeners.
+	 */
+	@Test
+	public void testFireTestEnd() {
+		TestEventListener listener1 = mock(TestEventListener.class);
+		_runner.addTestEventListener(listener1);
+		TestEventListener listener2 = mock(TestEventListener.class);
+		_runner.addTestEventListener(listener2);
+		
+		String pName = "package";
+		String tName = "Test";
+		int suiteId = 1;
+		int testId = 19;
+		String result = "ausgeführt";
+		
+		_runner.fireTestEnd(this, pName, tName, suiteId, testId,
+				result);
+		
+		verify(listener1).testEnd(Matchers.any(TestEvent.class));
+		verify(listener2).testEnd(Matchers.any(TestEvent.class));
+	}
+	
+	/**
 	 * Checks whether the new list of EventListenerList has been saved and
 	 * whether it is correctly returned back.
 	 */

@@ -40,6 +40,7 @@ import org.testsuite.data.Library;
 import org.testsuite.data.Test;
 import org.testsuite.data.TestEvent;
 import org.testsuite.data.TestEventListener;
+import org.testsuite.data.TestSelectEvent;
 import org.testsuite.data.TestSuite;
 import org.testsuite.helper.HelperCalendar;
 
@@ -814,7 +815,7 @@ public abstract class TestRunner {
 
 	/**
 	 * Creates the event data with the given values and sends it to all listed
-	 * TestEventListeners.
+	 * TestEventListeners with Event testExecutedCompleted.
 	 * 
 	 * @param source Object that the event triggered.
 	 * 
@@ -833,6 +834,48 @@ public abstract class TestRunner {
 		for (int i = 0; i < _testEventListeners.size(); i++)
 			_testEventListeners.get(i).testExecutedCompleted(new TestEvent(
 					source, pName, tName, suiteId, testId, result));
+	}
+
+	/**
+	 * Creates the event data with the given values and sends it to all listed
+	 * TestEventListeners with Event testEnd.
+	 * 
+	 * @param source Object that the event triggered.
+	 * 
+	 * @param pName The name of test suite package.
+	 * 
+	 * @param tName The name of the test.
+	 * 
+	 * @param suiteId The test suite id.
+	 * 
+	 * @param testId The test id.
+	 * 
+	 * @param result The result string.
+	 */
+	public void fireTestEnd(Object source, String pName, 
+			String tName, int suiteId, int testId, String result) {
+		for (int i = 0; i < _testEventListeners.size(); i++)
+			_testEventListeners.get(i).testEnd(new TestEvent(source, pName,
+					tName, suiteId, testId, result));
+	}
+
+	/**
+	 * Creates the event data with the given values and sends it to all listed
+	 * TestEventListeners with Event testSelectTest.
+	 * 
+	 * @param source Object that the event triggered.
+	 * 
+	 * @param runneId The test runner id.
+	 * 
+	 * @param suiteId The test suite id.
+	 * 
+	 * @param testId The test id.
+	 */
+	public void fireTestSelectTest(Object source, int runnerId, int suiteId, 
+			int testId) {
+		for (int i = 0; i < _testEventListeners.size(); i++)
+			_testEventListeners.get(i).testSelectTest(new TestSelectEvent(source,
+					runnerId, suiteId, testId));
 	}
 	
 	/**

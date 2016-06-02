@@ -73,8 +73,8 @@ public class TestRun extends Thread {
 				for (int test = 0; test < _testRunner.get(runner).getTestSuite(suite).testCount(); test++) {
 					if (isInterrupted())
 						break Runner;
-					_listener.testSelectTest(new TestSelectEvent(this, runner, 
-							suite, test));
+					_testRunner.get(runner).fireTestSelectTest(this, runner, 
+							suite, test);
 					_testRunner.get(runner).run(
 							_testRunner.get(runner).getTestSuite(suite),
 							_testRunner.get(runner).getTestSuite(suite)
@@ -83,7 +83,7 @@ public class TestRun extends Thread {
 			} // for suite
 		} // for runner
 		
-		_listener.testEnd(new TestEvent(this, "", "", -1, -1, ""));
+		_testRunner.get(0).fireTestEnd(this, null, null, -1, -1, null);
 	}
 
 }
