@@ -929,6 +929,15 @@ public class TestApp extends JemmyTestCase {
 	}
 	
 	/**
+	 * Returns the selected element in tree
+	 * 
+	 * @return Selected element in tree
+	 */
+	public Object getTreeSelectedElement() {
+		return _tree.getLastSelectedPathComponent();
+	}
+	
+	/**
 	 * Returns the selected TestRunner in tree
 	 * 
 	 * @return Selected TestRunner in tree

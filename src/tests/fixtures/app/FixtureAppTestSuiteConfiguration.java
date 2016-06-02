@@ -79,7 +79,7 @@ public class FixtureAppTestSuiteConfiguration extends FixtureApp {
 	/**
 	 * Set the text on text field for name.
 	 * 
-	 * @param path The new name
+	 * @param name The new name
 	 */
 	public void setConfigurationTestSuiteTextName(String name) {
 		_tests.getDialogTextField(0).setText(name);
@@ -88,7 +88,7 @@ public class FixtureAppTestSuiteConfiguration extends FixtureApp {
 	/**
 	 * Set the text on text field for package name.
 	 * 
-	 * @param path The new package name
+	 * @param name The new package name
 	 */
 	public void setConfigurationTestSuiteTextPackageName(String name) {
 		_tests.getDialogTextField(1).setText(name);

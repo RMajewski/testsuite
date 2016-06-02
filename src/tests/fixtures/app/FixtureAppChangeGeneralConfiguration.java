@@ -99,6 +99,24 @@ public class FixtureAppChangeGeneralConfiguration extends FixtureApp {
 	}
 	
 	/**
+	 * Determines whether the list for java script files exists.
+	 * 
+	 * @return In existence the list for the java script files?
+	 */
+	public boolean haveListJavascript() {
+		return _tests.getDialogList(2).isEnabled();
+	}
+	
+	/**
+	 * Determines whether the list for style sheet files exists.
+	 * 
+	 * @return In existence the list for the style sheet files?
+	 */
+	public boolean haveListStylesheet() {
+		return _tests.getDialogList(3).isEnabled();
+	}
+	
+	/**
 	 * Set the text on text field for library path.
 	 * 
 	 * @param path The new library path
@@ -173,6 +191,34 @@ public class FixtureAppChangeGeneralConfiguration extends FixtureApp {
 	}
 	
 	/**
+	 * Insert a java script file to the list of java script files.
+	 * 
+	 * @param str Java script file which inserted in the list.
+	 */
+	public void addJavascript(String str) {
+		_tests.openConfigPopup(2);
+		_tests.pushNoBlockConfigPopup(0, 
+				ResourceBundle.getBundle(DlgConfigGeneral.BUNDLE_FILE)
+					.getString("insert_javascript_title"));
+		_tests.getDialog2TextField(0).setText(str);
+		_tests.getDialog2Button(0).push();
+	}
+	
+	/**
+	 * Insert a style sheet file to the list of style sheets.
+	 * 
+	 * @param str Style sheet file which inserted in the list.
+	 */
+	public void addStylesheet(String str) {
+		_tests.openConfigPopup(3);
+		_tests.pushNoBlockConfigPopup(0, 
+				ResourceBundle.getBundle(DlgConfigGeneral.BUNDLE_FILE)
+					.getString("insert_stylesheet_title"));
+		_tests.getDialog2TextField(0).setText(str);
+		_tests.getDialog2Button(0).push();
+	}
+	
+	/**
 	 * Returns the library path from general configuration
 	 * 
 	 * @return Library path from general configuration
@@ -237,6 +283,30 @@ public class FixtureAppChangeGeneralConfiguration extends FixtureApp {
 	 public String getClassPathItem0() {
 		 if (_tests.getGeneralConfiguration().classPathCount() > 0)
 			 return _tests.getGeneralConfiguration().getClassPath(0);
+		 
+		 return new String();
+	 }
+	 
+	 /**
+	  * Gets the entry 0 of the list with java script files.
+	  * 
+	  * @return Entry 0 of the list with java script files.
+	  */
+	 public String getJavascriptItem0() {
+		 if (_tests.getGeneralConfiguration().javascriptFileCount() > 0)
+			 return _tests.getGeneralConfiguration().getJavascriptFile(0);
+		 
+		 return new String();
+	 }
+	 
+	 /**
+	  * Gets the entry 0 of the list with style sheets.
+	  * 
+	  * @return Entry 0 of the list with style sheets.
+	  */
+	 public String getStylesheetItem0() {
+		 if (_tests.getGeneralConfiguration().stylesheetFileCount() > 0)
+			 return _tests.getGeneralConfiguration().getStylesheetFile(0);
 		 
 		 return new String();
 	 }

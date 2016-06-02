@@ -51,7 +51,7 @@
 				<tr>
 					<td>check</td>
 					<td>getConfigurationTestTextName</td>
-					<td></td>
+					<td>Test1</td>
 				</tr>
 				<tr>
 					<td>check</td>
@@ -61,6 +61,16 @@
 				<tr>
 					<td>check</td>
 					<td>isConfigurationTestCheckBoxExecute</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>haveConfigurationTestCheckBoxJvm</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isConfigurationTestCheckBoxJvm</td>
 					<td>true</td>
 				</tr>
 				<tr>
@@ -84,6 +94,11 @@
 					<td>false</td>
 				</tr>
 				<tr>
+					<td>enter</td>
+					<td>setConfigurationTestCheckBoxJvm</td>
+					<td>false</td>
+				</tr>
+				<tr>
 					<td>press</td>
 					<td>pushAccept</td>
 					<td>&nbsp;</td>
@@ -104,6 +119,11 @@
 					<td>false</td>
 				</tr>
 				<tr>
+					<td>check</td>
+					<td>isTestJvmSelected</td>
+					<td>false</td>
+				</tr>
+				<tr>
 					<td>press</td>
 					<td>openPopup</td>
 					<td>&nbsp;</td>
@@ -121,6 +141,11 @@
 				<tr>
 					<td>check</td>
 					<td>isConfigurationTestCheckBoxExecute</td>
+					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>isConfigurationTestCheckBoxJvm</td>
 					<td>false</td>
 				</tr>
 			</tbody>

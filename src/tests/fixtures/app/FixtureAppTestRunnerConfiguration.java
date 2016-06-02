@@ -107,7 +107,7 @@ public class FixtureAppTestRunnerConfiguration extends FixtureApp {
 	/**
 	 * Set the text on text field for class name.
 	 * 
-	 * @param path The new class name
+	 * @param name The new class name
 	 */
 	public void setConfigurationTestRunnerTextClassName(String name) {
 		_tests.getDialogTextField(0).setText(name);
@@ -116,7 +116,7 @@ public class FixtureAppTestRunnerConfiguration extends FixtureApp {
 	/**
 	 * Set the text on text field for file extension.
 	 * 
-	 * @param path The new file extension
+	 * @param extension The new file extension
 	 */
 	public void setConfigurationTestRunnerTextFileExtension(String extension) {
 		_tests.getDialogTextField(1).setText(extension);
@@ -125,7 +125,7 @@ public class FixtureAppTestRunnerConfiguration extends FixtureApp {
 	/**
 	 * Set the text on text area for description.
 	 * 
-	 * @param path The new description
+	 * @param description The new description
 	 */
 	public void setConfigurationTestRunnerTextDescription(String description) {
 		_tests.getDialogTextArea(0).setText(description);

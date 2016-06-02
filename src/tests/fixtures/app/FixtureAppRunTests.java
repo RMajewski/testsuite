@@ -17,36 +17,23 @@
 * sind dem Lizenztext zu entnehmen.
 */ 
 
-package org.testsuite.data;
-
-import java.util.EventListener;
+package tests.fixtures.app;
 
 /**
- * Defines all events for the tests.
+ * Implements the fixtures for testing run tests output.
  * 
  * @author René Majewski
  *
  * @version 0.1
  */
-public interface TestEventListener extends EventListener {
-	/**
-	 * Called before a test started
-	 * 
-	 * @param tse Data of this event.
-	 */
-	void testSelectTest(TestSelectEvent tse);
+public class FixtureAppRunTests extends FixtureApp {
 
 	/**
-	 * Called when a test is complete.
+	 * Determines the class name of the selected tree element.
 	 * 
-	 * @param te Data of this event.
+	 * @return The class name of the selected tree element.
 	 */
-	void testExecutedCompleted(TestEvent te);
-	
-	/**
-	 * Called when all tests are complete.
-	 * 
-	 * @param te Data of this event.
-	 */
-	void testEnd(TestEvent te);
+	public String getSelectedTreeElement() {
+		return _tests.getTreeSelectedElement().getClass().getName();
+	}
 }

@@ -150,13 +150,13 @@ public class ValidationEvent extends EventObject {
 	/**
 	 * Initialize data
 	 * 
-	 * @param source Has the event triggered.
+	 * @param src Has the event triggered.
 	 * 
 	 * @param path The selection path for tree
 	 * 
 	 * @param type The type of this event.
 	 * 
-	 * @param index If used for certain types.
+	 * @param indexes If used for certain types.
 	 */
 	public ValidationEvent(Object src, TreePath path, int type, int[] indexes) {
 		super(src);

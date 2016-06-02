@@ -19,7 +19,12 @@
 				</tr>
 				<tr>
 					<td>start</td>
-					<td>tests.fixtures.app.FixtureApp</td>
+					<td>tests.fixtures.app.FixtureAppRunTests</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>press</td>
+					<td>selectRootElementInTree</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
@@ -36,6 +41,11 @@
 					<td>check</td>
 					<td>getValueOfProgressBar</td>
 					<td>0</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getSelectedTreeElement</td>
+					<td>java.util.ArrayList</td>
 				</tr>
 				<tr>
 					<td>press</td>
@@ -56,6 +66,11 @@
 					<td>press</td>
 					<td>pushButtonRun</td>
 					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getSelectedTreeElement</td>
+					<td>org.testsuite.data.Fit</td>
 				</tr>
 				<tr>
 					<td>press</td>

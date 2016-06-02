@@ -76,6 +76,10 @@ public class TestAppTreeModel {
 		when(config.getPathSrc()).thenReturn("src");
 		when(config.classPathCount()).thenReturn(1);
 		when(config.getClassPath(0)).thenReturn("classpath");
+		when(config.javascriptFileCount()).thenReturn(1);
+		when(config.getJavascriptFile(0)).thenReturn("resources/html/out.js");
+		when(config.stylesheetFileCount()).thenReturn(1);
+		when(config.getStylesheetFile(0)).thenReturn("resources/html/out.css");
 		when(config.getPathLibrary()).thenReturn("pathLibrary");
 		when(config.getPathResult()).thenReturn("pathResult");
 		
@@ -94,6 +98,7 @@ public class TestAppTreeModel {
 		
 		Library lib = mock(Library.class);
 		when(lib.getFileName()).thenReturn("library");
+		when(lib.getPath()).thenReturn(new String());
 		
 		TestRunner runner = mock(TestRunner.class);
 		when(runner.testSuiteCount()).thenReturn(1);
@@ -597,6 +602,46 @@ public class TestAppTreeModel {
 
 	/**
 	 * Tests if the ValidationError is triggered by Type 
+	 * TYPE_CONFIG_JAVASCRIPT_NOT_EXISTS.
+	 */
+	@Test
+	public void testValidateConfigurationErrorOfConfigJavascriptNotExists() 
+			throws Exception {
+		Config config = mock(Config.class);
+		
+		VEL vel = new VEL();
+		_model.addValidationEventListener(vel);
+		_model.setListOfTestRunner(generateConfiguration(config));
+
+		when(config.getJavascriptFile(0)).thenReturn("out.js");
+		
+		_model.validateConfiguration(config);
+		assertEquals(1, 
+				vel._errors[ValidationEvent.TYPE_CONFIG_JAVASCRIPT_NOT_EXISTS - 1]);
+	}
+
+	/**
+	 * Tests if the ValidationError is triggered by Type 
+	 * TYPE_CONFIG_JAVASCRIPT_NOT_EXISTS.
+	 */
+	@Test
+	public void testValidateConfigurationErrorOfConfigStylesheetNotExists() 
+			throws Exception {
+		Config config = mock(Config.class);
+		
+		VEL vel = new VEL();
+		_model.addValidationEventListener(vel);
+		_model.setListOfTestRunner(generateConfiguration(config));
+
+		when(config.getStylesheetFile(0)).thenReturn("out.css");
+		
+		_model.validateConfiguration(config);
+		assertEquals(1, 
+				vel._errors[ValidationEvent.TYPE_CONFIG_STYLESHEET_NOT_EXISTS - 1]);
+	}
+
+	/**
+	 * Tests if the ValidationError is triggered by Type 
 	 * TYPE_TEST_RUNNER_DESCRIPTION.
 	 */
 	@Test
@@ -653,7 +698,8 @@ public class TestAppTreeModel {
 		File file = mock(File.class);
 		when(file.exists()).thenReturn(false);
 		PowerMockito.whenNew(File.class)
-			.withArguments(_model.getTestRunnerList().get(0).getLibrary(0)
+			.withArguments(config.getPathLibrary() + File.separator +
+					_model.getTestRunnerList().get(0).getLibrary(0)
 					.getFileName())
 			.thenReturn(file);
 		
@@ -754,7 +800,7 @@ public class TestAppTreeModel {
 	 * TYPE_TEST_SUITE_NO_TEST.
 	 */
 	@Test
-	public void testValidateConfigurationErrorOfTestSuitePackageNoTest() 
+	public void testValidateConfigurationErrorOfTestSuiteNoTest() 
 			throws Exception {
 		Config config = mock(Config.class);
 		

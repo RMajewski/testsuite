@@ -67,7 +67,7 @@ public class ValidationEventRenderer extends JLabel
 	 * 
 	 * @param isSelected True if the specified cell was selected.
 	 * 
-	 * @param True if the specified cell has the focus.
+	 * @param hasFocus True if the specified cell has the focus.
 	 * 
 	 * @return The configured output.
 	 */

@@ -148,7 +148,7 @@ public class FixtureAppLibraryConfiguration extends FixtureApp {
 	/**
 	 * Sets the text into the text field for library path.
 	 * 
-	 * @param name The text for text field of library path
+	 * @param path The text for text field of library path
 	 */
 	public void setConfigurationLibraryTextPath(String path) {
 		_tests.getDialog2TextField(1).setText(path);
@@ -166,7 +166,7 @@ public class FixtureAppLibraryConfiguration extends FixtureApp {
 	/**
 	 * Sets the text into the text field for library version.
 	 * 
-	 * @param name The text for text field of library version.
+	 * @param version The text for text field of library version.
 	 */
 	public void setConfigurationLibraryTextVersion(String version) {
 		_tests.getDialog2TextField(3).setText(version);

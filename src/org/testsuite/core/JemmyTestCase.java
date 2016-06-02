@@ -19,9 +19,6 @@
 
 package org.testsuite.core;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import org.netbeans.jemmy.Scenario;
 import org.netbeans.jemmy.Timeouts;
 
@@ -53,15 +50,5 @@ public abstract class JemmyTestCase implements Scenario {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public static void main(String[] args) {
-		new JemmyTestCase(null) {
-			@Override
-			public int runIt(Object arg0) {
-				return 0;
-			}
-			
-		};
 	}
 }
