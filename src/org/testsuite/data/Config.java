@@ -384,7 +384,7 @@ public class Config {
 	/**
 	 * Added a java script file to the list.
 	 * 
-	 * @param property The new java script file, which is to be added to the
+	 * @param name The new java script file, which is to be added to the
 	 * list.
 	 */
 	public void addJavascriptFile(String name) {
@@ -429,7 +429,7 @@ public class Config {
 	/**
 	 * Added a style sheet file to the list.
 	 * 
-	 * @param property The new style sheet file, which is to be added to the
+	 * @param name The new style sheet file, which is to be added to the
 	 * list.
 	 */
 	public void addStylesheetFile(String name) {

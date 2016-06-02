@@ -32,21 +32,21 @@ public interface TestEventListener extends EventListener {
 	/**
 	 * Called before a test started
 	 * 
-	 * @param te Data of this event.
+	 * @param tse Data of this event.
 	 */
-	public void testSelectTest(TestSelectEvent tse);
+	void testSelectTest(TestSelectEvent tse);
 
 	/**
 	 * Called when a test is complete.
 	 * 
 	 * @param te Data of this event.
 	 */
-	public void testExecutedCompleted(TestEvent te);
+	void testExecutedCompleted(TestEvent te);
 	
 	/**
 	 * Called when all tests are complete.
 	 * 
 	 * @param te Data of this event.
 	 */
-	public void testEnd(TestEvent te);
+	void testEnd(TestEvent te);
 }

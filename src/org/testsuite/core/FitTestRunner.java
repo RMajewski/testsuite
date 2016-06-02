@@ -47,7 +47,7 @@ public class FitTestRunner extends TestRunner {
 	}
 	
 	/**
-	 * Initialis the data of the class.
+	 * Initialize the data of the class.
 	 * 
 	 * @param config The configuration
 	 */

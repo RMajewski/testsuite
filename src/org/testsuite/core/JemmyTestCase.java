@@ -19,9 +19,6 @@
 
 package org.testsuite.core;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import org.netbeans.jemmy.Scenario;
 import org.netbeans.jemmy.Timeouts;
 

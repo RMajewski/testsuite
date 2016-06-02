@@ -40,7 +40,7 @@ import tests.testsuite.app.TestApp;
  */
 public class FixtureApp extends ActionFixture {
 	/**
-	 * Saves the instance of {@link tests.suite.app.TestApp}.
+	 * Saves the instance of {@link tests.testsuite.app.TestApp}.
 	 */
 	protected TestApp _tests;
 	

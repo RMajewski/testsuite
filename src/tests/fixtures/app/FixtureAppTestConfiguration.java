@@ -96,9 +96,9 @@ public class FixtureAppTestConfiguration extends FixtureApp {
 	}
 	
 	/**
-	 * Check the check box for execute test.
+	 * Set the text on text field.
 	 * 
-	 * @param bln Checked the check box?
+	 * @param name The new text on text field
 	 */
 	public void setConfigurationTestTextName(String name) {
 		_tests.getDialogTextField(0).setText(name);

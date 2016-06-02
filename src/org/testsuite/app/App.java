@@ -366,9 +366,9 @@ implements ActionListener, TestEventListener, ValidationEventListener {
 		
 		// Insert -> general configuration
 		JMenuItem item = new JMenuItem(
-				_bundle.getString("popup_tree_insert_config"));
+				_bundle.getString("popup_tree_config"));
 		item.setMnemonic(_bundle.getString(
-				"popup_tree_insert_config_mnemonic").charAt(0));
+				"popup_tree_config_mnemonic").charAt(0));
 		item.addActionListener(this);
 		item.setActionCommand(TREE_INSERT_CONFIG_GENERAL);
 		menu.add(item);
