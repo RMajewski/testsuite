@@ -145,6 +145,8 @@ public class Test extends Data {
 	 * @param error String, in which the errors have been posted
 	 */
 	public void setError(String error) {
+		if (error == null)
+			throw new IllegalArgumentException();
 		_error = error;
 	}
 	
@@ -163,6 +165,8 @@ public class Test extends Data {
 	 * @param console String with the outputs of the console.
 	 */
 	public void setStringConsole(String console) {
+		if (console == null)
+			throw new IllegalArgumentException();
 		_console = console;
 	}
 	

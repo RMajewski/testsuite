@@ -151,6 +151,15 @@ public class TestTest {
 	}
 	
 	/**
+	 * Tests whether the error IllegalArgumentException appears when null is
+	 * passed as a parameter.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testSetErrorWithNullAsParameter() {
+		_data.setError(null);
+	}
+	
+	/**
 	 * Tests if the console string returned correctly.
 	 * 
 	 * @see org.testsuite.data.Test#getIn()
@@ -183,6 +192,15 @@ public class TestTest {
 		String console = "Console";
 		_data.setStringConsole(console);
 		assertEquals(console, _data.getConsole());
+	}
+	
+	/**
+	 * Tests whether the error IllegalArgumentException appears when null is
+	 * passed as a parameter.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testSetStringConsoleWithNullAsParameter() {
+		_data.setStringConsole(null);
 	}
 	
 	/**
