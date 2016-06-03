@@ -616,9 +616,25 @@ public class FitTestRunner extends TestRunner {
 	 * @param exit The exit status.
 	 * 
 	 * @return False, because no test was executed.
+	 * 
+	 * @deprecated Use {@link #runWithoutJvm(String, Test)}
 	 */
 	@Override
 	protected boolean runWithoutJvm(String name, Test test, int exit) {
+		return false;
+	}
+	
+	/**
+	 * To executed the test without a separate JVM.
+	 * 
+	 * @param name Name of the test file
+	 * 
+	 * @param test The object of Test.
+	 * 
+	 * @return True if the test has been executed. False if not.
+	 */
+	@Override
+	protected boolean runWithoutJvm(String name, Test test) {
 		return false;
 	}
 }

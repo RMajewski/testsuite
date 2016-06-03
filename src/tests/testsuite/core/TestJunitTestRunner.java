@@ -19,7 +19,7 @@
 
 package tests.testsuite.core;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.inOrder;
@@ -29,6 +29,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ResourceBundle;
 
@@ -41,6 +42,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.testsuite.core.HtmlOut;
 import org.testsuite.core.JunitTestRunner;
+import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
 import org.testsuite.data.Junit;
 import org.testsuite.data.Library;
@@ -1055,5 +1057,43 @@ public class TestJunitTestRunner {
 						"createResultTestRunnerTable");
 		method.setAccessible(true);
 		assertEquals(result.toString(), method.invoke(_runner));
+	}
+	
+	/**
+	 * Tests whether runWithoutJvm returns false.
+	 * 
+	 * @deprecated
+	 */
+	@Ignore("Tests a deprecated method")
+	@Test
+	public void testRunWithoutJvmOld() throws Exception {
+		org.testsuite.data.Test test = mock(org.testsuite.data.Test.class);
+		String name = "Test";
+		int exit = TestRunner.EXIT_NO_TEST;
+		
+		Method method = 
+				JunitTestRunner.class.getDeclaredMethod("runWithoutJvm", 
+						String.class, org.testsuite.data.Test.class, int.class);
+		method.setAccessible(true);
+		
+		assertFalse((boolean)method.invoke(_runner, name, test, exit));
+	}
+	
+	/**
+	 * Tests whether runWithoutJvm returns false.
+	 * 
+	 * FIXME Create test correctly.
+	 */
+	@Test
+	public void testRunWithoutJvm() throws Exception {
+		org.testsuite.data.Test test = mock(org.testsuite.data.Test.class);
+		String name = "Test";
+		
+		Method method = 
+				JunitTestRunner.class.getDeclaredMethod("runWithoutJvm", 
+						String.class, org.testsuite.data.Test.class);
+		method.setAccessible(true);
+		
+		assertFalse((boolean)method.invoke(_runner, name, test));
 	}
 }

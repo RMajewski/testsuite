@@ -83,8 +83,16 @@ class TestRunnerImplementation extends TestRunner {
 		return new String();
 	}
 
+	/**
+	 * @deprecated
+	 */
 	@Override
 	protected boolean runWithoutJvm(String name, Test test, int exit) {
+		return false;
+	}
+	
+	@Override
+	protected boolean runWithoutJvm(String name, Test test) {
 		return false;
 	}
 }

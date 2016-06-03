@@ -916,7 +916,7 @@ public abstract class TestRunner {
 			
 			int exit = EXIT_NO_TEST;
 			
-			if (!test.isJvm() && runWithoutJvm(name, test, exit))
+			if (!test.isJvm() && runWithoutJvm(name, test))
 				exit = EXIT_OK;
 				
 			if (test.isJvm() || (!test.isJvm() && (exit == EXIT_NO_TEST))) {
@@ -1231,6 +1231,20 @@ public abstract class TestRunner {
 	 * 
 	 * @return True if the test has been executed. False if the test was not
 	 * executed.
+	 * 
+	 * @deprecated Use {@link #runWithoutJvm(String, Test)}
 	 */
 	protected abstract boolean runWithoutJvm(String name, Test test, int exit);
+	
+	/**
+	 * Is called to executed the test without a separate JVM.
+	 * 
+	 * @param name Name of the test file
+	 * 
+	 * @param test The object of Test.
+	 * 
+	 * @return True if the test has been executed. False if the test was not
+	 * executed.
+	 */
+	protected abstract boolean runWithoutJvm(String name, Test test);
 }

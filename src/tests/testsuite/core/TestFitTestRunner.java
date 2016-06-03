@@ -37,6 +37,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.testsuite.core.FitTestRunner;
 import org.testsuite.core.HtmlOut;
+import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
 import org.testsuite.data.Fit;
 import org.testsuite.data.Library;
@@ -1174,5 +1175,43 @@ public class TestFitTestRunner {
 						"createResultTestRunnerTable");
 		method.setAccessible(true);
 		assertEquals(result.toString(), method.invoke(_runner));
+	}
+	
+	/**
+	 * Tests whether runWithoutJvm returns false.
+	 * 
+	 * @deprecated
+	 */
+	@Ignore("Tests a deprecated method")
+	@Test
+	public void testRunWithoutJvmOld() throws Exception {
+		org.testsuite.data.Test test = mock(org.testsuite.data.Test.class);
+		String name = "Test";
+		int exit = TestRunner.EXIT_NO_TEST;
+		
+		Method method = 
+				FitTestRunner.class.getDeclaredMethod("runWithoutJvm", 
+						String.class, org.testsuite.data.Test.class, int.class);
+		method.setAccessible(true);
+		
+		assertFalse((boolean)method.invoke(_runner, name, test, exit));
+	}
+	
+	/**
+	 * Tests whether runWithoutJvm returns false.
+	 * 
+	 * FIXME Create test correctly.
+	 */
+	@Test
+	public void testRunWithoutJvm() throws Exception {
+		org.testsuite.data.Test test = mock(org.testsuite.data.Test.class);
+		String name = "Test";
+		
+		Method method = 
+				FitTestRunner.class.getDeclaredMethod("runWithoutJvm", 
+						String.class, org.testsuite.data.Test.class);
+		method.setAccessible(true);
+		
+		assertFalse((boolean)method.invoke(_runner, name, test));
 	}
 }

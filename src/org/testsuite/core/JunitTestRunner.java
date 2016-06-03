@@ -538,9 +538,25 @@ public class JunitTestRunner extends TestRunner {
 	 * @param exit The exit status.
 	 * 
 	 * @return True if the test has been executed. False if not.
+	 * 
+	 * @deprecated Use {@link #runWithoutJvm(String, Test)}
 	 */
 	@Override
 	protected boolean runWithoutJvm(String name, Test test, int exit) {
+		return runWithoutJvm(name, test);
+	}
+	
+	/**
+	 * To executed the test without a separate JVM.
+	 * 
+	 * @param name Name of the test file
+	 * 
+	 * @param test The object of Test.
+	 * 
+	 * @return True if the test has been executed. False if not.
+	 */
+	@Override
+	protected boolean runWithoutJvm(String name, Test test) {
 		try {
 			test.setStart(new Date().getTime());
 			
@@ -559,7 +575,6 @@ public class JunitTestRunner extends TestRunner {
 			
 			((Junit)test).setFail(result.getFailureCount());
 			((Junit)test).setOk(result.getRunCount());
-			exit = EXIT_OK;
 		} catch (ClassNotFoundException e) {
 			return false;
 		}
