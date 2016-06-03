@@ -622,7 +622,7 @@ public abstract class TestRunner {
 			for (int test = 0; test < _suites.get(suite).testCount(); test++) {
 				ret.append("\t\t\t\t\t<tr>");
 				ret.append(System.lineSeparator());
-				ret.append(createHtmlColumn(suite, test, html));
+				ret.append(createHtmlRow(suite, test, html));
 				ret.append("\t\t\t\t\t</tr>");
 				ret.append(System.lineSeparator());
 			}
@@ -1182,10 +1182,26 @@ public abstract class TestRunner {
 	
 	/**
 	 * Called to generate the columns for a row in the HTML table.
-	 * @throws IOException 
+	 * @throws IOException
+	 * 
+	 * @deprecated Use {@link #createHtmlRow(int, int, HtmlOut)} 
 	 */
 	protected abstract String createHtmlColumn(int suite, int test,
 			HtmlOut html) throws IOException;
+
+	/**
+	 * Called to generate the columns for a row in the HTML table.
+	 * 
+	 * @param suite Index of the {@link org.testsuite.core.TestSuite} class.
+	 * 
+	 * @param test Index of the {@link org.testsuite.core.Test} class.
+	 * 
+	 * @param html Instance of the {@link org.testsuite.core.HtmlOut} class.
+	 * 
+	 * @return Return the HTML code for a row in the HTML table.
+	 */
+	protected abstract String createHtmlRow(int suite, int test, HtmlOut html)
+			throws IOException;
 	
 	/**
 	 * Called to generate the footer for the HTML table

@@ -44,9 +44,18 @@ class TestRunnerImplementation extends TestRunner {
 		return new String();
 	}
 
+	/**
+	 * @deprecated
+	 */
 	@Override
 	protected String createHtmlColumn(int suite, int test, HtmlOut html)
 		throws IOException {
+		return new String();
+	}
+	
+	@Override
+	protected String createHtmlRow(int suite, int test, HtmlOut html)
+			throws IOException {
 		return new String();
 	}
 

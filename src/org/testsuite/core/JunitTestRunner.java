@@ -111,10 +111,29 @@ public class JunitTestRunner extends TestRunner {
 	 * @param test The index for the test.
 	 * 
 	 * @param html The instance of HtmlOut.
+	 * 
+	 * @deprecated Use {@link #createHtmlRow(int, int, HtmlOut)}
 	 */
 	@Override
 	protected String createHtmlColumn(int suite, int test, HtmlOut html)
 		throws IOException {
+		return createHtmlRow(suite, test, html);
+	}
+	
+	/**
+	 * Creates from the data of the current test the row output for HTML table.
+	 * 
+	 * @param suite The index for the test suite.
+	 * 
+	 * @param test The index for the test.
+	 * 
+	 * @param html The instance of HtmlOut.
+	 * 
+	 * @return The HTML code for the row of HTML table.
+	 */
+	@Override
+	protected String createHtmlRow(int suite, int test, HtmlOut html) 
+			throws IOException {
 		if (suite < 0)
 			throw new IllegalArgumentException();
 		

@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
 import java.util.ResourceBundle;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
@@ -125,7 +126,10 @@ public class TestFitTestRunner {
 	
 	/**
 	 * Tests if the line of HTML is generated correctly for a test.
+	 * 
+	 * @deprecated
 	 */
+	@Ignore("Tests a deprecated method")
 	@Test
 	public void testCreateHtmlColumn() throws Exception {
 		String testName = "Test1";
@@ -232,7 +236,10 @@ public class TestFitTestRunner {
 	/**
 	 * Tests if the line of HTML is generated correctly for a none executed
 	 * test.
+	 * 
+	 * @deprecated
 	 */
+	@Ignore("Tests a deprecated method")
 	@Test
 	public void testCreateHtmlColumnWithNoneExecutedTest() throws Exception {
 		String testName = "Test1";
@@ -317,7 +324,10 @@ public class TestFitTestRunner {
 	/**
 	 * Testing whether the line of HTML is generated correctly for a test when
 	 * the test file does not exist.
+	 * 
+	 * @deprecated
 	 */
+	@Ignore("Tests a deprecated method")
 	@Test
 	public void testCreateHtmlColumnWithNoneExistingTest() throws Exception {
 		String testName = "Test1";
@@ -380,7 +390,10 @@ public class TestFitTestRunner {
 	/**
 	 * Tests whether the error IllegalArgumentException will be canceled if no
 	 * valid test suite id is passed.
+	 * 
+	 * @deprecated
 	 */
+	@Ignore("Tests a deprecated method")
 	@Test(expected = IllegalArgumentException.class)
 	public void testCreateHtmlColumnWithNoSuiteId() throws Exception {
 		HtmlOut html = mock(HtmlOut.class);
@@ -394,7 +407,10 @@ public class TestFitTestRunner {
 	/**
 	 * Tests whether the error IllegalArgumentException will be canceled if no
 	 * valid test ID is passed. 
+	 * 
+	 * @deprecated
 	 */
+	@Ignore("Tests a deprecated method")
 	@Test(expected = IllegalArgumentException.class)
 	public void testCreateHtmlColumnWithNoTestId() throws Exception {
 		HtmlOut html = mock(HtmlOut.class);
@@ -408,11 +424,309 @@ public class TestFitTestRunner {
 	/**
 	 * Tests whether the error IllegalArgumentException will be canceled if no
 	 * instance is passed by HtmlOut.
+	 * 
+	 * @deprecated
 	 */
+	@Ignore("Tests a deprecated method")
 	@Test(expected = IllegalArgumentException.class)
 	public void testCreateHtmlColumnWithNullAsHtmlOut() throws Exception {
 		Method method = 
 				FitTestRunner.class.getDeclaredMethod("createHtmlColumn", 
+						int.class, int.class, HtmlOut.class);
+		method.setAccessible(true);
+		method.invoke(_runner, 0, 0, null);
+	}
+	
+	/**
+	 * Tests if the line of HTML is generated correctly for a test.
+	 */
+	@Test
+	public void testCreateHtmlRow() throws Exception {
+		String testName = "Test1";
+		String testOut = "\t\t\t\t\t\t<div class=\"right\"><a " +
+				"href=\"javascript:togleDisplayId(0, 0)\"> Ausgabe</a></div>" +
+				System.lineSeparator() + "\t\t\t\t\t\t<div " +
+				"class=\"testoutInvisible\" id=\"id_0_0\">" +
+				System.lineSeparator() + " class=\"" +
+				"command_line\">" + System.lineSeparator() + 
+				"\t\t\t\t\t\t\t\t<code>exec</code>" + System.lineSeparator() +
+				"\t\t\t\t\t\t\t</div>" + System.lineSeparator() + 
+				"\t\t\t\t\t\t\t<div class=\"console\">Console</div>" +
+				System.lineSeparator() + "\t\t\t\t\t\t\t<div class=\"error\">" +
+				"Fehler</div>" + System.lineSeparator() + "\t\t\t\t\t\t</div>" + 
+				System.lineSeparator();
+		String console="console";
+		String error = "error";
+		String resultSuite = "1";
+		int ok = 1;
+		int fail = 0;
+		int ignore = 0;
+		int exception = 0;
+		String duration = "00:00:01.897";
+		int suiteId = 0;
+		int testId = 0;
+		String packageName = "test.fit";
+		
+		String ret = "\t\t\t\t\t\t<td class=\"pass\"><a href=\"" + resultSuite + 
+				File.separator + packageName.replaceAll("\\.", File.separator) +
+				File.separator + testName + ".html\">" + testName + "</a>" +
+				testOut + "\t\t\t\t\t\t</td>" + System.lineSeparator() + 
+				"\t\t\t\t\t\t<td class=\"pass\">" + ok + "</td>" + 
+				System.lineSeparator() + 
+				"\t\t\t\t\t\t<td class=\"pass\">" + fail + "</td>" + 
+				System.lineSeparator() +
+				"\t\t\t\t\t\t<td class=\"pass\">" + ignore + "</td>" + 
+				System.lineSeparator() +
+				"\t\t\t\t\t\t<td class=\"pass\">" + exception + "</td>" + 
+				System.lineSeparator() + "\t\t\t\t\t\t<td class=\"pass\">" + duration + 
+				"</td>" + System.lineSeparator();
+		
+		when(_config.getPathSuitesResult()).thenReturn(resultSuite);
+		when(_config.classPathsAsParameterJVM()).thenReturn(new String());
+		
+		HtmlOut html = mock(HtmlOut.class);
+		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
+				eq(error), anyString())).thenReturn(testOut);
+		
+		Method method = 
+				FitTestRunner.class.getDeclaredMethod("createHtmlRow", 
+						int.class, int.class, HtmlOut.class);
+		method.setAccessible(true);
+		
+		Fit test = mock(Fit.class);
+		when(test.isExists()).thenReturn(true);
+		when(test.isExecuted()).thenReturn(true);
+		when(test.getName()).thenReturn(testName);
+		when(test.getError()).thenReturn(error);
+		when(test.getIn()).thenReturn(console);
+		when(test.getOk()).thenReturn(ok);
+		when(test.getFail()).thenReturn(fail);
+		when(test.getIgnore()).thenReturn(ignore);
+		when(test.getException()).thenReturn(exception);
+		when(test.getDurationTimeFormattedString()).thenReturn(duration);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getTest(0)).thenReturn(test);
+		when(suite.getPackage()).thenReturn(packageName);
+		_runner.addTestSuite(suite);
+		
+		assertEquals(ret, method.invoke(_runner, 0, 0, html));
+		
+		InOrder order = inOrder(test, suite, _config);
+		order.verify(test).getOk();
+		order.verify(test).getFail();
+		order.verify(test).getIgnore();
+		order.verify(test).getException();
+		order.verify(test).isExecuted();
+		order.verify(test).isTerminated();
+		order.verify(test).isExists();
+		order.verify(test).isExecuted();
+		order.verify(test).isTerminated();
+		order.verify(_config).getPathSuitesResult();
+		order.verify(suite).getPackage();
+		order.verify(test).getName();
+		order.verify(test).getName();
+		order.verify(suite).getId();
+		order.verify(test).getId();
+		order.verify(test).getIn();
+		order.verify(test).getError();
+		order.verify(suite).getPackage();
+		order.verify(test).getName();
+		order.verify(test).isExecuted();
+		order.verify(test).isTerminated();
+		order.verify(test).getOk();
+		order.verify(test).getFail();
+		order.verify(test).getIgnore();
+		order.verify(test).getException();
+		order.verify(test).getDurationTimeFormattedString();
+		
+		verify(suite, times(23)).getTest(0);
+	}
+	
+	/**
+	 * Tests if the line of HTML is generated correctly for a none executed
+	 * test.
+	 */
+	@Test
+	public void testCreateHtmlRowWithNoneExecutedTest() throws Exception {
+		String testName = "Test1";
+		String testOut = "\t\t\t\t\t\t<div class=\"right\"><a " +
+				"href=\"javascript:togleDisplayId(0, 0)\"> Ausgabe</a></div>" +
+				System.lineSeparator() + "\t\t\t\t\t\t<div " +
+				"class=\"testoutInvisible\" id=\"id_0_0\">" + 
+				System.lineSeparator() + "\t\t\t\t\t\t\t<div " +
+				"class=\"console\">Console</div>" + System.lineSeparator() +
+				"\t\t\t\t\t\t\t<div class=\"error\">Fehler</div>" +
+				System.lineSeparator() + "\t\t\t\t\t\t</div>" + 
+				System.lineSeparator();
+		String console="console";
+		String error = "error";
+		String resultSuite = "1";
+		int ok = 1;
+		int fail = 2;
+		int ignore = 0;
+		int exception = 4;
+		String duration = "00:00:01.897";
+		int suiteId = 0;
+		int testId = 0;
+		String packageName = "test.fit";
+		
+		String ret = "\t\t\t\t\t\t<td class=\"ignore\">" + testName + 
+				testOut + "\t\t\t\t\t\t</td>" + System.lineSeparator() + 
+				"\t\t\t\t\t\t<td class=\"ignore\" " +
+				"colspan=\"5\">wurde nicht ausgeführt</td>" +
+				System.lineSeparator();
+		
+		when(_config.getPathSuitesResult()).thenReturn(resultSuite);
+		when(_config.classPathsAsParameterJVM()).thenReturn(new String());
+		
+		HtmlOut html = mock(HtmlOut.class);
+		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
+				eq(error), anyString())).thenReturn(testOut);
+		
+		Method method = 
+				FitTestRunner.class.getDeclaredMethod("createHtmlRow", 
+						int.class, int.class, HtmlOut.class);
+		method.setAccessible(true);
+		
+		Fit test = mock(Fit.class);
+		when(test.isExists()).thenReturn(true);
+		when(test.isExecuted()).thenReturn(false);
+		when(test.getName()).thenReturn(testName);
+		when(test.getError()).thenReturn(error);
+		when(test.getIn()).thenReturn(console);
+		when(test.getOk()).thenReturn(ok);
+		when(test.getFail()).thenReturn(fail);
+		when(test.getIgnore()).thenReturn(ignore);
+		when(test.getException()).thenReturn(exception);
+		when(test.getDurationTimeFormattedString()).thenReturn(duration);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getTest(0)).thenReturn(test);
+		when(suite.getPackage()).thenReturn(packageName);
+		_runner.addTestSuite(suite);
+		
+		assertEquals(ret, method.invoke(_runner, 0, 0, html));
+		
+		InOrder order = inOrder(test, suite);
+		order.verify(test).getOk();
+		order.verify(test).getFail();
+		order.verify(test).getIgnore();
+		order.verify(test).getException();
+		order.verify(test).isExecuted();
+		order.verify(test).isExists();
+		order.verify(test).isExecuted();
+		order.verify(test).getName();
+		order.verify(suite).getId();
+		order.verify(test).getId();
+		order.verify(test).getIn();
+		order.verify(test).getError();
+		order.verify(suite).getPackage();
+		order.verify(test).getName();
+		order.verify(test).isExecuted();
+		
+		verify(suite, times(14)).getTest(0);
+	}
+	
+	/**
+	 * Testing whether the line of HTML is generated correctly for a test when
+	 * the test file does not exist.
+	 */
+	@Test
+	public void testCreateHtmlRowWithNoneExistingTest() throws Exception {
+		String testName = "Test1";
+		String packageName = "tests.test";
+		String srcName = "src";
+		String extension = "fit";
+		String console = "console";
+		String error = "error";
+		int suiteId = 0;
+		int testId = 0;
+		
+		String ret = "\t\t\t\t\t\t<td>" + srcName + File.separator + 
+				packageName.replaceAll("\\.", File.separator) + File.separator +
+				testName + "." + extension + "</td>" + System.lineSeparator() + 
+				"\t\t\t\t\t\t<td colspan=\"5\">Test existiert nicht</td>" + 
+				System.lineSeparator();
+		
+		_runner.setFileExtension(extension);
+		
+		HtmlOut html = mock(HtmlOut.class);
+		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
+				eq(error), anyString())).thenReturn(new String());
+		
+		Method method = 
+				FitTestRunner.class.getDeclaredMethod("createHtmlRow", 
+						int.class, int.class, HtmlOut.class);
+		method.setAccessible(true);
+		
+		Fit test = mock(Fit.class);
+		when(test.isExists()).thenReturn(false);
+		when(test.isExecuted()).thenReturn(true);
+		when(test.getName()).thenReturn(testName);
+		when(test.getError()).thenReturn(error);
+		when(test.getIn()).thenReturn(console);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getTest(0)).thenReturn(test);
+		when(suite.getPackage()).thenReturn(packageName);
+		_runner.addTestSuite(suite);
+		
+		when(_config.getPathSrc()).thenReturn(srcName);
+		
+		assertEquals(ret, method.invoke(_runner, 0, 0, html));
+		
+		InOrder order = inOrder(test, suite, _config);
+		order.verify(test).getOk();
+		order.verify(test).getFail();
+		order.verify(test).getIgnore();
+		order.verify(test).getException();
+		order.verify(test).isExecuted();
+		order.verify(test).isTerminated();
+		order.verify(test).isExists();
+		order.verify(_config).getPathSrc();
+		order.verify(suite).getPackage();
+		order.verify(test).getName();
+		
+		verify(suite, times(8)).getTest(0);
+	}
+	
+	/**
+	 * Tests whether the error IllegalArgumentException will be canceled if no
+	 * valid test suite id is passed.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testCreateHtmlRowWithNoSuiteId() throws Exception {
+		HtmlOut html = mock(HtmlOut.class);
+		Method method = 
+				FitTestRunner.class.getDeclaredMethod("createHtmlRow", 
+						int.class, int.class, HtmlOut.class);
+		method.setAccessible(true);
+		method.invoke(_runner, -1, 0, html);
+	}
+	
+	/**
+	 * Tests whether the error IllegalArgumentException will be canceled if no
+	 * valid test ID is passed. 
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testCreateHtmlRowWithNoTestId() throws Exception {
+		HtmlOut html = mock(HtmlOut.class);
+		Method method = 
+				FitTestRunner.class.getDeclaredMethod("createHtmlRow", 
+						int.class, int.class, HtmlOut.class);
+		method.setAccessible(true);
+		method.invoke(_runner, 0, -1, html);
+	}
+	
+	/**
+	 * Tests whether the error IllegalArgumentException will be canceled if no
+	 * instance is passed by HtmlOut.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testCreateHtmlRowWithNullAsHtmlOut() throws Exception {
+		Method method = 
+				FitTestRunner.class.getDeclaredMethod("createHtmlRow", 
 						int.class, int.class, HtmlOut.class);
 		method.setAccessible(true);
 		method.invoke(_runner, 0, 0, null);

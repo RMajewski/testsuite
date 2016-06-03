@@ -115,9 +115,17 @@ public class FitTestRunner extends TestRunner {
 	 * @param test The index for the test.
 	 * 
 	 * @param html The instance of HtmlOut.
+	 * 
+	 * @deprecated Use {@link #createHtmlRow(int, int, HtmlOut)}
 	 */
 	@Override
 	protected String createHtmlColumn(int suite, int test, HtmlOut html)
+			throws IOException {
+		return createHtmlRow(suite, test, html);
+	}
+	
+	@Override
+	protected String createHtmlRow(int suite, int test, HtmlOut html)
 			throws IOException {
 		if (suite < 0)
 			throw new IllegalArgumentException();
