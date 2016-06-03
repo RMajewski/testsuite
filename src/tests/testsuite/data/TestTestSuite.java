@@ -140,6 +140,14 @@ public class TestTestSuite {
 	}
 	
 	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testAddTestWithNullAsParameter() {
+		_data.addTest(null);
+	}
+	
+	/**
 	 * Tests whether the test can be read correctly from the list.
 	 * 
 	 * @see org.testsuite.data.TestSuite#getTest(int)
@@ -150,6 +158,14 @@ public class TestTestSuite {
 				mock(org.testsuite.data.Test.class);
 		_data.addTest(data);
 		assertEquals(data, _data.getTest(0));
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testGetTestWithMinusNumberAsParameter() {
+		_data.getTest(-1);
 	}
 	
 	/**
@@ -183,8 +199,6 @@ public class TestTestSuite {
 	
 	/**
 	 * Verifies that the correct test is deleted.
-	 * 
-	 * @deprecated
 	 */
 	@Test
 	public void testRemoveTest() {
@@ -208,6 +222,14 @@ public class TestTestSuite {
 		assertEquals(test1, _data.getTest(0));
 		assertEquals(test3, _data.getTest(1));
 	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testRemoveTestWithNullAsParameter() {
+		_data.removeTest(null);
+	}
 
 	/**
 	 * Tests if the last test id is returned correctly.
@@ -229,6 +251,14 @@ public class TestTestSuite {
 		int id = 100;
 		_data.setLastTestId(id);
 		assertEquals(id, _data.getLastTestId());
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testSetLastIdWithMinusNumberAsParameter() {
+		_data.setLastTestId(-1);
 	}
 	
 }

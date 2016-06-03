@@ -80,6 +80,8 @@ public class TestSuite extends Data {
 	 * @param test Test, which is to be added to the list of tests
 	 */
 	public void addTest(Test test) {
+		if (test == null)
+			throw new IllegalArgumentException();
 		_tests.add(test);
 	}
 	
@@ -91,6 +93,8 @@ public class TestSuite extends Data {
 	 * @return Of specified Test
 	 */
 	public Test getTest(int index) {
+		if (index < 0)
+			throw new IllegalArgumentException();
 		return _tests.get(index);
 	}
 	
@@ -111,6 +115,8 @@ public class TestSuite extends Data {
 	 * @param o Test, which is to be deleted.
 	 */
 	public void removeTest(Test test) {
+		if (test == null)
+			throw new IllegalArgumentException();
 		_tests.remove(test);
 	}
 	
@@ -129,6 +135,8 @@ public class TestSuite extends Data {
 	 * @param last The new last test id
 	 */
 	public void setLastTestId(int last) {
+		if (last < 0)
+			throw new IllegalArgumentException();
 		_lastTestId = last;
 	}
 	
