@@ -49,7 +49,7 @@
 			<name>Test 2</name>
 			<package>test2</package>
 			<test jvm="false">Test2Class</test>
-			<test>Test3Class</test>
+			<test checkSource="Test3">Test3Class</test>
 		</testSuite>
 	</testGroup>
 	

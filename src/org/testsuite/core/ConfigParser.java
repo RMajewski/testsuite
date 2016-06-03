@@ -103,6 +103,7 @@ public class ConfigParser {
 			int testId = 0;
 			boolean executed = true;
 			boolean jvm = true;
+			String checkSource = new String();
 			
 			while(parser.hasNext()) {
 				XMLEvent event = parser.nextEvent();
@@ -173,6 +174,9 @@ public class ConfigParser {
 											"jvm"))
 										jvm = Boolean.parseBoolean(
 												atr.getValue().toString());
+									else if (atr.getName().toString().equals(
+											"checkSource"))
+										checkSource = atr.getValue();
 								}
 								break;
 							
@@ -326,6 +330,7 @@ public class ConfigParser {
 											runner.newTest(data, testId++);
 									test.setExecuted(executed);
 									test.setJvm(jvm);
+									test.setCheckSource(checkSource);
 									suite.addTest(test);
 								}
 								jvm = true;
