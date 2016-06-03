@@ -158,7 +158,7 @@ public class Config {
 	 * @param pathSuitesResult The new directory for the suite result files.
 	 */
 	public void setPathSuitesResult(String pathSuitesResult) {
-		if ((pathSuitesResult == null) || pathSuitesResult.isEmpty())
+		if (pathSuitesResult == null)
 			throw new IllegalArgumentException();
 		_pathSuitesResult = pathSuitesResult;
 	}
