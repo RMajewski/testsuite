@@ -339,6 +339,22 @@ public class TestConfig {
 	}
 	
 	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testRemoveClasspathWithNullAsParameter() {
+		_config.removeClassPath(null);
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testRemoveClasspathWithEmptyStringAsParameter() {
+		_config.removeClassPath(new String());
+	}
+	
+	/**
 	 * Tests if the list of class path is returned correctly.
 	 */
 	@Test
@@ -367,6 +383,38 @@ public class TestConfig {
 		assertEquals(prop1, _config.getClassPath(0));
 		assertEquals("Test4", _config.getClassPath(1));
 		assertEquals(prop3, _config.getClassPath(2));
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testChangeClasspathWithNullAsOldClassPath() {
+		_config.changeClassPath(null, "Test4");
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testChangeClasspathWithEmptyStringAsOldClassPath() {
+		_config.changeClassPath(new String(), "Test4");
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testChangeClasspathWithNullAsNewClassPath() {
+		_config.changeClassPath("Test", null);
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testChangeClasspathWithEmptyStringAsNewClassPath() {
+		_config.changeClassPath("Test1", new String());
 	}
 	
 	/**
@@ -440,6 +488,22 @@ public class TestConfig {
 	}
 	
 	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testRemovePropertyWithNullAsParameter() {
+		_config.removeProperty(null);
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testRemovepropertyWithEmptyStringAsParameter() {
+		_config.removeProperty(new String());
+	}
+
+	/**
 	 * Verifies that the correct system property has changed.
 	 */
 	@Test
@@ -460,6 +524,38 @@ public class TestConfig {
 		assertEquals(prop1, _config.getProperty(0));
 		assertEquals("Test4", _config.getProperty(1));
 		assertEquals(prop3, _config.getProperty(2));
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testChangePropertyWhitNullAsOldProperty() {
+		_config.changeProperty(null, "Test4");
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testChangePropertyWhitEmptyStringAsOldProperty() {
+		_config.changeProperty(new String(), "Test4");
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testChangePropertyWhitNullAsNewProperty() {
+		_config.changeProperty("Test1", null);
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testChangePropertyWhitEmptyStringAsNewProperty() {
+		_config.changeProperty("Test1", new String());
 	}
 	
 	/**
@@ -627,6 +723,76 @@ public class TestConfig {
 	}
 	
 	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testChangeJavascriptFileWithNullAsOld() {
+		_config.changeJavascriptFile(null, "Test4");
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testChangeJavascriptFileWithEmptyStringAsOld() {
+		_config.changeJavascriptFile(new String(), "Test4");
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testChangeJavascriptFileWithNullAsName() {
+		_config.changeJavascriptFile("Test1", null);
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testChangeJavascriptFileWithEmptyStringAsName() {
+		_config.changeJavascriptFile("Test1", new String());
+	}
+	
+	/**
+	 * Verifies that the correct system property was deleted.
+	 */
+	@Test
+	public void testRemoveJavascriptFile() {
+		String name1 = "Test1";
+		String name2 = "Test2";
+		String name3 = "Test3";
+		
+		_config.addJavascriptFile(name1);
+		_config.addJavascriptFile(name2);
+		_config.addJavascriptFile(name3);
+		
+		assertEquals(3, _config.javascriptFileCount());
+		
+		_config.removeJavascriptFile(name2);
+		
+		assertEquals(2, _config.javascriptFileCount());
+		assertEquals(name1, _config.getJavascriptFile(0));
+		assertEquals(name3, _config.getJavascriptFile(1));
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testRemoveJavascriptFileWithNullAsParameter() {
+		_config.removeJavascriptFile(null);
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testRemoveJavascriptFileWithEmptyStringAsParameter() {
+		_config.removeJavascriptFile(new String());
+	}
+	
+	/**
 	 * Checks whether a java script file name can be added to the list.
 	 */
 	@Test
@@ -695,6 +861,76 @@ public class TestConfig {
 		assertEquals(name1, _config.getStylesheetFile(0));
 		assertEquals("Test4", _config.getStylesheetFile(1));
 		assertEquals(name3, _config.getStylesheetFile(2));
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testChangeStylesheetFileNullAsOld() {
+		_config.changeStylesheetFile(null, "Test4");
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testChangeStylesheetFileEmptyStringAsOld() {
+		_config.changeStylesheetFile(new String(), "Test4");
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testChangeStylesheetFileNullAsName() {
+		_config.changeStylesheetFile("Test1", null);
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testChangeStylesheetFileEmptyStringAsName() {
+		_config.changeStylesheetFile("Test1", new String());
+	}
+	
+	/**
+	 * Verifies that the correct system property was deleted.
+	 */
+	@Test
+	public void testRemoveStylesheetFile() {
+		String name1 = "Test1";
+		String name2 = "Test2";
+		String name3 = "Test3";
+		
+		_config.addStylesheetFile(name1);
+		_config.addStylesheetFile(name2);
+		_config.addStylesheetFile(name3);
+		
+		assertEquals(3, _config.stylesheetFileCount());
+		
+		_config.removeStylesheetFile(name2);
+		
+		assertEquals(2, _config.stylesheetFileCount());
+		assertEquals(name1, _config.getStylesheetFile(0));
+		assertEquals(name3, _config.getStylesheetFile(1));
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testRemoveStylesheetFileWithNullAsParameter() {
+		_config.removeStylesheetFile(null);
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testRemoveStylesheeetFileWithEmptyStringAsParameter() {
+		_config.removeStylesheetFile(new String());
 	}
 	
 	/**

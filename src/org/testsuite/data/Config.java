@@ -226,6 +226,10 @@ public class Config {
 	 * @param newClasspath Changed class path
 	 */
 	public void changeClassPath(String oldClasspath, String newClasspath) {
+		if ((oldClasspath == null) || oldClasspath.isEmpty())
+			throw new IllegalArgumentException();
+		if ((newClasspath == null) || newClasspath.isEmpty())
+			throw new IllegalArgumentException();
 		int index = _listClasspath.indexOf(oldClasspath);
 		_listClasspath.remove(index);
 		_listClasspath.add(index, newClasspath);
@@ -358,6 +362,10 @@ public class Config {
 	 * @param newProperty Changed system property
 	 */
 	public void changeProperty(String oldProperty, String newProperty) {
+		if ((oldProperty == null) || oldProperty.isEmpty())
+			throw new IllegalArgumentException();
+		if ((newProperty == null) || newProperty.isEmpty())
+			throw new IllegalArgumentException();
 		int index = _property.indexOf(oldProperty);
 		_property.remove(index);
 		_property.add(index, newProperty);
@@ -410,6 +418,8 @@ public class Config {
 	 * @param name Java script file that is to be deleted
 	 */
 	public void removeJavascriptFile(String name) {
+		if ((name == null) || name.isEmpty())
+			throw new IllegalArgumentException();
 		_listJavascript.remove(name);		
 	}
 	
@@ -421,6 +431,10 @@ public class Config {
 	 * @param name Changed java script file name
 	 */
 	public void changeJavascriptFile(String old, String name) {
+		if ((old == null) || old.isEmpty())
+			throw new IllegalArgumentException();
+		if ((name == null) || name.isEmpty())
+			throw new IllegalArgumentException();
 		int index = _listJavascript.indexOf(old);
 		_listJavascript.remove(index);
 		_listJavascript.add(index, name);
@@ -455,6 +469,8 @@ public class Config {
 	 * @param name style sheet file that is to be deleted
 	 */
 	public void removeStylesheetFile(String name) {
+		if ((name == null) || name.isEmpty())
+			throw new IllegalArgumentException();
 		_listStylesheet.remove(name);		
 	}
 	
@@ -466,6 +482,10 @@ public class Config {
 	 * @param name Changed style sheet file name
 	 */
 	public void changeStylesheetFile(String old, String name) {
+		if ((old == null) || old.isEmpty())
+			throw new IllegalArgumentException();
+		if ((name == null) || name.isEmpty())
+			throw new IllegalArgumentException();
 		int index = _listStylesheet.indexOf(old);
 		_listStylesheet.remove(index);
 		_listStylesheet.add(index, name);
