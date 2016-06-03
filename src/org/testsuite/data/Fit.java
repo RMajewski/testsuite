@@ -55,6 +55,8 @@ public class Fit extends Junit {
 	 * @param count Number of faulty tests
 	 */
 	public void setException(int count) {
+		if (count < 0)
+			throw new IllegalArgumentException();
 		_exception = count;
 	}
 	
@@ -73,6 +75,8 @@ public class Fit extends Junit {
 	 * @param count Number of ignored tests
 	 */
 	public void setIgnore(int count) {
+		if (count < 0)
+			throw new IllegalArgumentException();
 		_ignore = count;
 	}
 	

@@ -33,7 +33,7 @@ import org.testsuite.data.Junit;
  * 
  * @version 0.1
  */
-public class TestFitData {
+public class TestFit {
 
 	/**
 	 * Save the class FitData
@@ -91,6 +91,14 @@ public class TestFitData {
 	}
 	
 	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testSetIgnoreWithMinusNumberAsParamter() {
+		_data.setIgnore(-1);
+	}
+	
+	/**
 	 * Testing whether the number of exception tests is returned correctly.
 	 * 
 	 * @see org.testsuite.data.Fit#getException()
@@ -110,5 +118,13 @@ public class TestFitData {
 		int i = 10;
 		_data.setException(i);
 		assertEquals(i, _data.getException());
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testSetExceptionWithMinusNumberAsParamter() {
+		_data.setException(-1);
 	}
 }
