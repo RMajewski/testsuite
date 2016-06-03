@@ -76,12 +76,26 @@ public class TestTest {
 	 * Tests if the end time can be set correctly.
 	 * 
 	 * @see org.testsuite.data.Test#setEnd(long)
+	 * 
+	 * @deprecated
 	 */
+	@Ignore("Tests a deprecated method")
 	@Test
-	public void testSetEnd() {
+	public void testSetEndOld() {
 		long l = 1879l;
 		_data.setEnd(l);
 		assertEquals(l, _data.getEnd());
+	}
+	
+	/**
+	 * Tests if the end time can be set correctly.
+	 * 
+	 * @see org.testsuite.data.Test#setEnd(long)
+	 */
+	@Test
+	public void testSetEnd() {
+		_data.setEnd();
+		assertTrue(_data.getEnd() > 0);
 	}
 	
 	/**
@@ -98,12 +112,26 @@ public class TestTest {
 	 * Tests if the start time can be set correctly.
 	 * 
 	 * @see org.testsuite.data.Test#setStart(long)
+	 * 
+	 * @deprecated
 	 */
+	@Ignore("Tests a deprecated method")
 	@Test
-	public void testSetStart() {
+	public void testSetStartOld() {
 		long l = 1879l;
 		_data.setStart(l);
 		assertEquals(l, _data.getStart());
+	}
+	
+	/**
+	 * Tests if the start time can be set correctly.
+	 * 
+	 * @see org.testsuite.data.Test#setStart(long)
+	 */
+	@Test
+	public void testSetStart() {
+		_data.setStart();
+		assertTrue(_data.getStart() > 0);
 	}
 	
 	/**
@@ -210,13 +238,9 @@ public class TestTest {
 	 */
 	@Test
 	public void testGetDurationTime() {
-		long start = 80000l;
-		long end = 90000l;
-		
-		_data.setEnd(end);
-		_data.setStart(start);
-		
-		assertEquals(end - start, _data.getDurationTime());
+		_data.setEnd();
+		_data.setStart();
+		assertTrue(_data.getDurationTime() >= 0);
 	}
 	
 	/**
@@ -226,13 +250,10 @@ public class TestTest {
 	 */
 	@Test
 	public void testGetDurationTimeFormattedString() {
-		long start = 80000;
-		long end = 90000;
+		_data.setEnd();
+		_data.setStart();
 		
-		_data.setEnd(end);
-		_data.setStart(start);
-		
-		assertEquals("00:00:10.000", _data.getDurationTimeFormattedString());
+		assertEquals("00:00:00.000", _data.getDurationTimeFormattedString());
 	}
 	
 	/**

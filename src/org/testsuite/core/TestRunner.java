@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -925,7 +924,7 @@ public abstract class TestRunner {
 				test.setJvm(true);
 				
 				// Start time
-				test.setStart(new Date().getTime());
+				test.setStart();
 
 				Timer timer = new Timer((int)_config.getMaxDuration(),
 						new ActionListener() {
@@ -947,7 +946,7 @@ public abstract class TestRunner {
 				}
 				
 				// End time
-				test.setEnd(new Date().getTime());
+				test.setEnd();
 				test.setExitStatus(exit);
 				
 				// Output from the console and the error

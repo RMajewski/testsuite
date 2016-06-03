@@ -21,10 +21,6 @@ package org.testsuite.core;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.util.Date;
-
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
@@ -558,12 +554,12 @@ public class JunitTestRunner extends TestRunner {
 	@Override
 	protected boolean runWithoutJvm(String name, Test test) {
 		try {
-			test.setStart(new Date().getTime());
+			test.setStart();
 			
 			Class<?> testclass = getClass().getClassLoader().loadClass(name);
 			Result result = JUnitCore.runClasses(testclass);
 			
-			test.setEnd(new Date().getTime());
+			test.setEnd();
 			
 			StringBuilder error = new StringBuilder();
 			for (Failure failure : result.getFailures()) {

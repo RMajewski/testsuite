@@ -19,6 +19,8 @@
 
 package org.testsuite.data;
 
+import java.util.Date;
+
 import org.testsuite.helper.HelperCalendar;
 
 /**
@@ -98,9 +100,18 @@ public class Test extends Data {
 	 * Sets the start time
 	 * 
 	 * @param time Start time of the test
+	 * 
+	 * @deprecated
 	 */
 	public void setStart(long time) {
 		_start = time;
+	}
+	
+	/**
+	 * Sets the start time
+	 */ 
+	public void setStart() {
+		_start = new Date().getTime();
 	}
 	
 	/**
@@ -116,9 +127,18 @@ public class Test extends Data {
 	 * Specifies the end time.
 	 * 
 	 * @param time Time at which the test was terminated.
+	 * 
+	 * @deprecated Use {@link #setEnd()}
 	 */
 	public void setEnd(long time) {
 		_end = time;
+	}
+	
+	/**
+	 * Specifies the end time.
+	 */
+	public void setEnd() {
+		_end = new Date().getTime();
 	}
 	
 	/**
