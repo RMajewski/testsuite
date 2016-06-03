@@ -177,7 +177,7 @@ public class TestJemmyTestRunner {
 		when(test.isExecuted()).thenReturn(true);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.getDurationTimeFormattedString()).thenReturn(duration);
 		when(test.getExitStatus()).thenReturn(exit);
 		when(test.isExecuted()).thenReturn(executed);
@@ -200,7 +200,7 @@ public class TestJemmyTestRunner {
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
-		order.verify(test).getIn();
+		order.verify(test).getConsole();
 		order.verify(test).getError();
 		order.verify(suite).getPackage();
 		order.verify(test).getName();
@@ -264,7 +264,7 @@ public class TestJemmyTestRunner {
 		when(test.isExists()).thenReturn(true);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.getDurationTimeFormattedString()).thenReturn(duration);
 		when(test.getExitStatus()).thenReturn(exit);
 		when(test.isExecuted()).thenReturn(executed);
@@ -285,7 +285,7 @@ public class TestJemmyTestRunner {
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
-		order.verify(test).getIn();
+		order.verify(test).getConsole();
 		order.verify(test).getError();
 		order.verify(suite).getPackage();
 		order.verify(test).getName();
@@ -337,7 +337,7 @@ public class TestJemmyTestRunner {
 		when(test.isExists()).thenReturn(false);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.isExecuted()).thenReturn(executed);
 		
 		TestSuite suite = mock(TestSuite.class);
@@ -402,7 +402,7 @@ public class TestJemmyTestRunner {
 		when(test.isExists()).thenReturn(true);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.isExecuted()).thenReturn(executed);
 		
 		TestSuite suite = mock(TestSuite.class);
@@ -420,7 +420,7 @@ public class TestJemmyTestRunner {
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
-		order.verify(test).getIn();
+		order.verify(test).getConsole();
 		order.verify(test).getError();
 		order.verify(test).isExecuted();
 		
@@ -526,7 +526,7 @@ public class TestJemmyTestRunner {
 		when(test.isExecuted()).thenReturn(true);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.getDurationTimeFormattedString()).thenReturn(duration);
 		when(test.getExitStatus()).thenReturn(exit);
 		when(test.isExecuted()).thenReturn(executed);
@@ -549,7 +549,7 @@ public class TestJemmyTestRunner {
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
-		order.verify(test).getIn();
+		order.verify(test).getConsole();
 		order.verify(test).getError();
 		order.verify(suite).getPackage();
 		order.verify(test).getName();
@@ -610,7 +610,7 @@ public class TestJemmyTestRunner {
 		when(test.isExists()).thenReturn(true);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.getDurationTimeFormattedString()).thenReturn(duration);
 		when(test.getExitStatus()).thenReturn(exit);
 		when(test.isExecuted()).thenReturn(executed);
@@ -631,7 +631,7 @@ public class TestJemmyTestRunner {
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
-		order.verify(test).getIn();
+		order.verify(test).getConsole();
 		order.verify(test).getError();
 		order.verify(suite).getPackage();
 		order.verify(test).getName();
@@ -680,7 +680,7 @@ public class TestJemmyTestRunner {
 		when(test.isExists()).thenReturn(false);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.isExecuted()).thenReturn(executed);
 		
 		TestSuite suite = mock(TestSuite.class);
@@ -742,7 +742,7 @@ public class TestJemmyTestRunner {
 		when(test.isExists()).thenReturn(true);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.isExecuted()).thenReturn(executed);
 		
 		TestSuite suite = mock(TestSuite.class);
@@ -760,7 +760,7 @@ public class TestJemmyTestRunner {
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
-		order.verify(test).getIn();
+		order.verify(test).getConsole();
 		order.verify(test).getError();
 		order.verify(test).isExecuted();
 		

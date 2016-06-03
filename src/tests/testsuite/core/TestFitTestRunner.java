@@ -188,7 +188,7 @@ public class TestFitTestRunner {
 		when(test.isExecuted()).thenReturn(true);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.getOk()).thenReturn(ok);
 		when(test.getFail()).thenReturn(fail);
 		when(test.getIgnore()).thenReturn(ignore);
@@ -218,7 +218,7 @@ public class TestFitTestRunner {
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
-		order.verify(test).getIn();
+		order.verify(test).getConsole();
 		order.verify(test).getError();
 		order.verify(suite).getPackage();
 		order.verify(test).getName();
@@ -287,7 +287,7 @@ public class TestFitTestRunner {
 		when(test.isExecuted()).thenReturn(false);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.getOk()).thenReturn(ok);
 		when(test.getFail()).thenReturn(fail);
 		when(test.getIgnore()).thenReturn(ignore);
@@ -312,7 +312,7 @@ public class TestFitTestRunner {
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
-		order.verify(test).getIn();
+		order.verify(test).getConsole();
 		order.verify(test).getError();
 		order.verify(suite).getPackage();
 		order.verify(test).getName();
@@ -361,7 +361,7 @@ public class TestFitTestRunner {
 		when(test.isExecuted()).thenReturn(true);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		
 		TestSuite suite = mock(TestSuite.class);
 		when(suite.getTest(0)).thenReturn(test);
@@ -498,7 +498,7 @@ public class TestFitTestRunner {
 		when(test.isExecuted()).thenReturn(true);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.getOk()).thenReturn(ok);
 		when(test.getFail()).thenReturn(fail);
 		when(test.getIgnore()).thenReturn(ignore);
@@ -528,7 +528,7 @@ public class TestFitTestRunner {
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
-		order.verify(test).getIn();
+		order.verify(test).getConsole();
 		order.verify(test).getError();
 		order.verify(suite).getPackage();
 		order.verify(test).getName();
@@ -594,7 +594,7 @@ public class TestFitTestRunner {
 		when(test.isExecuted()).thenReturn(false);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.getOk()).thenReturn(ok);
 		when(test.getFail()).thenReturn(fail);
 		when(test.getIgnore()).thenReturn(ignore);
@@ -619,7 +619,7 @@ public class TestFitTestRunner {
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
-		order.verify(test).getIn();
+		order.verify(test).getConsole();
 		order.verify(test).getError();
 		order.verify(suite).getPackage();
 		order.verify(test).getName();
@@ -665,7 +665,7 @@ public class TestFitTestRunner {
 		when(test.isExecuted()).thenReturn(true);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		
 		TestSuite suite = mock(TestSuite.class);
 		when(suite.getTest(0)).thenReturn(test);

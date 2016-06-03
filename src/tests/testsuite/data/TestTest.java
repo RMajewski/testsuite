@@ -21,6 +21,7 @@ package tests.testsuite.data;
 
 import static org.junit.Assert.*;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -56,7 +57,7 @@ public class TestTest {
 		assertEquals(0l, _data.getStart());
 		assertEquals(-1, _data.getExitStatus());
 		assertNull(_data.getError());
-		assertNull(_data.getIn());
+		assertNull(_data.getConsole());
 		assertFalse(_data.isExists());
 		assertTrue(_data.isJvm());
 	}
@@ -153,10 +154,23 @@ public class TestTest {
 	 * Tests if the console string returned correctly.
 	 * 
 	 * @see org.testsuite.data.Test#getIn()
+	 * 
+	 * @deprecated
 	 */
+	@Ignore("Tests a deprecated method")
 	@Test
 	public void testGetIn() {
 		assertNull(_data.getIn());
+	}
+	
+	/**
+	 * Tests if the console string returned correctly.
+	 * 
+	 * @see org.testsuite.data.Test#getConsole()
+	 */
+	@Test
+	public void testGetConsole() {
+		assertNull(_data.getConsole());
 	}
 	
 	/**
@@ -165,10 +179,10 @@ public class TestTest {
 	 * @see org.testsuite.data.Test#setStringConsole(String)
 	 */
 	@Test
-	public void testSetIn() {
+	public void testSetStringConsole() {
 		String console = "Console";
 		_data.setStringConsole(console);
-		assertEquals(console, _data.getIn());
+		assertEquals(console, _data.getConsole());
 	}
 	
 	/**

@@ -172,7 +172,7 @@ public class JunitTestRunner extends TestRunner {
 			ret.append(html.generateTestOut(
 					_suites.get(suite).getId(),
 					_suites.get(suite).getTest(test).getId(), 
-					_suites.get(suite).getTest(test).getIn(), 
+					_suites.get(suite).getTest(test).getConsole(), 
 					_suites.get(suite).getTest(test).getError(), command));
 			ret.append("\t\t\t\t\t\t</td>");
 			ret.append(System.lineSeparator());
@@ -503,7 +503,7 @@ public class JunitTestRunner extends TestRunner {
 	 */
 	@Override
 	protected void evaluation(Test test) {
-		String[] lines = test.getIn().split("<br/>");
+		String[] lines = test.getConsole().split("<br/>");
 		
 		for (int i = 0; i < lines.length; i++) {
 			if (lines[i].indexOf("OK (") > -1) {

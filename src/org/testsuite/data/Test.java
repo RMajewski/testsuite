@@ -171,8 +171,20 @@ public class Test extends Data {
 	 * posted.
 	 * 
 	 * @return InputStream with the outputs of the console.
+	 * 
+	 * @deprecated Use {@link #getConsole()}
 	 */
 	public String getIn() {
+		return _console;
+	}
+	
+	/**
+	 * Returns the stream, in which the expenditure of the console have been
+	 * posted.
+	 * 
+	 * @return InputStream with the outputs of the console.
+	 */
+	public String getConsole() {
 		return _console;
 	}
 	

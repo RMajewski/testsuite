@@ -154,7 +154,7 @@ public class JemmyTestRunner extends TestRunner {
 			ret.append(html.generateTestOut(
 					_suites.get(suite).getId(),
 					_suites.get(suite).getTest(test).getId(), 
-					_suites.get(suite).getTest(test).getIn(), 
+					_suites.get(suite).getTest(test).getConsole(), 
 					_suites.get(suite).getTest(test).getError(),
 					exec(_suites.get(suite).getPackage() + "." + 
 							_suites.get(suite).getTest(test).getName(),

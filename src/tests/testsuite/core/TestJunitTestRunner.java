@@ -186,7 +186,7 @@ public class TestJunitTestRunner {
 		when(test.getId()).thenReturn(testId);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.getOk()).thenReturn(ok);
 		when(test.getFail()).thenReturn(fail);
 		when(test.getDurationTimeFormattedString()).thenReturn(duration);
@@ -208,7 +208,7 @@ public class TestJunitTestRunner {
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
-		order.verify(test).getIn();
+		order.verify(test).getConsole();
 		order.verify(test).getError();
 		order.verify(test).isExecuted();
 		order.verify(test).isTerminated();
@@ -268,7 +268,7 @@ public class TestJunitTestRunner {
 		when(test.getId()).thenReturn(testId);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.getOk()).thenReturn(ok);
 		when(test.getFail()).thenReturn(fail);
 		
@@ -287,7 +287,7 @@ public class TestJunitTestRunner {
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
-		order.verify(test).getIn();
+		order.verify(test).getConsole();
 		order.verify(test).getError();
 		order.verify(suite).getPackage();
 		order.verify(test).getName();
@@ -337,7 +337,7 @@ public class TestJunitTestRunner {
 		when(test.isExists()).thenReturn(false);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.getOk()).thenReturn(ok);
 		when(test.getFail()).thenReturn(fail);
 		when(test.getDurationTimeFormattedString()).thenReturn(duration);
@@ -467,7 +467,7 @@ public class TestJunitTestRunner {
 		when(test.getId()).thenReturn(testId);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.getOk()).thenReturn(ok);
 		when(test.getFail()).thenReturn(fail);
 		when(test.isJvm()).thenReturn(true);
@@ -493,7 +493,7 @@ public class TestJunitTestRunner {
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
-		order.verify(test).getIn();
+		order.verify(test).getConsole();
 		order.verify(test).getError();
 		order.verify(test).isExecuted();
 		order.verify(test).isTerminated();
@@ -550,7 +550,7 @@ public class TestJunitTestRunner {
 		when(test.getId()).thenReturn(testId);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.getOk()).thenReturn(ok);
 		when(test.getFail()).thenReturn(fail);
 		
@@ -569,7 +569,7 @@ public class TestJunitTestRunner {
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
-		order.verify(test).getIn();
+		order.verify(test).getConsole();
 		order.verify(test).getError();
 		order.verify(test).isExecuted();
 		
@@ -614,7 +614,7 @@ public class TestJunitTestRunner {
 		when(test.isExists()).thenReturn(false);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.getOk()).thenReturn(ok);
 		when(test.getFail()).thenReturn(fail);
 		when(test.getDurationTimeFormattedString()).thenReturn(duration);
@@ -739,7 +739,7 @@ public class TestJunitTestRunner {
 		int ok = 10;
 		
 		Junit test = mock(Junit.class);
-		when(test.getIn()).thenReturn("OK (" + ok + " tests)");
+		when(test.getConsole()).thenReturn("OK (" + ok + " tests)");
 		
 		Method method = 
 				JunitTestRunner.class.getDeclaredMethod("evaluation", 
@@ -747,7 +747,7 @@ public class TestJunitTestRunner {
 		method.setAccessible(true);
 		method.invoke(_runner, test);
 		
-		verify(test).getIn();
+		verify(test).getConsole();
 		verify(test).setOk(ok);
 	}
 	
@@ -760,7 +760,7 @@ public class TestJunitTestRunner {
 		int failures = 20;
 		
 		Junit test = mock(Junit.class);
-		when(test.getIn()).thenReturn("Tests run: " + ok + ",  Failures: " +
+		when(test.getConsole()).thenReturn("Tests run: " + ok + ",  Failures: " +
 				failures);
 		
 		Method method = 
@@ -769,7 +769,7 @@ public class TestJunitTestRunner {
 		method.setAccessible(true);
 		method.invoke(_runner, test);
 		
-		verify(test).getIn();
+		verify(test).getConsole();
 		verify(test).setOk(ok);
 		verify(test).setFail(failures);
 	}
