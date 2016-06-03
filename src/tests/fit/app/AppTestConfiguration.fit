@@ -75,6 +75,16 @@
 				</tr>
 				<tr>
 					<td>check</td>
+					<td>haveConfigurationTestTextNameSourceFile</td>
+					<td>true</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getConfigurationTestTextNameSourceFile</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>check</td>
 					<td>haveButtonAccept</td>
 					<td>true</td>
 				</tr>
@@ -97,6 +107,11 @@
 					<td>enter</td>
 					<td>setConfigurationTestCheckBoxJvm</td>
 					<td>false</td>
+				</tr>
+				<tr>
+					<td>enter</td>
+					<td>setConfigurationTestTextNameSourceFile</td>
+					<td>Test.java</td>
 				</tr>
 				<tr>
 					<td>press</td>
@@ -124,6 +139,11 @@
 					<td>false</td>
 				</tr>
 				<tr>
+					<td>check</td>
+					<td>getTestNameSourceFile</td>
+					<td>Test.java</td>
+				</tr>
+				<tr>
 					<td>press</td>
 					<td>openPopup</td>
 					<td>&nbsp;</td>
@@ -147,6 +167,11 @@
 					<td>check</td>
 					<td>isConfigurationTestCheckBoxJvm</td>
 					<td>false</td>
+				</tr>
+				<tr>
+					<td>check</td>
+					<td>getConfigurationTestTextNameSourceFile</td>
+					<td>Test.java</td>
 				</tr>
 			</tbody>
 		</table>

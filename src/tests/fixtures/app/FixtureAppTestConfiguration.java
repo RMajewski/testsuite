@@ -148,5 +148,41 @@ public class FixtureAppTestConfiguration extends FixtureApp {
 	public boolean isTestJvmSelected() {
 		return _tests.getTreeSelectedTest().isJvm();
 	}
+	
+	/**
+	 * Determines whether the text field for the name of source file exists.
+	 * 
+	 * @return In existence the text field for the name of source file?
+	 */
+	public boolean haveConfigurationTestTextNameSourceFile() {
+		return _tests.getDialogTextField(1).isEnabled();
+	}
+	
+	/**
+	 * Return the text from text field name of source file
+	 *
+	 * @return Text from text field name of source file
+	 */
+	public String getConfigurationTestTextNameSourceFile() {
+		return _tests.getDialogTextField(1).getText();
+	}
+	
+	/**
+	 * Set the text on text field.
+	 * 
+	 * @param name The new text on text field
+	 */
+	public void setConfigurationTestTextNameSourceFile(String name) {
+		_tests.getDialogTextField(1).setText(name);
+	}
+	
+	/**
+	 * Return the test name from selected test in the tree
+	 * 
+	 * @return The test name from selected test
+	 */
+	public String getTestNameSourceFile() {
+		return _tests.getTreeSelectedTest().getCheckSource();
+	}
 
 }
