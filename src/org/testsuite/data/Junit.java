@@ -64,6 +64,8 @@ public class Junit extends Test {
 	 * @param ok Number of successful tests
 	 */
 	public void setOk(int ok) {
+		if (ok < 0)
+			throw new IllegalArgumentException();
 		_ok = ok;
 	}
 	
@@ -82,6 +84,8 @@ public class Junit extends Test {
 	 * @param fail Number of faulty tests
 	 */
 	public void setFail(int fail) {
+		if (fail < 0)
+			throw new IllegalArgumentException();
 		_fail = fail;
 	}
 }

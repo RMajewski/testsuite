@@ -32,7 +32,7 @@ import org.testsuite.data.Junit;
  * 
  * @version 0.1
  */
-public class TestJunitData {
+public class TestJunit {
 
 	/**
 	 * Save the class JunitData
@@ -90,6 +90,14 @@ public class TestJunitData {
 	}
 	
 	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testSetOkWithMinusNumberAsParamter() {
+		_data.setOk(-1);
+	}
+	
+	/**
 	 * Testing whether the number of failed tests is returned correctly.
 	 * 
 	 * @see org.testsuite.data.Junit#getFail()
@@ -109,6 +117,14 @@ public class TestJunitData {
 		int i = 10;
 		_data.setFail(i);
 		assertEquals(i, _data.getFail());
+	}
+	
+	/**
+	 * Verifies that the error IllegalArgumentException triggered.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testSetFailWithMinusNumberAsParamter() {
+		_data.setFail(-1);
 	}
 
 }
