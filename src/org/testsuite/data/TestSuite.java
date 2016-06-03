@@ -96,10 +96,22 @@ public class TestSuite extends Data {
 	
 	/**
 	 * Removes the test from the test list
+	 * 
 	 * @param o Test, which is to be deleted.
+	 * 
+	 * @deprecated Use {@link #removeTest(Test)}
 	 */
 	public void removeTest(Object o) {
 		_tests.remove(o);
+	}
+	
+	/**
+	 * Removes the test from the test list
+	 * 
+	 * @param o Test, which is to be deleted.
+	 */
+	public void removeTest(Test test) {
+		_tests.remove(test);
 	}
 	
 	/**

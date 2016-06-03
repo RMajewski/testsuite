@@ -23,6 +23,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.testsuite.data.Data;
 import org.testsuite.data.TestSuite;
@@ -153,6 +154,37 @@ public class TestTestSuite {
 	
 	/**
 	 * Verifies that the correct test is deleted.
+	 * 
+	 * @deprecated
+	 */
+	@Ignore("Test a deprecated method")
+	@Test
+	public void testRemoveTestOld() {
+		org.testsuite.data.Test test1 = new org.testsuite.data.Test();
+		test1.setName("Test1");
+		_data.addTest(test1);
+		
+		org.testsuite.data.Test test2 = new org.testsuite.data.Test();
+		test2.setName("Test2");
+		_data.addTest(test2);
+		
+		org.testsuite.data.Test test3 = new org.testsuite.data.Test();
+		test3.setName("Test3");
+		_data.addTest(test3);
+		
+		assertEquals(3, _data.testCount());
+		
+		_data.removeTest(test2);
+		
+		assertEquals(2, _data.testCount());
+		assertEquals(test1, _data.getTest(0));
+		assertEquals(test3, _data.getTest(1));
+	}
+	
+	/**
+	 * Verifies that the correct test is deleted.
+	 * 
+	 * @deprecated
 	 */
 	@Test
 	public void testRemoveTest() {
