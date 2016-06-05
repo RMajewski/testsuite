@@ -47,6 +47,11 @@ public class CheckSource {
 	private boolean _createHtml;
 	
 	/**
+	 * Saves the instance for ReadSource
+	 */
+	private SourceFile _source;
+	
+	/**
 	 * Initialize the data of the class
 	 * 
 	 * @param nameSrc The name of source file
@@ -59,6 +64,8 @@ public class CheckSource {
 		setNameSourceFile(nameSrc);
 		setNameTestFile(nameTest);
 		setNameResultFile(nameResult);
+		_source = new SourceFile();
+		_source.setFileName(_nameSrc);
 	}
 	
 	/**
@@ -139,5 +146,12 @@ public class CheckSource {
 	 */
 	public void setCreateHtml(boolean createHtml) {
 		_createHtml = createHtml;
+	}
+	
+	/**
+	 * Read the source code line by line
+	 */
+	public void read() {
+		_source.readFile();
 	}
 }

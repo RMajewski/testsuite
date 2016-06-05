@@ -53,6 +53,10 @@ public class ReadSource {
 				endIndex = line.indexOf("{", startIndex);
 			else if (line.indexOf("}", startIndex) > -1)
 				endIndex = line.indexOf("}", startIndex);
+			else if (line.indexOf("*/", startIndex) > -1)
+				endIndex = line.indexOf("*/", startIndex);
+			else
+				endIndex = line.length() - 1;
 
 			String[] read = line.substring(startIndex, endIndex).split(" ");
 			
