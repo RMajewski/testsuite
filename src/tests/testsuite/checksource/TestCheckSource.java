@@ -17,13 +17,13 @@
 * sind dem Lizenztext zu entnehmen.
 */ 
 
-package tests.testsuite.checkSource;
+package tests.testsuite.checksource;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.testsuite.checkSource.CheckSource;
+import org.testsuite.checksource.CheckSource;
 
 /**
  * Tests for the class {@link org.testsuite.checksource.CheckSource}.

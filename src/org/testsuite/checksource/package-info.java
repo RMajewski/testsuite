@@ -24,4 +24,4 @@
  *
  * @verion 0.1
  */
-package org.testsuite.checkSource;
+package org.testsuite.checksource;

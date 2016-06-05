@@ -17,7 +17,7 @@
 * sind dem Lizenztext zu entnehmen.
 */ 
 
-package org.testsuite.checkSource;
+package org.testsuite.checksource;
 
 /**
  * 
