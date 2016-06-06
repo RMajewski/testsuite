@@ -106,6 +106,8 @@ public abstract class TestRunner {
 	
 	/**
 	 * Saves the configuration.
+	 * 
+	 * @deprecated Use {@link org.testsuite.data.Config#getInstance()}
 	 */
 	protected Config _config;
 	
@@ -131,9 +133,6 @@ public abstract class TestRunner {
 	
 	/**
 	 * Initialize the data of the class.
-	 * 
-	 * <strong>Important</strong>: It must also be initialized config. Please
-	 * use {@link #setConfig(Config)}.
 	 */
 	public TestRunner() {
 		try {
@@ -155,6 +154,8 @@ public abstract class TestRunner {
 	 * Initialis the data of the class.
 	 * 
 	 * @param config The configuration
+	 * 
+	 * @deprecated Use {@link #TestRunner()}
 	 */
 	public TestRunner(Config config) {
 		this();
@@ -393,6 +394,8 @@ public abstract class TestRunner {
 	 * Returns the configuration.
 	 * 
 	 * @return Configuration
+	 * 
+	 * @deprecated Use {@link org.testsuite.data.Config#getInstance()}
 	 */
 	public Config getConfig() {
 		return _config;
@@ -402,6 +405,8 @@ public abstract class TestRunner {
 	 * Sets the configuration.
 	 * 
 	 * @param config The new configuration.
+	 * 
+	 * @deprecated Use {@link org.testsuite.data.Config#getInstance()}
 	 */
 	public void setConfig(Config config) {
 		if (config == null)
@@ -434,7 +439,7 @@ public abstract class TestRunner {
 	public void checkFileExists() {
 		for (int suite = 0; suite < _suites.size(); suite++) {
 			// Überprüft, ob das Verzeichnis existiert
-			String path = _config.getPathSrc() +  File.separator +
+			String path = Config.getInstance().getPathSrc() +  File.separator +
 					_suites.get(suite).getPackage()
 					.replaceAll("\\.", File.separator);
 			boolean pathExists = false;
@@ -660,7 +665,7 @@ public abstract class TestRunner {
 				ret.append(File.pathSeparator);
 			
 			if (_library.get(lib).getPath().isEmpty())
-				ret.append(_config.getPathLibrary());
+				ret.append(Config.getInstance().getPathLibrary());
 			else
 				ret.append(_library.get(lib).getPath());
 			ret.append(File.separator);
@@ -680,7 +685,7 @@ public abstract class TestRunner {
 		
 		boolean sep = false;
 		boolean space = false;
-		String cp = _config.classPathsAsParameterJVM();
+		String cp = Config.getInstance().classPathsAsParameterJVM();
 		
 		if (!cp.isEmpty()) {
 			ret.append(cp);
@@ -703,8 +708,8 @@ public abstract class TestRunner {
 			if (!_library.get(lib).getPath().isEmpty()) {
 				ret.append(_library.get(lib).getPath());
 				ret.append(File.separator);
-			} else if(!_config.getPathLibrary().isEmpty()) {
-				ret.append(_config.getPathLibrary());
+			} else if(!Config.getInstance().getPathLibrary().isEmpty()) {
+				ret.append(Config.getInstance().getPathLibrary());
 				ret.append(File.separator);
 			}
 			
@@ -726,14 +731,15 @@ public abstract class TestRunner {
 	protected String createProperty() {
 		StringBuilder ret = new StringBuilder();
 		
-		for (int property = 0; property < _config.propertyCount(); property++) {
+		for (int property = 0; property < Config.getInstance().propertyCount(); 
+				property++) {
 			if (property > 0)
 				ret.append(" ");
 			ret.append("-D");
-			ret.append(_config.getProperty(property));
+			ret.append(Config.getInstance().getProperty(property));
 		}
 		
-		if (_config.propertyCount() > 0)
+		if (Config.getInstance().propertyCount() > 0)
 			ret.append(" ");
 		
 		return ret.toString();
@@ -927,7 +933,8 @@ public abstract class TestRunner {
 				// Start time
 				test.setStart(new Date().getTime());
 
-				Timer timer = new Timer((int)_config.getMaxDuration(),
+				Timer timer = new Timer(
+						(int)Config.getInstance().getMaxDuration(),
 						new ActionListener() {
 							@Override
 							public void actionPerformed(ActionEvent e) {

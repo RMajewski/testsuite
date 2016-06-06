@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Matchers;
@@ -85,6 +86,8 @@ public class TestHtmlOut {
 		
 		_resultFile = "test.html";
 		_html = new HtmlOut(_resultFile);
+		
+		Config.getInstance().clearAll();
 	}
 
 	/**
@@ -121,14 +124,27 @@ public class TestHtmlOut {
 
 	/**
 	 * Tests if the HTML header is correctly written in the BufferedWriter.
+	 * @deprecated
 	 */
+	@Ignore("The method is deprecated")
 	@Test
-	public void testHtmlHead() throws IOException {
+	public void testHtmlHeadOld() throws IOException {
 		Config config = mock(Config.class);
 		when(config.javascriptFileCount()).thenReturn(0);
 		when(config.stylesheetFileCount()).thenReturn(0);
 		
 		_html.htmlHead(config);
+		
+		verify(_bufferedWriter, atLeastOnce()).newLine();
+		verify(_bufferedWriter, atLeastOnce()).write(Matchers.anyString());
+	}
+
+	/**
+	 * Tests if the HTML header is correctly written in the BufferedWriter.
+	 */
+	@Test
+	public void testHtmlHead() throws IOException {
+		_html.htmlHead();
 		
 		verify(_bufferedWriter, atLeastOnce()).newLine();
 		verify(_bufferedWriter, atLeastOnce()).write(Matchers.anyString());

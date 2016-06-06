@@ -274,6 +274,8 @@ implements ActionListener, TestEventListener, ValidationEventListener {
 	
 	/**
 	 * Saves the instance of the configuration.
+	 * 
+	 * @deprecated Use {@link org.testsuite.data.Config#getInstance()}
 	 */
 	private Config _config;
 	
@@ -345,7 +347,7 @@ implements ActionListener, TestEventListener, ValidationEventListener {
 		
 		_bundle = ResourceBundle.getBundle(BUNDLE_FILE);
 		
-		_config = new Config();
+		_config = Config.getInstance();
 		
 		_run = false;
 		
@@ -524,7 +526,7 @@ implements ActionListener, TestEventListener, ValidationEventListener {
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.setTime(new Date());
 		DecimalFormat df = new DecimalFormat("00");
-		_config.setPathSuitesResult(
+		Config.getInstance().setPathSuitesResult(
 				df.format(gc.get(GregorianCalendar.YEAR)) +
 				df.format(gc.get(GregorianCalendar.MONTH) + 1) +
 				df.format(gc.get(GregorianCalendar.DAY_OF_MONTH)) +
@@ -548,7 +550,7 @@ implements ActionListener, TestEventListener, ValidationEventListener {
 		AppTreeModel atm = new AppTreeModel();
 		atm.addValidationEventListener(this);
 		_tree.setModel(atm);
-		_tree.setCellRenderer(new TestRunnerRenderer(_config));
+		_tree.setCellRenderer(new TestRunnerRenderer(Config.getInstance()));
 		_tree.setComponentPopupMenu(treePopup());
 		_tree.setExpandsSelectedPaths(true);
 		_tree.setScrollsOnExpand(true);
@@ -819,7 +821,7 @@ implements ActionListener, TestEventListener, ValidationEventListener {
 	 * Open the configuration dialog for general configuration
 	 */
 	private void configGeneral() {
-		new DlgConfigGeneral(this, _config);
+		new DlgConfigGeneral(this, Config.getInstance());
 	}
 	
 	/**
@@ -858,6 +860,8 @@ implements ActionListener, TestEventListener, ValidationEventListener {
 	 * Returns the configuration.
 	 * 
 	 * @return Configuration
+	 * 
+	 * @deprecated Use {@link org.testsuite.data.Config#getInstance()}
 	 */
 	public Config getConfig() {
 		return _config;
@@ -886,15 +890,14 @@ implements ActionListener, TestEventListener, ValidationEventListener {
 				
 				if ((state == JFileChooser.APPROVE_OPTION) && (file != null) && 
 						(file.exists())) {
-					ConfigParser parser = new ConfigParser(_config, 
+					ConfigParser parser = new ConfigParser(Config.getInstance(), 
 							file.getPath());
 					
 					if (parser.parse()) {
 						((AppTreeModel)_tree.getModel()).setListOfTestRunner(
 								parser.getTestRunnerList());
 						((AppTreeModel)_tree.getModel())
-								.validateConfiguration(_config);
-						_config = parser.getConfig();
+								.validateConfiguration(Config.getInstance());
 						setButtonsEnable(true);
 						
 						int tests = 0;
@@ -929,7 +932,7 @@ implements ActionListener, TestEventListener, ValidationEventListener {
 						}
 					}
 					
-					ConfigSaver.save(_config, 
+					ConfigSaver.save(Config.getInstance(), 
 							((AppTreeModel)_tree.getModel())
 							.getTestRunnerList(), file);
 				}
@@ -939,7 +942,7 @@ implements ActionListener, TestEventListener, ValidationEventListener {
 				_listValidationError.clear();
 				_spHtml.setViewportView(_lstValidationError);
 				((AppTreeModel)_tree.getModel()).validateConfiguration(
-						_config);
+						Config.getInstance());
 				_tree.updateUI();
 				
 				break;
@@ -1009,7 +1012,7 @@ implements ActionListener, TestEventListener, ValidationEventListener {
 				
 			case TREE_INSERT_TEST_RUNNER:
 				((AppTreeModel)_tree.getModel()).getTestRunnerList().add(
-						new JunitTestRunner(_config));
+						new JunitTestRunner(Config.getInstance()));
 				_tree.updateUI();
 				setButtonsEnable(true);
 				break;
@@ -1035,7 +1038,7 @@ implements ActionListener, TestEventListener, ValidationEventListener {
 				if (ret == JOptionPane.YES_OPTION) {
 					((AppTreeModel)_tree.getModel()).getTestRunnerList()
 						.clear();
-					_config.clear();
+					Config.getInstance().clear();
 					_tree.updateUI();
 					setButtonsEnable(false);
 				}
@@ -1057,7 +1060,7 @@ implements ActionListener, TestEventListener, ValidationEventListener {
 					_tree.updateUI();
 					_tree.clearSelection();
 					
-					if (_config.isEmpty() && 
+					if (Config.getInstance().isEmpty() && 
 							(((AppTreeModel)_tree.getModel())
 									.getTestRunnerList().size() == 0)) {
 						setButtonsEnable(false);
@@ -1207,17 +1210,17 @@ implements ActionListener, TestEventListener, ValidationEventListener {
 		setButtonsEnable(true);
 
 		// Create HTML ouput
-		String htmlFile = _config.getPathResult() + File.separator;
+		String htmlFile = Config.getInstance().getPathResult() + File.separator;
 		File f = new File(htmlFile);
 		if (!f.exists())
 			f.mkdirs();
 		
 		htmlFile += _bundle.getString("html_result") + "_" +
-				_config.getPathSuitesResult() + ".html";
+				Config.getInstance().getPathSuitesResult() + ".html";
 		try {
 			
 			HtmlOut html = new HtmlOut(htmlFile);
-			html.htmlHead(_config);
+			html.htmlHead(Config.getInstance());
 			
 			List<TestRunner> testRunner = 
 					((AppTreeModel)_tree.getModel())

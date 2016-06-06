@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
 import java.util.ResourceBundle;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
@@ -61,6 +62,8 @@ public class TestFitTestRunner {
 
 	/**
 	 * Save the mock of configuration
+	 * 
+	 * @deprecated
 	 */
 	private Config _config;
 	
@@ -74,9 +77,9 @@ public class TestFitTestRunner {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		_config = mock(Config.class);
+		Config.getInstance().clearAll();
 		_bundle = ResourceBundle.getBundle(FitTestRunner.BUNDLE_FILE);
-		_runner = new FitTestRunner(_config);
+		_runner = new FitTestRunner();
 	}
 
 	/**
@@ -125,9 +128,12 @@ public class TestFitTestRunner {
 	
 	/**
 	 * Tests if the line of HTML is generated correctly for a test.
+	 * 
+	 * @deprecated
 	 */
+	@Ignore("The method is deprecated")
 	@Test
-	public void testCreateHtmlColumn() throws Exception {
+	public void testCreateHtmlColumnOld() throws Exception {
 		String testName = "Test1";
 		String testOut = "\t\t\t\t\t\t<div class=\"right\"><a " +
 				"href=\"javascript:togleDisplayId(0, 0)\"> Ausgabe</a></div>" +
@@ -230,11 +236,121 @@ public class TestFitTestRunner {
 	}
 	
 	/**
+	 * Tests if the line of HTML is generated correctly for a test.
+	 */
+	@Ignore("The method is deprecated")
+	@Test
+	public void testCreateHtmlColumn() throws Exception {
+		String testName = "Test1";
+		String testOut = "\t\t\t\t\t\t<div class=\"right\"><a " +
+				"href=\"javascript:togleDisplayId(0, 0)\"> Ausgabe</a></div>" +
+				System.lineSeparator() + "\t\t\t\t\t\t<div " +
+				"class=\"testoutInvisible\" id=\"id_0_0\">" +
+				System.lineSeparator() + " class=\"" +
+				"command_line\">" + System.lineSeparator() + 
+				"\t\t\t\t\t\t\t\t<code>exec</code>" + System.lineSeparator() +
+				"\t\t\t\t\t\t\t</div>" + System.lineSeparator() + 
+				"\t\t\t\t\t\t\t<div class=\"console\">Console</div>" +
+				System.lineSeparator() + "\t\t\t\t\t\t\t<div class=\"error\">" +
+				"Fehler</div>" + System.lineSeparator() + "\t\t\t\t\t\t</div>" + 
+				System.lineSeparator();
+		String console="console";
+		String error = "error";
+		String resultSuite = "1";
+		int ok = 1;
+		int fail = 0;
+		int ignore = 0;
+		int exception = 0;
+		String duration = "00:00:01.897";
+		int suiteId = 0;
+		int testId = 0;
+		String packageName = "test.fit";
+		
+		String ret = "\t\t\t\t\t\t<td class=\"pass\"><a href=\"" + resultSuite + 
+				File.separator + packageName.replaceAll("\\.", File.separator) +
+				File.separator + testName + ".html\">" + testName + "</a>" +
+				testOut + "\t\t\t\t\t\t</td>" + System.lineSeparator() + 
+				"\t\t\t\t\t\t<td class=\"pass\">" + ok + "</td>" + 
+				System.lineSeparator() + 
+				"\t\t\t\t\t\t<td class=\"pass\">" + fail + "</td>" + 
+				System.lineSeparator() +
+				"\t\t\t\t\t\t<td class=\"pass\">" + ignore + "</td>" + 
+				System.lineSeparator() +
+				"\t\t\t\t\t\t<td class=\"pass\">" + exception + "</td>" + 
+				System.lineSeparator() + "\t\t\t\t\t\t<td class=\"pass\">" + duration + 
+				"</td>" + System.lineSeparator();
+		
+		Config.getInstance().clear();
+		Config.getInstance().setPathSuitesResult(resultSuite);
+		
+		HtmlOut html = mock(HtmlOut.class);
+		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
+				eq(error), anyString())).thenReturn(testOut);
+		
+		Method method = 
+				FitTestRunner.class.getDeclaredMethod("createHtmlColumn", 
+						int.class, int.class, HtmlOut.class);
+		method.setAccessible(true);
+		
+		Fit test = mock(Fit.class);
+		when(test.isExists()).thenReturn(true);
+		when(test.isExecuted()).thenReturn(true);
+		when(test.getName()).thenReturn(testName);
+		when(test.getError()).thenReturn(error);
+		when(test.getIn()).thenReturn(console);
+		when(test.getOk()).thenReturn(ok);
+		when(test.getFail()).thenReturn(fail);
+		when(test.getIgnore()).thenReturn(ignore);
+		when(test.getException()).thenReturn(exception);
+		when(test.getDurationTimeFormattedString()).thenReturn(duration);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getTest(0)).thenReturn(test);
+		when(suite.getPackage()).thenReturn(packageName);
+		_runner.addTestSuite(suite);
+		
+		assertEquals(ret, method.invoke(_runner, 0, 0, html));
+		
+		InOrder order = inOrder(test, suite, _config);
+		order.verify(test).getOk();
+		order.verify(test).getFail();
+		order.verify(test).getIgnore();
+		order.verify(test).getException();
+		order.verify(test).isExecuted();
+		order.verify(test).isTerminated();
+		order.verify(test).isExists();
+		order.verify(test).isExecuted();
+		order.verify(test).isTerminated();
+		order.verify(_config).getPathSuitesResult();
+		order.verify(suite).getPackage();
+		order.verify(test).getName();
+		order.verify(test).getName();
+		order.verify(suite).getId();
+		order.verify(test).getId();
+		order.verify(test).getIn();
+		order.verify(test).getError();
+		order.verify(suite).getPackage();
+		order.verify(test).getName();
+		order.verify(test).isExecuted();
+		order.verify(test).isTerminated();
+		order.verify(test).getOk();
+		order.verify(test).getFail();
+		order.verify(test).getIgnore();
+		order.verify(test).getException();
+		order.verify(test).getDurationTimeFormattedString();
+		
+		verify(suite, times(23)).getTest(0);
+	}
+	
+	/**
 	 * Tests if the line of HTML is generated correctly for a none executed
 	 * test.
+	 * 
+	 * @deprecated
 	 */
+	@Ignore("The method is deprecated")
 	@Test
-	public void testCreateHtmlColumnWithNoneExecutedTest() throws Exception {
+	public void testCreateHtmlColumnWithNoneExecutedTestOld() throws Exception {
 		String testName = "Test1";
 		String testOut = "\t\t\t\t\t\t<div class=\"right\"><a " +
 				"href=\"javascript:togleDisplayId(0, 0)\"> Ausgabe</a></div>" +
@@ -315,11 +431,98 @@ public class TestFitTestRunner {
 	}
 	
 	/**
-	 * Testing whether the line of HTML is generated correctly for a test when
-	 * the test file does not exist.
+	 * Tests if the line of HTML is generated correctly for a none executed
+	 * test.
 	 */
 	@Test
-	public void testCreateHtmlColumnWithNoneExistingTest() throws Exception {
+	public void testCreateHtmlColumnWithNoneExecutedTest() throws Exception {
+		String testName = "Test1";
+		String testOut = "\t\t\t\t\t\t<div class=\"right\"><a " +
+				"href=\"javascript:togleDisplayId(0, 0)\"> Ausgabe</a></div>" +
+				System.lineSeparator() + "\t\t\t\t\t\t<div " +
+				"class=\"testoutInvisible\" id=\"id_0_0\">" + 
+				System.lineSeparator() + "\t\t\t\t\t\t\t<div " +
+				"class=\"console\">Console</div>" + System.lineSeparator() +
+				"\t\t\t\t\t\t\t<div class=\"error\">Fehler</div>" +
+				System.lineSeparator() + "\t\t\t\t\t\t</div>" + 
+				System.lineSeparator();
+		String console="console";
+		String error = "error";
+		String resultSuite = "1";
+		int ok = 1;
+		int fail = 2;
+		int ignore = 0;
+		int exception = 4;
+		String duration = "00:00:01.897";
+		int suiteId = 0;
+		int testId = 0;
+		String packageName = "test.fit";
+		
+		String ret = "\t\t\t\t\t\t<td class=\"ignore\">" + testName + 
+				testOut + "\t\t\t\t\t\t</td>" + System.lineSeparator() + 
+				"\t\t\t\t\t\t<td class=\"ignore\" " +
+				"colspan=\"5\">wurde nicht ausgeführt</td>" +
+				System.lineSeparator();
+		
+		Config.getInstance().setPathSuitesResult(resultSuite);
+		
+		HtmlOut html = mock(HtmlOut.class);
+		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
+				eq(error), anyString())).thenReturn(testOut);
+		
+		Method method = 
+				FitTestRunner.class.getDeclaredMethod("createHtmlColumn", 
+						int.class, int.class, HtmlOut.class);
+		method.setAccessible(true);
+		
+		Fit test = mock(Fit.class);
+		when(test.isExists()).thenReturn(true);
+		when(test.isExecuted()).thenReturn(false);
+		when(test.getName()).thenReturn(testName);
+		when(test.getError()).thenReturn(error);
+		when(test.getIn()).thenReturn(console);
+		when(test.getOk()).thenReturn(ok);
+		when(test.getFail()).thenReturn(fail);
+		when(test.getIgnore()).thenReturn(ignore);
+		when(test.getException()).thenReturn(exception);
+		when(test.getDurationTimeFormattedString()).thenReturn(duration);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getTest(0)).thenReturn(test);
+		when(suite.getPackage()).thenReturn(packageName);
+		_runner.addTestSuite(suite);
+		
+		assertEquals(ret, method.invoke(_runner, 0, 0, html));
+		
+		InOrder order = inOrder(test, suite);
+		order.verify(test).getOk();
+		order.verify(test).getFail();
+		order.verify(test).getIgnore();
+		order.verify(test).getException();
+		order.verify(test).isExecuted();
+		order.verify(test).isExists();
+		order.verify(test).isExecuted();
+		order.verify(test).getName();
+		order.verify(suite).getId();
+		order.verify(test).getId();
+		order.verify(test).getIn();
+		order.verify(test).getError();
+		order.verify(suite).getPackage();
+		order.verify(test).getName();
+		order.verify(test).isExecuted();
+		
+		verify(suite, times(14)).getTest(0);
+	}
+	
+	/**
+	 * Testing whether the line of HTML is generated correctly for a test when
+	 * the test file does not exist.
+	 * 
+	 * @deprecated
+	 */
+	@Ignore("The method is deprecated")
+	@Test
+	public void testCreateHtmlColumnWithNoneExistingTestOld() throws Exception {
 		String testName = "Test1";
 		String packageName = "tests.test";
 		String srcName = "src";
@@ -378,6 +581,68 @@ public class TestFitTestRunner {
 	}
 	
 	/**
+	 * Testing whether the line of HTML is generated correctly for a test when
+	 * the test file does not exist.
+	 */
+	@Test
+	public void testCreateHtmlColumnWithNoneExistingTest() throws Exception {
+		String testName = "Test1";
+		String packageName = "tests.test";
+		String srcName = "src";
+		String extension = "fit";
+		String console = "console";
+		String error = "error";
+		int suiteId = 0;
+		int testId = 0;
+		
+		String ret = "\t\t\t\t\t\t<td>" + srcName + File.separator + 
+				packageName.replaceAll("\\.", File.separator) + File.separator +
+				testName + "." + extension + "</td>" + System.lineSeparator() + 
+				"\t\t\t\t\t\t<td colspan=\"5\">Test existiert nicht</td>" + 
+				System.lineSeparator();
+		
+		_runner.setFileExtension(extension);
+		
+		HtmlOut html = mock(HtmlOut.class);
+		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
+				eq(error), anyString())).thenReturn(new String());
+		
+		Method method = 
+				FitTestRunner.class.getDeclaredMethod("createHtmlColumn", 
+						int.class, int.class, HtmlOut.class);
+		method.setAccessible(true);
+		
+		Fit test = mock(Fit.class);
+		when(test.isExists()).thenReturn(false);
+		when(test.isExecuted()).thenReturn(true);
+		when(test.getName()).thenReturn(testName);
+		when(test.getError()).thenReturn(error);
+		when(test.getIn()).thenReturn(console);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getTest(0)).thenReturn(test);
+		when(suite.getPackage()).thenReturn(packageName);
+		_runner.addTestSuite(suite);
+		
+		Config.getInstance().setPathSrc(srcName);
+		
+		assertEquals(ret, method.invoke(_runner, 0, 0, html));
+		
+		InOrder order = inOrder(test, suite);
+		order.verify(test).getOk();
+		order.verify(test).getFail();
+		order.verify(test).getIgnore();
+		order.verify(test).getException();
+		order.verify(test).isExecuted();
+		order.verify(test).isTerminated();
+		order.verify(test).isExists();
+		order.verify(suite).getPackage();
+		order.verify(test).getName();
+		
+		verify(suite, times(8)).getTest(0);
+	}
+	
+	/**
 	 * Tests whether the error IllegalArgumentException will be canceled if no
 	 * valid test suite id is passed.
 	 */
@@ -420,9 +685,12 @@ public class TestFitTestRunner {
 
 	/**
 	 * Tests if the correct command is created.
+	 * 
+	 * @deprecated
 	 */
+	@Ignore("The method is deprecated")
 	@Test
-	public void testExec() throws Exception{
+	public void testExecOld() throws Exception{
 		String libName1 = "lib1.jar";
 		String libName2 = "lib2.jar";
 		String propName = "testing=\"true\"";
@@ -477,6 +745,73 @@ public class TestFitTestRunner {
 		when(_config.getPathResult()).thenReturn(resultPath);
 		when(_config.getPathSuitesResult()).thenReturn(suitePath);
 		when(_config.classPathsAsParameterJVM()).thenReturn(classPath2);
+		
+		Method method = 
+				FitTestRunner.class.getDeclaredMethod("exec", 
+						String.class, TestSuite.class, 
+						org.testsuite.data.Test.class);
+		method.setAccessible(true);
+		assertEquals(ret, method.invoke(_runner, name, suite, test));
+	}
+
+	/**
+	 * Tests if the correct command is created.
+	 */
+	@Test
+	public void testExec() throws Exception{
+		String libName1 = "lib1.jar";
+		String libName2 = "lib2.jar";
+		String propName = "testing=\"true\"";
+		String pathLib = "lib";
+		String classPath1 = "bin";
+		String classPath2 = "classpath";
+		String srcPath = "src";
+		String resultPath = "result";
+		String suitePath = "0000000";
+		String extension = "fit";
+		String packageName = "package1.package2";
+		String testName = "test";
+		String name = packageName + "." + testName;
+		String ret = "java -cp " + classPath2 + File.pathSeparator + classPath1 + 
+				File.pathSeparator + pathLib + File.separator + libName1 + 
+				File.pathSeparator + pathLib + File.separator + libName2 + 
+				" -D" + propName + " fit.FileRunner " + srcPath + File.separator +
+				name.replaceAll("\\.", File.separator) + "." + extension + 
+				" " + resultPath + File.separator + suitePath + 
+				File.separator + packageName.replaceAll("\\.", File.separator) + 
+				File.separator + testName + ".html";
+
+		org.testsuite.data.Test test = mock(org.testsuite.data.Test.class);
+		when(test.getName()).thenReturn(testName);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.testCount()).thenReturn(1);
+		when(suite.getTest(0)).thenReturn(test);
+		when(suite.getPackage()).thenReturn(packageName);
+		
+		_runner.addClassPath(classPath1);
+		_runner.setFileExtension(extension);
+		
+		Library lib1 = mock(Library.class);
+		when(lib1.getFileName()).thenReturn(libName1);
+		when(lib1.getPath()).thenReturn(new String());
+		when(lib1.getName()).thenReturn(new String());
+		when(lib1.getVersion()).thenReturn(new String());
+		_runner.addLibrary(lib1);
+		
+		Library lib2 = mock(Library.class);
+		when(lib2.getFileName()).thenReturn(libName2);
+		when(lib2.getPath()).thenReturn(new String());
+		when(lib2.getName()).thenReturn(new String());
+		when(lib2.getVersion()).thenReturn(new String());
+		_runner.addLibrary(lib2);
+		
+		Config.getInstance().setPathLibrary(pathLib);
+		Config.getInstance().addProperty(propName);
+		Config.getInstance().setPathSrc(srcPath);
+		Config.getInstance().setPathResult(resultPath);
+		Config.getInstance().setPathSuitesResult(suitePath);
+		Config.getInstance().addClassPath(classPath2);
 		
 		Method method = 
 				FitTestRunner.class.getDeclaredMethod("exec", 

@@ -169,6 +169,8 @@ public class DlgConfigGeneral extends DlgConfig {
 	
 	/**
 	 * Saves the object of the general configuration
+	 * 
+	 * @deprecated Use {@link org.testsuite.data.Config#getInstance()}
 	 */
 	private Config _config;
 	
@@ -178,12 +180,23 @@ public class DlgConfigGeneral extends DlgConfig {
 	 * @param owner Window that called this dialog.
 	 *
 	 * @param config The general configuration
+	 * 
+	 * @deprecated Use {@link DlgConfigGeneral(JFrame)}
+	 */
+	public DlgConfigGeneral(JFrame owner, Config config) {
+		this(owner);
+	}
+	
+	/**
+	 * Initialize the class an create the layout. 
+	 * 
+	 * @param owner Window that called this dialog.
 	 */
 	@SuppressWarnings("serial")
-	public DlgConfigGeneral(JFrame owner, Config config) {
+	public DlgConfigGeneral(JFrame owner) {
 		super(owner, BUNDLE_FILE);
 		
-		_config = config;
+		_config = Config.getInstance();
 		
 		setSize(700, 730);
 		setLocationRelativeTo(owner);
@@ -207,7 +220,7 @@ public class DlgConfigGeneral extends DlgConfig {
 		getContentPane().add(label, gbc);
 		
 		_txtLibraryPath = new JTextField();
-		_txtLibraryPath.setText(_config.getPathLibrary());
+		_txtLibraryPath.setText(Config.getInstance().getPathLibrary());
 		gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.insets = new Insets(5, 5, 5, 5);
@@ -226,7 +239,7 @@ public class DlgConfigGeneral extends DlgConfig {
 		getContentPane().add(label, gbc);
 		
 		_txtSrcPath = new JTextField();
-		_txtSrcPath.setText(_config.getPathSrc());
+		_txtSrcPath.setText(Config.getInstance().getPathSrc());
 		gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.insets = new Insets(5, 5, 5, 5);
@@ -245,7 +258,7 @@ public class DlgConfigGeneral extends DlgConfig {
 		getContentPane().add(label, gbc);
 		
 		_txtResultPath = new JTextField();
-		_txtResultPath.setText(_config.getPathResult());
+		_txtResultPath.setText(Config.getInstance().getPathResult());
 		gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.insets = new Insets(5, 5, 5, 5);
@@ -256,7 +269,7 @@ public class DlgConfigGeneral extends DlgConfig {
 		getContentPane().add(_txtResultPath, gbc);
 		
 		_cbHtml = new JCheckBox(_bundle.getString("label_html_out"));
-		_cbHtml.setSelected(_config.isCreateHtml());
+		_cbHtml.setSelected(Config.getInstance().isCreateHtml());
 		gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.insets = new Insets(5, 5, 5, 5);
@@ -280,7 +293,7 @@ public class DlgConfigGeneral extends DlgConfig {
 		lf.setMinimumFractionDigits(0);
 		lf.setMaximumFractionDigits(0);
 		_txtMaxDuration = new JFormattedTextField(lf);
-		_txtMaxDuration.setValue(_config.getMaxDuration());
+		_txtMaxDuration.setValue(Config.getInstance().getMaxDuration());
 		gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.insets = new Insets(5, 5, 5, 5);
@@ -303,12 +316,12 @@ public class DlgConfigGeneral extends DlgConfig {
 
 			@Override
 			public String getElementAt(int index) {
-				return _config.getProperty(index);
+				return Config.getInstance().getProperty(index);
 			}
 
 			@Override
 			public int getSize() {
-				return _config.propertyCount();
+				return Config.getInstance().propertyCount();
 			}
 			
 		});
@@ -343,12 +356,12 @@ public class DlgConfigGeneral extends DlgConfig {
 
 			@Override
 			public String getElementAt(int index) {
-				return _config.getClassPath(index);
+				return Config.getInstance().getClassPath(index);
 			}
 
 			@Override
 			public int getSize() {
-				return _config.classPathCount();
+				return Config.getInstance().classPathCount();
 			}
 			
 		});
@@ -383,12 +396,12 @@ public class DlgConfigGeneral extends DlgConfig {
 
 			@Override
 			public String getElementAt(int index) {
-				return _config.getJavascriptFile(index);
+				return Config.getInstance().getJavascriptFile(index);
 			}
 
 			@Override
 			public int getSize() {
-				return _config.javascriptFileCount();
+				return Config.getInstance().javascriptFileCount();
 			}
 			
 		});
@@ -423,12 +436,12 @@ public class DlgConfigGeneral extends DlgConfig {
 
 			@Override
 			public String getElementAt(int index) {
-				return _config.getStylesheetFile(index);
+				return Config.getInstance().getStylesheetFile(index);
 			}
 
 			@Override
 			public int getSize() {
-				return _config.stylesheetFileCount();
+				return Config.getInstance().stylesheetFileCount();
 			}
 			
 		});
@@ -489,12 +502,12 @@ public class DlgConfigGeneral extends DlgConfig {
 		
 			// Save the entered configuration
 			case BTN_ACCEPT:
-				_config.setCreateHtml(_cbHtml.isSelected());
-				_config.setPathLibrary(_txtLibraryPath.getText());
-				_config.setMaxDuration(
+				Config.getInstance().setCreateHtml(_cbHtml.isSelected());
+				Config.getInstance().setPathLibrary(_txtLibraryPath.getText());
+				Config.getInstance().setMaxDuration(
 						((Number)_txtMaxDuration.getValue()).longValue());
-				_config.setPathResult(_txtResultPath.getText());
-				_config.setPathSrc(_txtSrcPath.getText());
+				Config.getInstance().setPathResult(_txtResultPath.getText());
+				Config.getInstance().setPathSrc(_txtSrcPath.getText());
 				break;
 		
 			// Insert a new system property
@@ -504,7 +517,7 @@ public class DlgConfigGeneral extends DlgConfig {
 						_bundle.getString("insert_property_title"),
 						JOptionPane.OK_CANCEL_OPTION);
 				if ((ncp != null) && !ncp.isEmpty()) {
-					_config.addProperty(ncp);
+					Config.getInstance().addProperty(ncp);
 					_listProperties.updateUI();
 				}
 				break;
@@ -516,7 +529,8 @@ public class DlgConfigGeneral extends DlgConfig {
 						_bundle.getString("change_property_title"),
 						JOptionPane.OK_CANCEL_OPTION);
 				if ((ncp != null) && !ncp.isEmpty()) {
-					_config.changeProperty(_listProperties.getSelectedValue(), ncp);
+					Config.getInstance().changeProperty(
+							_listProperties.getSelectedValue(), ncp);
 					_listProperties.updateUI();
 				}
 				break;
@@ -529,7 +543,8 @@ public class DlgConfigGeneral extends DlgConfig {
 						JOptionPane.YES_NO_OPTION, 
 						JOptionPane.QUESTION_MESSAGE);
 				if (ret == JOptionPane.YES_OPTION) {
-					_config.removeProperty(_listProperties.getSelectedValue());
+					Config.getInstance().removeProperty(
+							_listProperties.getSelectedValue());
 					_listProperties.updateUI();
 					listClearSelectionAfterDelete(_listProperties);
 				}
@@ -542,7 +557,7 @@ public class DlgConfigGeneral extends DlgConfig {
 						_bundle.getString("insert_classpath_title"),
 						JOptionPane.OK_CANCEL_OPTION);
 				if ((ncp != null) && !ncp.isEmpty()) {
-					_config.addClassPath(ncp);
+					Config.getInstance().addClassPath(ncp);
 					_listClassPaths.updateUI();
 				}
 				break;
@@ -554,7 +569,8 @@ public class DlgConfigGeneral extends DlgConfig {
 						_bundle.getString("change_classpath_title"),
 						JOptionPane.OK_CANCEL_OPTION);
 				if ((ncp != null) && !ncp.isEmpty()) {
-					_config.changeClassPath(_listClassPaths.getSelectedValue(),
+					Config.getInstance().changeClassPath(
+							_listClassPaths.getSelectedValue(),
 							ncp);
 					_listClassPaths.updateUI();
 				}
@@ -568,7 +584,8 @@ public class DlgConfigGeneral extends DlgConfig {
 						JOptionPane.YES_NO_OPTION, 
 						JOptionPane.QUESTION_MESSAGE);
 				if (ret == JOptionPane.YES_OPTION) {
-					_config.removeClassPath(_listClassPaths.getSelectedValue());
+					Config.getInstance().removeClassPath(
+							_listClassPaths.getSelectedValue());
 					_listClassPaths.updateUI();
 					listClearSelectionAfterDelete(_listClassPaths);
 				}
@@ -581,7 +598,7 @@ public class DlgConfigGeneral extends DlgConfig {
 						_bundle.getString("insert_javascript_title"),
 						JOptionPane.OK_CANCEL_OPTION);
 				if ((ncp != null) && !ncp.isEmpty()) {
-					_config.addJavascriptFile(ncp);
+					Config.getInstance().addJavascriptFile(ncp);
 					_listJavascript.updateUI();
 				}
 				break;
@@ -593,7 +610,7 @@ public class DlgConfigGeneral extends DlgConfig {
 						_bundle.getString("change_javascript_title"),
 						JOptionPane.OK_CANCEL_OPTION);
 				if ((ncp != null) && !ncp.isEmpty()) {
-					_config.changeJavascriptFile(
+					Config.getInstance().changeJavascriptFile(
 							_listJavascript.getSelectedValue(), ncp);
 					_listJavascript.updateUI();
 				}
@@ -607,7 +624,8 @@ public class DlgConfigGeneral extends DlgConfig {
 						JOptionPane.YES_NO_OPTION, 
 						JOptionPane.QUESTION_MESSAGE);
 				if (ret == JOptionPane.YES_OPTION) {
-					_config.removeJavascriptFile(_listJavascript.getSelectedValue());
+					Config.getInstance().removeJavascriptFile(
+							_listJavascript.getSelectedValue());
 					_listJavascript.updateUI();
 					listClearSelectionAfterDelete(_listJavascript);
 				}
@@ -620,7 +638,7 @@ public class DlgConfigGeneral extends DlgConfig {
 						_bundle.getString("insert_stylesheet_title"),
 						JOptionPane.OK_CANCEL_OPTION);
 				if ((ncp != null) && !ncp.isEmpty()) {
-					_config.addStylesheetFile(ncp);
+					Config.getInstance().addStylesheetFile(ncp);
 					_listStylesheets.updateUI();
 				}
 				break;
@@ -632,7 +650,7 @@ public class DlgConfigGeneral extends DlgConfig {
 						_bundle.getString("change_stylesheet_title"),
 						JOptionPane.OK_CANCEL_OPTION);
 				if ((ncp != null) && !ncp.isEmpty()) {
-					_config.changeStylesheetFile(
+					Config.getInstance().changeStylesheetFile(
 							_listStylesheets.getSelectedValue(), ncp);
 					_listStylesheets.updateUI();
 				}
@@ -646,7 +664,8 @@ public class DlgConfigGeneral extends DlgConfig {
 						JOptionPane.YES_NO_OPTION, 
 						JOptionPane.QUESTION_MESSAGE);
 				if (ret == JOptionPane.YES_OPTION) {
-					_config.removeStylesheetFile(_listStylesheets.getSelectedValue());
+					Config.getInstance().removeStylesheetFile(
+							_listStylesheets.getSelectedValue());
 					_listStylesheets.updateUI();
 					listClearSelectionAfterDelete(_listStylesheets);
 				}
@@ -785,6 +804,8 @@ public class DlgConfigGeneral extends DlgConfig {
 	 * Returns the general configuration
 	 * 
 	 * @return General configuration
+	 * 
+	 * @deprecated Use {@link org.testsuite.data.Config#getInstance()}
 	 */
 	public Config getConfig() {
 		return _config;
