@@ -58,6 +58,8 @@ public class TestCSMethod {
 		assertEquals(new String(), _cs.getModifier());
 		assertEquals(0, _cs.callsCount());
 		assertEquals(-1, _cs.getLastLineNumber());
+		assertEquals(new String(), _cs.getName());
+		assertEquals(new String(), _cs.getClassName());
 	}
 	
 	/**
@@ -271,5 +273,39 @@ public class TestCSMethod {
 	@Test(expected=IllegalArgumentException.class)
 	public void testSetNameWithEmptyStringAsParamter() {
 		_cs.setName(new String());
+	}
+
+	/**
+	 * Tests if the name of class is returned correctly
+	 */
+	@Test
+	public void testGetClassName() {
+		assertEquals(new String(), _cs.getClassName());
+	}
+
+	/**
+	 * Tests if the name of class is set correctly.
+	 */
+	@Test
+	public void testSetClassName() {
+		String name = "Test";
+		_cs.setClassName(name);
+		assertEquals(name, _cs.getClassName());
+	}
+
+	/**
+	 * Tests if the error occurs IllegalArgumentException.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testSetClassNameWithNullAsParamter() {
+		_cs.setClassName(null);
+	}
+
+	/**
+	 * Tests if the error occurs IllegalArgumentException.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testSetClassNameWithEmptyStringAsParamter() {
+		_cs.setClassName(new String());
 	}
 }

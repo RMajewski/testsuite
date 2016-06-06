@@ -149,9 +149,10 @@ public class CheckSource {
 	}
 	
 	/**
-	 * Read the source code line by line
+	 * Read the source file and the test file
 	 */
 	public void read() {
-		_source.readFile();
+		_source.readFile(false, null);
+		_source.readFile(true, _nameTest);
 	}
 }

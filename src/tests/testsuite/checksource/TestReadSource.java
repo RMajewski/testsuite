@@ -27,6 +27,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.testsuite.checksource.CSMethod;
+import org.testsuite.checksource.Read;
 import org.testsuite.checksource.ReadSource;
 
 /**
@@ -48,6 +49,15 @@ public class TestReadSource {
 	@Before
 	public void setUp() throws Exception {
 		_source = new ReadSource();
+	}
+	
+	/**
+	 * Tests if implemented the Read interface.
+	 */
+	@Test
+	public void testImplementedReadInterface() {
+		assertEquals(Read.class.getName(), 
+				ReadSource.class.getInterfaces()[0].getName());
 	}
 
 	/**
@@ -118,12 +128,13 @@ public class TestReadSource {
 		String line3 = "  }";
 		String line4 = "}";
 		
-		_source.read(1, line1, list);
-		_source.read(2, line2, list);
-		_source.read(3, line3, list);
-		_source.read(4, line4, list);
+		_source.read(1, line1.trim(), list);
+		_source.read(2, line2.trim(), list);
+		_source.read(3, line3.trim(), list);
+		_source.read(4, line4.trim(), list);
 
 		assertEquals(1, list.size());
+		assertFalse(list.isEmpty());
 		assertEquals("test", list.get(0).getName());
 		assertEquals("int", list.get(0).getType());
 		assertEquals("public", list.get(0).getModifier());

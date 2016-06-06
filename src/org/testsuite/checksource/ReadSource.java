@@ -28,23 +28,36 @@ import java.util.List;
  *
  * @version 0.1
  */
-public class ReadSource {
+public class ReadSource implements Read {
 	/**
 	 * Saves the number of blocks
 	 */
 	private int _blocks;
+	
+	/**
+	 * Saves the class name
+	 */
+	private String _className;
+	
+	/**
+	 * Initialize the data
+	 */
+	public ReadSource() {
+		_blocks = 0;
+		_className = null;
+	}
 
 	/**
 	 * Scans the source code for methods, attributes and constants.
 	 * 
 	 * @param line The actual line of source code.
 	 * 
-	 * @return 
+	 * @param list The list of methods
 	 */
-	public boolean read(int lineNumber, String line, List<CSMethod> list) {
+	@Override
+	public void read(int lineNumber, String line, List<CSMethod> list) {
 		int startIndex = 0;
 		int endIndex = 0;
-		line = line.trim();
 		
 		while (startIndex < line.length()) {
 			if (line.indexOf(";", startIndex) > -1)
@@ -66,6 +79,8 @@ public class ReadSource {
 						read[0].equals("private")) && 
 						(line.indexOf("(", startIndex) > -1))
 					readMethod(lineNumber, read, list);
+				else
+					_className = read[read.length - 1];
 			} else {
 				// TODO Calls 
 			}
@@ -82,12 +97,12 @@ public class ReadSource {
 			
 			startIndex = endIndex + 1;
 		}
-		
-		return false;
 	}
 
 	private void readMethod(int lineNumber, String[] read, List<CSMethod> list) {
 		CSMethod method = new CSMethod();
+		if ((_className != null) && !_className.isEmpty())
+			method.setClassName(_className);
 		method.setModifier(read[0]);
 		method.setLine(lineNumber);
 

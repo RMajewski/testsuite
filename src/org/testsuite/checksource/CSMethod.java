@@ -70,6 +70,11 @@ public class CSMethod {
 	 * Saves the name
 	 */
 	private String _name;
+	
+	/**
+	 * Saves the name of class
+	 */
+	private String _className;
 
 	/**
 	 * Initialize the data
@@ -84,6 +89,7 @@ public class CSMethod {
 		_type = new String();
 		_calls = new ArrayList<Integer>();
 		_name = new String();
+		_className = new String();
 	}
 	
 	/**
@@ -256,5 +262,25 @@ public class CSMethod {
 		if ((name == null) || name.isEmpty())
 			throw new IllegalArgumentException();
 		_name = name;
+	}
+	
+	/**
+	 * Return the name of class
+	 * 
+	 * @return The name of class
+	 */
+	public String getClassName() {
+		return _className;
+	}
+	
+	/**
+	 * Sets the name of class
+	 * 
+	 * @param name The new class name
+	 */
+	public void setClassName(String name) {
+		if ((name == null) || name.isEmpty())
+			throw new IllegalArgumentException();
+		_className = name;
 	}
 }

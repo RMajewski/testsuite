@@ -49,12 +49,18 @@ public class SourceFile {
 	private String _fileName;
 	
 	/**
+	 * Saves the instance of ReadTest
+	 */
+	private ReadTest _readTest;
+	
+	/**
 	 * Initialize the data
 	 */
 	public SourceFile() {
 		_methods = new ArrayList<CSMethod>();
 		_source = new ArrayList<SourceLine>();
 		_fileName = null;
+		_readTest = new ReadTest();
 	}
 	
 	/**
@@ -146,17 +152,36 @@ public class SourceFile {
 		return _methods.get(index);
 	}
 	
-	public boolean readFile() {
-		if ((_fileName == null) || _fileName.isEmpty())
+	/**
+	 * Reads the source file or test file line by line.
+	 * 
+	 * @param test If the test file can be read?
+	 * 
+	 * @param testName The name of the test file
+	 * 
+	 * @return 
+	 */
+	public boolean readFile(boolean test, String testName) {
+		if (!test && ((_fileName == null) || _fileName.isEmpty()))
 			return false;
 		
-		if (!new File(_fileName).exists())
+		if (!test && !new File(_fileName).exists())
+			return false;
+		
+		if (test && ((testName == null) || testName.isEmpty()))
+			return false;
+		
+		if (test && !new File(testName).exists())
 			return false;
 		
 		BufferedReader bf = null;
 		try {
-			bf = new BufferedReader(new FileReader(_fileName));
-			ReadSource read = new ReadSource();
+			if (!test)
+				bf = new BufferedReader(new FileReader(_fileName));
+			else
+				bf = new BufferedReader(new FileReader(testName));
+			
+			ReadSource readSource = new ReadSource();
 			
 			String line;
 			int count = 0;
@@ -181,7 +206,16 @@ public class SourceFile {
 				
 				// read source code
 				if (!multicomment) {
-					read.read(count, line, _methods);
+					line = line.trim();
+					if (!test) {
+						int methods = _methods.size();
+						readSource.read(count, line, _methods);
+						if (methods < _methods.size())
+							_readTest.addClassName(
+									_methods.get(_methods.size() -1)
+									.getClassName());
+					} else
+						_readTest.read(count, line, _methods);
 				}
 			}
 		} catch (Exception e) {

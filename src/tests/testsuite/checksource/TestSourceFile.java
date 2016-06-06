@@ -170,9 +170,9 @@ public class TestSourceFile {
 		_sf.setFileName(fileName);
 		
 		String line1 = "/*";
-		String line2 = "*";
+		String line2 = "* This is a test.";
 		String line3 = "*/";
-		String line4 = "public class {";
+		String line4 = "public class TestClass {";
 		String line5 = "  protected final static int TEST = 99;";
 		String line6 = "  private int _test;";
 		String line7 = "  public void test(int index) {";
@@ -200,7 +200,7 @@ public class TestSourceFile {
 			.withArguments(fr)
 			.thenReturn(br);
 		
-		assertTrue(_sf.readFile());
+		assertTrue(_sf.readFile(false, null));
 		
 		assertEquals(1, _sf.getSourceLine(0).getLineNumber());
 		assertEquals(line1, _sf.getSourceLine(0).getLine());
@@ -249,6 +249,8 @@ public class TestSourceFile {
 		assertEquals(9, _sf.getMethod(0).getLastLineNumber());
 		assertEquals("void", _sf.getMethod(0).getType());
 		assertEquals(new String(), _sf.getMethod(0).getValue());
+		assertEquals("test", _sf.getMethod(0).getName());
+		assertEquals("TestClass", _sf.getMethod(0).getClassName());
 		
 		assertEquals(1, _sf.getMethod(0).parametersCount());
 		assertEquals("int", _sf.getMethod(0).getParameter(0).getType());
@@ -262,7 +264,7 @@ public class TestSourceFile {
 	 */
 	@Test
 	public void testReadFileNameNotSet() throws FileNotFoundException {
-		assertFalse(_sf.readFile());
+		assertFalse(_sf.readFile(false, null));
 	}
 	
 	/**
@@ -271,7 +273,7 @@ public class TestSourceFile {
 	@Test
 	public void testReadFileNameEmptyString() throws FileNotFoundException {
 		_sf.setFileName(new String());
-		assertFalse(_sf.readFile());
+		assertFalse(_sf.readFile(false, null));
 	}
 	
 	/**
@@ -289,7 +291,112 @@ public class TestSourceFile {
 			.withArguments(fileName)
 			.thenReturn(file);
 		
-		assertFalse(_sf.readFile());
+		assertFalse(_sf.readFile(false, null));
+	}
+
+	/**
+	 * Tests if was the source file read correctly.
+	 */
+	@Test
+	public void testReadTestFile() throws Exception {
+		String fileName = "Test.java";
+		String testName = "TestTest.java";
+		_sf.setFileName(fileName);
+		
+		String line1 = "/*";
+		String line2 = "* This is a test.";
+		String line3 = "*/";
+		String line4 = "public class TestClass {";
+		String line5 = "  protected final static int TEST = 99;";
+		String line6 = "  private int _test;";
+		String line7 = "  public void test(int index) {";
+		String line8 = "    _test = TEST;";
+		String line9 = "  }";
+		String line10 = "}";
+		
+		String test1 = "public class Test {";
+		String test2 = "  @Test";
+		String test3 = "  public void test() {";
+		String test4 = "    TestClass test = new TestClass();";
+		String test5 = "    test.test(10);";
+		String test6 = "  }";
+		String test7 = "}";
+		
+		File file = mock(File.class);
+		when(file.exists()).thenReturn(true);
+		
+		PowerMockito.whenNew(File.class)
+			.withArguments(fileName)
+			.thenReturn(file);
+		
+		PowerMockito.whenNew(File.class)
+			.withArguments(testName)
+			.thenReturn(file);
+		
+		FileReader fr = mock(FileReader.class);
+		PowerMockito.whenNew(FileReader.class)
+			.withArguments(fileName)
+			.thenReturn(fr);
+		
+		FileReader fr2 = mock(FileReader.class);
+		PowerMockito.whenNew(FileReader.class)
+			.withArguments(testName)
+			.thenReturn(fr2);
+		
+		BufferedReader br = mock(BufferedReader.class);
+		when(br.readLine()).thenReturn(line1, line2, line3, line4, line5, line6,
+				line7, line8, line9, line10, null);
+		
+		BufferedReader br2 = mock(BufferedReader.class);
+		when(br2.readLine()).thenReturn(test1, test2, test3, test4, test5, test6,
+				test7, null);
+		
+		PowerMockito.whenNew(BufferedReader.class)
+			.withArguments(fr)
+			.thenReturn(br);
+		
+		PowerMockito.whenNew(BufferedReader.class)
+			.withArguments(fr2)
+			.thenReturn(br2);
+		
+		assertTrue(_sf.readFile(false, null));
+		assertTrue(_sf.readFile(true, testName));
+		
+		assertEquals(1, _sf.getMethod(0).callsCount());
+		assertEquals(5, _sf.getMethod(0).getCall(0));
+	}
+	
+	/**
+	 * Tests if was the return false, if the file name does not set.
+	 */
+	@Test
+	public void testReadTestFileNameNotSet() throws FileNotFoundException {
+		assertFalse(_sf.readFile(true, null));
+	}
+	
+	/**
+	 * Tests if was the return false, if the file name is empty string.
+	 */
+	@Test
+	public void testReadTestFileNameEmptyString() throws FileNotFoundException {
+		assertFalse(_sf.readFile(true, new String()));
+	}
+	
+	/**
+	 * Tests if was the return false if the file does not exists.
+	 */
+	@Test
+	public void testReadTestFileNotExists() throws Exception {
+		String fileName = "Test.java";
+		
+		File file = mock(File.class);
+		when(file.exists()).thenReturn(false);
+		
+		PowerMockito.whenNew(File.class)
+			.withArguments(fileName)
+			.thenReturn(file);
+		
+		assertFalse(_sf.readFile(true, fileName));
 	}
 
 }
