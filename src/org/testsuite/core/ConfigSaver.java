@@ -44,8 +44,21 @@ public class ConfigSaver {
 	 * @param list List of test runner classes
 	 * 
 	 * @param file Configuration file
+	 * 
+	 * @deprecated Use {@link #save(List, File)}
 	 */
 	public static void save(Config config, List<TestRunner> list, File file) {
+		save(list, file);
+	}
+	
+	/**
+	 * Saves the configuration into a xml file
+	 * 
+	 * @param list List of test runner classes
+	 * 
+	 * @param file Configuration file
+	 */
+	public static void save(List<TestRunner> list, File file) {
 		BufferedWriter bw = null;
 		try {
 			bw = new BufferedWriter(new FileWriter(file));
@@ -60,7 +73,7 @@ public class ConfigSaver {
 			bw.write(">");
 			bw.newLine();
 			
-			writeConfig(bw, config);
+			writeConfig(bw);
 			
 			for (int runner = 0; runner < list.size(); runner++)
 				writeTestRunner(bw, list.get(runner));
@@ -78,59 +91,57 @@ public class ConfigSaver {
 				}
 		}
 	}
-
+	
 	/**
 	 * Writes the general configuration into the buffered writer
 	 * 
 	 * @param bw Open buffered writer
-	 * 
-	 * @param config General configuration
-	 */
-	private static void writeConfig(BufferedWriter bw, Config config) 
-			throws IOException {
+	 */ 
+	private static void writeConfig(BufferedWriter bw) throws IOException {
 		bw.write("\t<config>");
 		bw.newLine();
 		
-		if (!config.getPathResult().isEmpty()) {
+		if (!Config.getInstance().getPathResult().isEmpty()) {
 			bw.write("\t\t<resultPath>");
-			bw.write(config.getPathResult());
+			bw.write(Config.getInstance().getPathResult());
 			bw.write("</resultPath>");
 			bw.newLine();
 		}
 		
-		if (!config.getPathSrc().isEmpty()) {
+		if (!Config.getInstance().getPathSrc().isEmpty()) {
 			bw.write("\t\t<srcPath>");
-			bw.write(config.getPathSrc());
+			bw.write(Config.getInstance().getPathSrc());
 			bw.write("</srcPath>");
 			bw.newLine();
 		}
 		
-		if (!config.getPathLibrary().isEmpty()) {
+		if (!Config.getInstance().getPathLibrary().isEmpty()) {
 			bw.write("\t\t<libPath>");
-			bw.write(config.getPathLibrary());
+			bw.write(Config.getInstance().getPathLibrary());
 			bw.write("</libPath>");
 			bw.newLine();
 		}
 
-		if (config.getMaxDuration() > 0) {
+		if (Config.getInstance().getMaxDuration() > 0) {
 			bw.write("\t\t<maxDuration>");
-			bw.write(String.valueOf(config.getMaxDuration()));
+			bw.write(String.valueOf(Config.getInstance().getMaxDuration()));
 			bw.write("</maxDuration>");
 			bw.newLine();
 		}
 
 		bw.write("\t\t<htmlOut>");
-		bw.write(String.valueOf(String.valueOf(config.isCreateHtml())));
+		bw.write(String.valueOf(String.valueOf(
+				Config.getInstance().isCreateHtml())));
 		bw.write("</htmlOut>");
 		bw.newLine();
 		
-		if (config.propertyCount() > 0) {
+		if (Config.getInstance().propertyCount() > 0) {
 			bw.write("\t\t<systemProperty>");
 			bw.newLine();
 
-			for (int i = 0; i < config.propertyCount(); i++) {
+			for (int i = 0; i < Config.getInstance().propertyCount(); i++) {
 				bw.write("\t\t\t<property>");
-				bw.write(config.getProperty(i));
+				bw.write(Config.getInstance().getProperty(i));
 				bw.write("</property>");
 				bw.newLine();
 			}
@@ -139,7 +150,7 @@ public class ConfigSaver {
 			bw.newLine();
 		}
 		
-		writeClassPath(bw, config.getClassPathList());
+		writeClassPath(bw, Config.getInstance().getClassPathList());
 		
 		bw.write("\t</config>");
 		bw.newLine();

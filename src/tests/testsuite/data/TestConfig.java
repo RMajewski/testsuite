@@ -47,7 +47,8 @@ public class TestConfig {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		_config = new Config();
+		_config = Config.getInstance();
+		_config.clearAll();
 	}
 
 	/**

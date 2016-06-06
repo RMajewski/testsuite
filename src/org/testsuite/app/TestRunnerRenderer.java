@@ -34,8 +34,6 @@ import org.testsuite.core.JunitTestRunner;
 import org.testsuite.data.Config;
 import org.testsuite.data.TestSuite;
 
-import java.awt.Color;
-
 /**
  * Displays the tests in tree on.
  * 
@@ -65,19 +63,27 @@ public class TestRunnerRenderer implements TreeCellRenderer {
 	
 	/**
 	 * Saves the general configuration
+	 * 
+	 * @deprecated Use {@link org.testsuite.data.Config#getInstance()}
 	 */
+	@SuppressWarnings("unused")
 	private Config _config;
 	
 	/**
 	 * Initialize the renderer
 	 * 
 	 * @param config General configuration
+	 * 
+	 * @deprecated Use {@link #TestRunnerRenderer}
 	 */
-	
 	public TestRunnerRenderer(Config config) {
+		this();
+	}
+	
+	public TestRunnerRenderer() {
 		_bundle = ResourceBundle.getBundle(App.BUNDLE_FILE);
 		
-		_config = config;
+		_config = Config.getInstance();
 		
 		_check = new JCheckBox();
 		_check.setOpaque(true);
@@ -134,11 +140,11 @@ public class TestRunnerRenderer implements TreeCellRenderer {
 		
 		else if (row == 0) {
 			if ((value instanceof List<?>) && ((List<?>)value).isEmpty() &&
-					_config.isEmpty()) {
+					Config.getInstance().isEmpty()) {
 				_label.setText(_bundle.getString("tree_null_node"));
 				_label.setBackground(Colors.backgroundEmptyTree);
 			} else if ((value instanceof List<?>) && ((List<?>)value).isEmpty() &&
-					!_config.isEmpty()) {
+					!Config.getInstance().isEmpty()) {
 				_label.setText(_bundle.getString("tree_insert_test_runner"));
 			} else if (value instanceof List<?>) {
 				_label.setText(_bundle.getString("tree_configuration"));

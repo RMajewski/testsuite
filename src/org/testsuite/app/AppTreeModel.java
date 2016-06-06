@@ -20,7 +20,6 @@
 package org.testsuite.app;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -103,9 +102,46 @@ public class AppTreeModel implements TreeModel {
 	 * </ul>
 	 * 
 	 * @param config The global configuration
+	 * 
+	 * @deprecated {@link #validateConfiguration()}
 	 */
 	public void validateConfiguration(Config config) {
+		validateConfiguration();
+	}
+		
+	/**
+	 * Validate the configuration.
+	 * 
+	 * The following values validated:
+	 * <ul>
+	 * <li>General configuration: source path not specified</li>
+	 * <li>General configuration: no TestRunner</li>
+	 * <li>TestRunner: description</li>
+	 * <li>TestRunner: file extension</li>
+	 * <li>TestSuite: name</li>
+	 * <li>TestSuite: name of package</li>
+	 * <li>TestSuite: no test</li>
+	 * <li>Test: name</li>
+	 * </ul>
+	 * 
+	 * The following items are checked for exists:
+	 * <ul>
+	 * <li>General configuration: source path</li>
+	 * <li>General configuration: result path</li>
+	 * <li>General configuration: libraries path</li>
+	 * <li>General configuration: class path</li>
+	 * <li>TestRunner: library</li>
+	 * <li>TestRunner: class path</li>
+	 * <li>TestSuite: package</li>
+	 * <li>TestSuite: test</li>
+	 * </ul>
+	 * 
+	 * @param config The global configuration
+	 */
+	public void validateConfiguration() {
 		Object[] path = {getRoot()};
+		
+		Config config = Config.getInstance();
 		
 		// General configuration: source path
 		if (config.getPathSrc().isEmpty())

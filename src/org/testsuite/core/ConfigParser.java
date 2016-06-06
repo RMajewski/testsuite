@@ -49,6 +49,8 @@ import org.testsuite.data.TestSuite;
 public class ConfigParser {
 	/**
 	 * Saves the configuration.
+	 * 
+	 * @deprecated Use {@link org.testsuite.data.Config#getInstance()}
 	 */
 	private Config _config;
 	
@@ -63,10 +65,24 @@ public class ConfigParser {
 	private List<TestRunner> _testRunner;
 	
 	/**
-	 * Initialis the data of the class.
+	 * Initialize the data of the class.
+	 * 
+	 * @param config The global configuration
+	 * 
+	 * @param configFile The name of configuration file
+	 * 
+	 * @deprecated Use {@link #ConfigParser(String)}
 	 */
 	public ConfigParser(Config config, String configFile) {
-		_config = config;
+	}
+	
+	/**
+	 * Initialize the data of the class.
+	 * 
+	 * @param configFile The name of configuration file
+	 */ 
+	public ConfigParser(String configFile) {
+		_config = Config.getInstance();
 		_configFile = configFile;
 		_testRunner = new ArrayList<TestRunner>();
 	}
@@ -217,40 +233,40 @@ public class ConfigParser {
 							// The configuration
 							case "resultPath":
 								if (config)
-									_config.setPathResult(data);
+									Config.getInstance().setPathResult(data);
 								break;
 								
 							case "srcPath":
 								if (config)
-									_config.setPathSrc(data);
+									Config.getInstance().setPathSrc(data);
 								break;
 								
 							case "libPath":
 								if (config)
-									_config.setPathLibrary(data);
+									Config.getInstance().setPathLibrary(data);
 								break;
 								
 							case "maxDuration":
 								if (config)
-									_config.setMaxDuration(Long.parseLong(data));
+									Config.getInstance().setMaxDuration(Long.parseLong(data));
 								break;
 								
 							case "htmlOut":
 								if (config)
-									_config.setCreateHtml(
+									Config.getInstance().setCreateHtml(
 										Boolean.parseBoolean(data));
 								break;
 								
 							case "property":
 								if (config)
-									_config.addProperty(data);
+									Config.getInstance().addProperty(data);
 								break;
 								
 							case "file":
-								if (javascript && (_config != null))
-									_config.addJavascriptFile(data);
-								else if (stylesheet && (_config != null))
-									_config.addStylesheetFile(data);
+								if (javascript && (Config.getInstance() != null))
+									Config.getInstance().addJavascriptFile(data);
+								else if (stylesheet && (Config.getInstance() != null))
+									Config.getInstance().addStylesheetFile(data);
 								break;
 								
 							// The TestRunner
@@ -260,7 +276,7 @@ public class ConfigParser {
 												.getClassLoader()
 												.loadClass(data).
 												getConstructor(Config.class).
-												newInstance(_config);
+												newInstance(Config.getInstance());
 								break;
 								
 							case "extension":
@@ -296,7 +312,7 @@ public class ConfigParser {
 								if (classPath && !config && (runner != null))
 									runner.addClassPath(data);
 								else if (classPath && config)
-									_config.addClassPath(data);
+									Config.getInstance().addClassPath(data);
 								break;
 								
 							// The TestSuite
@@ -348,6 +364,8 @@ public class ConfigParser {
 	 * Returns the configuration.
 	 * 
 	 * @return Configuration
+	 * 
+	 * @deprecated Use {@link org.testsuite.data.Config#getInstance()}.
 	 */
 	public Config getConfig() {
 		return _config;
@@ -357,6 +375,8 @@ public class ConfigParser {
 	 * Sets the configuration.
 	 * 
 	 * @param config The new configuration.
+	 * 
+	 * @deprecated Use {@link org.testsuite.data.Config#getInstance()}.
 	 */
 	public void setConfig(Config config) {
 		if (config == null)
