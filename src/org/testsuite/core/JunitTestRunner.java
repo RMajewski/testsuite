@@ -21,8 +21,6 @@ package org.testsuite.core;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
 import java.util.Date;
 
 import org.junit.runner.JUnitCore;
@@ -45,9 +43,6 @@ public class JunitTestRunner extends TestRunner {
 	
 	/**
 	 * Initialize the data of the class.
-	 * 
-	 * <strong>Important</strong>: It must also be initialized config. Please
-	 * use {@link #setConfig(Config)}.
 	 */
 	public JunitTestRunner() {
 		super();
@@ -57,6 +52,8 @@ public class JunitTestRunner extends TestRunner {
 	 * Initialize the data of the class.
 	 * 
 	 * @param config The configuration.
+	 * 
+	 * @deprecated {@link #JunitTestRunner()}
 	 */
 	public JunitTestRunner(Config config) {
 		super(config);
@@ -189,7 +186,7 @@ public class JunitTestRunner extends TestRunner {
 				ret.append(_bundle.getString("createHtmlColumn_noneExecuted"));
 			}
 		} else {
-			ret.append(_config.getPathSrc());
+			ret.append(Config.getInstance().getPathSrc());
 			ret.append(File.separator);
 			ret.append(_suites.get(suite).getPackage().replaceAll("\\.", 
 					File.separator));

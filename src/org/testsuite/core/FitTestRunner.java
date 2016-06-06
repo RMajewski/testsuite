@@ -38,9 +38,6 @@ public class FitTestRunner extends TestRunner {
 	
 	/**
 	 * Initialize the data of the class.
-	 * 
-	 * <strong>Important</strong>: It must also be initialized config. Please
-	 * use {@link #setConfig(Config)}.
 	 */
 	public FitTestRunner() {
 		super();
@@ -50,6 +47,8 @@ public class FitTestRunner extends TestRunner {
 	 * Initialize the data of the class.
 	 * 
 	 * @param config The configuration
+	 * 
+	 * @deprecated Use {@link #FitTestRunner()}.
 	 */
 	public FitTestRunner(Config config) {
 		super(config);
@@ -153,7 +152,7 @@ public class FitTestRunner extends TestRunner {
 			if (_suites.get(suite).getTest(test).isExecuted() &&
 					!_suites.get(suite).getTest(test).isTerminated()) {
 				ret.append("<a href=\"");
-				ret.append(_config.getPathSuitesResult());
+				ret.append(Config.getInstance().getPathSuitesResult());
 				ret.append(File.separator);
 				ret.append(_suites.get(suite).getPackage().replaceAll("\\.", 
 						File.separator));
@@ -218,7 +217,7 @@ public class FitTestRunner extends TestRunner {
 				ret.append(_bundle.getString("createHtmlColumn_noneExecuted"));
 			}
 		} else {
-			ret.append(_config.getPathSrc());
+			ret.append(Config.getInstance().getPathSrc());
 			ret.append(File.separator);
 			ret.append(_suites.get(suite).getPackage().replaceAll("\\.", 
 					File.separator));
@@ -552,7 +551,7 @@ public class FitTestRunner extends TestRunner {
 		ret.append(createProperty());
 		ret.append("fit.FileRunner ");
 		
-		ret.append(_config.getPathSrc());
+		ret.append(Config.getInstance().getPathSrc());
 		ret.append(File.separator);
 		ret.append(name.replaceAll("\\.", File.separator));
 		ret.append(".");
@@ -560,8 +559,8 @@ public class FitTestRunner extends TestRunner {
 		ret.append(" ");
 		
 		// Path for result files
-		String resultPath = _config.getPathResult() + File.separator + 
-				_config.getPathSuitesResult() + File.separator + 
+		String resultPath = Config.getInstance().getPathResult() + File.separator + 
+				Config.getInstance().getPathSuitesResult() + File.separator + 
 				suite.getPackage().replaceAll("\\.", File.separator);
 		File r = new File(resultPath);
 		if (!r.exists()) {

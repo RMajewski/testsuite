@@ -120,9 +120,15 @@ public class HtmlOut {
 	 * 
 	 * @param config The general configuration
 	 * 
-	 * @throws IOException 
+	 * @deprecated use {@link #htmlHead()}
 	 */
 	public void htmlHead(Config config) throws IOException {
+	}
+	
+	/**
+	 * Creates the HTML head
+	 */
+	public void htmlHead() throws IOException {
 		String date = HelperCalendar.datetimeToString(new Date().getTime());
 		
 		_bw.write("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 "
@@ -142,9 +148,9 @@ public class HtmlOut {
 
 		_bw.write("\t\t<style>"); _bw.newLine();
 		
-		if (config.javascriptFileCount() > 0)
-			for (int i = 0; i < config.stylesheetFileCount(); i++)
-				_bw.write(readFile(config.getStylesheetFile(i)));
+		if (Config.getInstance().javascriptFileCount() > 0)
+			for (int i = 0; i < Config.getInstance().stylesheetFileCount(); i++)
+				_bw.write(readFile(Config.getInstance().getStylesheetFile(i)));
 		else
 			_bw.write(readFile("resources" + File.separator + "html" +
 					File.separator + "out.css"));
@@ -154,9 +160,9 @@ public class HtmlOut {
 		
 		_bw.write("\t\t<script type=\"text/javascript\">"); _bw.newLine();
 		
-		if (config.javascriptFileCount() > 0)
-			for (int i = 0; i < config.javascriptFileCount(); i++)
-				_bw.write(readFile(config.getJavascriptFile(i)));
+		if (Config.getInstance().javascriptFileCount() > 0)
+			for (int i = 0; i < Config.getInstance().javascriptFileCount(); i++)
+				_bw.write(readFile(Config.getInstance().getJavascriptFile(i)));
 		else
 			_bw.write(readFile("resources" + File.separator + "html" +
 					File.separator + "out.js"));

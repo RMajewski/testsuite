@@ -53,7 +53,10 @@ public class TestCore {
 	
 	/**
 	 * Saves the configuration.
+	 * 
+	 * @deprecated Use {@link org.testsuite.data.Config#getInstance()}
 	 */
+	@SuppressWarnings("unused")
 	private Config _config;
 	
 	/**
@@ -76,13 +79,13 @@ public class TestCore {
 			e.printStackTrace();
 		}
 		
-		_config = new Config();
+		_config = Config.getInstance();
 		_testRunner = new ArrayList<TestRunner>();
 		
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.setTime(new Date());
 		DecimalFormat df = new DecimalFormat("00");
-		_config.setPathSuitesResult(
+		Config.getInstance().setPathSuitesResult(
 				df.format(gc.get(GregorianCalendar.YEAR)) +
 				df.format(gc.get(GregorianCalendar.MONTH) + 1) +
 				df.format(gc.get(GregorianCalendar.DAY_OF_MONTH)) +
@@ -103,7 +106,7 @@ public class TestCore {
 		if ((fileName == null) || fileName.isEmpty())
 			throw new IllegalArgumentException();
 		
-		ConfigParser parser = new ConfigParser(_config, fileName);
+		ConfigParser parser = new ConfigParser(fileName);
 		boolean ret = parser.parse();
 		
 		if (ret)
@@ -143,19 +146,19 @@ public class TestCore {
 	 * Creates the HTML file containing the results
 	 */
 	public void createResultHtml()  {
-		if (_config.isCreateHtml()) {
-			String htmlFile = _config.getPathResult() + File.separator;
+		if (Config.getInstance().isCreateHtml()) {
+			String htmlFile = Config.getInstance().getPathResult() + File.separator;
 			
 			File file = new File(htmlFile);
 			if (!file.exists())
 				file.mkdirs();
 			
 			htmlFile += _bundle.getString("html_result") + "_" +
-					_config.getPathSuitesResult() + ".html";
+					Config.getInstance().getPathSuitesResult() + ".html";
 			try {
 				
 				HtmlOut html = new HtmlOut(htmlFile);
-				html.htmlHead(_config);
+				html.htmlHead();
 				
 				for (int runner = 0; runner < _testRunner.size(); runner++) {
 					boolean line = true;

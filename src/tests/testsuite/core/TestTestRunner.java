@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
@@ -71,6 +72,8 @@ public class TestTestRunner extends TestRunnerHelper {
 	
 	/**
 	 * Save the mock of configuration
+	 * 
+	 * @deprecated
 	 */
 	private Config _config;
 	
@@ -84,8 +87,8 @@ public class TestTestRunner extends TestRunnerHelper {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		_config = mock(Config.class);
-		_runner = new TestRunnerImplementation(_config);
+		Config.getInstance().clearAll();
+		_runner = new TestRunnerImplementation();
 		_runCount = 0;
 	}
 	
@@ -306,9 +309,12 @@ public class TestTestRunner extends TestRunnerHelper {
 	
 	/**
 	 * Tests if a non-existent directory is detected.
+	 * 
+	 * @deprecated
 	 */
+	@Ignore("The method is deprecated")
 	@Test
-	public void testCheckFileExistsWithNonExistsPath() throws Exception {
+	public void testCheckFileExistsWithNonExistsPathOld() throws Exception {
 		String src = "src";
 		String path = "tests.path";
 		String testName = "test";
@@ -347,10 +353,55 @@ public class TestTestRunner extends TestRunnerHelper {
 	}
 	
 	/**
-	 * Tests if a non-existent file is detected.
+	 * Tests if a non-existent directory is detected.
 	 */
 	@Test
-	public void testCheckFileExistsWithNonExistsFile() throws Exception {
+	public void testCheckFileExistsWithNonExistsPath() throws Exception {
+		String src = "src";
+		String path = "tests.path";
+		String testName = "test";
+		String testPath = src + File.separator + 
+				path.replaceAll("\\.", File.separator);
+		
+		Config.getInstance().setPathSrc(src);
+		
+		File file = mock(File.class);
+		when(file.exists()).thenReturn(false);
+		
+		PowerMockito.whenNew(File.class)
+			.withParameterTypes(String.class)
+			.withArguments(Matchers.anyString())
+			.thenReturn(file);
+		
+		org.testsuite.data.Test test = mock(org.testsuite.data.Test.class);
+		when(test.getName()).thenReturn(testName);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getTest(0)).thenReturn(test);
+		when(suite.testCount()).thenReturn(1);
+		when(suite.getPackage()).thenReturn(path);
+		_runner.addTestSuite(suite);
+		
+		_runner.checkFileExists();
+		
+		PowerMockito.verifyNew(File.class).withArguments(testPath);
+		verify(file, times(1)).exists();
+		verify(test, times(0)).getName();
+		verify(test, times(1)).setExists(false);
+		verify(suite, times(1)).getTest(0);
+		verify(suite, times(1)).getPackage();
+		verify(suite, atLeastOnce()).testCount();
+		verify(suite, times(1)).setExists(false);
+	}
+	
+	/**
+	 * Tests if a non-existent file is detected.
+	 * 
+	 * @deprecated
+	 */
+	@Ignore("The method is deprecated")
+	@Test
+	public void testCheckFileExistsWithNonExistsFileOld() throws Exception {
 		String src = "src";
 		String path = "tests.path";
 		String testName = "testen";
@@ -394,6 +445,103 @@ public class TestTestRunner extends TestRunnerHelper {
 	}
 	
 	/**
+	 * Tests if a non-existent file is detected.
+	 */
+	@Test
+	public void testCheckFileExistsWithNonExistsFile() throws Exception {
+		String src = "src";
+		String path = "tests.path";
+		String testName = "testen";
+		String fileExtension = "test";
+		String testPath = src + File.separator + 
+				path.replaceAll("\\.", File.separator);
+		
+		Config.getInstance().setPathSrc(src);
+		
+		_runner.setFileExtension(fileExtension);
+		
+		File file = mock(File.class);
+		when(file.exists()).thenReturn(true, false);
+		
+		PowerMockito.whenNew(File.class)
+			.withParameterTypes(String.class)
+			.withArguments(Matchers.anyString())
+			.thenReturn(file);
+		
+		org.testsuite.data.Test test = mock(org.testsuite.data.Test.class);
+		when(test.getName()).thenReturn(testName);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getTest(0)).thenReturn(test);
+		when(suite.testCount()).thenReturn(1);
+		when(suite.getPackage()).thenReturn(path, path);
+		_runner.addTestSuite(suite);
+		
+		_runner.checkFileExists();
+		
+		PowerMockito.verifyNew(File.class).withArguments(testPath);
+		PowerMockito.verifyNew(File.class).withArguments(testPath + 
+				File.separator + testName + "." + fileExtension);
+		verify(file, times(2)).exists();
+		verify(test, times(1)).getName();
+		verify(test, times(1)).setExists(false);
+		verify(suite, atLeastOnce()).getTest(0);
+		verify(suite).getPackage();
+		verify(suite, atLeastOnce()).testCount();
+		verify(suite).setExists(true);
+	}
+	
+	/**
+	 * Tests are marked if file and directory as exists.
+	 * 
+	 * @deprecated
+	 */
+	@Ignore("The method is deprecated")
+	@Test
+	public void testCheckFileExistsOld() throws Exception{
+		String src = "src";
+		String path = "tests.path";
+		String testName = "testen";
+		String fileExtension = "test";
+		String testPath = src + File.separator + 
+				path.replaceAll("\\.", File.separator);
+		
+		when(_config.getPathSrc()).thenReturn(src);
+		
+		_runner.setFileExtension(fileExtension);
+		
+		File file = mock(File.class);
+		when(file.exists()).thenReturn(true, true);
+		
+		PowerMockito.whenNew(File.class)
+			.withParameterTypes(String.class)
+			.withArguments(Matchers.anyString())
+			.thenReturn(file);
+		
+		org.testsuite.data.Test test = mock(org.testsuite.data.Test.class);
+		when(test.getName()).thenReturn(testName);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getTest(0)).thenReturn(test);
+		when(suite.testCount()).thenReturn(1);
+		when(suite.getPackage()).thenReturn(path, path);
+		_runner.addTestSuite(suite);
+		
+		_runner.checkFileExists();
+		
+		PowerMockito.verifyNew(File.class).withArguments(testPath);
+		PowerMockito.verifyNew(File.class).withArguments(testPath + 
+				File.separator + testName + "." + fileExtension);
+		verify(file, times(2)).exists();
+		verify(test).getName();
+		verify(test).setExists(true);
+		verify(suite, atLeastOnce()).getTest(0);
+		verify(suite).getPackage();
+		verify(suite, atLeastOnce()).testCount();
+		verify(suite).setExists(true);
+	}
+	
+	/**
 	 * Tests are marked if file and directory as exists.
 	 */
 	@Test
@@ -405,7 +553,7 @@ public class TestTestRunner extends TestRunnerHelper {
 		String testPath = src + File.separator + 
 				path.replaceAll("\\.", File.separator);
 		
-		when(_config.getPathSrc()).thenReturn(src);
+		Config.getInstance().setPathSrc(src);
 		
 		_runner.setFileExtension(fileExtension);
 		
@@ -514,7 +662,10 @@ public class TestTestRunner extends TestRunnerHelper {
 	
 	/**
 	 * Tests if the configuration is returned.
+	 * 
+	 * @deprecated
 	 */
+	@Ignore("The method is deprecated")
 	@Test
 	public void testGetConfig() {
 		assertEquals(_config, _runner.getConfig());
@@ -522,7 +673,10 @@ public class TestTestRunner extends TestRunnerHelper {
 	
 	/**
 	 * Tests if the configuration can be set.
+	 * 
+	 * @deprecated
 	 */
+	@Ignore("The method is deprecated")
 	@Test
 	public void testSetConfig() {
 		_config = mock(Config.class);
@@ -725,10 +879,13 @@ public class TestTestRunner extends TestRunnerHelper {
 	}
 	
 	/**
-	 * Tests if the library information is generated for the classpath properly. 
+	 * Tests if the library information is generated for the classpath properly.
+	 * 
+	 *  @deprecated
 	 */
+	@Ignore("This method is deprecated")
 	@Test
-	public void testCreateLibraryAsString()
+	public void testCreateLibraryAsStringOld()
 			throws NoSuchMethodException, SecurityException, 
 			IllegalAccessException, IllegalArgumentException, 
 			InvocationTargetException {
@@ -767,10 +924,53 @@ public class TestTestRunner extends TestRunnerHelper {
 	}
 	
 	/**
-	 * Tests if the generated classpath properly. 
+	 * Tests if the library information is generated for the classpath properly.
 	 */
 	@Test
-	public void testCreateClasspath()
+	public void testCreateLibraryAsString()
+			throws NoSuchMethodException, SecurityException, 
+			IllegalAccessException, IllegalArgumentException, 
+			InvocationTargetException {
+		Method createLibraryAsString = getProtectedMethod(TestRunner.class, 
+				"createLibraryAsString", null);
+		
+		String pathLibrary = "path";
+		String pathLib2 = "test";
+		String libName1 = "lib1";
+		String libName2 = "lib2";
+		
+		Config.getInstance().setPathLibrary(pathLibrary);
+		
+		Library lib1 = mock(Library.class);
+		when(lib1.getFileName()).thenReturn(libName1);
+		when(lib1.getPath()).thenReturn(new String());
+		_runner.addLibrary(lib1);
+		
+		Library lib2 = mock(Library.class);
+		when(lib2.getFileName()).thenReturn(libName2);
+		when(lib2.getPath()).thenReturn(pathLib2);
+		_runner.addLibrary(lib2);
+		
+		String ret = pathLibrary + File.separator + libName1 + 
+				File.pathSeparator +
+				pathLib2 + File.separator + libName2;
+		assertEquals(ret, createLibraryAsString.invoke(_runner, null));
+		
+		verify(lib1).getPath();
+		verify(lib1).getFileName();
+		
+		verify(lib2, times(2)).getPath();
+		verify(lib2).getFileName();
+	}
+	
+	/**
+	 * Tests if the generated classpath properly.
+	 * 
+	 * @deprecated
+	 */
+	@Ignore("The method is deprecated")
+	@Test
+	public void testCreateClasspathOld()
 			throws NoSuchMethodException, SecurityException, 
 			IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
@@ -823,10 +1023,66 @@ public class TestTestRunner extends TestRunnerHelper {
 	}
 	
 	/**
-	 * Tests if the system settings are generated correctly.
+	 * Tests if the generated classpath properly.
 	 */
 	@Test
-	public void testCreateProperty()
+	public void testCreateClasspath()
+			throws NoSuchMethodException, SecurityException, 
+			IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException {
+		Method createClasspath = getProtectedMethod(TestRunner.class, 
+		"createClasspath", null);
+		
+		String path1 = "path1";
+		_runner.addClassPath(path1);
+		
+		String path2 = "path2";
+		_runner.addClassPath(path2);
+		
+		String path3 = "path3";
+		_runner.addClassPath(path3);
+		
+		String pathLib1 = "lib1";
+		String name1 = "test1.jar";
+		String pathLib2 = "lib2";
+		String name2 = "test2.jar";
+
+		String classpath = "classpath";
+		Config.getInstance().setPathLibrary(pathLib1);
+		Config.getInstance().addClassPath(classpath);
+		
+		Library lib1 = mock(Library.class);
+		when(lib1.getFileName()).thenReturn(name1);
+		when(lib1.getPath()).thenReturn(new String());
+		_runner.addLibrary(lib1);
+		
+		Library lib2 = mock(Library.class);
+		when(lib2.getFileName()).thenReturn(name2);
+		when(lib2.getPath()).thenReturn(pathLib2);
+		_runner.addLibrary(lib2);
+		
+		String ret = classpath + File.pathSeparator + path1 + File.pathSeparator +
+				path2 + File.pathSeparator + path3 + File.pathSeparator +
+				pathLib1 + File.separator + name1 + File.pathSeparator + 
+				pathLib2 + File.separator + name2 + " ";
+		
+		assertEquals(ret, createClasspath.invoke(_runner, null));
+		
+		verify(lib1).getFileName();
+		verify(lib1).getPath();
+		
+		verify(lib2).getFileName();
+		verify(lib2, times(2)).getPath();
+	}
+	
+	/**
+	 * Tests if the system settings are generated correctly.
+	 * 
+	 * @deprecated
+	 */
+	@Ignore("The method is deprecated")
+	@Test
+	public void testCreatePropertyOld()
 			throws NoSuchMethodException, SecurityException, 
 			IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
@@ -851,6 +1107,31 @@ public class TestTestRunner extends TestRunnerHelper {
 		verify(_config).getProperty(0);
 		verify(_config).getProperty(1);
 		verify(_config).getProperty(2);
+	}
+	
+	/**
+	 * Tests if the system settings are generated correctly.
+	 */
+	@Test
+	public void testCreateProperty()
+			throws NoSuchMethodException, SecurityException, 
+			IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException {
+		Method createProperty = getProtectedMethod(TestRunner.class, 
+		"createProperty", null);
+		
+		String prop1 = "test1=\"1\"";
+		Config.getInstance().addProperty(prop1);
+		
+		String prop2 = "test2=\"true\"";
+		Config.getInstance().addProperty(prop2);
+		
+		String prop3 = "test3=\"false\"";
+		Config.getInstance().addProperty(prop3);
+		
+		String ret = "-D" + prop1 + " -D" + prop2 + " -D" + prop3 + " ";
+
+		assertEquals(ret, createProperty.invoke(_runner, null));
 	}
 	
 	@Test
@@ -1020,9 +1301,12 @@ public class TestTestRunner extends TestRunnerHelper {
 	/**
 	 * Tests if the will be canceled when the directory of the test file does
 	 * not exist.
+	 * 
+	 * @deprecated
 	 */
+	@Ignore("The method is deprecated")
 	@Test
-	public void testRunWithNonExistingPath() {
+	public void testRunWithNonExistingPathOld() {
 		String pathSrc = "src";
 		String packageName = "package";
 		String testName = "test";
@@ -1042,6 +1326,38 @@ public class TestTestRunner extends TestRunnerHelper {
 		
 		verify(_config, never()).getPathSrc();
 		verify(_config, never()).getPathResult();
+		
+		verify(junit, never()).isExists();
+		verify(junit).setExitStatus(100);
+		verify(junit, never()).setExists(Matchers.anyBoolean());
+		verify(junit, times(2)).getName();
+		
+		verify(suite, times(2)).getPackage();
+		verify(suite).isExists();
+	}
+	
+	/**
+	 * Tests if the will be canceled when the directory of the test file does
+	 * not exist.
+	 */
+	@Test
+	public void testRunWithNonExistingPath() {
+		String pathSrc = "src";
+		String packageName = "package";
+		String testName = "test";
+		
+		Config.getInstance().setPathSrc(pathSrc);
+
+		Junit junit = mock(Junit.class);
+		when(junit.isExists()).thenReturn(true);
+		when(junit.getName()).thenReturn(testName);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getPackage()).thenReturn(packageName);
+		when(suite.isExists()).thenReturn(false);
+		_runner.addTestSuite(suite);
+		
+		_runner.run(suite, junit, null);
 		
 		verify(junit, never()).isExists();
 		verify(junit).setExitStatus(100);

@@ -35,8 +35,13 @@ import org.testsuite.data.TestSuite;
  * @version 0.2
  */
 class TestRunnerImplementation extends TestRunner {
+	@Deprecated
 	public TestRunnerImplementation(Config config) {
 		super(config);
+	}
+	
+	public TestRunnerImplementation() {
+		super();
 	}
 
 	@Override

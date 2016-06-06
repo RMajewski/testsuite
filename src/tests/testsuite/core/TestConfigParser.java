@@ -28,6 +28,7 @@ import java.util.List;
 
 import javax.xml.stream.XMLInputFactory;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
@@ -60,6 +61,8 @@ public class TestConfigParser {
 	
 	/**
 	 * Holds the mock object for configuration.
+	 * 
+	 * @deprecated
 	 */
 	private Config _config;
 	
@@ -73,15 +76,17 @@ public class TestConfigParser {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		_config = mock(Config.class);
 		_configFile = "test.xml";
 		
-		_parser = new ConfigParser(_config, _configFile);
+		_parser = new ConfigParser(_configFile);
 	}
 
 	/**
 	 * Tests if the configuration is returned.
+	 * 
+	 * @deprecated
 	 */
+	@Ignore("The method is deprecated")
 	@Test
 	public void testGetConfig() {
 		assertEquals(_config, _parser.getConfig());
@@ -89,7 +94,10 @@ public class TestConfigParser {
 	
 	/**
 	 * Tests if the configuration can be set.
+	 * 
+	 * @deprecated
 	 */
+	@Ignore("The method is deprecated")
 	@Test
 	public void testSetConfig() {
 		_config = mock(Config.class);
@@ -100,6 +108,8 @@ public class TestConfigParser {
 	/**
 	 * Tests if the error occurs IllegalArgumentException if null is passed as a
 	 * parameter.
+	 * 
+	 * @deprecated
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetConfigWithNullAsParameter() {
@@ -149,8 +159,15 @@ public class TestConfigParser {
 		verify(file).exists();
 	}
 
+	/**
+	 * 
+	 * @throws Exception
+	 * 
+	 * @deprecated
+	 */
+	@Ignore("The method is deprecated")
 	@Test
-	public void testParse() throws Exception {
+	public void testParseOld() throws Exception {
 		_parser.setConfigFile("src/tests/test_parser.xml");
 		
 		assertTrue(_parser.parse());
@@ -164,6 +181,111 @@ public class TestConfigParser {
 		verify(_config).addClassPath("classpath1");
 		verify(_config).addJavascriptFile("out.js");
 		verify(_config).addStylesheetFile("out.css");
+		
+		List<TestRunner> list = _parser.getTestRunnerList();
+		
+		int suiteId = 0;
+		int testId = 0;
+		
+		assertEquals(3, list.size());
+		
+		TestRunner runner = list.get(0);
+		assertEquals(JemmyTestRunner.class.getName(),
+				runner.getClass().getName());
+		assertEquals("java", runner.getFileExtension());
+		assertEquals("[h2]Test[/h2][p]This is a test.[/p]", 
+				runner.getDescription());
+		assertEquals(0, runner.libraryCount());
+		
+		
+		runner = list.get(1);
+		assertEquals(JunitTestRunner.class.getName(),
+				runner.getClass().getName());
+		assertEquals("java", runner.getFileExtension());
+		assertEquals("[h2]Test[/h2][p]This is a test.[/p]", 
+				runner.getDescription());
+		assertEquals(2, runner.libraryCount());
+		
+		Library lib = runner.getLibrary(0);
+		assertEquals("0.1", lib.getVersion());
+		assertEquals("name1", lib.getName());
+		assertEquals("path", lib.getPath());
+		assertEquals("lib1", lib.getFileName());
+		
+		assertEquals(2, runner.testSuiteCount());
+		
+		Field field = TestRunner.class.getDeclaredField("_suites");
+		field.setAccessible(true);
+		@SuppressWarnings("unchecked")
+		List<TestSuite> suites = (List<TestSuite>)field.get(runner);
+		
+		TestSuite suite = suites.get(0);
+		assertEquals(suiteId++, suite.getId());
+		assertEquals("Test 1", suite.getName());
+		assertEquals("test1", suite.getPackage());
+		assertEquals(1, suite.testCount());
+		
+		org.testsuite.data.Test test = suite.getTest(0);
+		assertEquals(testId++, test.getId());
+		assertEquals("Test1Class", test.getName());
+		assertFalse(test.isExecuted());
+		
+		suite = suites.get(1);
+		assertEquals(suiteId++, suite.getId());
+		assertEquals("Test 2", suite.getName());
+		assertEquals("test2", suite.getPackage());
+		assertEquals(2, suite.testCount());
+		
+		testId = 0;
+		test = suite.getTest(0);
+		assertEquals(testId++, test.getId());
+		assertEquals("Test2Class", test.getName());
+		assertTrue(test.isExecuted());
+		
+		test = suite.getTest(1);
+		assertEquals(testId++, test.getId());
+		assertEquals("Test3Class", test.getName());
+		
+		
+		lib = runner.getLibrary(1);
+		assertEquals("0.2", lib.getVersion());
+		assertEquals("name2", lib.getName());
+		assertEquals(new String(), lib.getPath());
+		assertEquals("lib2", lib.getFileName());
+		
+		runner = list.get(2);
+		assertEquals(FitTestRunner.class.getName(),
+				runner.getClass().getName());
+		assertEquals("fit", runner.getFileExtension());
+		assertEquals("[h2]Test[/h2][p]This is a test.[/p]", 
+				runner.getDescription());
+		assertEquals(0, runner.libraryCount());
+		assertEquals(1, runner.classPathCount());
+	}
+
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testParse() throws Exception {
+		_parser.setConfigFile("src/tests/test_parser.xml");
+		
+		assertTrue(_parser.parse());
+		
+		assertEquals("result", Config.getInstance().getPathResult());
+		assertEquals("src", Config.getInstance().getPathSrc());
+		assertEquals("lib", Config.getInstance().getPathLibrary());
+		assertEquals(30000, Config.getInstance().getMaxDuration());
+		assertTrue(Config.getInstance().isCreateHtml());
+		assertEquals(1, Config.getInstance().propertyCount());
+		assertEquals("testing=\"true\"", Config.getInstance().getProperty(0));
+		assertEquals(1, Config.getInstance().classPathCount());
+		assertEquals("classpath1", Config.getInstance().getClassPath(0));
+		assertEquals(1, Config.getInstance().javascriptFileCount());
+		assertEquals("out.js", Config.getInstance().getJavascriptFile(0));
+		assertEquals(1, Config.getInstance().stylesheetFileCount());
+		assertEquals("out.css", Config.getInstance().getStylesheetFile(0));
 		
 		List<TestRunner> list = _parser.getTestRunnerList();
 		

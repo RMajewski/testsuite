@@ -62,6 +62,8 @@ public class TestTestCore {
 	
 	/**
 	 * Save the mock object of Config
+	 * 
+	 * @deprecated
 	 */
 	private Config _config;
 	
@@ -72,9 +74,7 @@ public class TestTestCore {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		_config = mock(Config.class);
-		PowerMockito.whenNew(Config.class).withNoArguments().thenReturn(_config);
-		
+		Config.getInstance().clearAll();
 		_core = new TestCore();
 	}
 
@@ -86,8 +86,8 @@ public class TestTestCore {
 	 */
 	@Test
 	public void testTestCore() throws Exception {
-		PowerMockito.verifyNew(Config.class).withNoArguments();
-		verify(_config).setPathSuitesResult(Matchers.anyString());
+		assertNotNull(Config.getInstance().getPathSuitesResult());
+		assertFalse(Config.getInstance().getPathSuitesResult().isEmpty());
 	}
 
 	/**
@@ -119,13 +119,13 @@ public class TestTestCore {
 		when(parser.parse()).thenReturn(true);
 		
 		PowerMockito.whenNew(ConfigParser.class)
-			.withArguments(_config, name)
+			.withArguments(name)
 			.thenReturn(parser);
 		
 		assertTrue(_core.readConfig(name));
 		
 		PowerMockito.verifyNew(ConfigParser.class)
-			.withArguments(_config, name);
+			.withArguments(name);
 		
 		verify(parser).parse();
 		verify(parser).getTestRunnerList();
@@ -142,13 +142,13 @@ public class TestTestCore {
 		when(parser.parse()).thenReturn(false);
 		
 		PowerMockito.whenNew(ConfigParser.class)
-			.withArguments(_config, name)
+			.withArguments(name)
 			.thenReturn(parser);
 		
 		assertFalse(_core.readConfig(name));
 		
 		PowerMockito.verifyNew(ConfigParser.class)
-			.withArguments(_config, name);
+			.withArguments(name);
 		
 		verify(parser).parse();
 		verify(parser, never()).getTestRunnerList();
@@ -219,9 +219,7 @@ public class TestTestCore {
 	public void testCreateResultHtml() throws Exception{
 		String pathResult = "result";
 		
-		when(_config.getPathResult()).thenReturn(pathResult);
-		when(_config.javascriptFileCount()).thenReturn(0);
-		when(_config.stylesheetFileCount()).thenReturn(0);
+		Config.getInstance().setPathResult(pathResult);
 		
 		HtmlOut html = mock(HtmlOut.class);
 		
@@ -236,7 +234,7 @@ public class TestTestCore {
 			.withAnyArguments()
 			.thenReturn(file);
 		
-		when(_config.isCreateHtml()).thenReturn(true);
+		Config.getInstance().setCreateHtml(true);
 		
 		Field field = TestCore.class.getDeclaredField("_testRunner");
 		field.setAccessible(true);
@@ -254,7 +252,7 @@ public class TestTestCore {
 		PowerMockito.verifyNew(HtmlOut.class)
 			.withArguments(Matchers.anyString());
 		
-		verify(html).htmlHead(_config);
+		verify(html).htmlHead();
 		verify(html, times(3)).writeHtml(Matchers.anyString());
 		verify(html).htmlEnd();
 	}
@@ -270,7 +268,7 @@ public class TestTestCore {
 		PowerMockito.whenNew(HtmlOut.class)
 			.withAnyArguments().thenReturn(html);
 		
-		when(_config.isCreateHtml()).thenReturn(false);
+		Config.getInstance().setCreateHtml(false);
 		
 		Field field = TestCore.class.getDeclaredField("_testRunner");
 		field.setAccessible(true);
@@ -288,7 +286,7 @@ public class TestTestCore {
 		PowerMockito.verifyNew(HtmlOut.class, never())
 			.withArguments(Matchers.anyString());
 		
-		verify(html, never()).htmlHead(_config);
+		verify(html, never()).htmlHead();
 		verify(html, never()).writeHtml(Matchers.anyString());
 		verify(html, never()).htmlEnd();
 	}

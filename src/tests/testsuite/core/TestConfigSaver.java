@@ -53,6 +53,48 @@ public class TestConfigSaver {
 
 	/**
 	 * Tests if the configuration file is created
+	 * 
+	 * @deprecated
+	 */
+	@Test
+	public void testSaveOld() throws Exception {
+		File file = mock(File.class);
+		
+		FileWriter writer = mock(FileWriter.class);
+		
+		PowerMockito.whenNew(FileWriter.class)
+			.withArguments(file)
+			.thenReturn(writer);
+		
+		BufferedWriter bw = mock(BufferedWriter.class);
+		PowerMockito.whenNew(BufferedWriter.class)
+			.withArguments(writer).thenReturn(bw);
+		
+		JunitTestRunner runner1 = new JunitTestRunner();
+		JemmyTestRunner runner2 = new JemmyTestRunner();
+		FitTestRunner runner3 = new FitTestRunner();
+		
+		List<TestRunner> list = new ArrayList<TestRunner>();
+		list.add(runner1);
+		list.add(runner2);
+		list.add(runner3);
+		
+		Config config = Config.getInstance();
+		
+		ConfigSaver.save(config, list, file);
+		verify(bw).write("<?xml version=\"1.0\"?>");
+		verify(bw).write("<configurationFile");
+		verify(bw).write(" xmlns=\"https://github.com/RMajewski/testsuite\"");
+		verify(bw).write(" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
+		verify(bw).write(" xsi:schemaLocation=\"https://github.com/RMajewski/");
+		verify(bw).write("testsuite https://raw.githubusercontent.com/RMajewski/");
+		verify(bw).write("testsuite/master/src/resources/xml/config.xsd\"");
+	}
+
+	/**
+	 * Tests if the configuration file is created
+	 * 
+	 * @deprecated
 	 */
 	@Test
 	public void testSave() throws Exception {
@@ -77,9 +119,7 @@ public class TestConfigSaver {
 		list.add(runner2);
 		list.add(runner3);
 		
-		Config config = new Config();
-		
-		ConfigSaver.save(config, list, file);
+		ConfigSaver.save(list, file);
 		verify(bw).write("<?xml version=\"1.0\"?>");
 		verify(bw).write("<configurationFile");
 		verify(bw).write(" xmlns=\"https://github.com/RMajewski/testsuite\"");

@@ -32,7 +32,7 @@ import java.util.List;
  *
  * @version 0.2
  */
-public class Config {
+public final class Config {
 	/**
 	 * Saves the directory for the source code.
 	 */
@@ -89,11 +89,16 @@ public class Config {
 	 * Saves the maximum duration for a test.
 	 */
 	private long _maxDuration;
+	
+	/**
+	 * The singleton instance
+	 */
+	private static Config _config;
 
 	/**
 	 * Initialize the data of this class
 	 */
-	public Config() {
+	private Config() {
 		_property = new ArrayList<String>();
 		_listClasspath = new ArrayList<String>();
 		_listJavascript = new ArrayList<String>();
@@ -101,6 +106,21 @@ public class Config {
 		_pathSuitesResult = new String();
 		_classpath = new String();
 		clear();
+	}
+
+	/**
+	 * Returns the instance of back Config.
+	 * 
+	 * First, it is checked whether there is already an instance. Is there not
+	 * they, it is created and returned. Already exists an instance of this is
+	 * returned.
+	 * 
+	 * @return The instance of Config.
+	 */
+	public static synchronized Config getInstance() {
+		if (_config == null)
+			_config = new Config();
+		return _config;
 	}
 
 	/**
@@ -513,5 +533,14 @@ public class Config {
 		_listClasspath.clear();
 		_listJavascript.clear();
 		_listStylesheet.clear();
+	}
+	
+	/**
+	 * Clear all data of this class.
+	 */
+	public void clearAll() {
+		clear();
+		_classpath = new String();
+		_pathSuitesResult = new String();
 	}
 }

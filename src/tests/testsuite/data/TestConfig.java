@@ -25,6 +25,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.testsuite.data.Config;
 
@@ -46,7 +47,8 @@ public class TestConfig {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		_config = new Config();
+		_config = Config.getInstance();
+		_config.clearAll();
 	}
 
 	/**
