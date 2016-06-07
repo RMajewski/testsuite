@@ -19,6 +19,9 @@
 
 package org.testsuite.checksource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SourceLine {
 	/**
 	 * Saves the line of source code.
@@ -46,6 +49,11 @@ public class SourceLine {
 	private boolean _tested;
 	
 	/**
+	 * Saves the messages
+	 */
+	private List<MessageColor> _messages;
+	
+	/**
 	 * Initialize the data.
 	 */
 	public SourceLine() {
@@ -54,6 +62,7 @@ public class SourceLine {
 		_number = -1;
 		_tested = false;
 		_javadoc = false;
+		_messages = new ArrayList<MessageColor>();
 	}
 	
 	/**
@@ -142,5 +151,37 @@ public class SourceLine {
 	 */
 	public void setJavadoc(boolean javadoc) {
 		_javadoc = javadoc;
+	}
+	
+	/**
+	 * Returns the number of messages
+	 * 
+	 * @return The number of messages
+	 */
+	public int messageCount() {
+		return _messages.size();
+	}
+	
+	/**
+	 * Adds a new message in the list of messages.
+	 * 
+	 * @param message The new message
+	 */
+	public void addMessage(MessageColor message) {
+		if (message == null)
+			throw new IllegalArgumentException();
+		
+		_messages.add(message);
+	}
+	
+	/**
+	 * Returns the specified message
+	 * 
+	 * @param index The index of the message to return.
+	 * 
+	 * @return The specified message.
+	 */
+	public MessageColor getMessage(int index) {
+		return _messages.get(index);
 	}
 }

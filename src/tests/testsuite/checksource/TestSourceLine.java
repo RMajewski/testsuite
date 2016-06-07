@@ -20,9 +20,11 @@
 package tests.testsuite.checksource;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.testsuite.checksource.MessageColor;
 import org.testsuite.checksource.SourceLine;
 
 /**
@@ -56,6 +58,7 @@ public class TestSourceLine {
 		assertEquals(-1, _source.getLineNumber());
 		assertFalse(_source.isLineTested());
 		assertFalse(_source.isJavadoc());
+		assertEquals(0, _source.messageCount());
 	}
 
 	/**
@@ -146,5 +149,43 @@ public class TestSourceLine {
 		boolean javadoc = true;
 		_source.setJavadoc(javadoc);
 		assertTrue(_source.isJavadoc());
+	}
+	
+	/**
+	 * Tests if the number of messages is returned correctly.
+	 */
+	@Test
+	public void testMessageCount() {
+		assertEquals(0, _source.messageCount());
+	}
+	
+	/**
+	 * Tests if the new message is added correctly.
+	 */
+	@Test
+	public void testAddMessage() {
+		MessageColor message = mock(MessageColor.class);
+		assertEquals(0, _source.messageCount());
+		_source.addMessage(message);
+		assertEquals(1, _source.messageCount());
+		assertEquals(message, _source.getMessage(0));
+	}
+	
+	/**
+	 * Tests if the error occurs IllegalArgumentException.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testAddMessageWithNullAsParameter() {
+		_source.addMessage(null);
+	}
+	
+	/**
+	 * Tests if the message is returned correctly.
+	 */
+	@Test
+	public void testGetMessage() {
+		MessageColor message = mock(MessageColor.class);
+		_source.addMessage(message);
+		assertEquals(message, _source.getMessage(0));
 	}
 }

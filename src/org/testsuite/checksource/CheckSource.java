@@ -19,6 +19,8 @@
 
 package org.testsuite.checksource;
 
+import org.testsuite.checksource.tests.SourceTest;
+
 /**
  * 
  * @author René Majewski
@@ -166,6 +168,14 @@ public class CheckSource {
 		_source.readFile(true, _nameTest);
 		
 		// Run tests
+		for (int i = 0; i < SourceTest.TESTS.length; i++) {
+			try {
+				SourceTest test = (SourceTest)SourceTest.TESTS[i].newInstance();
+				test.test(_source.getSourceList());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**

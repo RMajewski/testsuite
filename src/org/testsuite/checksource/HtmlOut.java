@@ -21,14 +21,12 @@ package org.testsuite.checksource;
 
 import java.awt.Color;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import org.testsuite.data.Config;
 import org.testsuite.helper.HelperCalendar;
 import org.testsuite.helper.HelperHtml;
 import org.testsuite.helper.HelperHtmlCodeJava;
@@ -202,7 +200,9 @@ public class HtmlOut {
 
 		ret.append("\t\t\t\t\t\t<th style=\"width:100px;\"></th>");
 		ret.append(System.lineSeparator());
-		ret.append("\t\t\t\t\t\t<th style=\"width:95%\"></th>");
+		ret.append("\t\t\t\t\t\t<th style=\"width:70%;\"></th>");
+		ret.append(System.lineSeparator());
+		ret.append("\t\t\t\t\t\t<th style=\"width:*;\"></th>");
 		ret.append(System.lineSeparator());
 		
 		ret.append("\t\t\t\t\t</tr>");
@@ -214,8 +214,14 @@ public class HtmlOut {
 			
 			String background = new String();
 			if (lines.get(i).isLineTested()) {
-				background = " style=\"" + HelperHtmlCodeJava.getInstance()
-						.formatColor(COLOR_PASS) + "\" ";
+				background = " style=\"background: " + 
+						HelperHtmlCodeJava.getInstance()
+						.formatColor(COLOR_PASS) + ";\" ";
+			} else if (lines.get(i).messageCount() > 0) {
+				background = " style=\"background: " +
+						HelperHtmlCodeJava.getInstance()
+						.formatColor(lines.get(i).getMessage(0).getColor()) + 
+						";\" ";
 			}
 
 			ret.append("\t\t\t\t\t\t<td");
@@ -235,6 +241,19 @@ public class HtmlOut {
 			ret.append(background);
 			ret.append(">");
 			ret.append(line);
+			ret.append("</td>");
+			ret.append(System.lineSeparator());
+			
+			ret.append("\t\t\t\t\t\t<td");
+			ret.append(background);
+			ret.append(">");
+			
+			for (int j = 0; j < lines.get(i).messageCount(); j++) {
+				if (j > 0)
+					ret.append(", ");
+				ret.append(lines.get(i).getMessage(j).getMessage());
+			}
+			
 			ret.append("</td>");
 			ret.append(System.lineSeparator());
 
