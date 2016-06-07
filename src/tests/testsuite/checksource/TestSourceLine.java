@@ -55,6 +55,7 @@ public class TestSourceLine {
 		assertFalse(_source.isMultiLineComment());
 		assertEquals(-1, _source.getLineNumber());
 		assertFalse(_source.isLineTested());
+		assertFalse(_source.isJavadoc());
 	}
 
 	/**
@@ -127,5 +128,23 @@ public class TestSourceLine {
 		boolean tested = true;
 		_source.setLineTested(tested);
 		assertTrue(_source.isLineTested());
+	}
+
+	/**
+	 * Tests if a javadoc comment is returned correctly.
+	 */
+	@Test
+	public void testIsJavadoc() {
+		assertFalse(_source.isJavadoc());
+	}
+
+	/**
+	 * Tests if a javadoc comment is set correctly.
+	 */
+	@Test
+	public void testSetJavadoc() {
+		boolean javadoc = true;
+		_source.setJavadoc(javadoc);
+		assertTrue(_source.isJavadoc());
 	}
 }

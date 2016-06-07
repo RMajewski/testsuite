@@ -31,6 +31,11 @@ public class SourceLine {
 	private boolean _multiLineComment;
 	
 	/**
+	 * Saves whether the line belonging to a javadoc comment. 
+	 */
+	private boolean _javadoc;
+	
+	/**
 	 * Saves the number of line
 	 */
 	private int _number;
@@ -48,6 +53,7 @@ public class SourceLine {
 		_multiLineComment = false;
 		_number = -1;
 		_tested = false;
+		_javadoc = false;
 	}
 	
 	/**
@@ -118,5 +124,23 @@ public class SourceLine {
 	 */
 	public void setLineTested(boolean tested) {
 		_tested = tested;
+	}
+	
+	/**
+	 * Returns in the line belongs to a Javadoc comment.
+	 * 
+	 * @return Is this line a Javadoc comment?
+	 */
+	public boolean isJavadoc() {
+		return _javadoc;
+	}
+	
+	/**
+	 * Saves whether this line is part of a Javadoc comment.
+	 * 
+	 * @param javadoc Is this line a Javadoc comment?
+	 */
+	public void setJavadoc(boolean javadoc) {
+		_javadoc = javadoc;
 	}
 }

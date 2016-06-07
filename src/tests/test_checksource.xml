@@ -37,9 +37,24 @@
 			<library version="1.3.0" name="hamcrest" path="/usr/share/eclipse/plugins/">org.hamcrest.core_1.3.0.v201303031735.jar</library>
 		</libraries>
 		<testSuite>
+			<name>Tests the English language files</name>
+			<package>tests.lang.en</package>
+			<test>TestChecksourceHtmlOut</test>
+		</testSuite>
+		<testSuite>
+			<name>Tests the German language files</name>
+			<package>tests.lang.de_DE</package>
+			<test>TestChecksourceHtmlOut_de</test>
+		</testSuite>
+		<testSuite>
+			<name>Tests the class of helper</name>
+			<package>tests.testsuite.helper</package>
+			<test>TestHelperHtml</test>
+		</testSuite>
+		<testSuite>
 			<name>Tests the classes of informations</name>
 			<package>tests.testsuite.checksource</package>
-			<test>TestCSMethod</test>
+			<test checkSource="org.testsuite.checksource.CSMethod">TestCSMethod</test>
 			<test>TestCSParameter</test>
 		</testSuite>
 		<testSuite>
@@ -55,6 +70,11 @@
 			<name>Tests the classes for check source</name>
 			<package>tests.testsuite.checksource</package>
 			<test>TestCheckSource</test>
+		</testSuite>
+		<testSuite>
+			<name>Tests the output</name>
+			<package>tests.testsuite.checksource</package>
+			<test>TestHtmlOut</test>
 		</testSuite>
 	</testGroup>
 </configurationFile>

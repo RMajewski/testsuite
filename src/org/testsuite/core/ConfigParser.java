@@ -351,6 +351,7 @@ public class ConfigParser {
 								}
 								jvm = true;
 								executed = true;
+								checkSource = new String();
 								break;
 						}
 						break;

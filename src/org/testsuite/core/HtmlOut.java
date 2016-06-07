@@ -31,6 +31,7 @@ import java.util.ResourceBundle;
 
 import org.testsuite.data.Config;
 import org.testsuite.helper.HelperCalendar;
+import org.testsuite.helper.HelperHtml;
 
 /**
  * Creates from the test results an HTML file.
@@ -93,7 +94,10 @@ public class HtmlOut {
 	 * @param name Name of the file
 	 * 
 	 * @return Loaded file as string
+	 * 
+	 * @deprecated Use {@link org.testsuite.helper.HelperHtml#readFile(String)}
 	 */
+	@SuppressWarnings("unused")
 	private String readFile(String name) {
 		StringBuilder ret = new StringBuilder();
 		
@@ -123,6 +127,7 @@ public class HtmlOut {
 	 * @deprecated use {@link #htmlHead()}
 	 */
 	public void htmlHead(Config config) throws IOException {
+		htmlHead();
 	}
 	
 	/**
@@ -131,6 +136,7 @@ public class HtmlOut {
 	public void htmlHead() throws IOException {
 		String date = HelperCalendar.datetimeToString(new Date().getTime());
 		
+		// OPT Into HelperHtml.header result type is String
 		_bw.write("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 "
 				+ "Transitional//EN\" \"http://www.w3.org/TR/html4/"
 				+ "transitional.dtd\">");
@@ -150,10 +156,11 @@ public class HtmlOut {
 		
 		if (Config.getInstance().javascriptFileCount() > 0)
 			for (int i = 0; i < Config.getInstance().stylesheetFileCount(); i++)
-				_bw.write(readFile(Config.getInstance().getStylesheetFile(i)));
+				_bw.write(HelperHtml.readFile(
+						Config.getInstance().getStylesheetFile(i)));
 		else
-			_bw.write(readFile("resources" + File.separator + "html" +
-					File.separator + "out.css"));
+			_bw.write(HelperHtml.readFile("resources" + File.separator + 
+					"html" + File.separator + "out.css"));
 		
 		_bw.newLine();
 		_bw.write("\t\t</style>"); _bw.newLine();
@@ -162,10 +169,11 @@ public class HtmlOut {
 		
 		if (Config.getInstance().javascriptFileCount() > 0)
 			for (int i = 0; i < Config.getInstance().javascriptFileCount(); i++)
-				_bw.write(readFile(Config.getInstance().getJavascriptFile(i)));
+				_bw.write(HelperHtml.readFile(
+						Config.getInstance().getJavascriptFile(i)));
 		else
-			_bw.write(readFile("resources" + File.separator + "html" +
-					File.separator + "out.js"));
+			_bw.write(HelperHtml.readFile("resources" + File.separator + 
+					"html" + File.separator + "out.js"));
 		
 		_bw.write("\t\t</script>"); _bw.newLine();
 		
@@ -203,10 +211,7 @@ public class HtmlOut {
 	 * @throws IOException 
 	 */
 	public void htmlEnd() throws IOException {
-		_bw.write("\t</body>");
-		_bw.newLine();
-		_bw.write("</html>");
-		_bw.newLine();
+		_bw.write(HelperHtml.footer());
 		_bw.close();
 	}
 	

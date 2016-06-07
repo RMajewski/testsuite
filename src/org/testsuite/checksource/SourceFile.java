@@ -124,6 +124,13 @@ public class SourceFile {
 	}
 	
 	/**
+	 * Returns the list of source lines
+	 */
+	public List<SourceLine> getSourceList() {
+		return _source;
+	}
+	
+	/**
 	 * Return the number of methods.
 	 * 
 	 * @return The number of methods.
@@ -150,6 +157,15 @@ public class SourceFile {
 	 */
 	public CSMethod getMethod(int index) {
 		return _methods.get(index);
+	}
+	
+	/**
+	 * Return the list of methods
+	 * 
+	 * @return The list of methods
+	 */
+	public List<CSMethod> getMethodList() {
+		return _methods;
 	}
 	
 	/**
@@ -186,23 +202,39 @@ public class SourceFile {
 			String line;
 			int count = 0;
 			boolean multicomment = false;
+			boolean javadoc = false;
 			while ((line = bf.readLine()) != null) {
 				count++;
+				
 				// create Source instance
 				SourceLine source = new SourceLine();
 				source.setLine(line);
 				source.setLineNumber(count);
 				
 				// Multiline comment?
-				if ((line.indexOf("/*") > -1) && (line.indexOf("*/") == -1))
+				if ((line.indexOf("/*") > -1) && (line.indexOf("*/") == -1) &&
+						(line.indexOf("/**") == -1))
 					multicomment = true;
-				else if (multicomment && (line.indexOf("*/") > -1))
+				else if ((line.indexOf("/**") > -1) && 
+						(line.indexOf("*/") == -1))
+					javadoc = true;
+				else if (multicomment && (line.indexOf("*/") > -1)) {
 					multicomment = false;
+					source.setMultiLineComment(true);
+				} else if (javadoc && (line.indexOf("*/") > -1)) {
+					javadoc = false;
+					source.setJavadoc(true);
+				}
 				
-				source.setMultiLineComment(multicomment);
+				if (multicomment)
+					source.setMultiLineComment(true);
+				
+				if (javadoc)
+					source.setJavadoc(true);
 				
 				// add Source to list
-				_source.add(source);
+				if (!test)
+					_source.add(source);
 				
 				// read source code
 				if (!multicomment) {

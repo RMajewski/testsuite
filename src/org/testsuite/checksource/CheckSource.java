@@ -150,9 +150,31 @@ public class CheckSource {
 	
 	/**
 	 * Read the source file and the test file
+	 * 
+	 * @deprecated Use {@link #run}
 	 */
 	public void read() {
+		run();
+	}
+	
+	/**
+	 * Read the source file and run the tests
+	 */
+	public void run() {
+		// Read the source files
 		_source.readFile(false, null);
 		_source.readFile(true, _nameTest);
+		
+		// Run tests
+	}
+	
+	/**
+	 * Create the HTML output
+	 */
+	public void createHtmlOut() {
+		if (isCreateHtml()) {
+			HtmlOut html = new HtmlOut(_nameResult);
+			html.createHtml(_source.getSourceList(), _source.getMethodList());
+		}
 	}
 }

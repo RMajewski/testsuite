@@ -17,38 +17,18 @@
 * sind dem Lizenztext zu entnehmen.
 */ 
 
-package tests;
+package tests.testsuite.helper;
 
-import java.io.File;
+import static org.junit.Assert.*;
 
-import org.testsuite.core.TestCore;
-import org.testsuite.core.TestsRun;
+import org.junit.Before;
+import org.junit.Test;
 
-/**
- * Run the tests for check source
- * 
- * @author René Majewski
- *
- * @version 0.1
- */
-public class TestsCheckSource {
-	public static void run() {
-		TestCore core = new TestCore();
-		try {
-			if (core.readConfig("src" + File.separator + "tests" + 
-					File.separator + "test_checksource.xml")) {
-				core.checkFileExists();
-//				core.run();
-				core.checkSource();
-//				core.createResultHtml();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+public class TestHelperHtml {
 
-	public static void main(String[] args) {
-		TestsCheckSource.run();
+	@Test
+	public void testReadFile() {
+		fail("Not yet implemented");
 	}
 
 }

@@ -92,6 +92,33 @@
 	padding: 0px;
 }
 
+.checksource {
+	border: 1px solid #000;
+	padding: 0px 10px;
+}
+
+.checksourceList {
+	border: 1px dashed #000;
+	margin-top: 10px;
+	padding: 0px 10px;
+}
+
+.checksourceSource {
+	margin-top: 10px;
+}
+
+.checksourceSource table {
+	border: 1px solid #000;
+}
+
+.checksourceSource table tr {
+	border: 0px;
+}
+
+.checksourceSource table td {
+	padding: 0px 10px;
+}
+
 table {
 	width: 100%;
 	border-collapse: collapse;
