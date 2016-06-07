@@ -237,7 +237,7 @@ public class SourceFile {
 					_source.add(source);
 				
 				// read source code
-				if (!multicomment) {
+				if (!multicomment && !javadoc) {
 					line = line.trim();
 					if (!test) {
 						int methods = _methods.size();
@@ -263,5 +263,14 @@ public class SourceFile {
 		}
 		
 		return true;
+	}
+	
+	/**
+	 * Check the source code
+	 */
+	public void prepaireSource() {
+		for (int i = 0; i < _methods.size(); i++)
+			if (_methods.get(i).callsCount() >  0)
+				_source.get(_methods.get(i).getLine() - 1).setLineTested(true);
 	}
 }

@@ -59,10 +59,20 @@ public class ReadTest implements Read {
 	 */
 	@Override
 	public void read(int lineNumber, String line, List<CSMethod> methods) {
+		if ((line.indexOf("class") > -1) || (line.indexOf("import") > -1))
+				return;
+		
 		for (Iterator<String> i = _classNames.iterator(); i.hasNext();) {
-			if (line.indexOf(i.next()) > -1) {
+			String cls = i.next();
+			if (line.indexOf(cls) > -1) {
 				String[] tmp = line.split(" ");
-				_variables.add(tmp[1]);
+				if (tmp[0].equals("private") || tmp[0].equals("protected") ||
+						tmp[0].equals("public"))
+					_variables.add(tmp[2]);
+				else if (tmp[1].equals("="))
+					_variables.add(tmp[0]);
+				else if (tmp[2].equals("="))
+					_variables.add(tmp[1]);
 			}
 		}
 		

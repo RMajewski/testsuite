@@ -19,6 +19,8 @@
 
 package org.testsuite.checksource;
 
+import java.util.List;
+
 import org.testsuite.checksource.tests.SourceTest;
 
 /**
@@ -176,6 +178,9 @@ public class CheckSource {
 				e.printStackTrace();
 			}
 		}
+		
+		// Prepare lines of source code for output.
+		_source.prepaireSource();
 	}
 	
 	/**
