@@ -60,5 +60,6 @@ public interface SourceTest {
 	/**
 	 * Saves the list with all tests for check source.
 	 */
-	Class<?>[] TESTS = {TestEmptyLines.class, TestEmptyMethod.class};
+	Class<?>[] TESTS = {TestEmptyLines.class, TestEmptyMethod.class, 
+			TestUnusedImports.class};
 }
