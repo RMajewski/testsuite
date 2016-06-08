@@ -72,13 +72,14 @@ public class HtmlOut extends Html {
 			// List of method calls
 			if (methods.size() > 0)
 				bw.write(HelperHtml.createListOfMethods(
-						_bundle.getString("methods_calls"), methods, true));
+						_bundle.getString("methods_calls"), methods, true, 
+						false));
 			
 			// List of method without calls
 			if (methods.size() > 0)
 				bw.write(HelperHtml.createListOfMethods(
 						_bundle.getString("methods_without_calls"), methods, 
-						false));
+						false, false));
 			
 			// Source code
 			if (source.size() > 0)

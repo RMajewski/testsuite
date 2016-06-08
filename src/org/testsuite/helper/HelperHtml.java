@@ -25,8 +25,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.testsuite.checksource.CSMethod;
+import org.testsuite.core.TestCore;
+import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
 
 /**
@@ -180,8 +183,20 @@ public class HelperHtml {
 		return source.replaceAll("\\t",replace);
 	}
 	
+	/**
+	 * Create the list of methods.
+	 * 
+	 * @param description The description for the list.
+	 * 
+	 * @param methods List of methods
+	 * 
+	 * @param calls If the list of tested methods (true) or untested methods 
+	 * (false) are created?
+	 * 
+	 * @return The list of methods.
+	 */
 	public static String createListOfMethods(String description, 
-			List<CSMethod> methods, boolean calls) {
+			List<CSMethod> methods, boolean calls, boolean file) {
 		StringBuilder ret = new StringBuilder();
 		
 		ret.append("\t\t\t<div class=\"checksourceList\">");
@@ -196,18 +211,35 @@ public class HelperHtml {
 		ret.append(System.lineSeparator());
 		
 		for (int method = 0; method < methods.size(); method++) {
+			String fileName = new String();
+			
+			if (file) {
+				fileName = ResourceBundle.getBundle(TestRunner.BUNDLE_FILE)
+						.getString("result_checksoure") + "_Test" + 
+						methods.get(method).getClassName() + ".html";
+			}
+			
+			String linkSrc = "<a href=\"" + fileName + "#" + 
+					methods.get(method).getClassName() + "." + 
+					methods.get(method).getName() + "\">";
+			String linkEnd = "</a>";
+			
 			if (calls && (methods.get(method).callsCount() > 0)) {
 				ret.append("\t\t\t\t\t<li>");
+				ret.append(linkSrc);
 				ret.append(methods.get(method).getClassName());
 				ret.append(".");
 				ret.append(methods.get(method).getName());
+				ret.append(linkEnd);
 				ret.append("</li>");
 				ret.append(System.lineSeparator());
 			} else if (!calls && (methods.get(method).callsCount() == 0)) {
 				ret.append("\t\t\t\t\t<li>");
+				ret.append(linkSrc);
 				ret.append(methods.get(method).getClassName());
 				ret.append(".");
 				ret.append(methods.get(method).getName());
+				ret.append(linkEnd);
 				ret.append("</li>");
 				ret.append(System.lineSeparator());
 			}

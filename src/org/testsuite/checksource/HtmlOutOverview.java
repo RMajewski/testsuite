@@ -144,7 +144,7 @@ public class HtmlOutOverview extends Html {
 			// List of methods without calls
 			bw.write(HelperHtml.createListOfMethods(
 					_bundle.getString("methods_without_calls"), _methods, 
-					false));
+					false, true));
 			
 			// Table with links
 			bw.write(createHtmlLink());
@@ -240,6 +240,13 @@ public class HtmlOutOverview extends Html {
 		return ret.toString();
 	}
 	
+	/**
+	 * Creates the messages for the specified class.
+	 * 
+	 * @param className The name of class.
+	 * 
+	 * @return Messages for the specified class.
+	 */
 	private String createMessages(String className) {
 		StringBuilder ret = new StringBuilder();
 		boolean first = true;
