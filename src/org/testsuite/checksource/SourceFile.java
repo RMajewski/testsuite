@@ -268,8 +268,13 @@ public class SourceFile {
 	 * Check the source code
 	 */
 	public void prepaireSource() {
-		for (int i = 0; i < _methods.size(); i++)
+		for (int i = 0; i < _methods.size(); i++) {
+			_source.get(_methods.get(i).getLine() - 1).setBeginMethod(true);
 			if (_methods.get(i).callsCount() >  0)
 				_source.get(_methods.get(i).getLine() - 1).setLineTested(true);
+		}
+		if (_methods.size() > 0)
+			for (int i = 0; i < _source.size(); i++)
+				_source.get(i).setClassName(_methods.get(0).getClassName());
 	}
 }

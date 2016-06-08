@@ -24,6 +24,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
+
+import org.testsuite.checksource.CSMethod;
 import org.testsuite.data.Config;
 
 /**
@@ -175,5 +178,47 @@ public class HelperHtml {
 		for (int i = 0; i < space; i++)
 			replace += "&nbsp;";
 		return source.replaceAll("\\t",replace);
+	}
+	
+	public static String createListOfMethods(String description, 
+			List<CSMethod> methods, boolean calls) {
+		StringBuilder ret = new StringBuilder();
+		
+		ret.append("\t\t\t<div class=\"checksourceList\">");
+		ret.append(System.lineSeparator());
+		
+		ret.append("\t\t\t\t<p>");
+		ret.append(description);
+		ret.append("</p>");
+		ret.append(System.lineSeparator());
+		
+		ret.append("\t\t\t\t<ul>");
+		ret.append(System.lineSeparator());
+		
+		for (int method = 0; method < methods.size(); method++) {
+			if (calls && (methods.get(method).callsCount() > 0)) {
+				ret.append("\t\t\t\t\t<li>");
+				ret.append(methods.get(method).getClassName());
+				ret.append(".");
+				ret.append(methods.get(method).getName());
+				ret.append("</li>");
+				ret.append(System.lineSeparator());
+			} else if (!calls && (methods.get(method).callsCount() == 0)) {
+				ret.append("\t\t\t\t\t<li>");
+				ret.append(methods.get(method).getClassName());
+				ret.append(".");
+				ret.append(methods.get(method).getName());
+				ret.append("</li>");
+				ret.append(System.lineSeparator());
+			}
+		}
+		
+		ret.append("\t\t\t\t</ul>");
+		ret.append(System.lineSeparator());
+		
+		ret.append("\t\t\t</div>");
+		ret.append(System.lineSeparator());
+		
+		return ret.toString();
 	}
 }

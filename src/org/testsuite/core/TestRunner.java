@@ -36,6 +36,7 @@ import java.util.Vector;
 import javax.swing.Timer;
 
 import org.testsuite.checksource.CheckSource;
+import org.testsuite.checksource.HtmlOutOverview;
 import org.testsuite.data.Config;
 import org.testsuite.data.Library;
 import org.testsuite.data.Test;
@@ -1214,6 +1215,10 @@ public abstract class TestRunner {
 			CheckSource cs = new CheckSource(sourceFile, testFile, testResult);
 			cs.run();
 			cs.createHtmlOut();
+			
+			HtmlOutOverview.getInstance().addResultFile(testResult);
+			HtmlOutOverview.getInstance().addMethods(cs.getMethodList());
+			HtmlOutOverview.getInstance().addSourceLines(cs.getSourceLineList());
 			
 			System.out.println(_bundle.getString("run_pass"));
 		}

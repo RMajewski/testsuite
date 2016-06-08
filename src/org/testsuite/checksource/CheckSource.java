@@ -192,4 +192,22 @@ public class CheckSource {
 			html.createHtml(_source.getSourceList(), _source.getMethodList());
 		}
 	}
+	
+	/**
+	 * Returns the list of method from SourceFile
+	 * 
+	 * @return The list of methods
+	 */
+	public List<CSMethod> getMethodList() {
+		return _source.getMethodList();
+	}
+	
+	/**
+	 * Returns the list of source lines from SourceFile
+	 * 
+	 * @return The list of source lines
+	 */
+	public List<SourceLine> getSourceLineList() {
+		return _source.getSourceList();
+	}
 }

@@ -31,6 +31,8 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import javax.xml.stream.XMLStreamException;
+
+import org.testsuite.checksource.HtmlOutOverview;
 import org.testsuite.data.Config;
 
 /**
@@ -161,6 +163,7 @@ public class TestCore {
 				} // for test
 			} // for suite
 		} // for runner
+		HtmlOutOverview.getInstance().createHtml();
 	}
 	
 	/**

@@ -54,6 +54,16 @@ public class SourceLine {
 	private List<MessageColor> _messages;
 	
 	/**
+	 * Saves whether a method begins in the line. 
+	 */
+	private boolean _beginMethod;
+	
+	/**
+	 * Saves the class name of file
+	 */
+	private String _className;
+	
+	/**
 	 * Initialize the data.
 	 */
 	public SourceLine() {
@@ -63,6 +73,8 @@ public class SourceLine {
 		_tested = false;
 		_javadoc = false;
 		_messages = new ArrayList<MessageColor>();
+		_beginMethod = false;
+		_className = new String();
 	}
 	
 	/**
@@ -183,5 +195,41 @@ public class SourceLine {
 	 */
 	public MessageColor getMessage(int index) {
 		return _messages.get(index);
+	}
+	
+	/**
+	 * Returns whether a method begins in the line.
+	 * 
+	 * @return Begins in the line a method?
+	 */
+	public boolean isBeginMethod() {
+		return _beginMethod;
+	}
+	
+	/**
+	 * Sets whether a method begins in the line.
+	 * 
+	 * @param begin Begins in the line a method?
+	 */
+	public void setBeginMethod(boolean begin) {
+		_beginMethod = begin;
+	}
+	
+	/**
+	 * Return the class name
+	 * 
+	 * @return The class name
+	 */
+	public String getClassName() {
+		return _className;
+	}
+	
+	/**
+	 * Set the class name
+	 * 
+	 * @param name The new class name
+	 */
+	public void setClassName(String name) {
+		_className = name;
 	}
 }

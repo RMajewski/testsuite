@@ -19,14 +19,11 @@
 
 package org.testsuite.checksource;
 
-import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.ResourceBundle;
-
 import org.testsuite.helper.HelperCalendar;
 import org.testsuite.helper.HelperHtml;
 import org.testsuite.helper.HelperHtmlCodeJava;
@@ -38,27 +35,7 @@ import org.testsuite.helper.HelperHtmlCodeJava;
  *
  * @version 0.1
  */
-public class HtmlOut {
-	/**
-	 * Saves the name of the resource bundle file
-	 */
-	public static final String BUNDLE_FILE = 
-			"resources.lang.org.testsuite.checksource.HtmlOut";
-	
-	/**
-	 * Saves the name of result file
-	 */
-	private String _resultFile;
-	
-	/**
-	 * Saves the instance of the resource bundle
-	 */
-	private ResourceBundle _bundle;
-	
-	/**
-	 * Specifies the background color for tested lines.
-	 */
-	public static final Color COLOR_PASS = new Color(0xCFFFCF);
+public class HtmlOut extends Html {
 
 	/**
 	 * Initialize the class
@@ -66,8 +43,7 @@ public class HtmlOut {
 	 * @param result The name of result file
 	 */
 	public HtmlOut(String result) {
-		_resultFile = result;
-		_bundle = ResourceBundle.getBundle(BUNDLE_FILE);
+		super(result);
 	}
 
 	/**
@@ -95,17 +71,18 @@ public class HtmlOut {
 			
 			// List of method calls
 			if (methods.size() > 0)
-				bw.write(listMethod(_bundle.getString("methods_calls"), methods, 
-					true));
+				bw.write(HelperHtml.createListOfMethods(
+						_bundle.getString("methods_calls"), methods, true));
 			
 			// List of method without calls
 			if (methods.size() > 0)
-				bw.write(listMethod(_bundle.getString("methods_without_calls"), 
-					methods, false));
+				bw.write(HelperHtml.createListOfMethods(
+						_bundle.getString("methods_without_calls"), methods, 
+						false));
 			
 			// Source code
 			if (source.size() > 0)
-				bw.write(sourceCode(source));
+				bw.write(sourceCode(source, methods));
 			
 			bw.write("\t\t</div>");
 			bw.write(System.lineSeparator());
@@ -136,7 +113,10 @@ public class HtmlOut {
 	 * (false) are created?
 	 * 
 	 * @return The list of methods.
+	 * 
+	 * @deprecated Use {@link org.testsuite.helper.HelperHtml#createListOfMethods(String, List, boolean)}
 	 */
+	@SuppressWarnings("unused")
 	private String listMethod(String description, List<CSMethod> methods, 
 			boolean calls) {
 		StringBuilder ret = new StringBuilder();
@@ -186,7 +166,7 @@ public class HtmlOut {
 	 * 
 	 * @return The HTML output for the source code.
 	 */
-	private String sourceCode(List<SourceLine> lines) {
+	private String sourceCode(List<SourceLine> lines, List<CSMethod> methods) {
 		StringBuilder ret = new StringBuilder();
 		
 		ret.append("\t\t\t<div class=\"checksourceSource\">");
@@ -224,10 +204,27 @@ public class HtmlOut {
 						";\" ";
 			}
 
+			String ankerBegin = new String();
+			String ankerEnd = new String();
+			if (lines.get(i).isBeginMethod()) {
+				String ankerName = new String();
+				for (int j = 0; j < methods.size(); j++) {
+					if (lines.get(i).getLineNumber() == methods.get(j).getLine()) {
+						ankerName = methods.get(j).getClassName() + "." +
+								methods.get(j).getName();
+						break;
+					}
+				}
+				ankerBegin = "<a name=\"" + ankerName + "\">";
+				ankerEnd = "</a>";
+			}
+			
 			ret.append("\t\t\t\t\t\t<td");
 			ret.append(background);
 			ret.append(">");
+			ret.append(ankerBegin);
 			ret.append(lines.get(i).getLineNumber());
+			ret.append(ankerEnd);
 			ret.append("</td>");
 			ret.append(System.lineSeparator());
 			
