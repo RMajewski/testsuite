@@ -54,6 +54,11 @@ public class HtmlOutOverview extends Html {
 	 * Saves the instance of HtmlOutOverview
 	 */
 	private static HtmlOutOverview _instance;
+	
+	/**
+	 * Saves the list of none exists files.
+	 */
+	private List<String> _noneExists;
 
 	/**
 	 * Initialize this class
@@ -65,6 +70,7 @@ public class HtmlOutOverview extends Html {
 		_resultFiles = new ArrayList<String>();
 		_methods = new ArrayList<CSMethod>();
 		_sources = new ArrayList<SourceLine>();
+		_noneExists = new ArrayList<String>();
 	}
 	
 	/**
@@ -116,7 +122,16 @@ public class HtmlOutOverview extends Html {
 	}
 	
 	/**
+	 * Added a file name to the list of none exists files.
 	 * 
+	 * @param name The name of none exists files.
+	 */
+	public void addNoneExistsFileName(String name) {
+		_noneExists.add(name);
+	}
+	
+	/**
+	 * Generate the HTML output for the overview file.
 	 */
 	public void createHtml() {
 		_resultFile = Config.getInstance().getPathResult() + File.separator +
@@ -146,6 +161,9 @@ public class HtmlOutOverview extends Html {
 					_bundle.getString("methods_without_calls"), _methods, 
 					false, true));
 			
+			// List of none exists files
+			bw.write(createNoneExistsList());
+			
 			// Table with links
 			bw.write(createHtmlLink());
 			
@@ -161,6 +179,43 @@ public class HtmlOutOverview extends Html {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	/**
+	 * Creates the HTML list of none exists files.
+	 * 
+	 * @return The HTML list of none exists files.
+	 */
+	private String createNoneExistsList() {
+		StringBuilder ret = new StringBuilder();
+		
+		if (_noneExists.size() > 0) {
+			ret.append("\t\t\t<div class=\"checksourceList\">");
+			ret.append(System.lineSeparator());
+			
+			ret.append("\t\t\t\t<p>");
+			ret.append(_bundle.getString("overview_none_exists_files"));
+			ret.append("</p>");
+			ret.append(System.lineSeparator());
+			
+			ret.append("\t\t\t\t<ul>");
+			ret.append(System.lineSeparator());
+			
+			for (int name = 0; name < _noneExists.size(); name++) {
+				ret.append("\t\t\t\t\t<li>");
+				ret.append(_noneExists.get(name));
+				ret.append("</li>");
+				ret.append(System.lineSeparator());
+			}
+			
+			ret.append("\t\t\t\t</ul>");
+			ret.append(System.lineSeparator());
+			
+			ret.append("\t\t\t</div>");
+			ret.append(System.lineSeparator());
+		}
+		
+		return ret.toString();
 	}
 
 	/**
@@ -289,5 +344,29 @@ public class HtmlOutOverview extends Html {
 		}
 
 		return ret.toString();
+	}
+	
+	/**
+	 * Searching the correct result file using the test name.
+	 * 
+	 * @param name The name of test
+	 * 
+	 * @return The result file
+	 */
+	public String getResultFileFromTestName(String name) {
+		for (int i = 0; i < _resultFiles.size(); i++)
+			if (_resultFiles.get(i).indexOf(name) > -1)
+				return _resultFiles.get(i);
+		
+		return new String();
+	}
+	
+	/**
+	 * Returns the name of result file
+	 * 
+	 * @return The name of result file
+	 */
+	public String getResultFile() {
+		return _resultFile;
 	}
 }

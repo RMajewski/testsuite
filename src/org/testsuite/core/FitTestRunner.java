@@ -164,6 +164,12 @@ public class FitTestRunner extends TestRunner {
 			} else {
 				ret.append(_suites.get(suite).getTest(test).getName());
 			}
+			
+			String testname = null;
+			
+			if (_suites.get(suite).getTest(test).isCheckSource())
+				testname = _suites.get(suite).getTest(test).getName();
+			
 			ret.append(html.generateTestOut(_suites.get(suite).getId(), 
 						_suites.get(suite).getTest(test).getId(), 
 						_suites.get(suite).getTest(test).getIn(),
@@ -171,7 +177,7 @@ public class FitTestRunner extends TestRunner {
 						exec(_suites.get(suite).getPackage() + "." + 
 								_suites.get(suite).getTest(test).getName(),
 								_suites.get(suite), 
-								_suites.get(suite).getTest(test))));
+								_suites.get(suite).getTest(test)), testname));
 			ret.append("\t\t\t\t\t\t</td>");
 			ret.append(System.lineSeparator());
 			

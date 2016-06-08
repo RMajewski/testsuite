@@ -198,7 +198,7 @@ public class TestHtmlOut {
 		String exec = "exec";
 
 		assertEquals(new String(), _html.generateTestOut(-1, 0, console, error,
-				exec));
+				exec, null));
 	}
 	
 	@Test
@@ -208,7 +208,7 @@ public class TestHtmlOut {
 		String exec = "exec";
 
 		assertEquals(new String(), _html.generateTestOut(0, -1, console, error,
-				exec));
+				exec, null));
 	}
 	
 	@Test
@@ -245,7 +245,7 @@ public class TestHtmlOut {
 		builder.append(System.lineSeparator());
 
 		assertEquals(builder.toString(), 
-				_html.generateTestOut(1, 1, null, error, exec));
+				_html.generateTestOut(1, 1, null, error, exec, null));
 	}
 	
 	@Test
@@ -277,7 +277,7 @@ public class TestHtmlOut {
 		builder.append(System.lineSeparator());
 
 		assertEquals(builder.toString(), 
-				_html.generateTestOut(1, 1, console, error, null));
+				_html.generateTestOut(1, 1, console, error, null, null));
 	}
 	
 	@Test
@@ -314,7 +314,7 @@ public class TestHtmlOut {
 		builder.append(System.lineSeparator());
 
 		assertEquals(builder.toString(), 
-				_html.generateTestOut(1, 1, console, null, exec));
+				_html.generateTestOut(1, 1, console, null, exec, null));
 	}
 	
 	@Test
@@ -351,6 +351,6 @@ public class TestHtmlOut {
 		builder.append(System.lineSeparator());
 
 		assertEquals(builder.toString(), 
-				_html.generateTestOut(1, 1, console, error, exec));
+				_html.generateTestOut(1, 1, console, error, exec, null));
 	}
 }

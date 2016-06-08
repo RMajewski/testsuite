@@ -140,9 +140,15 @@ public class TestCore {
 							_testRunner.get(runner).getTestSuite(suite),
 							_testRunner.get(runner).getTestSuite(suite)
 								.getTest(test), null);
+					_testRunner.get(runner).runCheckSource(
+							_testRunner.get(runner).getTestSuite(suite),
+							_testRunner.get(runner).getTestSuite(suite)
+								.getTest(test));
 				} // for test
 			} // for suite
 		} // for runner
+		
+		HtmlOutOverview.getInstance().createHtml();
 	}
 	
 	/**

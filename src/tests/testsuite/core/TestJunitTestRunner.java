@@ -175,7 +175,7 @@ public class TestJunitTestRunner {
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
-				eq(error), anyString())).thenReturn(testOut);
+				eq(error), anyString(), anyString())).thenReturn(testOut);
 		
 		Method method = 
 				JunitTestRunner.class.getDeclaredMethod("createHtmlColumn", 
@@ -265,7 +265,7 @@ public class TestJunitTestRunner {
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
-				eq(error), anyString())).thenReturn(testOut);
+				eq(error), anyString(), anyString())).thenReturn(testOut);
 		
 		Method method = 
 				JunitTestRunner.class.getDeclaredMethod("createHtmlColumn", 
@@ -350,7 +350,7 @@ public class TestJunitTestRunner {
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
-				eq(error), anyString())).thenReturn(testOut);
+				eq(error), anyString(), anyString())).thenReturn(testOut);
 		
 		Method method = 
 				JunitTestRunner.class.getDeclaredMethod("createHtmlColumn", 
@@ -424,7 +424,7 @@ public class TestJunitTestRunner {
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
-				eq(error), anyString())).thenReturn(testOut);
+				eq(error), anyString(), anyString())).thenReturn(testOut);
 		
 		Method method = 
 				JunitTestRunner.class.getDeclaredMethod("createHtmlColumn", 

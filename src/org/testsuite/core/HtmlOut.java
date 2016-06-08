@@ -29,6 +29,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import org.testsuite.checksource.HtmlOutOverview;
 import org.testsuite.data.Config;
 import org.testsuite.helper.HelperCalendar;
 import org.testsuite.helper.HelperHtml;
@@ -188,6 +189,7 @@ public class HtmlOut {
 		_bw.write(_bundle.getString("htmlHead_description"));
 		_bw.write("</p>");
 		_bw.newLine();
+		
 		_bw.write("\t\t<div class=\"include\">");
 		_bw.newLine();
 		_bw.write("\t\t\t<p>");
@@ -203,6 +205,29 @@ public class HtmlOut {
 		_bw.newLine();
 		_bw.write("\t\t</div>");
 		_bw.newLine();
+		
+		_bw.write("\t\t<div class=\"links\">");
+		_bw.newLine();
+		_bw.write("\t\t\t<p>");
+		_bw.newLine();
+		_bw.write(_bundle.getString("htmlHead_links"));
+		_bw.write("</p>");
+		_bw.newLine();
+		_bw.write("\t\t\t<ul>");
+		_bw.newLine();
+		
+		String link = HtmlOutOverview.getInstance().getResultFile();
+		
+		if (!link.isEmpty()) {
+			_bw.write("\t\t\t<li><a href=\"");
+			_bw.write(new File(link).getAbsolutePath());
+			_bw.write("\">CheckSource</a></li>");
+			_bw.newLine();
+			_bw.write("\t\t\t</ul>");
+			_bw.newLine();
+			_bw.write("\t\t</div>");
+			_bw.newLine();
+		}
 	}
 	
 	/**
@@ -241,15 +266,29 @@ public class HtmlOut {
 	 * 
 	 * @param exec Command for the command line
 	 * 
+	 * @param testname The name of test
+	 * 
 	 * @return Created HTML output
 	 */
 	public String generateTestOut(int suiteId, int testId, String console,
-			String error, String exec) throws IOException {
+			String error, String exec, String testname) throws IOException {
 		if ((suiteId < 0) || (testId <0))
 			return new String();
 		
 		StringBuilder ret = new StringBuilder("\t\t\t\t\t\t<div ");
-		ret.append("class=\"right\"><a href=\"javascript:toogleDisplayId(");
+		ret.append("class=\"right\">");
+		
+		if (testname != null) {
+			String testFile = HtmlOutOverview.getInstance()
+					.getResultFileFromTestName(testname);
+			if (!testname.isEmpty()) {
+				ret.append("<a href=\"");
+				ret.append(new File(testFile).getAbsolutePath());
+				ret.append("\">CS</a> ");
+			}
+		}
+		
+		ret.append("<a href=\"javascript:toogleDisplayId(");
 		ret.append(suiteId);
 		ret.append(", ");
 		ret.append(testId);

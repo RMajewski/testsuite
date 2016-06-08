@@ -55,7 +55,8 @@
 			<name>Tests the classes of informations</name>
 			<package>tests.testsuite.checksource</package>
 			<test checkSource="org.testsuite.checksource.CSMethod">TestCSMethod</test>
-			<test>TestCSParameter</test>
+			<test checksource="org.testsuite.checksource.CSParameter">TestCSParameter</test>
+			<test checksource="org.testsuite.checksource.MessageColor">TestMessageColor</test>
 		</testSuite>
 		<testSuite>
 			<name>Tests the classes for read the source files</name>
@@ -74,7 +75,16 @@
 		<testSuite>
 			<name>Tests the output</name>
 			<package>tests.testsuite.checksource</package>
+			<test checkSource="org.testsuite.checksource.Html">TestHtml</test>
 			<test checkSource="org.testsuite.checksource.HtmlOut">TestHtmlOut</test>
+			<test checkSource="org.testsuite.checksource.HtmlOutOverview">TestHtmlOutOverview</test>
+		</testSuite>
+		<testSuite>
+			<name>Tests for check source tests</name>
+			<package>tests.testsuite.checksource.tests</package>
+			<test checkSource="org.testsuite.checksource.tests.SourceTest">TestSourceTest</test>
+			<test checkSource="org.testsuite.checksource.tests.TestEmptyLines">TestTestEmptyLines</test>
+			<test checkSource="org.testsuite.checksource.tests.TestEmptyMethod">TestTestEmptyMethod</test>
 		</testSuite>
 	</testGroup>
 </configurationFile>

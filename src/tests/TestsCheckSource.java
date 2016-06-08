@@ -38,9 +38,9 @@ public class TestsCheckSource {
 			if (core.readConfig("src" + File.separator + "tests" + 
 					File.separator + "test_checksource.xml")) {
 				core.checkFileExists();
-//				core.run();
-				core.checkSource();
-//				core.createResultHtml();
+				core.run();
+//				core.checkSource();
+				core.createResultHtml();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

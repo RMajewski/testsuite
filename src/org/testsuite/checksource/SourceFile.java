@@ -181,14 +181,18 @@ public class SourceFile {
 		if (!test && ((_fileName == null) || _fileName.isEmpty()))
 			return false;
 		
-		if (!test && !new File(_fileName).exists())
+		if (!test && !new File(_fileName).exists()) {
+			HtmlOutOverview.getInstance().addNoneExistsFileName(_fileName);
 			return false;
+		}
 		
 		if (test && ((testName == null) || testName.isEmpty()))
 			return false;
 		
-		if (test && !new File(testName).exists())
+		if (test && !new File(testName).exists()) {
+			HtmlOutOverview.getInstance().addNoneExistsFileName(testName);
 			return false;
+		}
 		
 		BufferedReader bf = null;
 		try {

@@ -165,7 +165,7 @@ public class TestJemmyTestRunner {
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
-				eq(error), anyString())).thenReturn(testOut);
+				eq(error), anyString(), anyString())).thenReturn(testOut);
 		
 		Method method = 
 				JemmyTestRunner.class.getDeclaredMethod("createHtmlColumn", 
@@ -249,7 +249,7 @@ public class TestJemmyTestRunner {
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
-				eq(error), anyString())).thenReturn(testOut);
+				eq(error), anyString(), anyString())).thenReturn(testOut);
 		
 		Method method = 
 				JemmyTestRunner.class.getDeclaredMethod("createHtmlColumn", 
@@ -335,7 +335,7 @@ public class TestJemmyTestRunner {
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
-				eq(error), anyString())).thenReturn(testOut);
+				eq(error), anyString(), anyString())).thenReturn(testOut);
 		
 		Method method = 
 				JemmyTestRunner.class.getDeclaredMethod("createHtmlColumn", 
@@ -417,7 +417,7 @@ public class TestJemmyTestRunner {
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
-				eq(error), anyString())).thenReturn(testOut);
+				eq(error), anyString(), anyString())).thenReturn(testOut);
 		
 		Method method = 
 				JemmyTestRunner.class.getDeclaredMethod("createHtmlColumn", 
@@ -490,7 +490,7 @@ public class TestJemmyTestRunner {
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
-				eq(error), anyString())).thenReturn(new String());
+				eq(error), anyString(), anyString())).thenReturn(new String());
 		
 		Method method = 
 				JemmyTestRunner.class.getDeclaredMethod("createHtmlColumn", 
@@ -552,7 +552,7 @@ public class TestJemmyTestRunner {
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
-				eq(error), anyString())).thenReturn(new String());
+				eq(error), anyString(), anyString())).thenReturn(new String());
 		
 		Method method = 
 				JemmyTestRunner.class.getDeclaredMethod("createHtmlColumn", 
@@ -617,7 +617,7 @@ public class TestJemmyTestRunner {
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
-				eq(error), anyString())).thenReturn(new String());
+				eq(error), anyString(), anyString())).thenReturn(new String());
 		
 		Method method = 
 				JemmyTestRunner.class.getDeclaredMethod("createHtmlColumn", 
@@ -679,7 +679,7 @@ public class TestJemmyTestRunner {
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
-				eq(error), anyString())).thenReturn(new String());
+				eq(error), anyString(), anyString())).thenReturn(new String());
 		
 		Method method = 
 				JemmyTestRunner.class.getDeclaredMethod("createHtmlColumn", 

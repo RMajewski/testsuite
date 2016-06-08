@@ -73,17 +73,14 @@ public class ReadSource implements Read {
 
 			String[] read = line.substring(startIndex, endIndex).split(" ");
 			
-			if ((line.indexOf("{", startIndex) > -1) && 
-					(line.indexOf("=", startIndex) == -1)) {
-				if ((read[0].equals("public") || read[0].equals("protected") ||
-						read[0].equals("private")) && 
-						(line.indexOf("(", startIndex) > -1))
-					readMethod(lineNumber, read, list);
-				else
-					_className = read[read.length - 1];
-			} else {
-				// TODO Calls 
-			}
+			if (line.matches("^[\\s]*(private|protected|public)[\\w\\s]*\\([" +
+					"\\w\\ſ, ]*\\)[\\s]*\\{$"))
+				readMethod(lineNumber, read, list);
+			else if (line.matches("^[\\s]*(private|protected|public)[\\s]?" +
+					"(class)[\\s\\w]*\\{$"))
+				_className = read[read.length - 1];
+			
+				// TODO Calls
 			
 			if (line.indexOf("{") > -1)
 				_blocks++;
