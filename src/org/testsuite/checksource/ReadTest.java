@@ -66,6 +66,9 @@ public class ReadTest implements Read {
 			String cls = i.next();
 			if (line.indexOf(cls) > -1) {
 				String[] tmp = line.split(" ");
+				if (tmp.length < 3)
+					continue;
+				
 				if (tmp[0].equals("private") || tmp[0].equals("protected") ||
 						tmp[0].equals("public"))
 					_variables.add(tmp[2]);

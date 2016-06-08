@@ -60,21 +60,21 @@
 		<testSuite>
 			<name>Tests the classes for read the source files</name>
 			<package>tests.testsuite.checksource</package>
-			<test>TestRead</test>
-			<test>TestReadSource</test>
-			<test>TestReadTest</test>
-			<test>TestSourceLine</test>
-			<test>TestSourceFile</test>
+			<test checkSource="org.testsuite.checksource.Read">TestRead</test>
+			<test checkSource="org.testsuite.checksource.ReadSource">TestReadSource</test>
+			<test checkSource="org.testsuite.checksource.ReadTest">TestReadTest</test>
+			<test checkSource="org.testsuite.checksource.SourceLine">TestSourceLine</test>
+			<test checkSource="org.testsuite.checksource.SourceFile">TestSourceFile</test>
 		</testSuite>
 		<testSuite>
 			<name>Tests the classes for check source</name>
 			<package>tests.testsuite.checksource</package>
-			<test>TestCheckSource</test>
+			<test checkSource="org.testsuite.checksource.CheckSource">TestCheckSource</test>
 		</testSuite>
 		<testSuite>
 			<name>Tests the output</name>
 			<package>tests.testsuite.checksource</package>
-			<test>TestHtmlOut</test>
+			<test checkSource="org.testsuite.checksource.HtmlOut">TestHtmlOut</test>
 		</testSuite>
 	</testGroup>
 </configurationFile>
