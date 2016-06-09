@@ -40,11 +40,13 @@
 			<name>Tests the English language files</name>
 			<package>tests.lang.en</package>
 			<test>TestChecksourceHtmlOut</test>
+			<test>TestChecksourceTests</test>
 		</testSuite>
 		<testSuite>
 			<name>Tests the German language files</name>
 			<package>tests.lang.de_DE</package>
 			<test>TestChecksourceHtmlOut_de</test>
+			<test>TestChecksourceTests_de</test>
 		</testSuite>
 		<testSuite>
 			<name>Tests the class of helper</name>
@@ -52,6 +54,11 @@
 			<test checkSource="org.testsuite.helper.HelperHtml">TestHelperHtml</test>
 			<test checkSource="org.testsuite.helper.HelperHtmlCodeJava">TestHelperHtmlCodeJava</test>
 			<test checkSource="org.testsuite.helper.HelperUsedColor">TestHelperUsedColor</test>
+		</testSuite>
+		<testSuite>
+			<name>Tests the annotations</name>
+			<package>tests.testsuite.checksource.annotation</package>
+			<test checksource="org.testsuite.checksource.CheckSource">TestCheckSource</test>
 		</testSuite>
 		<testSuite>
 			<name>Tests the classes of informations</name>

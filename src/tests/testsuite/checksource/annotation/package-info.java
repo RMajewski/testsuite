@@ -18,10 +18,10 @@
 */ 
 
 /**
- * In this package, all annotations are provided.
+ * In this package, all tests of annotation are summarized.
  * 
  * @author René Majewski
- *
+ * 
  * @version 0.1
  */
-package org.testsuite.checksource.annotation;
+package tests.testsuite.checksource.annotation;
