@@ -74,6 +74,11 @@ public class Test extends Data {
 	private boolean _jvm;
 	
 	/**
+	 * Saves the source code file to be checked.
+	 */
+	private String _checkSource;
+	
+	/**
 	 * Initialize the data of this class
 	 */
 	public Test() {
@@ -86,6 +91,7 @@ public class Test extends Data {
 		_executed = true;
 		_terminated = false;
 		_jvm = true;
+		_checkSource = null;
 	}
 	
 	/**
@@ -291,5 +297,34 @@ public class Test extends Data {
 	 */
 	public void setJvm(boolean jvm) {
 		_jvm = jvm;
+	}
+	
+	/**
+	 * Returns the source file to be checked.
+	 * 
+	 * @return The source file to be checked.
+	 */
+	public String getCheckSource() {
+		return _checkSource;
+	}
+	
+	/**
+	 * Saves the source file to be checked
+	 * 
+	 * @param checkSource The source file to be checked.
+	 */
+	public void setCheckSource(String checkSource) {
+		_checkSource = checkSource;
+	}
+
+	/**
+	 * Determines if the source file is to be checked.
+	 * 
+	 * @return If the source file is to be checked?
+	 */
+	public boolean isCheckSource() {
+		if ((_checkSource == null) || _checkSource.isEmpty())
+			return false;
+		return true;
 	}
 }

@@ -84,6 +84,7 @@
 						<xsd:extension base="xsd:string">
 							<xsd:attribute name="executed" type="xsd:boolean"/>
 							<xsd:attribute name="jvm" type="xsd:boolean"/>
+							<xsd:attribute name="checkSource" type="xsd:String"/>
 						</xsd:extension>
 					</xsd:simpleContent>
 				</xsd:complexType>

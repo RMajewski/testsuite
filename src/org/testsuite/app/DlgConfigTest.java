@@ -63,6 +63,12 @@ public class DlgConfigTest extends DlgConfig {
 	 * Saves the instance of check box for run test in a separate JVM.
 	 */
 	private JCheckBox _cbJvm;
+	
+	/**
+	 * Saves the instance of the text field for the name of the source file to
+	 * be checked.
+	 */
+	private JTextField _txtCheckSource;
 
 	/**
 	 * Initialize the class an create the layout. 
@@ -74,9 +80,11 @@ public class DlgConfigTest extends DlgConfig {
 	 * @param execute Execute the test?
 	 * 
 	 * @param jvm Run the test in a separate JVM?
+	 * 
+	 * @param checkSource The name of source file to be checked.
 	 */
 	public DlgConfigTest(JFrame owner, String name, boolean execute, 
-			boolean jvm) {
+			boolean jvm, String checkSource) {
 		super(owner, BUNDLE_FILE);
 		
 		setSize(500, 250);
@@ -130,6 +138,25 @@ public class DlgConfigTest extends DlgConfig {
 		gbc.gridwidth = 3;
 		getContentPane().add(_cbJvm, gbc);
 		
+		label = new JLabel(_bundle.getString("label_checkSource"));
+		gbc = new GridBagConstraints();
+		gbc.anchor = GridBagConstraints.EAST;
+		gbc.insets = new Insets(5, 5, 5, 5);
+		gbc.gridx = 0;
+		gbc.gridy = 3;
+		getContentPane().add(label, gbc);
+		
+		_txtCheckSource = new JTextField();
+		_txtCheckSource.setText(checkSource);
+		gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.insets = new Insets(5, 5, 5, 5);
+		gbc.gridx = 1;
+		gbc.gridy = 3;
+		gbc.gridheight = 1;
+		gbc.gridwidth = 2;
+		getContentPane().add(_txtCheckSource, gbc);
+		
 		JButton btn = new JButton(_bundle.getString("button_accept"));
 		btn.addActionListener(this);
 		btn.setActionCommand(BTN_ACCEPT);
@@ -181,6 +208,15 @@ public class DlgConfigTest extends DlgConfig {
 	 */
 	public boolean isTestRunInJvm() {
 		return _cbJvm.isSelected();
+	}
+	
+	/**
+	 * Returns the name of source file to be checked.
+	 * 
+	 * @return The name of source file to be checked.
+	 */
+	public String getTestCheckSource() {
+		return _txtCheckSource.getText();
 	}
 
 }

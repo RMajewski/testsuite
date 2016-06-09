@@ -245,6 +245,7 @@ public class TestConfigParser {
 		test = suite.getTest(1);
 		assertEquals(testId++, test.getId());
 		assertEquals("Test3Class", test.getName());
+		assertEquals("Test3", test.getCheckSource());
 		
 		
 		lib = runner.getLibrary(1);

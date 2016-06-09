@@ -278,6 +278,15 @@ public class ConfigSaver {
 			if (!suite.getTest(i).isExecuted())
 				bw.write(" execute=\"false\"");
 			
+			if (!suite.getTest(i).isJvm())
+				bw.write(" jvm=\"false\"");
+			
+			if (suite.getTest(i).isCheckSource()) {
+				bw.write(" checkSource=\"");
+				bw.write(suite.getTest(i).getCheckSource());
+				bw.write("\"");
+			}
+			
 			bw.write(">");
 			bw.write(suite.getTest(i).getName());
 			bw.write("</test>");

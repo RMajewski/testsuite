@@ -164,11 +164,17 @@ public class JunitTestRunner extends TestRunner {
 			
 			ret.append(_suites.get(suite).getTest(test).getName());
 			ret.append(System.lineSeparator());
+			
+			String testname = null;
+			
+			if (_suites.get(suite).getTest(test).isCheckSource())
+				testname = _suites.get(suite).getTest(test).getName();
 			ret.append(html.generateTestOut(
 					_suites.get(suite).getId(),
 					_suites.get(suite).getTest(test).getId(), 
 					_suites.get(suite).getTest(test).getConsole(), 
-					_suites.get(suite).getTest(test).getError(), command));
+					_suites.get(suite).getTest(test).getError(), command,
+					testname));
 			ret.append("\t\t\t\t\t\t</td>");
 			ret.append(System.lineSeparator());
 			

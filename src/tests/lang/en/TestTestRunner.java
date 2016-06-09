@@ -105,4 +105,14 @@ public class TestTestRunner extends TestLang {
 		assertNotNull(_bundle.getString("test_runner_result_exception"));
 		assertNotNull(_bundle.getString("test_runner_result_tests_not_exists"));
 	}
+	
+	/**
+	 * Tests if have all entries for check source
+	 */
+	@Test
+	public void testHaveAllEntriesForCheckSource() {
+		assertNotNull(_bundle.getString("result_checksoure"));
+		assertNotNull(_bundle.getString("checksource_no_source"));
+		assertNotNull(_bundle.getString("checksource_no_test"));
+	}
 }

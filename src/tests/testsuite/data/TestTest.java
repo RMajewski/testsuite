@@ -60,6 +60,7 @@ public class TestTest {
 		assertNull(_data.getConsole());
 		assertFalse(_data.isExists());
 		assertTrue(_data.isJvm());
+		assertNull(_data.getCheckSource());
 	}
 	
 	/**
@@ -309,5 +310,50 @@ public class TestTest {
 	public void testSetJvm() {
 		_data.setJvm(false);
 		assertFalse(_data.isTerminated());
+	}
+	
+	/**
+	 * Tests if check source file set correctly.
+	 */
+	@Test
+	public void testSetCheckSource() {
+		String name = "Test.java";
+		_data.setCheckSource(name);
+		assertEquals(name, _data.getCheckSource());
+	}
+	
+	/**
+	 * Tests if returns the check source file correctly. 
+	 */
+	@Test
+	public void testGetCheckSource() {
+		assertNull(_data.getCheckSource());
+	}
+	
+	/**
+	 * Tests if a source code file to be checked.
+	 */
+	@Test
+	public void testIsCheckSourceWithNullAsFile() {
+		_data.setCheckSource(null);
+		assertFalse(_data.isCheckSource());
+	}
+	
+	/**
+	 * Tests if a source code file to be checked.
+	 */
+	@Test
+	public void testIsCheckSourceWithEmptyStringAsFile() {
+		_data.setCheckSource(new String());
+		assertFalse(_data.isCheckSource());
+	}
+	
+	/**
+	 * Tests if a source code file to be checked.
+	 */
+	@Test
+	public void testIsCheckSource() {
+		_data.setCheckSource("Test");
+		assertTrue(_data.isCheckSource());
 	}
 }

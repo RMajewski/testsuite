@@ -31,6 +31,8 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import javax.xml.stream.XMLStreamException;
+
+import org.testsuite.checksource.HtmlOutOverview;
 import org.testsuite.data.Config;
 
 /**
@@ -129,6 +131,7 @@ public class TestCore {
 	public void run() {
 		for (int runner = 0; runner < _testRunner.size(); runner++) {
 			for (int suite = 0; suite < _testRunner.get(runner).testSuiteCount(); suite++) {
+				System.out.println();
 				System.out.print(
 						_testRunner.get(runner).getTestSuite(suite).getName());
 				System.out.println(":");
@@ -137,9 +140,36 @@ public class TestCore {
 							_testRunner.get(runner).getTestSuite(suite),
 							_testRunner.get(runner).getTestSuite(suite)
 								.getTest(test), null);
+					_testRunner.get(runner).runCheckSource(
+							_testRunner.get(runner).getTestSuite(suite),
+							_testRunner.get(runner).getTestSuite(suite)
+								.getTest(test));
 				} // for test
 			} // for suite
 		} // for runner
+		
+		HtmlOutOverview.getInstance().createHtml();
+	}
+	
+	/**
+	 * Executes the check source
+	 */
+	public void checkSource() {
+		for (int runner = 0; runner < _testRunner.size(); runner++) {
+			for (int suite = 0; suite < _testRunner.get(runner).testSuiteCount(); suite++) {
+				System.out.println();
+				System.out.print(
+						_testRunner.get(runner).getTestSuite(suite).getName());
+				System.out.println(":");
+				for (int test = 0; test < _testRunner.get(runner).getTestSuite(suite).testCount(); test++) {
+					_testRunner.get(runner).runCheckSource(
+							_testRunner.get(runner).getTestSuite(suite),
+							_testRunner.get(runner).getTestSuite(suite)
+								.getTest(test));
+				} // for test
+			} // for suite
+		} // for runner
+		HtmlOutOverview.getInstance().createHtml();
 	}
 	
 	/**

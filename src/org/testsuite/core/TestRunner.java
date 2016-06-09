@@ -34,6 +34,8 @@ import java.util.Vector;
 
 import javax.swing.Timer;
 
+import org.testsuite.checksource.CheckSource;
+import org.testsuite.checksource.HtmlOutOverview;
 import org.testsuite.data.Config;
 import org.testsuite.data.Library;
 import org.testsuite.data.Test;
@@ -776,6 +778,9 @@ public abstract class TestRunner {
 	 * @param source String in the HTML entities should be replaced.
 	 * 
 	 * @return String in the HTML entities were replaced.
+	 * 
+	 * @deprecated User
+	 * {@link org.testsuite.helper.HelperHtml#replaceHtmlEntities(String)}
 	 */
 	protected String replaceHtmlEntities(String source) {
 		return source.replaceAll("<", "&lt;").replaceAll(">", "&gt;")
@@ -1170,6 +1175,52 @@ public abstract class TestRunner {
 	 */
 	protected void evaluation(Test test) {
 		// Empty method
+	}
+	
+	public void runCheckSource(TestSuite suite, Test test) {
+		if (test.isCheckSource()) {
+			System.out.print(test.getCheckSource() + ": ");
+			
+			String sourceFile = Config.getInstance().getPathSrc() + File.separator +
+					test.getCheckSource().replaceAll("\\.", File.separator) + "." + 
+					_fileExtension;
+			
+			File file = new File(sourceFile);
+			if (!file.exists()) {
+				System.out.println(_bundle.getString("checksource_no_source"));
+				return;
+			}
+			
+			String testFile = Config.getInstance().getPathSrc() + File.separator +
+					suite.getPackage().replaceAll("\\.", File.separator) + 
+					File.separator + test.getName() + ".java";
+			
+			file = new File(testFile);
+			if (!file.exists()) {
+				System.out.println(_bundle.getString("checksource_no_test"));
+			}
+			
+			String testResult = Config.getInstance().getPathResult() + 
+					File.separator + Config.getInstance().getPathSuitesResult() +
+					File.separator;
+			
+			file = new File(testResult);
+			if (!file.exists())
+				file.mkdirs();
+			
+			testResult += _bundle.getString("result_checksoure") + "_" + 
+					test.getName() + ".html";
+			
+			CheckSource cs = new CheckSource(sourceFile, testFile, testResult);
+			cs.run();
+			cs.createHtmlOut();
+			
+			HtmlOutOverview.getInstance().addResultFile(testResult);
+			HtmlOutOverview.getInstance().addMethods(cs.getMethodList());
+			HtmlOutOverview.getInstance().addSourceLines(cs.getSourceLineList());
+			
+			System.out.println(_bundle.getString("run_pass"));
+		}
 	}
 	
 	/**

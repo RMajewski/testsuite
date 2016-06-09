@@ -29,8 +29,10 @@ import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import org.testsuite.checksource.HtmlOutOverview;
 import org.testsuite.data.Config;
 import org.testsuite.helper.HelperCalendar;
+import org.testsuite.helper.HelperHtml;
 
 /**
  * Creates from the test results an HTML file.
@@ -93,7 +95,10 @@ public class HtmlOut {
 	 * @param name Name of the file
 	 * 
 	 * @return Loaded file as string
+	 * 
+	 * @deprecated Use {@link org.testsuite.helper.HelperHtml#readFile(String)}
 	 */
+	@SuppressWarnings("unused")
 	private String readFile(String name) {
 		StringBuilder ret = new StringBuilder();
 		
@@ -123,6 +128,7 @@ public class HtmlOut {
 	 * @deprecated use {@link #htmlHead()}
 	 */
 	public void htmlHead(Config config) throws IOException {
+		htmlHead();
 	}
 	
 	/**
@@ -131,6 +137,7 @@ public class HtmlOut {
 	public void htmlHead() throws IOException {
 		String date = HelperCalendar.datetimeToString(new Date().getTime());
 		
+		// OPT Into HelperHtml.header result type is String
 		_bw.write("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 "
 				+ "Transitional//EN\" \"http://www.w3.org/TR/html4/"
 				+ "transitional.dtd\">");
@@ -150,10 +157,11 @@ public class HtmlOut {
 		
 		if (Config.getInstance().javascriptFileCount() > 0)
 			for (int i = 0; i < Config.getInstance().stylesheetFileCount(); i++)
-				_bw.write(readFile(Config.getInstance().getStylesheetFile(i)));
+				_bw.write(HelperHtml.readFile(
+						Config.getInstance().getStylesheetFile(i)));
 		else
-			_bw.write(readFile("resources" + File.separator + "html" +
-					File.separator + "out.css"));
+			_bw.write(HelperHtml.readFile("resources" + File.separator + 
+					"html" + File.separator + "out.css"));
 		
 		_bw.newLine();
 		_bw.write("\t\t</style>"); _bw.newLine();
@@ -162,10 +170,11 @@ public class HtmlOut {
 		
 		if (Config.getInstance().javascriptFileCount() > 0)
 			for (int i = 0; i < Config.getInstance().javascriptFileCount(); i++)
-				_bw.write(readFile(Config.getInstance().getJavascriptFile(i)));
+				_bw.write(HelperHtml.readFile(
+						Config.getInstance().getJavascriptFile(i)));
 		else
-			_bw.write(readFile("resources" + File.separator + "html" +
-					File.separator + "out.js"));
+			_bw.write(HelperHtml.readFile("resources" + File.separator + 
+					"html" + File.separator + "out.js"));
 		
 		_bw.write("\t\t</script>"); _bw.newLine();
 		
@@ -180,6 +189,7 @@ public class HtmlOut {
 		_bw.write(_bundle.getString("htmlHead_description"));
 		_bw.write("</p>");
 		_bw.newLine();
+		
 		_bw.write("\t\t<div class=\"include\">");
 		_bw.newLine();
 		_bw.write("\t\t\t<p>");
@@ -195,6 +205,29 @@ public class HtmlOut {
 		_bw.newLine();
 		_bw.write("\t\t</div>");
 		_bw.newLine();
+		
+		_bw.write("\t\t<div class=\"links\">");
+		_bw.newLine();
+		_bw.write("\t\t\t<p>");
+		_bw.newLine();
+		_bw.write(_bundle.getString("htmlHead_links"));
+		_bw.write("</p>");
+		_bw.newLine();
+		_bw.write("\t\t\t<ul>");
+		_bw.newLine();
+		
+		String link = HtmlOutOverview.getInstance().getResultFile();
+		
+		if (!link.isEmpty()) {
+			_bw.write("\t\t\t<li><a href=\"");
+			_bw.write(new File(link).getAbsolutePath());
+			_bw.write("\">CheckSource</a></li>");
+			_bw.newLine();
+			_bw.write("\t\t\t</ul>");
+			_bw.newLine();
+			_bw.write("\t\t</div>");
+			_bw.newLine();
+		}
 	}
 	
 	/**
@@ -203,10 +236,7 @@ public class HtmlOut {
 	 * @throws IOException 
 	 */
 	public void htmlEnd() throws IOException {
-		_bw.write("\t</body>");
-		_bw.newLine();
-		_bw.write("</html>");
-		_bw.newLine();
+		_bw.write(HelperHtml.footer());
 		_bw.close();
 	}
 	
@@ -236,15 +266,29 @@ public class HtmlOut {
 	 * 
 	 * @param exec Command for the command line
 	 * 
+	 * @param testname The name of test
+	 * 
 	 * @return Created HTML output
 	 */
 	public String generateTestOut(int suiteId, int testId, String console,
-			String error, String exec) throws IOException {
+			String error, String exec, String testname) throws IOException {
 		if ((suiteId < 0) || (testId <0))
 			return new String();
 		
 		StringBuilder ret = new StringBuilder("\t\t\t\t\t\t<div ");
-		ret.append("class=\"right\"><a href=\"javascript:toogleDisplayId(");
+		ret.append("class=\"right\">");
+		
+		if (testname != null) {
+			String testFile = HtmlOutOverview.getInstance()
+					.getResultFileFromTestName(testname);
+			if (!testname.isEmpty()) {
+				ret.append("<a href=\"");
+				ret.append(new File(testFile).getAbsolutePath());
+				ret.append("\">CS</a> ");
+			}
+		}
+		
+		ret.append("<a href=\"javascript:toogleDisplayId(");
 		ret.append(suiteId);
 		ret.append(", ");
 		ret.append(testId);
