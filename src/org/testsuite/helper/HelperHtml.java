@@ -20,7 +20,6 @@
 package org.testsuite.helper;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
@@ -28,7 +27,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import org.testsuite.checksource.CSMethod;
-import org.testsuite.core.TestCore;
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
 
@@ -107,9 +105,6 @@ public class HelperHtml {
 			for (int i = 0; i < Config.getInstance().stylesheetFileCount(); i++)
 				ret.append(HelperHtml.readFile(
 						Config.getInstance().getStylesheetFile(i)));
-		else
-			ret.append(HelperHtml.readFile("resources" + File.separator + 
-					"html" + File.separator + "out.css"));
 		
 		ret.append(System.lineSeparator());
 		ret.append("\t\t</style>"); ret.append(System.lineSeparator());
@@ -120,9 +115,6 @@ public class HelperHtml {
 			for (int i = 0; i < Config.getInstance().javascriptFileCount(); i++)
 				ret.append(HelperHtml.readFile(
 						Config.getInstance().getJavascriptFile(i)));
-		else
-			ret.append(HelperHtml.readFile("resources" + File.separator + 
-					"html" + File.separator + "out.js"));
 		
 		ret.append("\t\t</script>"); ret.append(System.lineSeparator());
 		
@@ -163,8 +155,16 @@ public class HelperHtml {
 	 * @return String in the HTML entities were replaced.
 	 */
 	public static String replaceHtmlEntities(String source) {
-		return source.replaceAll("<", "&lt;").replaceAll(">", "&gt;")
-				.replaceAll(System.lineSeparator(), "<br/>");
+		return source
+				.replaceAll("<", "&lt;")
+				.replaceAll(">", "&gt;")
+				.replaceAll(System.lineSeparator(), "<br/>")
+				.replaceAll("ä", "&auml;")
+				.replaceAll("Ä", "&Auml;")
+				.replaceAll("ö", "&ouml;")
+				.replaceAll("Ö", "&Ouml;")
+				.replaceAll("ü", "&uuml;")
+				.replaceAll("Ü", "&Uuml;");
 	}
 
 	/**

@@ -20,12 +20,9 @@
 package org.testsuite.helper;
 
 import java.awt.Color;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.swing.text.MaskFormatter;
 
 /**
  * Formats the Java source code for the HTML output.
@@ -82,6 +79,7 @@ public class HelperHtmlCodeJava {
 		_keywords.put("else", COLOR_KEYWORDS);
 		_keywords.put("enum", COLOR_KEYWORDS);
 		_keywords.put("extends", COLOR_KEYWORDS);
+		_keywords.put("false", COLOR_KEYWORDS);
 		_keywords.put("final", COLOR_KEYWORDS);
 		_keywords.put("finally", COLOR_KEYWORDS);
 		_keywords.put("float", COLOR_KEYWORDS);
@@ -112,6 +110,7 @@ public class HelperHtmlCodeJava {
 		_keywords.put("throw", COLOR_KEYWORDS);
 		_keywords.put("throws", COLOR_KEYWORDS);
 		_keywords.put("transient", COLOR_KEYWORDS);
+		_keywords.put("true", COLOR_KEYWORDS);
 		_keywords.put("try", COLOR_KEYWORDS);
 		_keywords.put("void", COLOR_KEYWORDS);
 		_keywords.put("volatile", COLOR_KEYWORDS);
