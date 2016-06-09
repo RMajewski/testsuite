@@ -51,6 +51,7 @@
 			<package>tests.testsuite.helper</package>
 			<test checkSource="org.testsuite.helper.HelperHtml">TestHelperHtml</test>
 			<test checkSource="org.testsuite.helper.HelperHtmlCodeJava">TestHelperHtmlCodeJava</test>
+			<test checkSource="org.testsuite.helper.HelperUsedColor">TestHelperUsedColor</test>
 		</testSuite>
 		<testSuite>
 			<name>Tests the classes of informations</name>
@@ -86,7 +87,7 @@
 			<test checkSource="org.testsuite.checksource.tests.SourceTest">TestSourceTest</test>
 			<test checkSource="org.testsuite.checksource.tests.TestEmptyLines">TestTestEmptyLines</test>
 			<test checkSource="org.testsuite.checksource.tests.TestEmptyMethod">TestTestEmptyMethod</test>
-			<test checkSource="org.testsuite.checksource.tests.TestUnusedImporty">TestTestUnusedImports</test>
+			<test checkSource="org.testsuite.checksource.tests.TestUnusedImports">TestTestUnusedImports</test>
 		</testSuite>
 	</testGroup>
 </configurationFile>

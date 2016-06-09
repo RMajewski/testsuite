@@ -225,23 +225,11 @@ public class HelperHtml {
 			String linkEnd = "</a>";
 			
 			if (calls && (methods.get(method).callsCount() > 0)) {
-				ret.append("\t\t\t\t\t<li>");
-				ret.append(linkSrc);
-				ret.append(methods.get(method).getClassName());
-				ret.append(".");
-				ret.append(methods.get(method).getName());
-				ret.append(linkEnd);
-				ret.append("</li>");
-				ret.append(System.lineSeparator());
+				ret.append(createListEntry(methods.get(method), linkSrc,
+						linkEnd, true));
 			} else if (!calls && (methods.get(method).callsCount() == 0)) {
-				ret.append("\t\t\t\t\t<li>");
-				ret.append(linkSrc);
-				ret.append(methods.get(method).getClassName());
-				ret.append(".");
-				ret.append(methods.get(method).getName());
-				ret.append(linkEnd);
-				ret.append("</li>");
-				ret.append(System.lineSeparator());
+				ret.append(createListEntry(methods.get(method), linkSrc,
+						linkEnd, false));
 			}
 		}
 		
@@ -249,6 +237,57 @@ public class HelperHtml {
 		ret.append(System.lineSeparator());
 		
 		ret.append("\t\t\t</div>");
+		ret.append(System.lineSeparator());
+		
+		return ret.toString();
+	}
+	
+	/**
+	 * Create a HTML list entry of a specified method.
+	 * 
+	 * @param method The method, which is to be output in the list.
+	 * 
+	 * @param linkSrc Begin HTML link tag to the check source HTML result file.
+	 * 
+	 * @param linkEnd End HTML link tag to the check source HTML result file.
+	 * 
+	 * @param calls If the list of tested methods (true) or untested methods 
+	 * (false) are created?
+	 * 
+	 * @return The created HTML list entry of the specified method.
+	 */
+	private static String createListEntry(CSMethod method, String linkSrc, 
+			String linkEnd, boolean calls) {
+		
+		String colorBegin = new String();
+		String colorEnd = new String();
+		if (!calls) {
+			if (method.getModifier().equals("public")) {
+				colorBegin = "<span style=\"background:" + 
+						HelperHtmlCodeJava.getInstance()
+						.formatColor(HelperUsedColor.ERROR) + ";\">";
+				colorEnd = "</span>";
+			} else if (method.getModifier().equals("private") ||
+					 method.getModifier().equals("protected")) {
+				colorBegin = "<span style=\"background:" + 
+						HelperHtmlCodeJava.getInstance()
+						.formatColor(HelperUsedColor.WARNING) + ";\">";
+				colorEnd = "</span>";
+			}
+		}
+
+		StringBuilder ret = new StringBuilder();
+		ret.append("\t\t\t\t\t<li>");
+		ret.append(colorBegin);
+		ret.append(linkSrc);
+		ret.append(method.getModifier());
+		ret.append(" ");
+		ret.append(method.getClassName());
+		ret.append(".");
+		ret.append(method.getName());
+		ret.append(linkEnd);
+		ret.append(colorEnd);
+		ret.append("</li>");
 		ret.append(System.lineSeparator());
 		
 		return ret.toString();

@@ -44,11 +44,15 @@ public interface SourceTest {
 	
 	/**
 	 * Specified the background color for a warning.
+	 * 
+	 * @deprecated Use {@link org.testsuite.helper.HelperUsedColor#WARNING}.
 	 */
 	Color COLOR_WARNING = new Color(0xFFFFCF);
 	
 	/**
 	 * Specified the background color for a exception
+	 * 
+	 * @deprecated Use {@link org.testsuite.helper.HelperUsedColor#ERROR}.
 	 */
 	Color COLOR_EXCEPTION = new Color(0xFFCFCF);
 	
