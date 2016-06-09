@@ -81,7 +81,14 @@ public class ReadTest implements Read {
 		
 		for (int i = 0; i < methods.size(); i++) {
 			CSMethod method = methods.get(i);
-			if ((line.indexOf(method.getClassName() + "." + method.getName()) > -1) ||
+			if (line.matches("^\\s*@CheckSource[\\w\\s(=\")]*")) {
+				System.out.println(line.indexOf("=\""));
+				System.out.println(line.indexOf("\")"));
+				String name = line.substring(line.indexOf("=\"") + 2, 
+						line.indexOf("\")"));
+				if (methods.get(i).getName().equals(name))
+					method.addCall(lineNumber);
+			} else if ((line.indexOf(method.getClassName() + "." + method.getName()) > -1) ||
 				(line.indexOf("new " + method.getName() + "(") > -1)){
 				method.addCall(lineNumber);
 			} else {

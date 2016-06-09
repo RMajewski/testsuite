@@ -19,12 +19,17 @@
 
 package org.testsuite.checksource;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
+
+import org.testsuite.checksource.tests.SourceTest;
+import org.testsuite.helper.HelperUsedColor;
 
 /**
  * 
@@ -276,6 +281,17 @@ public class SourceFile {
 			_source.get(_methods.get(i).getLine() - 1).setBeginMethod(true);
 			if (_methods.get(i).callsCount() >  0)
 				_source.get(_methods.get(i).getLine() - 1).setLineTested(true);
+			else  {
+				Color color;
+				if (_methods.get(i).getModifier().equals("public"))
+					color = HelperUsedColor.ERROR;
+				else
+					color = HelperUsedColor.WARNING;
+				_source.get(_methods.get(i).getLine() -1).addMessage(
+						new MessageColor(ResourceBundle.getBundle(
+								SourceTest.BUNDLE_FILE).getString(
+										"sourceMethodNotTested") ,color));
+			}
 		}
 		if (_methods.size() > 0)
 			for (int i = 0; i < _source.size(); i++)
