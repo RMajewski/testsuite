@@ -95,6 +95,8 @@ public class TestSourceLine {
 		String line = "Test";
 		_source.setLine(line);
 		assertEquals(line, _source.getLine());
+		assertFalse(_source.isBeginMethod());
+		assertEquals(new String(), _source.getClassName());
 	}
 
 	/**
@@ -188,4 +190,40 @@ public class TestSourceLine {
 		_source.addMessage(message);
 		assertEquals(message, _source.getMessage(0));
 	}
+	
+	/**
+	 * Tests if a method in this line starts.
+	 */
+	@Test
+	public void testIsBeginMethod() {
+		assertFalse(_source.isBeginMethod());
+	}
+
+	/**
+	 * Tests if a method in this line starts set correctly.
+	 */
+	@Test
+	public void testSetBeginMethod() {
+		_source.setBeginMethod(true);
+		assertTrue(_source.isBeginMethod());
+	}
+
+	/**
+	 * Tests if the name of class is returned correctly.
+	 */
+	@Test
+	public void testGetClassName() {
+		assertEquals(new String(), _source.getClassName());
+	}
+
+	/**
+	 * Tests if the message is set correctly.
+	 */
+	@Test
+	public void testSetClassName() {
+		String className = "TestClass";
+		_source.setClassName(className);
+		assertEquals(className, _source.getClassName());
+	}
+
 }

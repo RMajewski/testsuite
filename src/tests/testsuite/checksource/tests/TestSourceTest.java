@@ -17,43 +17,22 @@
 * sind dem Lizenztext zu entnehmen.
 */ 
 
-package tests.lang.de_DE;
+package tests.testsuite.checksource.tests;
 
 import static org.junit.Assert.*;
-
-import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import tests.lang.en.TestChecksourceHtmlOut;
+public class TestSourceTest {
 
-/**
- * Tests the German language file for the HtmlOut class on completeness.
- * 
- * @author René Majewski
- * 
- * @version 0.1
- */
-public class TestChecksourceHtmlOut_de extends TestChecksourceHtmlOut {
-
-	/**
-	 * Initialize the tests
-	 */
-	@Override
 	@Before
 	public void setUp() throws Exception {
-		_locale = Locale.GERMANY;
-		super.setUp();
 	}
 
-	/**
-	 * Tests if the right language.
-	 */
-	@Override
 	@Test
-	public void testHaveRightLocale() {
-		assertEquals(Locale.GERMANY, _bundle.getLocale());
+	public void test() {
+		fail("Not yet implemented"); // TODO
 	}
 
 }

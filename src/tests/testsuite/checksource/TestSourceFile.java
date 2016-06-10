@@ -26,16 +26,23 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.testsuite.checksource.CSMethod;
+import org.testsuite.checksource.MessageColor;
 import org.testsuite.checksource.SourceFile;
 import org.testsuite.checksource.SourceLine;
+import org.testsuite.checksource.tests.SourceTest;
+import org.testsuite.helper.HelperUsedColor;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({SourceFile.class})
@@ -212,7 +219,7 @@ public class TestSourceFile {
 
 		assertEquals(3, _sf.getSourceLine(2).getLineNumber());
 		assertEquals(line3, _sf.getSourceLine(2).getLine());
-		assertFalse(_sf.getSourceLine(2).isMultiLineComment());
+		assertTrue(_sf.getSourceLine(2).isMultiLineComment());
 
 		assertEquals(4, _sf.getSourceLine(3).getLineNumber());
 		assertEquals(line4, _sf.getSourceLine(3).getLine());
@@ -397,6 +404,73 @@ public class TestSourceFile {
 			.thenReturn(file);
 		
 		assertFalse(_sf.readFile(true, fileName));
+	}
+
+	/**
+	 * Tests if the source code has been properly prepared for the tests.
+	 */
+	@Test
+	public void testPrepairSource() {
+		String className = "Test";
+		
+		CSMethod method1 = mock(CSMethod.class);
+		when(method1.getLine()).thenReturn(1);
+		when(method1.callsCount()).thenReturn(0);
+		when(method1.getModifier()).thenReturn("public");
+		when(method1.getClassName()).thenReturn(className);
+		_sf.addMethod(method1);
+		
+		CSMethod method2 = mock(CSMethod.class);
+		when(method2.getLine()).thenReturn(2);
+		when(method2.callsCount()).thenReturn(0);
+		when(method2.getModifier()).thenReturn("private");
+		when(method2.getClassName()).thenReturn(className);
+		_sf.addMethod(method2);
+		
+		CSMethod method3 = mock(CSMethod.class);
+		when(method3.getLine()).thenReturn(3);
+		when(method3.callsCount()).thenReturn(4);
+		when(method3.getClassName()).thenReturn(className);
+		_sf.addMethod(method3);
+		
+		String line1 = "Test line 1";
+		_sf.addSourceLine(line1);
+		String line2 = "Test line 2";
+		_sf.addSourceLine(line2);
+		String line3 = "Test line 3";
+		_sf.addSourceLine(line3);
+		
+		_sf.prepaireSource();
+		
+		SourceLine line = _sf.getSourceLine(0);
+		assertTrue(line.isBeginMethod());
+		assertFalse(line.isLineTested());
+		assertFalse(line.isMultiLineComment());
+		assertFalse(line.isJavadoc());
+		assertEquals(1, line.messageCount());
+		assertEquals(ResourceBundle.getBundle(SourceTest.BUNDLE_FILE).getString(
+				"sourceMethodNotTested"), line.getMessage(0).getMessage());
+		assertEquals(HelperUsedColor.ERROR, line.getMessage(0).getColor());
+		assertEquals(className, line.getClassName());
+		
+		line = _sf.getSourceLine(1);
+		assertTrue(line.isBeginMethod());
+		assertFalse(line.isLineTested());
+		assertFalse(line.isMultiLineComment());
+		assertFalse(line.isJavadoc());
+		assertEquals(1, line.messageCount());
+		assertEquals(ResourceBundle.getBundle(SourceTest.BUNDLE_FILE).getString(
+				"sourceMethodNotTested"), line.getMessage(0).getMessage());
+		assertEquals(HelperUsedColor.WARNING, line.getMessage(0).getColor());
+		assertEquals(className, line.getClassName());
+		
+		line = _sf.getSourceLine(2);
+		assertTrue(line.isBeginMethod());
+		assertTrue(line.isLineTested());
+		assertFalse(line.isMultiLineComment());
+		assertFalse(line.isJavadoc());
+		assertEquals(0, line.messageCount());
+		assertEquals(className, line.getClassName());
 	}
 
 }

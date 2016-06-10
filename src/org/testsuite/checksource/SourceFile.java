@@ -221,11 +221,11 @@ public class SourceFile {
 				source.setLineNumber(count);
 				
 				// Multiline comment?
-				if (line.matches("^\\/\\*[^*][\\p{Graph}\\s]*$"))
-					multicomment = true;
-				else if ((line.indexOf("/**") > -1) && 
+				if ((line.indexOf("/**") > -1) && 
 						(line.indexOf("*/") == -1))
 					javadoc = true;
+				else if ((line.indexOf("/*") > -1) && (line.indexOf("*/") == -1))
+					multicomment = true;
 				else if (multicomment && (line.indexOf("*/") > -1)) {
 					multicomment = false;
 					source.setMultiLineComment(true);

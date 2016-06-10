@@ -17,25 +17,22 @@
 * sind dem Lizenztext zu entnehmen.
 */ 
 
-package tests.lang.de_DE;
+package tests.lang.en;
 
-import static org.junit.Assert.*;
-
-import java.util.Locale;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import tests.lang.en.TestChecksourceHtmlOut;
+import org.testsuite.checksource.tests.SourceTest;
 
 /**
- * Tests the German language file for the HtmlOut class on completeness.
+ * Tests the English language file for the Tests class on completeness.
  * 
  * @author René Majewski
  * 
  * @version 0.1
  */
-public class TestChecksourceHtmlOut_de extends TestChecksourceHtmlOut {
+public class TestChecksourceTests extends TestLang {
 
 	/**
 	 * Initialize the tests
@@ -43,17 +40,19 @@ public class TestChecksourceHtmlOut_de extends TestChecksourceHtmlOut {
 	@Override
 	@Before
 	public void setUp() throws Exception {
-		_locale = Locale.GERMANY;
+		_bundleFile = SourceTest.BUNDLE_FILE;
 		super.setUp();
 	}
 
 	/**
-	 * Tests if the right language.
+	 * Tests if have all entries for the messages
 	 */
-	@Override
 	@Test
-	public void testHaveRightLocale() {
-		assertEquals(Locale.GERMANY, _bundle.getLocale());
+	public void testHaveAllEntriesForHtmlHead() {
+		assertNotNull(_bundle.getString("sourceMethodNotTested"));
+		assertNotNull(_bundle.getString("emptylines"));
+		assertNotNull(_bundle.getString("emptyMethod"));
+		assertNotNull(_bundle.getString("unusedImports"));
 	}
 
 }

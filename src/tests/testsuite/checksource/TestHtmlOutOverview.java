@@ -17,43 +17,64 @@
 * sind dem Lizenztext zu entnehmen.
 */ 
 
-package tests.lang.de_DE;
+package tests.testsuite.checksource;
 
 import static org.junit.Assert.*;
-
-import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import tests.lang.en.TestChecksourceHtmlOut;
-
 /**
- * Tests the German language file for the HtmlOut class on completeness.
+ * Tests for the class {@link org.testsuite.checksource.HtmlOutOverview}.
  * 
  * @author René Majewski
- * 
+ *
  * @version 0.1
  */
-public class TestChecksourceHtmlOut_de extends TestChecksourceHtmlOut {
+public class TestHtmlOutOverview {
 
-	/**
-	 * Initialize the tests
-	 */
-	@Override
 	@Before
 	public void setUp() throws Exception {
-		_locale = Locale.GERMANY;
-		super.setUp();
 	}
 
-	/**
-	 * Tests if the right language.
-	 */
-	@Override
 	@Test
-	public void testHaveRightLocale() {
-		assertEquals(Locale.GERMANY, _bundle.getLocale());
+	public void testGetInstance() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	@Test
+	public void testAddResultFile() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	@Test
+	public void testAddMethods() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	@Test
+	public void testAddSourceLines() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	@Test
+	public void testAddNoneExistsFileName() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	@Test
+	public void testCreateHtml() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	@Test
+	public void testGetResultFileFromTestName() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	@Test
+	public void testGetResultFile() {
+		fail("Not yet implemented"); // TODO
 	}
 
 }

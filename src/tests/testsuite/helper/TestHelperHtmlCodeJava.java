@@ -70,6 +70,7 @@ public class TestHelperHtmlCodeJava {
 	/**
 	 * Tests whether the list of keywords was correctly initialized.
 	 */
+	@CheckSource(method="HelperHtmlCodeJava")
 	@Test
 	public void testKeywords() throws Exception {
 		Field field = HelperHtmlCodeJava.class.getDeclaredField("_keywords");
@@ -170,6 +171,7 @@ public class TestHelperHtmlCodeJava {
 	/**
 	 * Tests if the string is returned correctly formatted HTML.
 	 */
+	@CheckSource(method="formatSpan")
 	@Test
 	public void testFormatStringWithJavadoc() {
 		String test = "Dies ist ein Test";
@@ -182,6 +184,7 @@ public class TestHelperHtmlCodeJava {
 	/**
 	 * Tests if the string is returned correctly formatted HTML.
 	 */
+	@CheckSource(method="formatKeywords")
 	@Test
 	public void testFormatStringWithKeyWord() {
 		String test = "class Test {";

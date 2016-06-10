@@ -30,6 +30,7 @@ import org.testsuite.checksource.HtmlOut;
  * 
  * @author René Majewski
  *
+ * @version 0.1
  */
 public class TestChecksourceHtmlOut extends TestLang {
 
@@ -59,5 +60,18 @@ public class TestChecksourceHtmlOut extends TestLang {
 	public void testHaveAllEntriesForLists() {
 		assertNotNull(_bundle.getString("methods_calls"));
 		assertNotNull(_bundle.getString("methods_without_calls"));
+	}
+
+	/**
+	 * Tests if have all entries for the HTML overview
+	 */
+	@Test
+	public void testHaveAllEntriesForOverview() {
+		assertNotNull(_bundle.getString("overview_head"));
+		assertNotNull(_bundle.getString("overview_description"));
+		assertNotNull(_bundle.getString("overview_links"));
+		assertNotNull(_bundle.getString("overview_class"));
+		assertNotNull(_bundle.getString("overview_messages"));
+		assertNotNull(_bundle.getString("overview_none_exists_files"));
 	}
 }

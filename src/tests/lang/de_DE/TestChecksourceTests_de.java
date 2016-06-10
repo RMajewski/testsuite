@@ -19,23 +19,23 @@
 
 package tests.lang.de_DE;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import tests.lang.en.TestChecksourceHtmlOut;
+import tests.lang.en.TestChecksourceTests;
 
 /**
- * Tests the German language file for the HtmlOut class on completeness.
+ * Tests the German language file for the Tests class on completeness.
  * 
  * @author René Majewski
- * 
+ *
  * @version 0.1
  */
-public class TestChecksourceHtmlOut_de extends TestChecksourceHtmlOut {
+public class TestChecksourceTests_de extends TestChecksourceTests {
 
 	/**
 	 * Initialize the tests
@@ -55,5 +55,6 @@ public class TestChecksourceHtmlOut_de extends TestChecksourceHtmlOut {
 	public void testHaveRightLocale() {
 		assertEquals(Locale.GERMANY, _bundle.getLocale());
 	}
+
 
 }
