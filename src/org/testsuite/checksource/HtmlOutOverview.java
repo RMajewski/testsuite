@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -253,6 +254,8 @@ public class HtmlOutOverview extends Html {
 		ret.append("\t\t\t\t\t</tr>");
 		ret.append(System.lineSeparator());
 		
+		List<String> links = new ArrayList<String>();
+		
 		for (int link = 0; link <_resultFiles.size(); link++) {
 			File file = new File(_resultFiles.get(link));
 			if (file.exists()) {
@@ -260,32 +263,37 @@ public class HtmlOutOverview extends Html {
 				String linkName = linkSrc.substring(linkSrc.indexOf("_") + 1);
 				String className = linkName.substring(linkName.indexOf("Test") + 4, 
 						linkName.indexOf(".html"));
+				StringBuilder table = new StringBuilder("\t\t\t\t\t<tr>");
+				table.append(System.lineSeparator());
 				
-				ret.append("\t\t\t\t\t<tr>");
-				ret.append(System.lineSeparator());
+				table.append("\t\t\t\t\t\t<td>");
+				table.append("<a href=\"");
+				table.append(linkSrc);
+				table.append("\">");
+				table.append(linkName);
+				table.append("</a></td>");
+				table.append(System.lineSeparator());
 				
-				ret.append("\t\t\t\t\t\t<td>");
-				ret.append("<a href=\"");
-				ret.append(linkSrc);
-				ret.append("\">");
-				ret.append(linkName);
-				ret.append("</a></td>");
-				ret.append(System.lineSeparator());
+				table.append("\t\t\t\t\t\t<td>");
+				table.append(className);
+				table.append("</td>");
+				table.append(System.lineSeparator());
 				
-				ret.append("\t\t\t\t\t\t<td>");
-				ret.append(className);
-				ret.append("</td>");
-				ret.append(System.lineSeparator());
+				table.append("\t\t\t\t\t\t<td>");
+				table.append(createMessages(className));
+				table.append("</td>");
+				table.append(System.lineSeparator());
 				
-				ret.append("\t\t\t\t\t\t<td>");
-				ret.append(createMessages(className));
-				ret.append("</td>");
-				ret.append(System.lineSeparator());
+				table.append("\t\t\t\t\t</tr>");
+				table.append(System.lineSeparator());
 				
-				ret.append("\t\t\t\t\t</tr>");
-				ret.append(System.lineSeparator());
+				links.add(table.toString());
 			}
 		}
+		
+		Collections.sort(links);
+		for (int i = 0; i < links.size(); i++)
+			ret.append(links.get(i));
 		
 		ret.append("\t\t\t\t</table>");
 		ret.append(System.lineSeparator());

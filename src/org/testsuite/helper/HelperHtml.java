@@ -23,6 +23,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -210,6 +212,8 @@ public class HelperHtml {
 		ret.append("\t\t\t\t<ul>");
 		ret.append(System.lineSeparator());
 		
+		List<String> list = new ArrayList<String>();
+		
 		for (int method = 0; method < methods.size(); method++) {
 			if (methods.get(method).isDeprecated())
 				continue;
@@ -227,14 +231,22 @@ public class HelperHtml {
 					methods.get(method).getName() + "\">";
 			String linkEnd = "</a>";
 			
+			String listItem = new String();
+			
 			if (calls && (methods.get(method).callsCount() > 0)) {
-				ret.append(createListEntry(methods.get(method), linkSrc,
-						linkEnd, true));
+				listItem = createListEntry(methods.get(method), linkSrc, 
+						linkEnd, true);
 			} else if (!calls && (methods.get(method).callsCount() == 0)) {
-				ret.append(createListEntry(methods.get(method), linkSrc,
-						linkEnd, false));
+				listItem = createListEntry(methods.get(method), linkSrc,
+						linkEnd, false);
 			}
+			
+			list.add(listItem);
 		}
+		
+		Collections.sort(list);
+		for (int i = 0; i < list.size(); i++)
+			ret.append(list.get(i));
 		
 		ret.append("\t\t\t\t</ul>");
 		ret.append(System.lineSeparator());
