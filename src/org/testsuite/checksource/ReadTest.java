@@ -81,11 +81,8 @@ public class ReadTest implements Read {
 		
 		for (int i = 0; i < methods.size(); i++) {
 			CSMethod method = methods.get(i);
-			if (line.matches("^\\s*@CheckSource[\\w\\s(=\")]*")) {
-				String name = line.substring(line.indexOf("=\"") + 2, 
-						line.indexOf("\")"));
-				if (methods.get(i).getName().equals(name))
-					method.addCall(lineNumber);
+			if (line.matches("^\\s*@CheckSource[\\w\\s(=\")\\{\\},]*")) {
+				readCheckSourceAnnotation(line, methods, i, lineNumber);
 			} else if ((line.indexOf(method.getClassName() + "." + method.getName()) > -1) ||
 				(line.indexOf("new " + method.getName() + "(") > -1)){
 				method.addCall(lineNumber);
@@ -97,6 +94,41 @@ public class ReadTest implements Read {
 				}
 			}
 			
+		}
+	}
+
+	/**
+	 * Determine the parameters of the check source annotation.
+	 * 
+	 * @param line The actual source line
+	 * 
+	 * @param methods List of methods
+	 * 
+	 * @param actual The actual method
+	 * 
+	 * @param lineNumber The number of actual source line
+	 */
+	private void readCheckSourceAnnotation(String line, List<CSMethod> methods, 
+			int actual, int lineNumber) {
+		CSMethod method = methods.get(actual);
+		
+		String methodName = line.substring(line.indexOf("(") + 1, 
+				line.indexOf("="));
+		if (methodName.equals("method")){
+			String name = line.substring(line.indexOf("=\"") + 2, 
+					line.indexOf("\")"));
+			
+			if (methods.get(actual).getName().equals(name))
+				method.addCall(lineNumber);
+		} else if (methodName.equals("methodList")) {
+			String[] names = line.substring(line.indexOf("={") + 2, line.
+					indexOf("}")).split(",");
+			for (int i = 0; i < names.length; i++) {
+				String name = names[i].substring(names[i].indexOf("\"") + 1,
+						names[i].lastIndexOf("\""));
+				if (methods.get(actual).getName().equals(name))
+					method.addCall(lineNumber);
+			}
 		}
 	}
 

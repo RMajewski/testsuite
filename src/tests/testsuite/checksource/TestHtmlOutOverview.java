@@ -131,7 +131,7 @@ public class TestHtmlOutOverview {
 	/**
 	 * Tests whether the instance is returned.
 	 */
-	@CheckSource(method="getInstance")
+	@CheckSource(methodList={"getInstance", "HtmlOutOverview"})
 	@Test
 	public void testGetInstance() throws Exception {
 		assertNotNull(HtmlOutOverview.getInstance());

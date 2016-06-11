@@ -42,4 +42,11 @@ public @interface CheckSource {
 	 * @return The method that is being tested.
 	 */
 	String method() default "";
+	
+	/**
+	 * There is specifies a list of the methods that will be tested.
+	 * 
+	 * @return The list of methods that will be tested.
+	 */
+	String[] methodList() default {};
 }

@@ -38,6 +38,7 @@ import org.testsuite.checksource.CSMethod;
 import org.testsuite.checksource.HtmlOut;
 import org.testsuite.checksource.MessageColor;
 import org.testsuite.checksource.SourceLine;
+import org.testsuite.checksource.annotation.CheckSource;
 import org.testsuite.helper.HelperUsedColor;
 
 /**
@@ -80,8 +81,9 @@ public class TestHtmlOut {
 	}
 
 	/**
-	 * 
+	 * Tests if the HTML file is generated.
 	 */
+	@CheckSource(method="sourceCode")
 	@Test
 	public void testCreateHtml() throws Exception {
 		FileWriter fw = mock(FileWriter.class);

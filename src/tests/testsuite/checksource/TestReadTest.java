@@ -31,6 +31,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.testsuite.checksource.CSMethod;
 import org.testsuite.checksource.ReadTest;
+import org.testsuite.checksource.annotation.CheckSource;
 
 /**
  * Tests the class {@link org.testsuite.checksource.ReadTest}.
@@ -57,7 +58,7 @@ public class TestReadTest {
 	 */
 	@SuppressWarnings("unchecked")
 	@Test
-	public void test() throws Exception {
+	public void testClassName() throws Exception {
 		String name = "Test";
 		_rt.addClassName(name);
 		
@@ -71,6 +72,7 @@ public class TestReadTest {
 	/**
 	 * Tests if read the source code correctly.
 	 */
+	@CheckSource(method="readCheckSourceAnnotation")
 	@Test
 	public void testRead() {
 		String line1 = "Test test = new Test();";

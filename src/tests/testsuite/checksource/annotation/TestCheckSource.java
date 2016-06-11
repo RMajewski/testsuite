@@ -51,5 +51,15 @@ public class TestCheckSource {
 			" org.testsuite.checksource.annotation.CheckSource.method()",
 				CheckSource.class.getDeclaredMethod("method").toString());
 	}
+	
+	/**
+	 * Tests if method exists.
+	 */
+	@Test
+	public void testMethodList() throws Exception {
+		assertEquals("public abstract java.lang.String[]" +
+			" org.testsuite.checksource.annotation.CheckSource.methodList()",
+				CheckSource.class.getDeclaredMethod("methodList").toString());
+	}
 
 }
