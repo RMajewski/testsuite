@@ -24,10 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.Set;
-
 import org.testsuite.checksource.MessageColor;
 import org.testsuite.checksource.SourceLine;
+import org.testsuite.helper.HelperUsedColor;
 
 /**
  * Checks if in the source files are unused import.
@@ -65,7 +64,7 @@ public class TestUnusedImports implements SourceTest {
 		for (Integer i : imports.keySet()) {
 			list.get(i - 1).addMessage(new MessageColor(
 					ResourceBundle.getBundle(BUNDLE_FILE).getString(
-							"unusedImports"), COLOR_WARNING));
+							"unusedImports"), HelperUsedColor.WARNING));
 		}
 		
 		return true;

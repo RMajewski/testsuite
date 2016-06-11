@@ -24,6 +24,7 @@ import java.util.ResourceBundle;
 
 import org.testsuite.checksource.MessageColor;
 import org.testsuite.checksource.SourceLine;
+import org.testsuite.helper.HelperUsedColor;
 
 /**
  * Scans the source consecutively after several blank lines.
@@ -55,16 +56,18 @@ public class TestEmptyLines implements SourceTest {
 	 */
 	@Override
 	public boolean test(List<SourceLine> list) {
-		int last = 0;
+		int last = -1;
 		
 		for (int i = 0; i < list.size(); i++) {
 			boolean empty = list.get(i).getLine().matches("^[\\s]*$");
 			
 			if ((last == i - 1) && (list.get(i).getLine().isEmpty() || empty)) {
 				list.get(i - 1).addMessage(new MessageColor(
-						_bundle.getString("emptylines"), COLOR_WARNING));
+						_bundle.getString("emptylines"), 
+						HelperUsedColor.WARNING));
 				list.get(i).addMessage(new MessageColor(
-						_bundle.getString("emptylines"), COLOR_WARNING));
+						_bundle.getString("emptylines"), 
+						HelperUsedColor.WARNING));
 			}
 			
 			if (list.get(i).getLine().isEmpty() || empty)

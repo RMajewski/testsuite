@@ -24,6 +24,7 @@ import java.util.ResourceBundle;
 
 import org.testsuite.checksource.MessageColor;
 import org.testsuite.checksource.SourceLine;
+import org.testsuite.helper.HelperUsedColor;
 
 /**
  * Scans the source for empty methods.
@@ -57,12 +58,12 @@ public class TestEmptyMethod implements SourceTest {
 	public boolean test(List<SourceLine> list) {
 		int beginMethod = -1;
 		MessageColor message = new MessageColor(_bundle.getString("emptyMethod"), 
-				COLOR_WARNING);
+				HelperUsedColor.WARNING);
 		for (int i = 0; i < list.size(); i++) {
 			if (list.get(i).getLine().matches("^[\\w ()]*[{][\\s]*}$")) {
 				beginMethod = -1;
 				list.get(i).addMessage(message);
-			} else if (list.get(i).getLine().matches("^[\\w (){]*[\\s]*$")) {
+			} else if (list.get(i).getLine().matches("^[\\s\\w (){]*[\\s]*$")) {
 				beginMethod = i;
 			} else if ((beginMethod == i - 1) && 
 					((list.get(i).getLine().trim().isEmpty()) 
@@ -73,7 +74,13 @@ public class TestEmptyMethod implements SourceTest {
 				list.get(i - 1).addMessage(message);
 				list.get(i).addMessage(message);
 				list.get(i + 1).addMessage(message);
-			} else if ((beginMethod > -1) && (list.get(i).getLine().indexOf("}") > -1))
+			} else if ((beginMethod == i - 1) && 
+					(list.get(i).getLine().indexOf("}") > -1)) {
+				list.get(i - 1).addMessage(message);
+				list.get(i).addMessage(message);
+			}
+			
+			if ((beginMethod > -1) && (list.get(i).getLine().indexOf("}") > -1))
 				beginMethod = -1;
 		}
 		return true;
