@@ -27,6 +27,7 @@ import java.util.List;
 import org.testsuite.helper.HelperCalendar;
 import org.testsuite.helper.HelperHtml;
 import org.testsuite.helper.HelperHtmlCodeJava;
+import org.testsuite.helper.HelperUsedColor;
 
 /**
  * Creates the HTML output
@@ -197,7 +198,7 @@ public class HtmlOut extends Html {
 			if (lines.get(i).isLineTested()) {
 				background = " style=\"background: " + 
 						HelperHtmlCodeJava.getInstance()
-						.formatColor(COLOR_PASS) + ";\" ";
+						.formatColor(HelperUsedColor.PASS) + ";\" ";
 			} else if (lines.get(i).messageCount() > 0) {
 				background = " style=\"background: " +
 						HelperHtmlCodeJava.getInstance()

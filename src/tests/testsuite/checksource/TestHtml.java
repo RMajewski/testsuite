@@ -21,8 +21,13 @@ package tests.testsuite.checksource;
 
 import static org.junit.Assert.*;
 
+import java.awt.Color;
+import java.lang.reflect.Field;
+import java.util.ResourceBundle;
+
 import org.junit.Before;
 import org.junit.Test;
+import org.testsuite.checksource.Html;
 
 /**
  * Tests for class {@link org.testuite.checksource.Html}.
@@ -32,14 +37,53 @@ import org.junit.Test;
  * @version 0.1
  */
 public class TestHtml {
+	/**
+	 * Saves the instance of HTML
+	 */
+	private Html _html;
+	
+	/**
+	 * Saves the name of result file
+	 */
+	private String _resultFile;
 
+	/**
+	 * Initialize the tests 
+	 */
 	@Before
 	public void setUp() throws Exception {
+		_resultFile = "test.html";
+		_html = new Html(_resultFile);
 	}
-
+	
 	@Test
-	public void testHtml() {
-		fail("Not yet implemented"); // TODO
+	public void testHtml() throws Exception {
+		Field field = Html.class.getDeclaredField("_resultFile");
+		field.setAccessible(true);
+		assertEquals(_resultFile, field.get(_html));
+		
+		field = Html.class.getDeclaredField("_bundle");
+		field.setAccessible(true);
+		assertEquals(ResourceBundle.getBundle(Html.BUNDLE_FILE), 
+				field.get(_html));
 	}
 
+	/**
+	 * Tests if the bundle file is declared correctly.
+	 */
+	@Test
+	public void testBundleFile() {
+		assertEquals("resources.lang.org.testsuite.checksource.HtmlOut", 
+				Html.BUNDLE_FILE);
+	}
+	
+	/**
+	 * Tests if the color has been correctly declared for success.
+	 * 
+	 * @deprecated
+	 */
+	@Test
+	public void testColorPass() {
+		assertEquals(new Color(0xCFFFCF), Html.COLOR_PASS);
+	}
 }

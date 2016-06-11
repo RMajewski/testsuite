@@ -27,23 +27,27 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.testsuite.checksource.CSMethod;
-import org.testsuite.checksource.MessageColor;
 import org.testsuite.checksource.SourceFile;
 import org.testsuite.checksource.SourceLine;
 import org.testsuite.checksource.tests.SourceTest;
 import org.testsuite.helper.HelperUsedColor;
 
+/**
+ * Tests the class {@link org.testsuite.checksource.SourceFile}.
+ * 
+ * @author René Majewski
+ *
+ * @version 0.1
+ */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({SourceFile.class})
 public class TestSourceFile {
@@ -471,6 +475,22 @@ public class TestSourceFile {
 		assertFalse(line.isJavadoc());
 		assertEquals(0, line.messageCount());
 		assertEquals(className, line.getClassName());
+	}
+	
+	/**
+	 * Tests whether the list of source lines is returned correctly.
+	 */
+	@Test
+	public void testGetSourceList() {
+		assertEquals(new ArrayList<SourceLine>(), _sf.getSourceList());
+	}
+
+	/**
+	 * Tests whether the list of methods is returned correctly.
+	 */
+	@Test
+	public void testGetMethodList() {
+		assertEquals(new ArrayList<CSMethod>(), _sf.getMethodList());
 	}
 
 }

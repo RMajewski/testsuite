@@ -23,7 +23,6 @@ import static org.junit.Assert.*;
 
 import java.awt.Color;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.testsuite.helper.HelperUsedColor;
 
@@ -49,6 +48,14 @@ public class TestHelperUsedColor {
 	@Test
 	public void testError() {
 		assertEquals(new Color(0xFFCFCF), HelperUsedColor.ERROR);
+	}
+
+	/**
+	 * Tests if the color of passes has been specified correctly.
+	 */
+	@Test
+	public void testPass() {
+		assertEquals(new Color(0xCFFFCF), HelperUsedColor.PASS);
 	}
 
 }

@@ -34,6 +34,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.testsuite.checksource.CSMethod;
+import org.testsuite.checksource.annotation.CheckSource;
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
 import org.testsuite.helper.HelperHtml;
@@ -52,6 +53,7 @@ public class TestHelperHtml {
 	/**
 	 * Tests if HTML list of methods is created correctly.
 	 */
+	@CheckSource(method="createListEntry")
 	@Test
 	public void testCreateListOfMethodsCallsWithoutFileNameToLinks() {
 		String description = "Dies ist ein Test";
@@ -128,6 +130,7 @@ public class TestHelperHtml {
 	/**
 	 * Tests if HTML list of methods is created correctly.
 	 */
+	@CheckSource(method="createListEntry")
 	@Test
 	public void testCreateListOfMethodsCallsWithFileNameToLinks() {
 		String description = "Dies ist ein Test";
@@ -209,6 +212,7 @@ public class TestHelperHtml {
 	/**
 	 * Tests if HTML list of methods is created correctly.
 	 */
+	@CheckSource(method="createListEntry")
 	@Test
 	public void testCreateListOfMethodsNotCallsWithoutFileNameToLinks() {
 		String description = "Dies ist ein Test";
@@ -286,6 +290,7 @@ public class TestHelperHtml {
 	/**
 	 * Tests if HTML list of methods is created correctly.
 	 */
+	@CheckSource(method="createListEntry")
 	@Test
 	public void testCreateListOfMethodsNotCallsWithFileNameToLinks() {
 		String description = "Dies ist ein Test";

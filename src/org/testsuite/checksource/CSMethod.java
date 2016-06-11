@@ -50,7 +50,6 @@ public class CSMethod {
 	 */
 	private String _value;
 	
-	
 	/**
 	 * Saves the type.
 	 */

@@ -271,12 +271,10 @@ public class HtmlOutOverview extends Html {
 				ret.append(linkName);
 				ret.append("</a></td>");
 				ret.append(System.lineSeparator());
-				ret.append(System.lineSeparator());
 				
 				ret.append("\t\t\t\t\t\t<td>");
 				ret.append(className);
 				ret.append("</td>");
-				ret.append(System.lineSeparator());
 				ret.append(System.lineSeparator());
 				
 				ret.append("\t\t\t\t\t\t<td>");
@@ -306,6 +304,9 @@ public class HtmlOutOverview extends Html {
 		StringBuilder ret = new StringBuilder();
 		boolean first = true;
 		
+		if ((className == null) || className.isEmpty())
+			return ret.toString();
+		
 		for (int source = 0; source < _sources.size(); source++) {
 			if (_sources.get(source).getClassName().equals(className)) {
 				for (int message = 0; 
@@ -322,7 +323,9 @@ public class HtmlOutOverview extends Html {
 						if ((_methods.get(method).getClassName().equals(className)) && 
 								(_methods.get(method).getLine() == 
 								_sources.get(source).getLineNumber())) {
-							linkSrc = "<a href=\"Test" +
+							linkSrc = "<a href=\"" +ResourceBundle.getBundle(
+									TestRunner.BUNDLE_FILE).getString(
+											"result_checksoure") + "_Test" +
 								_methods.get(method).getClassName() + ".html#" +
 								_methods.get(method).getName() + "\">";
 							linkEnd = "</a>";

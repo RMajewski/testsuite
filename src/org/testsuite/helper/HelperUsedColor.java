@@ -38,4 +38,9 @@ public final class HelperUsedColor {
 	 * Specified the color of errors.
 	 */
 	public static final Color ERROR = new Color(0xFFCFCF);
+	
+	/**
+	 * Specified the color of passes.
+	 */
+	public static final Color PASS = new Color(0xCFFFCF);
 }

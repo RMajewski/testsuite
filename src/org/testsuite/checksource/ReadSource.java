@@ -40,11 +40,17 @@ public class ReadSource implements Read {
 	private String _className;
 	
 	/**
+	 * Saves if the method started.
+	 */
+	private String _methodStarted;
+	
+	/**
 	 * Initialize the data
 	 */
 	public ReadSource() {
 		_blocks = 0;
 		_className = null;
+		_methodStarted = null;
 	}
 
 	/**
@@ -73,10 +79,24 @@ public class ReadSource implements Read {
 
 			String[] read = line.substring(startIndex, endIndex).split(" ");
 			
-			if (line.matches("^[\\s]*(private|protected|public)[\\w\\s]*\\([" +
-					"\\w\\ſ, ]*\\)[\\s]*\\{$"))
+			if (line.matches("^[\\s]*(private|protected|public)[\\w\\s<>,"+ 
+					"\\[\\]]*\\([\\w\\ſ, <>\\[\\]]*\\)[\\p{Graph}\\s]*\\{$"))
 				readMethod(lineNumber, read, list);
-			else if (line.matches("^[\\s]*(private|protected|public)[\\s]?" +
+			else if (line.matches("^[\\s]*(private|protected|public)" + 
+					"[\\w\\s<>,]*\\([\\w\\ſ, <>\\[\\]]*\\)[\\p{Graph}\\s]*$") ||
+					line.matches("^[\\s]*(private|protected|public)" + 
+					"[\\w\\s<>,]*\\([\\w\\ſ, <>\\[\\]]*\\)*$") ||
+					line.matches("^[\\s]*(private|protected|public)" + 
+					"[\\w\\s<>,]*\\([\\w\\ſ, <>\\[\\]]*$")) 
+				_methodStarted = line;
+			else if ((_methodStarted != null) && (
+					( line.matches("^[\\w\\ſ, <>\\[\\]]*\\)[\\s\\w]*\\{$")) || 
+					line.matches("^\\s*[\\w\\s<>,\\[\\]]*\\{$") )) {
+				_methodStarted += line;
+				System.out.println(_methodStarted);
+				readMethod(lineNumber - 1, _methodStarted.split(" "), list);
+				_methodStarted = null;
+			} else if (line.matches("^[\\s]*(private|protected|public)[\\s]?" +
 					"(class)[\\s\\w]*\\{$"))
 				_className = read[read.length - 1];
 			

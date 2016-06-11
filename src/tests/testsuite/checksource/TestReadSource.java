@@ -29,6 +29,7 @@ import org.junit.Test;
 import org.testsuite.checksource.CSMethod;
 import org.testsuite.checksource.Read;
 import org.testsuite.checksource.ReadSource;
+import org.testsuite.checksource.annotation.CheckSource;
 
 /**
  * Tests the class {@link org.testsuite.checksource.ReadSource}
@@ -63,6 +64,7 @@ public class TestReadSource {
 	/**
 	 * Tests if the readMethod() has created the right method.
 	 */
+	@CheckSource(method="readMethod")
 	@Test
 	public void testReadMethodWithTwoParamter() throws Exception {
 		Method method = ReadSource.class.getDeclaredMethod("readMethod", 
@@ -95,6 +97,7 @@ public class TestReadSource {
 	/**
 	 * Tests if the readMethod() has created the right method.
 	 */
+	@CheckSource(method="readMethod")
 	@Test
 	public void testReadMethodWithoutParameter() throws Exception {
 		Method method = ReadSource.class.getDeclaredMethod("readMethod", 

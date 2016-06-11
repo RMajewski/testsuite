@@ -82,8 +82,6 @@ public class ReadTest implements Read {
 		for (int i = 0; i < methods.size(); i++) {
 			CSMethod method = methods.get(i);
 			if (line.matches("^\\s*@CheckSource[\\w\\s(=\")]*")) {
-				System.out.println(line.indexOf("=\""));
-				System.out.println(line.indexOf("\")"));
 				String name = line.substring(line.indexOf("=\"") + 2, 
 						line.indexOf("\")"));
 				if (methods.get(i).getName().equals(name))

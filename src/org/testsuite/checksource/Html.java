@@ -48,6 +48,8 @@ public class Html {
 	
 	/**
 	 * Specifies the background color for tested lines.
+	 * 
+	 * @deprecated Use {@link org.testsuite.helper.HelperUsedColor#PASS}.
 	 */
 	public static final Color COLOR_PASS = new Color(0xCFFFCF);
 
