@@ -74,6 +74,11 @@ public class CSMethod {
 	 * Saves the name of class
 	 */
 	private String _className;
+	
+	/**
+	 * Saves whether the method is deprecated.
+	 */
+	private boolean _deprecated;
 
 	/**
 	 * Initialize the data
@@ -89,6 +94,7 @@ public class CSMethod {
 		_calls = new ArrayList<Integer>();
 		_name = new String();
 		_className = new String();
+		_deprecated = false;
 	}
 	
 	/**
@@ -281,5 +287,23 @@ public class CSMethod {
 		if ((name == null) || name.isEmpty())
 			throw new IllegalArgumentException();
 		_className = name;
+	}
+	
+	/**
+	 * Returns if the method deprecated.
+	 * 
+	 * @return If the method deprecated?
+	 */
+	public boolean isDeprecated() {
+		return _deprecated;
+	}
+	
+	/**
+	 * Sets if the method deprecated.
+	 * 
+	 * @param deprecated If the method deprecated?
+	 */
+	public void setDeprecated(boolean deprecated) {
+		_deprecated = deprecated;
 	}
 }

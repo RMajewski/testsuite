@@ -256,6 +256,9 @@ public class SourceFile {
 									.getClassName());
 					} else
 						_readTest.read(count, line, _methods);
+				} else if (line.matches("^[*\\s]*(@deprecated|@Deprecated)" +
+						"[\\p{Graph}\\s]*$")) {
+					readSource.setDeprecated(true);
 				}
 			}
 		} catch (Exception e) {

@@ -40,6 +40,11 @@ public class ReadSource implements Read {
 	private String _className;
 	
 	/**
+	 * Saves if the annotation deprecated set
+	 */
+	private boolean _deprecated;
+	
+	/**
 	 * Saves if the method started.
 	 */
 	private String _methodStarted;
@@ -51,6 +56,7 @@ public class ReadSource implements Read {
 		_blocks = 0;
 		_className = null;
 		_methodStarted = null;
+		_deprecated = false;
 	}
 
 	/**
@@ -93,7 +99,6 @@ public class ReadSource implements Read {
 					( line.matches("^[\\w\\ſ, <>\\[\\]]*\\)[\\s\\w]*\\{$")) || 
 					line.matches("^\\s*[\\w\\s<>,\\[\\]]*\\{$") )) {
 				_methodStarted += line;
-				System.out.println(_methodStarted);
 				readMethod(lineNumber - 1, _methodStarted.split(" "), list);
 				_methodStarted = null;
 			} else if (line.matches("^[\\s]*(private|protected|public)[\\s]?" +
@@ -161,6 +166,18 @@ public class ReadSource implements Read {
 			}
 		}
 		
+		method.setDeprecated(_deprecated);
 		list.add(method);
+		
+		_deprecated = false;
+	}
+	
+	/**
+	 * Sets that deprecated annotation was found.
+	 * 
+	 * @param deprecated If deprecated annotation was found? 
+	 */
+	public void setDeprecated(boolean deprecated) {
+		_deprecated = true;
 	}
 }

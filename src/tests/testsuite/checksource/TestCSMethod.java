@@ -60,6 +60,7 @@ public class TestCSMethod {
 		assertEquals(-1, _cs.getLastLineNumber());
 		assertEquals(new String(), _cs.getName());
 		assertEquals(new String(), _cs.getClassName());
+		assertFalse(_cs.isDeprecated());
 	}
 	
 	/**
@@ -308,4 +309,22 @@ public class TestCSMethod {
 	public void testSetClassNameWithEmptyStringAsParamter() {
 		_cs.setClassName(new String());
 	}
+	
+	/**
+	 * Tests if deprecated method is returned correctly
+	 */
+	@Test
+	public void testIsDeprecated() {
+		assertFalse(_cs.isDeprecated());
+	}
+	
+	/**
+	 * Tests if deprecated method is set correctly.
+	 */
+	@Test
+	public void testSetDeprecated() {
+		_cs.setDeprecated(true);
+		assertTrue(_cs.isDeprecated());
+	}
+	
 }

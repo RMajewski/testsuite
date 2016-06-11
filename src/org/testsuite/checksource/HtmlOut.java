@@ -208,12 +208,14 @@ public class HtmlOut extends Html {
 
 			String ankerBegin = new String();
 			String ankerEnd = new String();
+			boolean deprecated = false;
 			if (lines.get(i).isBeginMethod()) {
 				String ankerName = new String();
 				for (int j = 0; j < methods.size(); j++) {
 					if (lines.get(i).getLineNumber() == methods.get(j).getLine()) {
 						ankerName = methods.get(j).getClassName() + "." +
 								methods.get(j).getName();
+						deprecated = methods.get(j).isDeprecated();
 						break;
 					}
 				}
@@ -236,6 +238,21 @@ public class HtmlOut extends Html {
 					lines.get(i).isJavadoc());
 			line = HelperHtml.replaceTabWidthSpaces(line, 4);
 
+			if (deprecated) {
+				String[] tmp = line.split(" ");
+				line = new String();
+				for (int j = 0; j < tmp.length; j++) {
+					if (tmp[j].indexOf("(") > -1) {
+						String[] temp = tmp[j].split("\\(");
+						line += " <strike>" + temp[0] + "</strike>(" + temp[1];
+					} else {
+						if (j > 0)
+							line += " ";
+						line += tmp[j];
+					}
+				}
+			}
+			
 			ret.append("\t\t\t\t\t\t<td");
 			ret.append(background);
 			ret.append(">");

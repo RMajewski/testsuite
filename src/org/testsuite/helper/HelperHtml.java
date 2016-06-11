@@ -211,6 +211,9 @@ public class HelperHtml {
 		ret.append(System.lineSeparator());
 		
 		for (int method = 0; method < methods.size(); method++) {
+			if (methods.get(method).isDeprecated())
+				continue;
+			
 			String fileName = new String();
 			
 			if (file) {
