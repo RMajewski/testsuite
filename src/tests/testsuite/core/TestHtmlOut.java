@@ -34,6 +34,7 @@ import org.mockito.Matchers;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.testsuite.checksource.HtmlOutOverview;
 import org.testsuite.core.HtmlOut;
 import org.testsuite.data.Config;
 
@@ -144,6 +145,10 @@ public class TestHtmlOut {
 	 */
 	@Test
 	public void testHtmlHead() throws IOException {
+		Config.getInstance().setPathResult("result");
+		Config.getInstance().setPathSuitesResult("0000000");
+		
+		HtmlOutOverview.getInstance().createHtml();
 		_html.htmlHead();
 		
 		verify(_bufferedWriter, atLeastOnce()).newLine();
@@ -157,8 +162,7 @@ public class TestHtmlOut {
 	public void testHtmlEnd() throws IOException {
 		_html.htmlEnd();
 		
-		verify(_bufferedWriter, times(2)).newLine();
-		verify(_bufferedWriter, times(2)).write(Matchers.anyString());
+		verify(_bufferedWriter).write(Matchers.anyString());
 		verify(_bufferedWriter).close();
 	}
 	

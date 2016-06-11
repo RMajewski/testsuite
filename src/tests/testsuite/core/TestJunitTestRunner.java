@@ -277,7 +277,7 @@ public class TestJunitTestRunner {
 		when(test.getId()).thenReturn(testId);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.getOk()).thenReturn(ok);
 		when(test.getFail()).thenReturn(fail);
 		when(test.getDurationTimeFormattedString()).thenReturn(duration);
@@ -299,10 +299,8 @@ public class TestJunitTestRunner {
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
-		order.verify(test).getIn();
+		order.verify(test).getConsole();
 		order.verify(test).getError();
-		order.verify(suite).getPackage();
-		order.verify(test).getName();
 		order.verify(test).isExecuted();
 		order.verify(test).isTerminated();
 		order.verify(test).getOk();
@@ -435,7 +433,7 @@ public class TestJunitTestRunner {
 		when(test.getId()).thenReturn(testId);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.getOk()).thenReturn(ok);
 		when(test.getFail()).thenReturn(fail);
 		
@@ -454,10 +452,8 @@ public class TestJunitTestRunner {
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
-		order.verify(test).getIn();
+		order.verify(test).getConsole();
 		order.verify(test).getError();
-		order.verify(suite).getPackage();
-		order.verify(test).getName();
 		order.verify(test).isExecuted();
 		
 		verify(suite, times(11)).getTest(0);
@@ -566,7 +562,7 @@ public class TestJunitTestRunner {
 		when(test.isExists()).thenReturn(false);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.getOk()).thenReturn(ok);
 		when(test.getFail()).thenReturn(fail);
 		when(test.getDurationTimeFormattedString()).thenReturn(duration);
@@ -677,12 +673,11 @@ public class TestJunitTestRunner {
 				"\t\t\t\t\t\t<td class=\"wrong\">" + duration + "</td>" + 
 				System.lineSeparator();
 		
-		when(_config.getPathSuitesResult()).thenReturn(resultSuite);
-		when(_config.classPathsAsParameterJVM()).thenReturn(new String());
+		Config.getInstance().setPathSuitesResult(resultSuite);
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
-				eq(error), anyString())).thenReturn(testOut);
+				eq(error), anyString(), anyString())).thenReturn(testOut);
 		
 		Method method = 
 				JunitTestRunner.class.getDeclaredMethod("createHtmlRow", 
@@ -709,7 +704,7 @@ public class TestJunitTestRunner {
 		
 		assertEquals(ret, method.invoke(_runner, 0, 0, html));
 		
-		InOrder order = inOrder(test, suite, _config);
+		InOrder order = inOrder(test, suite);
 		order.verify(test).getOk();
 		order.verify(test).getFail();
 		order.verify(test).isExecuted();
@@ -729,7 +724,7 @@ public class TestJunitTestRunner {
 		order.verify(test).getFail();
 		order.verify(test).getDurationTimeFormattedString();
 		
-		verify(suite, times(17)).getTest(0);
+		verify(suite, times(18)).getTest(0);
 	}
 	/**
 	 * Tests if the line of HTML is generated correctly for a none executed test.
@@ -760,12 +755,11 @@ public class TestJunitTestRunner {
 				"\t\t\t\t\t\t<td colspan=\"3\" class=\"ignore\">" +
 				"wurde nicht ausgeführt</td>" + System.lineSeparator();
 		
-		when(_config.getPathSuitesResult()).thenReturn(resultSuite);
-		when(_config.classPathsAsParameterJVM()).thenReturn(new String());
+		Config.getInstance().setPathSuitesResult(resultSuite);
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
-				eq(error), anyString())).thenReturn(testOut);
+				eq(error), anyString(), anyString())).thenReturn(testOut);
 		
 		Method method = 
 				JunitTestRunner.class.getDeclaredMethod("createHtmlRow", 
@@ -801,7 +795,7 @@ public class TestJunitTestRunner {
 		order.verify(test).getError();
 		order.verify(test).isExecuted();
 		
-		verify(suite, times(10)).getTest(0);
+		verify(suite, times(11)).getTest(0);
 	}
 	
 	/**
@@ -829,7 +823,7 @@ public class TestJunitTestRunner {
 
 		_runner.setFileExtension(extension);
 		
-		when(_config.getPathSrc()).thenReturn(srcName);
+		Config.getInstance().setPathSrc(srcName);
 		
 		HtmlOut html = mock(HtmlOut.class);
 		
@@ -854,12 +848,11 @@ public class TestJunitTestRunner {
 		
 		assertEquals(ret, method.invoke(_runner, 0, 0, html));
 		
-		InOrder order = inOrder(test, suite, _config);
+		InOrder order = inOrder(test, suite);
 		order.verify(test).getOk();
 		order.verify(test).getFail();
 		order.verify(test).isExecuted();
 		order.verify(test).isExists();
-		order.verify(_config).getPathSrc();
 		order.verify(suite).getPackage();
 		order.verify(test).getName();
 		

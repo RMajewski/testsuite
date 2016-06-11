@@ -262,7 +262,7 @@ public class TestJemmyTestRunner {
 		when(test.isExecuted()).thenReturn(true);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.getDurationTimeFormattedString()).thenReturn(duration);
 		when(test.getExitStatus()).thenReturn(exit);
 		when(test.isExecuted()).thenReturn(executed);
@@ -285,7 +285,7 @@ public class TestJemmyTestRunner {
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
-		order.verify(test).getIn();
+		order.verify(test).getConsole();
 		order.verify(test).getError();
 		order.verify(suite).getPackage();
 		order.verify(test).getName();
@@ -294,7 +294,7 @@ public class TestJemmyTestRunner {
 		order.verify(test).getExitStatus();
 		order.verify(test).getDurationTimeFormattedString();
 		
-		verify(suite, times(15)).getTest(0);
+		verify(suite, times(16)).getTest(0);
 	}
 	
 	/**
@@ -429,7 +429,7 @@ public class TestJemmyTestRunner {
 		when(test.isExists()).thenReturn(true);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.getDurationTimeFormattedString()).thenReturn(duration);
 		when(test.getExitStatus()).thenReturn(exit);
 		when(test.isExecuted()).thenReturn(executed);
@@ -450,7 +450,7 @@ public class TestJemmyTestRunner {
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
-		order.verify(test).getIn();
+		order.verify(test).getConsole();
 		order.verify(test).getError();
 		order.verify(suite).getPackage();
 		order.verify(test).getName();
@@ -459,7 +459,7 @@ public class TestJemmyTestRunner {
 		order.verify(test).getExitStatus();
 		order.verify(test).getDurationTimeFormattedString();
 		
-		verify(suite, times(16)).getTest(0);
+		verify(suite, times(17)).getTest(0);
 	}
 
 	/**
@@ -564,7 +564,7 @@ public class TestJemmyTestRunner {
 		when(test.isExists()).thenReturn(false);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.isExecuted()).thenReturn(executed);
 		
 		TestSuite suite = mock(TestSuite.class);
@@ -691,7 +691,7 @@ public class TestJemmyTestRunner {
 		when(test.isExists()).thenReturn(true);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.isExecuted()).thenReturn(executed);
 		
 		TestSuite suite = mock(TestSuite.class);
@@ -708,11 +708,11 @@ public class TestJemmyTestRunner {
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
-		order.verify(test).getIn();
+		order.verify(test).getConsole();
 		order.verify(test).getError();
 		order.verify(test).isExecuted();
 		
-		verify(suite, times(11)).getTest(0);
+		verify(suite, times(12)).getTest(0);
 	}
 	
 	/**
@@ -800,14 +800,12 @@ public class TestJemmyTestRunner {
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
-				eq(error), anyString())).thenReturn(testOut);
+				eq(error), anyString(), anyString())).thenReturn(testOut);
 		
 		Method method = 
 				JemmyTestRunner.class.getDeclaredMethod("createHtmlRow", 
 						int.class, int.class, HtmlOut.class);
 		method.setAccessible(true);
-		
-		when(_config.classPathsAsParameterJVM()).thenReturn(new String());
 		
 		org.testsuite.data.Test test = mock(org.testsuite.data.Test.class);
 		when(test.isExists()).thenReturn(true);
@@ -846,7 +844,7 @@ public class TestJemmyTestRunner {
 		order.verify(test).getExitStatus();
 		order.verify(test).getDurationTimeFormattedString();
 		
-		verify(suite, times(15)).getTest(0);
+		verify(suite, times(16)).getTest(0);
 	}
 	
 	/**
@@ -885,14 +883,12 @@ public class TestJemmyTestRunner {
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
-				eq(error), anyString())).thenReturn(testOut);
+				eq(error), anyString(), anyString())).thenReturn(testOut);
 		
 		Method method = 
 				JemmyTestRunner.class.getDeclaredMethod("createHtmlRow", 
 						int.class, int.class, HtmlOut.class);
 		method.setAccessible(true);
-
-		when(_config.classPathsAsParameterJVM()).thenReturn(new String());
 
 		org.testsuite.data.Test test = mock(org.testsuite.data.Test.class);
 		when(test.isExists()).thenReturn(true);
@@ -928,7 +924,7 @@ public class TestJemmyTestRunner {
 		order.verify(test).getExitStatus();
 		order.verify(test).getDurationTimeFormattedString();
 		
-		verify(suite, times(16)).getTest(0);
+		verify(suite, times(17)).getTest(0);
 	}
 
 	/**
@@ -957,7 +953,7 @@ public class TestJemmyTestRunner {
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
-				eq(error), anyString())).thenReturn(new String());
+				eq(error), anyString(), anyString())).thenReturn(new String());
 		
 		Method method = 
 				JemmyTestRunner.class.getDeclaredMethod("createHtmlRow", 
@@ -976,17 +972,16 @@ public class TestJemmyTestRunner {
 		when(suite.getPackage()).thenReturn(packageName);
 		_runner.addTestSuite(suite);
 		
-		when(_config.getPathSrc()).thenReturn(srcName);
+		Config.getInstance().setPathSrc(srcName);
 		
 		assertEquals(ret, method.invoke(_runner, 0, 0, html));
 		
-		InOrder order = inOrder(test, suite, _config);
+		InOrder order = inOrder(test, suite);
 		order.verify(test).getExitStatus();
 		order.verify(test).isExists();
 		order.verify(test).isExecuted();
 		order.verify(test).isTerminated();
 		order.verify(test).isExists();
-		order.verify(_config).getPathSrc();
 		order.verify(suite).getPackage();
 		order.verify(test).getName();
 		
@@ -1019,7 +1014,7 @@ public class TestJemmyTestRunner {
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
-				eq(error), anyString())).thenReturn(new String());
+				eq(error), anyString(), anyString())).thenReturn(new String());
 		
 		Method method = 
 				JemmyTestRunner.class.getDeclaredMethod("createHtmlRow", 
@@ -1038,8 +1033,7 @@ public class TestJemmyTestRunner {
 		when(suite.getPackage()).thenReturn(packageName);
 		_runner.addTestSuite(suite);
 		
-		when(_config.getPathSrc()).thenReturn(srcName);
-		when(_config.classPathsAsParameterJVM()).thenReturn(new String());
+		Config.getInstance().setPathSrc(srcName);
 		
 		assertEquals(ret, method.invoke(_runner, 0, 0, html));
 		
@@ -1052,7 +1046,7 @@ public class TestJemmyTestRunner {
 		order.verify(test).getError();
 		order.verify(test).isExecuted();
 		
-		verify(suite, times(11)).getTest(0);
+		verify(suite, times(12)).getTest(0);
 	}
 	
 	/**

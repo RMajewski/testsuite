@@ -33,6 +33,7 @@ import org.mockito.Matchers;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.testsuite.checksource.HtmlOutOverview;
 import org.testsuite.core.ConfigParser;
 import org.testsuite.core.FitTestRunner;
 import org.testsuite.core.HtmlOut;
@@ -52,7 +53,7 @@ import org.testsuite.data.TestSuite;
  * @version 0.2
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({TestCore.class})
+@PrepareForTest({TestCore.class, HtmlOutOverview.class})
 public class TestTestCore {
 
 	/**
@@ -65,6 +66,7 @@ public class TestTestCore {
 	 * 
 	 * @deprecated
 	 */
+	@SuppressWarnings("unused")
 	private Config _config;
 	
 	/**
@@ -206,10 +208,19 @@ public class TestTestCore {
 		list.add(runner1);
 		list.add(runner2);
 		
+		HtmlOutOverview html = mock(HtmlOutOverview.class);
+		
+		PowerMockito.mockStatic(HtmlOutOverview.class);
+		when(HtmlOutOverview.getInstance()).thenReturn(html);
+		
 		_core.run();
 		
 		verify(runner1).run(eq(suite1), eq(test1), isNull(Thread.class));
 		verify(runner2).run(eq(suite2), eq(test2), isNull(Thread.class));
+		
+		PowerMockito.verifyStatic(times(1));
+		HtmlOutOverview.getInstance();
+		verify(html).createHtml();
 	}
 
 	/**
@@ -289,5 +300,51 @@ public class TestTestCore {
 		verify(html, never()).htmlHead();
 		verify(html, never()).writeHtml(Matchers.anyString());
 		verify(html, never()).htmlEnd();
+	}
+
+	/**
+	 * Test whether the check source tests were carried out.
+	 */
+	@Test
+	public void testCheckSource() throws Exception{
+		org.testsuite.data.Test test1 = mock(org.testsuite.data.Test.class);
+		org.testsuite.data.Test test2 = mock(org.testsuite.data.Test.class);
+		
+		TestSuite suite1 = mock(TestSuite.class);
+		when(suite1.testCount()).thenReturn(1);
+		when(suite1.getTest(0)).thenReturn(test1);
+		
+		TestSuite suite2 = mock(TestSuite.class);
+		when(suite2.testCount()).thenReturn(1);
+		when(suite2.getTest(0)).thenReturn(test2);
+		
+		JunitTestRunner runner1 = mock(JunitTestRunner.class);
+		when(runner1.testSuiteCount()).thenReturn(1);
+		when(runner1.getTestSuite(0)).thenReturn(suite1);
+		
+		FitTestRunner runner2 = mock(FitTestRunner.class);
+		when(runner2.testSuiteCount()).thenReturn(1);
+		when(runner2.getTestSuite(0)).thenReturn(suite2);
+		
+		Field field = TestCore.class.getDeclaredField("_testRunner");
+		field.setAccessible(true);
+		@SuppressWarnings("unchecked")
+		List<TestRunner> list = (List<TestRunner>)field.get(_core);
+		list.add(runner1);
+		list.add(runner2);
+		
+		HtmlOutOverview html = mock(HtmlOutOverview.class);
+		
+		PowerMockito.mockStatic(HtmlOutOverview.class);
+		when(HtmlOutOverview.getInstance()).thenReturn(html);
+		
+		_core.checkSource();
+		
+		verify(runner1).runCheckSource(eq(suite1), eq(test1));
+		verify(runner2).runCheckSource(eq(suite2), eq(test2));
+		
+		PowerMockito.verifyStatic(times(1));
+		HtmlOutOverview.getInstance();
+		verify(html).createHtml();
 	}
 }

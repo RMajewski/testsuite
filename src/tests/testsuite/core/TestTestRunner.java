@@ -42,6 +42,9 @@ import org.mockito.Matchers;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.testsuite.checksource.CSMethod;
+import org.testsuite.checksource.CheckSource;
+import org.testsuite.checksource.SourceLine;
 import org.testsuite.core.HtmlOut;
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
@@ -100,7 +103,6 @@ public class TestTestRunner extends TestRunnerHelper {
 		assertEquals(0, _runner.testSuiteCount());
 		assertEquals(0, _runner.libraryCount());
 		assertEquals(new String(), _runner.getFileExtension());
-		assertEquals(_config, _runner.getConfig());
 		assertEquals(new String(), _runner.getDescription());
 	}
 	
@@ -687,6 +689,8 @@ public class TestTestRunner extends TestRunnerHelper {
 	/**
 	 * Tests if the error occurs IllegalArgumentException if null is passed as a
 	 * parameter.
+	 * 
+	 * @deprecated
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetConfigWithNullAsParameter() {
@@ -890,49 +894,7 @@ public class TestTestRunner extends TestRunnerHelper {
 			IllegalAccessException, IllegalArgumentException, 
 			InvocationTargetException {
 		Method createLibraryAsString = getProtectedMethod(TestRunner.class, 
-				"createLibraryAsString", null);
-		
-		String pathLibrary = "path";
-		String pathLib2 = "test";
-		String libName1 = "lib1";
-		String libName2 = "lib2";
-		
-		when(_config.getPathLibrary()).thenReturn(pathLibrary);
-		
-		Library lib1 = mock(Library.class);
-		when(lib1.getFileName()).thenReturn(libName1);
-		when(lib1.getPath()).thenReturn(new String());
-		_runner.addLibrary(lib1);
-		
-		Library lib2 = mock(Library.class);
-		when(lib2.getFileName()).thenReturn(libName2);
-		when(lib2.getPath()).thenReturn(pathLib2);
-		_runner.addLibrary(lib2);
-		
-		String ret = pathLibrary + File.separator + libName1 + 
-				File.pathSeparator +
-				pathLib2 + File.separator + libName2;
-		assertEquals(ret, createLibraryAsString.invoke(_runner, null));
-		
-		verify(_config).getPathLibrary();
-		
-		verify(lib1).getPath();
-		verify(lib1).getFileName();
-		
-		verify(lib2, times(2)).getPath();
-		verify(lib2).getFileName();
-	}
-	
-	/**
-	 * Tests if the library information is generated for the classpath properly.
-	 */
-	@Test
-	public void testCreateLibraryAsString()
-			throws NoSuchMethodException, SecurityException, 
-			IllegalAccessException, IllegalArgumentException, 
-			InvocationTargetException {
-		Method createLibraryAsString = getProtectedMethod(TestRunner.class, 
-				"createLibraryAsString", null);
+				"createLibraryAsString");
 		
 		String pathLibrary = "path";
 		String pathLib2 = "test";
@@ -954,7 +916,47 @@ public class TestTestRunner extends TestRunnerHelper {
 		String ret = pathLibrary + File.separator + libName1 + 
 				File.pathSeparator +
 				pathLib2 + File.separator + libName2;
-		assertEquals(ret, createLibraryAsString.invoke(_runner, null));
+		assertEquals(ret, createLibraryAsString.invoke(_runner));
+		
+		verify(lib1).getPath();
+		verify(lib1).getFileName();
+		
+		verify(lib2, times(2)).getPath();
+		verify(lib2).getFileName();
+	}
+	
+	/**
+	 * Tests if the library information is generated for the classpath properly.
+	 */
+	@Test
+	public void testCreateLibraryAsString()
+			throws NoSuchMethodException, SecurityException, 
+			IllegalAccessException, IllegalArgumentException, 
+			InvocationTargetException {
+		Method createLibraryAsString = getProtectedMethod(TestRunner.class, 
+				"createLibraryAsString");
+		
+		String pathLibrary = "path";
+		String pathLib2 = "test";
+		String libName1 = "lib1";
+		String libName2 = "lib2";
+		
+		Config.getInstance().setPathLibrary(pathLibrary);
+		
+		Library lib1 = mock(Library.class);
+		when(lib1.getFileName()).thenReturn(libName1);
+		when(lib1.getPath()).thenReturn(new String());
+		_runner.addLibrary(lib1);
+		
+		Library lib2 = mock(Library.class);
+		when(lib2.getFileName()).thenReturn(libName2);
+		when(lib2.getPath()).thenReturn(pathLib2);
+		_runner.addLibrary(lib2);
+		
+		String ret = pathLibrary + File.separator + libName1 + 
+				File.pathSeparator +
+				pathLib2 + File.separator + libName2;
+		assertEquals(ret, createLibraryAsString.invoke(_runner));
 		
 		verify(lib1).getPath();
 		verify(lib1).getFileName();
@@ -975,7 +977,7 @@ public class TestTestRunner extends TestRunnerHelper {
 			IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
 		Method createClasspath = getProtectedMethod(TestRunner.class, 
-		"createClasspath", null);
+		"createClasspath");
 		
 		String path1 = "path1";
 		_runner.addClassPath(path1);
@@ -1010,7 +1012,7 @@ public class TestTestRunner extends TestRunnerHelper {
 				pathLib1 + File.separator + name1 + File.pathSeparator + 
 				pathLib2 + File.separator + name2 + " ";
 		
-		assertEquals(ret, createClasspath.invoke(_runner, null));
+		assertEquals(ret, createClasspath.invoke(_runner));
 		
 		verify(_config, times(2)).getPathLibrary();
 		verify(_config).classPathsAsParameterJVM();
@@ -1031,7 +1033,7 @@ public class TestTestRunner extends TestRunnerHelper {
 			IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
 		Method createClasspath = getProtectedMethod(TestRunner.class, 
-		"createClasspath", null);
+		"createClasspath");
 		
 		String path1 = "path1";
 		_runner.addClassPath(path1);
@@ -1066,7 +1068,7 @@ public class TestTestRunner extends TestRunnerHelper {
 				pathLib1 + File.separator + name1 + File.pathSeparator + 
 				pathLib2 + File.separator + name2 + " ";
 		
-		assertEquals(ret, createClasspath.invoke(_runner, null));
+		assertEquals(ret, createClasspath.invoke(_runner));
 		
 		verify(lib1).getFileName();
 		verify(lib1).getPath();
@@ -1087,7 +1089,7 @@ public class TestTestRunner extends TestRunnerHelper {
 			IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
 		Method createProperty = getProtectedMethod(TestRunner.class, 
-		"createProperty", null);
+		"createProperty");
 		
 		String prop1 = "test1=\"1\"";
 		when(_config.getProperty(0)).thenReturn(prop1);
@@ -1101,7 +1103,7 @@ public class TestTestRunner extends TestRunnerHelper {
 		
 		String ret = "-D" + prop1 + " -D" + prop2 + " -D" + prop3 + " ";
 
-		assertEquals(ret, createProperty.invoke(_runner, null));
+		assertEquals(ret, createProperty.invoke(_runner));
 		
 		verify(_config, times(5)).propertyCount();
 		verify(_config).getProperty(0);
@@ -1118,7 +1120,7 @@ public class TestTestRunner extends TestRunnerHelper {
 			IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
 		Method createProperty = getProtectedMethod(TestRunner.class, 
-		"createProperty", null);
+		"createProperty");
 		
 		String prop1 = "test1=\"1\"";
 		Config.getInstance().addProperty(prop1);
@@ -1131,7 +1133,7 @@ public class TestTestRunner extends TestRunnerHelper {
 		
 		String ret = "-D" + prop1 + " -D" + prop2 + " -D" + prop3 + " ";
 
-		assertEquals(ret, createProperty.invoke(_runner, null));
+		assertEquals(ret, createProperty.invoke(_runner));
 	}
 	
 	@Test
@@ -1453,8 +1455,6 @@ public class TestTestRunner extends TestRunnerHelper {
 		String testName = "test";
 		String exec = packageName + "." + testName;
 		
-		Library library = mock(Library.class);
-		
 		InputStream isConsole = mock(InputStream.class);
 		InputStream isError = mock(InputStream.class);
 
@@ -1538,8 +1538,8 @@ public class TestTestRunner extends TestRunnerHelper {
 		verify(junit).setExitStatus(0);
 		verify(junit, never()).setExists(Matchers.anyBoolean());
 		verify(junit, atLeastOnce()).getName();
-		verify(junit).setStart(Matchers.anyLong());
-		verify(junit).setEnd(Matchers.anyLong());
+		verify(junit).setStart();
+		verify(junit).setEnd();
 		verify(junit).getDurationTime();
 		verify(junit).setStringConsole(Matchers.anyString());
 		
@@ -1621,12 +1621,81 @@ public class TestTestRunner extends TestRunnerHelper {
 		verify(junit).setExitStatus(0);
 		verify(junit, never()).setExists(Matchers.anyBoolean());
 		verify(junit, atLeastOnce()).getName();
-		verify(junit).setStart(Matchers.anyLong());
-		verify(junit).setEnd(Matchers.anyLong());
+		verify(junit).setStart();
+		verify(junit).setEnd();
 		verify(junit).getDurationTime();
 		verify(junit).setStringConsole(Matchers.anyString());
 		
 		verify(suite, atLeastOnce()).getPackage();
 		verify(suite).isExists();
 	}
+
+	/**
+	 * Tests if the runCheckSource method was carried out correctly.
+	 */
+	@Test
+	public void testRunCheckSource() throws Exception {
+		String pathSrc = "src";
+		String pathResult = "result";
+		String pathSuite = "000000";
+		String packageName = "tests";
+		String sourceName = "org.Test";
+		String testName = "Test";
+		String fileExtension = "java";
+		
+		Config.getInstance().setPathSrc(pathSrc);
+		Config.getInstance().setPathResult(pathResult);
+		Config.getInstance().setPathSuitesResult(pathSuite);
+		
+		_runner.setFileExtension(fileExtension);
+		
+		org.testsuite.data.Test test = mock(org.testsuite.data.Test.class);
+		when(test.isCheckSource()).thenReturn(true);
+		when(test.getCheckSource()).thenReturn(sourceName);
+		when(test.getName()).thenReturn(testName);
+		
+		TestSuite suite = mock(TestSuite.class);
+		when(suite.getPackage()).thenReturn(packageName);
+		
+		File file = mock(File.class);
+		when(file.exists()).thenReturn(true);
+		
+		PowerMockito.whenNew(File.class)
+			.withAnyArguments()
+			.thenReturn(file);
+		
+		CheckSource cs = mock(CheckSource.class);
+		when(cs.getMethodList()).thenReturn(new ArrayList<CSMethod>());
+		when(cs.getSourceLineList()).thenReturn(new ArrayList<SourceLine>());
+		
+		PowerMockito.whenNew(CheckSource.class)
+			.withAnyArguments()
+			.thenReturn(cs);
+		
+		_runner.runCheckSource(suite, test);
+		
+		verify(cs).run();
+		verify(cs).createHtmlOut();
+		verify(cs).getMethodList();
+		verify(cs).getSourceLineList();
+	}
+
+	/**
+	 * Tests if the method runCheckSource was canceled.
+	 */
+	@Test
+	public void testRunCheckSourceWithoutCheckSourceForTest() {
+		org.testsuite.data.Test test = mock(org.testsuite.data.Test.class);
+		when(test.isCheckSource()).thenReturn(false);
+		
+		TestSuite suite = mock(TestSuite.class);
+		
+		_runner.runCheckSource(suite, test);
+		
+		verify(test).isCheckSource();
+		verify(test, never()).getCheckSource();
+
+		verify(suite, never()).getPackage();
+	}
+
 }

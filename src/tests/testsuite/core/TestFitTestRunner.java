@@ -298,7 +298,7 @@ public class TestFitTestRunner {
 		when(test.isExecuted()).thenReturn(true);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.getOk()).thenReturn(ok);
 		when(test.getFail()).thenReturn(fail);
 		when(test.getIgnore()).thenReturn(ignore);
@@ -328,7 +328,7 @@ public class TestFitTestRunner {
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
-		order.verify(test).getIn();
+		order.verify(test).getConsole();
 		order.verify(test).getError();
 		order.verify(suite).getPackage();
 		order.verify(test).getName();
@@ -481,7 +481,7 @@ public class TestFitTestRunner {
 		when(test.isExecuted()).thenReturn(false);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		when(test.getOk()).thenReturn(ok);
 		when(test.getFail()).thenReturn(fail);
 		when(test.getIgnore()).thenReturn(ignore);
@@ -506,13 +506,13 @@ public class TestFitTestRunner {
 		order.verify(test).getName();
 		order.verify(suite).getId();
 		order.verify(test).getId();
-		order.verify(test).getIn();
+		order.verify(test).getConsole();
 		order.verify(test).getError();
 		order.verify(suite).getPackage();
 		order.verify(test).getName();
 		order.verify(test).isExecuted();
 		
-		verify(suite, times(14)).getTest(0);
+		verify(suite, times(15)).getTest(0);
 	}
 	
 	/**
@@ -618,7 +618,7 @@ public class TestFitTestRunner {
 		when(test.isExecuted()).thenReturn(true);
 		when(test.getName()).thenReturn(testName);
 		when(test.getError()).thenReturn(error);
-		when(test.getIn()).thenReturn(console);
+		when(test.getConsole()).thenReturn(console);
 		
 		TestSuite suite = mock(TestSuite.class);
 		when(suite.getTest(0)).thenReturn(test);
@@ -737,12 +737,11 @@ public class TestFitTestRunner {
 				System.lineSeparator() + "\t\t\t\t\t\t<td class=\"pass\">" + duration + 
 				"</td>" + System.lineSeparator();
 		
-		when(_config.getPathSuitesResult()).thenReturn(resultSuite);
-		when(_config.classPathsAsParameterJVM()).thenReturn(new String());
+		Config.getInstance().setPathSuitesResult(resultSuite);
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
-				eq(error), anyString())).thenReturn(testOut);
+				eq(error), anyString(), anyString())).thenReturn(testOut);
 		
 		Method method = 
 				FitTestRunner.class.getDeclaredMethod("createHtmlRow", 
@@ -768,7 +767,7 @@ public class TestFitTestRunner {
 		
 		assertEquals(ret, method.invoke(_runner, 0, 0, html));
 		
-		InOrder order = inOrder(test, suite, _config);
+		InOrder order = inOrder(test, suite);
 		order.verify(test).getOk();
 		order.verify(test).getFail();
 		order.verify(test).getIgnore();
@@ -778,7 +777,6 @@ public class TestFitTestRunner {
 		order.verify(test).isExists();
 		order.verify(test).isExecuted();
 		order.verify(test).isTerminated();
-		order.verify(_config).getPathSuitesResult();
 		order.verify(suite).getPackage();
 		order.verify(test).getName();
 		order.verify(test).getName();
@@ -796,7 +794,7 @@ public class TestFitTestRunner {
 		order.verify(test).getException();
 		order.verify(test).getDurationTimeFormattedString();
 		
-		verify(suite, times(23)).getTest(0);
+		verify(suite, times(24)).getTest(0);
 	}
 	
 	/**
@@ -833,12 +831,11 @@ public class TestFitTestRunner {
 				"colspan=\"5\">wurde nicht ausgeführt</td>" +
 				System.lineSeparator();
 		
-		when(_config.getPathSuitesResult()).thenReturn(resultSuite);
-		when(_config.classPathsAsParameterJVM()).thenReturn(new String());
+		Config.getInstance().setPathSuitesResult(resultSuite);
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
-				eq(error), anyString())).thenReturn(testOut);
+				eq(error), anyString(), anyString())).thenReturn(testOut);
 		
 		Method method = 
 				FitTestRunner.class.getDeclaredMethod("createHtmlRow", 
@@ -881,7 +878,7 @@ public class TestFitTestRunner {
 		order.verify(test).getName();
 		order.verify(test).isExecuted();
 		
-		verify(suite, times(14)).getTest(0);
+		verify(suite, times(15)).getTest(0);
 	}
 	
 	/**
@@ -909,7 +906,7 @@ public class TestFitTestRunner {
 		
 		HtmlOut html = mock(HtmlOut.class);
 		when(html.generateTestOut(eq(suiteId), eq(testId), eq(console), 
-				eq(error), anyString())).thenReturn(new String());
+				eq(error), anyString(), anyString())).thenReturn(new String());
 		
 		Method method = 
 				FitTestRunner.class.getDeclaredMethod("createHtmlRow", 
@@ -928,11 +925,11 @@ public class TestFitTestRunner {
 		when(suite.getPackage()).thenReturn(packageName);
 		_runner.addTestSuite(suite);
 		
-		when(_config.getPathSrc()).thenReturn(srcName);
+		Config.getInstance().setPathSrc(srcName);
 		
 		assertEquals(ret, method.invoke(_runner, 0, 0, html));
 		
-		InOrder order = inOrder(test, suite, _config);
+		InOrder order = inOrder(test, suite);
 		order.verify(test).getOk();
 		order.verify(test).getFail();
 		order.verify(test).getIgnore();
@@ -940,7 +937,6 @@ public class TestFitTestRunner {
 		order.verify(test).isExecuted();
 		order.verify(test).isTerminated();
 		order.verify(test).isExists();
-		order.verify(_config).getPathSrc();
 		order.verify(suite).getPackage();
 		order.verify(test).getName();
 		
