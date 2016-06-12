@@ -48,11 +48,16 @@ public class TestChecksourceTests extends TestLang {
 	 * Tests if have all entries for the messages
 	 */
 	@Test
-	public void testHaveAllEntriesForHtmlHead() {
+	public void testHaveAllEntriesForMessages() {
 		assertNotNull(_bundle.getString("sourceMethodNotTested"));
 		assertNotNull(_bundle.getString("emptylines"));
+		assertNotNull(_bundle.getString("emptyLineBrace"));
 		assertNotNull(_bundle.getString("emptyMethod"));
 		assertNotNull(_bundle.getString("unusedImports"));
+		assertNotNull(_bundle.getString("emptyJavadocClass"));
+		assertNotNull(_bundle.getString("emptyJavadocField"));
+		assertNotNull(_bundle.getString("emptyJavadocConst"));
+		assertNotNull(_bundle.getString("emptyJavadocMethod"));
 	}
 
 }

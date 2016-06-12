@@ -68,6 +68,11 @@ public class TestEmptyLines implements SourceTest {
 				list.get(i).addMessage(new MessageColor(
 						_bundle.getString("emptylines"), 
 						HelperUsedColor.WARNING));
+			} else if ((last == i - 1) && 
+					list.get(i).getLine().matches("^\\s*\\}\\s*$")) {
+				list.get(i - 1).addMessage(new MessageColor(
+						_bundle.getString("emptyLineBrace"), 
+						HelperUsedColor.WARNING));
 			}
 			
 			if (list.get(i).getLine().isEmpty() || empty)

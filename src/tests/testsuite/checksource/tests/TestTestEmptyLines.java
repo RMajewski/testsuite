@@ -115,4 +115,36 @@ public class TestTestEmptyLines {
 		assertEquals(0, line4.messageCount());
 	}
 
+
+	/**
+	 * Tests if the test was performed correctly.
+	 */
+	@Test
+	public void testTestEmptyLineBeforeBrace() {
+		List<SourceLine> list = new ArrayList<SourceLine>();
+		
+		SourceLine line1 = new SourceLine();
+		line1.setLine("Test");
+		list.add(line1);
+		
+		SourceLine line2 = new SourceLine();
+		line2.setLine(new String());
+		list.add(line2);
+		
+		SourceLine line3 = new SourceLine();
+		line3.setLine("}");
+		list.add(line3);
+		
+		assertTrue(_test.test(list));
+
+		assertEquals(0, line1.messageCount());
+		
+		assertEquals(1, line2.messageCount());
+		assertEquals(ResourceBundle.getBundle(TestEmptyLines.BUNDLE_FILE)
+				.getString("emptyLineBrace"), line2.getMessage(0).getMessage());
+		assertEquals(HelperUsedColor.WARNING, line2.getMessage(0).getColor());
+		
+		assertEquals(0, line3.messageCount());
+	}
+	
 }
