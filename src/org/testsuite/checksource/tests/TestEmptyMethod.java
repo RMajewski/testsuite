@@ -60,10 +60,12 @@ public class TestEmptyMethod implements SourceTest {
 		MessageColor message = new MessageColor(_bundle.getString("emptyMethod"), 
 				HelperUsedColor.WARNING);
 		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i).getLine().matches("^[\\w ()]*[{][\\s]*}$")) {
+			if (list.get(i).getLine().matches(
+					"^\\s*(private|public|protected)[\\w\\s\\(\\)]*\\{\\s*\\}$")) {
 				beginMethod = -1;
 				list.get(i).addMessage(message);
-			} else if (list.get(i).getLine().matches("^[\\s\\w (){]*[\\s]*$")) {
+			} else if (list.get(i).getLine().matches(
+					"^\\s*(private|public|protected)[\\s\\w (){]*[\\s]*$")) {
 				beginMethod = i;
 			} else if ((beginMethod == i - 1) && 
 					((list.get(i).getLine().trim().isEmpty()) 
