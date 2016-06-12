@@ -22,6 +22,7 @@ package tests.testsuite.checksource.tests;
 import static org.junit.Assert.*;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -29,6 +30,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.testsuite.checksource.SourceLine;
 import org.testsuite.checksource.tests.TestEmptyLines;
+import org.testsuite.checksource.tests.TestJavadoc;
 import org.testsuite.helper.HelperUsedColor;
 
 /**
@@ -51,6 +53,15 @@ public class TestTestEmptyLines {
 	@Before
 	public void setUp() throws Exception {
 		_test = new TestEmptyLines();
+	}
+	
+	/**
+	 * Tests if the class implements the interface SourceTest.
+	 */
+	@Test
+	public void testImplementsSourceTest() {
+		assertEquals("[interface org.testsuite.checksource.tests.SourceTest]",
+				Arrays.toString(TestJavadoc.class.getInterfaces()));
 	}
 	
 	/**

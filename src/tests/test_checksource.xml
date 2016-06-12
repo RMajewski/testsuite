@@ -95,6 +95,7 @@
 			<test checkSource="org.testsuite.checksource.tests.TestEmptyLines">TestTestEmptyLines</test>
 			<test checkSource="org.testsuite.checksource.tests.TestEmptyMethod">TestTestEmptyMethod</test>
 			<test checkSource="org.testsuite.checksource.tests.TestUnusedImports">TestTestUnusedImports</test>
+			<test checkSource="org.testsuite.checksource.tests.TestJavadoc">TestTestJavadoc</test>
 		</testSuite>
 	</testGroup>
 </configurationFile>
