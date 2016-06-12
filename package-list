@@ -1,5 +1,8 @@
 fit
 org.testsuite.app
+org.testsuite.checksource
+org.testsuite.checksource.annotation
+org.testsuite.checksource.tests
 org.testsuite.core
 org.testsuite.data
 org.testsuite.helper
@@ -11,6 +14,9 @@ tests.fixtures.testsuite.core
 tests.lang.de_DE
 tests.lang.en
 tests.testsuite.app
+tests.testsuite.checksource
+tests.testsuite.checksource.annotation
+tests.testsuite.checksource.tests
 tests.testsuite.core
 tests.testsuite.data
 tests.testsuite.helper
