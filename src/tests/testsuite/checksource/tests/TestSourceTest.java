@@ -27,7 +27,7 @@ import org.junit.Test;
 import org.testsuite.checksource.tests.SourceTest;
 
 /**
- * Tests for the interface {@link org.testsuite.checksource.test.SourceTest}.
+ * Tests for the interface {@link org.testsuite.checksource.tests.SourceTest}.
  * 
  * @author René Majewski
  *

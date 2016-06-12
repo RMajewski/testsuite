@@ -30,7 +30,7 @@ import org.junit.Test;
 import org.testsuite.checksource.Html;
 
 /**
- * Tests for class {@link org.testuite.checksource.Html}.
+ * Tests for class {@link org.testsuite.checksource.Html}.
  * 
  * @author René Majewski
  *

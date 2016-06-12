@@ -135,8 +135,6 @@ public class AppTreeModel implements TreeModel {
 	 * <li>TestSuite: package</li>
 	 * <li>TestSuite: test</li>
 	 * </ul>
-	 * 
-	 * @param config The global configuration
 	 */
 	public void validateConfiguration() {
 		Object[] path = {getRoot()};

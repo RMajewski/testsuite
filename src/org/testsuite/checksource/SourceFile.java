@@ -180,7 +180,8 @@ public class SourceFile {
 	 * 
 	 * @param testName The name of the test file
 	 * 
-	 * @return 
+	 * @return True if the file could be read. False if the file could not be
+	 * read.
 	 */
 	public boolean readFile(boolean test, String testName) {
 		if (!test && ((_fileName == null) || _fileName.isEmpty()))

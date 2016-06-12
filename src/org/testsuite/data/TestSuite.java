@@ -112,7 +112,7 @@ public class TestSuite extends Data {
 	/**
 	 * Removes the test from the test list
 	 * 
-	 * @param o Test, which is to be deleted.
+	 * @param test Test, which is to be deleted.
 	 */
 	public void removeTest(Test test) {
 		if (test == null)

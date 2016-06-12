@@ -181,7 +181,7 @@ public class DlgConfigGeneral extends DlgConfig {
 	 *
 	 * @param config The general configuration
 	 * 
-	 * @deprecated Use {@link DlgConfigGeneral(JFrame)}
+	 * @deprecated Use {@link #DlgConfigGeneral(JFrame)}
 	 */
 	public DlgConfigGeneral(JFrame owner, Config config) {
 		this(owner);

@@ -875,7 +875,7 @@ public abstract class TestRunner {
 	 * 
 	 * @param source Object that the event triggered.
 	 * 
-	 * @param runneId The test runner id.
+	 * @param runnerId The test runner id.
 	 * 
 	 * @param suiteId The test suite id.
 	 * 
@@ -1249,9 +1249,9 @@ public abstract class TestRunner {
 	/**
 	 * Called to generate the columns for a row in the HTML table.
 	 * 
-	 * @param suite Index of the {@link org.testsuite.core.TestSuite} class.
+	 * @param suite Index of the {@link org.testsuite.data.TestSuite} class.
 	 * 
-	 * @param test Index of the {@link org.testsuite.core.Test} class.
+	 * @param test Index of the {@link org.testsuite.data.Test} class.
 	 * 
 	 * @param html Instance of the {@link org.testsuite.core.HtmlOut} class.
 	 * 

@@ -42,7 +42,7 @@ import org.testsuite.checksource.annotation.CheckSource;
 import org.testsuite.helper.HelperUsedColor;
 
 /**
- * Tests the class {@link org.testsuite.checksource.Htmlout}.
+ * Tests the class {@link org.testsuite.checksource.HtmlOut}.
  * 
  * @author René Majewski
  *

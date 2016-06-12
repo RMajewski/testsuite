@@ -116,7 +116,7 @@ public class HtmlOut extends Html {
 	 * 
 	 * @return The list of methods.
 	 * 
-	 * @deprecated Use {@link org.testsuite.helper.HelperHtml#createListOfMethods(String, List, boolean)}
+	 * @deprecated Use {@link org.testsuite.helper.HelperHtml#createListOfMethods(String, List, boolean, boolean)}
 	 */
 	@SuppressWarnings("unused")
 	private String listMethod(String description, List<CSMethod> methods, 

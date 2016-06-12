@@ -88,7 +88,7 @@ public class HtmlOutOverview extends Html {
 	/**
 	 * Added a result file to the list of result files.
 	 * 
-	 * @param resultFile The new result file added to the list.
+	 * @param result The new result file added to the list.
 	 */
 	public void addResultFile(String result) {
 		if ((result == null) || result.isEmpty())

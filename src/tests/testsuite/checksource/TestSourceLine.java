@@ -28,7 +28,7 @@ import org.testsuite.checksource.MessageColor;
 import org.testsuite.checksource.SourceLine;
 
 /**
- * Tests the class {@link org.testsuite.checkSource.SourceLine}.
+ * Tests the class {@link org.testsuite.checksource.SourceLine}.
  * 
  * @author René Majewski
  *
