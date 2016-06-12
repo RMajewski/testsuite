@@ -205,6 +205,23 @@ public class HtmlOut extends Html {
 						.formatColor(lines.get(i).getMessage(0).getColor()) + 
 						";\" ";
 			}
+			
+			ret.append("\t\t\t\t\t\t<td");
+			ret.append(background);
+			ret.append(">");
+			ret.append("<a name=\"Line_");
+			ret.append(lines.get(i).getLineNumber());
+			ret.append("\">");
+			ret.append(lines.get(i).getLineNumber());
+			ret.append("</a>");
+			ret.append("</td>");
+			ret.append(System.lineSeparator());
+			
+			String line = HelperHtml.replaceHtmlEntities(lines.get(i).getLine());
+			line = HelperHtmlCodeJava.formatString(line,
+					lines.get(i).isMultiLineComment(),
+					lines.get(i).isJavadoc());
+			line = HelperHtml.replaceTabWidthSpaces(line, 4);
 
 			String ankerBegin = new String();
 			String ankerEnd = new String();
@@ -222,21 +239,6 @@ public class HtmlOut extends Html {
 				ankerBegin = "<a name=\"" + ankerName + "\">";
 				ankerEnd = "</a>";
 			}
-			
-			ret.append("\t\t\t\t\t\t<td");
-			ret.append(background);
-			ret.append(">");
-			ret.append(ankerBegin);
-			ret.append(lines.get(i).getLineNumber());
-			ret.append(ankerEnd);
-			ret.append("</td>");
-			ret.append(System.lineSeparator());
-			
-			String line = HelperHtml.replaceHtmlEntities(lines.get(i).getLine());
-			line = HelperHtmlCodeJava.formatString(line,
-					lines.get(i).isMultiLineComment(),
-					lines.get(i).isJavadoc());
-			line = HelperHtml.replaceTabWidthSpaces(line, 4);
 
 			if (deprecated) {
 				String[] tmp = line.split(" ");
@@ -256,7 +258,9 @@ public class HtmlOut extends Html {
 			ret.append("\t\t\t\t\t\t<td");
 			ret.append(background);
 			ret.append(">");
+			ret.append(ankerBegin);
 			ret.append(line);
+			ret.append(ankerEnd);
 			ret.append("</td>");
 			ret.append(System.lineSeparator());
 			

@@ -261,8 +261,8 @@ public class HtmlOutOverview extends Html {
 			if (file.exists()) {
 				String linkSrc = file.getName();
 				String linkName = linkSrc.substring(linkSrc.indexOf("_") + 1);
-				String className = linkName.substring(linkName.indexOf("Test") + 4, 
-						linkName.indexOf(".html"));
+				String className = linkName.substring(
+						linkName.indexOf("Test") + 4, linkName.indexOf(".html"));
 				StringBuilder table = new StringBuilder("\t\t\t\t\t<tr>");
 				table.append(System.lineSeparator());
 				
@@ -328,14 +328,19 @@ public class HtmlOutOverview extends Html {
 					String linkEnd = new String();
 					
 					for (int method = 0; method < _methods.size(); method++) {
+						String link = "<a href=\"" +ResourceBundle.getBundle(
+								TestRunner.BUNDLE_FILE).getString(
+										"result_checksoure") + "_Test" +
+							_methods.get(method).getClassName() + ".html#";
 						if ((_methods.get(method).getClassName().equals(className)) && 
 								(_methods.get(method).getLine() == 
 								_sources.get(source).getLineNumber())) {
-							linkSrc = "<a href=\"" +ResourceBundle.getBundle(
-									TestRunner.BUNDLE_FILE).getString(
-											"result_checksoure") + "_Test" +
-								_methods.get(method).getClassName() + ".html#" +
-								_methods.get(method).getName() + "\">";
+							linkSrc = link + _methods.get(method).getName() + 
+									"\">";
+							linkEnd = "</a>";
+						} else { 
+							linkSrc = link + "Line_" + 
+									_methods.get(method).getLine() + "\">";
 							linkEnd = "</a>";
 						}
 					}
