@@ -65,17 +65,20 @@ public class ReadTest implements Read {
 		for (Iterator<String> i = _classNames.iterator(); i.hasNext();) {
 			String cls = i.next();
 			if (line.indexOf(cls) > -1) {
-				String[] tmp = line.split(" ");
-				if (tmp.length < 3)
-					continue;
 				
-				if (tmp[0].equals("private") || tmp[0].equals("protected") ||
-						tmp[0].equals("public"))
-					_variables.add(tmp[2]);
-				else if (tmp[1].equals("="))
-					_variables.add(tmp[0]);
-				else if (tmp[2].equals("="))
-					_variables.add(tmp[1]);
+				if (line.matches("^\\s*(public|private|protected)[\\w\\s]*(" +
+						cls + ")[\\w\\s]*;$")) {
+					_variables.add(
+							line.substring(line.indexOf(cls) + cls.length() + 1, 
+									line.indexOf(";")));
+				}
+				
+				if(line.matches("^\\s*(" + cls + 
+						")[\\w\\s]*=[\\p{Graph}\\s]*;$")) {
+					_variables.add(
+							line.substring(line.indexOf(cls) + cls.length() + 1, 
+									line.indexOf("=")).trim());
+				}
 			}
 		}
 		

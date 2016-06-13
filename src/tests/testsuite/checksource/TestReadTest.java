@@ -87,18 +87,53 @@ public class TestReadTest {
 		
 		CSMethod method1 = mock(CSMethod.class);
 		when(method1.getClassName()).thenReturn(className);
-		when(method1.getName()).thenReturn(methodName);
+		when(method1.getName()).thenReturn(className);
 		methods.add(method1);
 		
 		CSMethod method2 = mock(CSMethod.class);
 		when(method2.getClassName()).thenReturn(className);
-		when(method2.getName()).thenReturn(className);
+		when(method2.getName()).thenReturn(methodName);
 		methods.add(method2);
 		
 		_rt.read(1, line1, methods);
 		_rt.read(2, line2, methods);
 		
+		verify(method1).addCall(1);
+		verify(method2).addCall(2);
+	}
+
+	/**
+	 * Tests if read the source code correctly.
+	 */
+	@CheckSource(method="readCheckSourceAnnotation")
+	@Test
+	public void testReadWithAttribute() {
+		String line1 = "public static Test test;";
+		String line2 = "test = new Test()";
+		String line3 = "test.test()";
+		
+		String className = "Test";
+		String methodName = "test";
+		
+		_rt.addClassName(className);
+		
+		List<CSMethod> methods = new ArrayList<CSMethod>();
+		
+		CSMethod method1 = mock(CSMethod.class);
+		when(method1.getClassName()).thenReturn(className);
+		when(method1.getName()).thenReturn(className);
+		methods.add(method1);
+		
+		CSMethod method2 = mock(CSMethod.class);
+		when(method2.getClassName()).thenReturn(className);
+		when(method2.getName()).thenReturn(methodName);
+		methods.add(method2);
+		
+		_rt.read(1, line1, methods);
+		_rt.read(2, line2, methods);
+		_rt.read(3, line3, methods);
+		
 		verify(method1).addCall(2);
-		verify(method2).addCall(1);
+		verify(method2).addCall(3);
 	}
 }
