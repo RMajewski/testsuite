@@ -101,7 +101,6 @@ public class HtmlOut extends Html {
 				e.printStackTrace();
 			}
 		}
-		
 	}
 	
 	/**

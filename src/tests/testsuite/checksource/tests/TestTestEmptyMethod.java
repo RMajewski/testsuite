@@ -166,4 +166,30 @@ public class TestTestEmptyMethod {
 		assertEquals(HelperUsedColor.WARNING, line3.getMessage(0).getColor());
 	}
 
+	/**
+	 * Tests if it is not recognized as an empty method.
+	 */
+	@Test
+	public void testTestNotEmptyMethod() {
+		List<SourceLine> list = new ArrayList<SourceLine>();
+		
+		SourceLine line1 = new SourceLine();
+		line1.setLine("public static final void getLine(String test) {");
+		list.add(line1);
+		
+		SourceLine line2 = new SourceLine();
+		line2.setLine("Object[] path = {getRoot()};");
+		list.add(line2);
+		
+		SourceLine line3 = new SourceLine();
+		line3.setLine("}");
+		list.add(line3);
+		
+		assertTrue(_test.test(list));
+		
+		assertEquals(0, line1.messageCount());
+		assertEquals(0, line2.messageCount());
+		assertEquals(0, line3.messageCount());
+	}
+
 }

@@ -72,17 +72,18 @@ public class TestEmptyMethod implements SourceTest {
 							|| list.get(i).getLine()
 							.matches("^\\s*\\/\\/[\\w ]*$")) && 
 					((i + 1 < list.size()) && 
-							(list.get(i + 1).getLine().indexOf("}") > -1))) {
+							list.get(i + 1).getLine().matches("^\\s*}\\s*$"))) {
 				list.get(i - 1).addMessage(message);
 				list.get(i).addMessage(message);
 				list.get(i + 1).addMessage(message);
 			} else if ((beginMethod == i - 1) && 
-					(list.get(i).getLine().indexOf("}") > -1)) {
+					list.get(i).getLine().matches("^\\s*}\\s*$")) {
 				list.get(i - 1).addMessage(message);
 				list.get(i).addMessage(message);
 			}
 			
-			if ((beginMethod > -1) && (list.get(i).getLine().indexOf("}") > -1))
+			if ((beginMethod > -1) && 
+					list.get(i).getLine().matches("^\\s*}\\s*$"))
 				beginMethod = -1;
 		}
 		return true;

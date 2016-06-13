@@ -111,7 +111,6 @@ public class TestJavadoc implements SourceTest {
 						_end = -1;
 						_annotation = false;
 					}
-					
 				}
 				
 				// Const
@@ -142,12 +141,10 @@ public class TestJavadoc implements SourceTest {
 						_end = -1;
 						_annotation = false;
 					}
-					
 				}
 			}
 		}
 		
 		return true;
 	}
-
 }

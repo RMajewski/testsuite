@@ -462,6 +462,5 @@ public class AppTreeModel implements TreeModel {
 		for (int i = 0; i < _validationEventListeners.size(); i++)
 			_validationEventListeners.elementAt(i).validationError(
 					new ValidationEvent(this, path, type, indexes));
-		
 	}
 }

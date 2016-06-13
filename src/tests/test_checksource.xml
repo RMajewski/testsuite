@@ -58,14 +58,14 @@
 		<testSuite>
 			<name>Tests the annotations</name>
 			<package>tests.testsuite.checksource.annotation</package>
-			<test checksource="org.testsuite.checksource.CheckSource">TestCheckSource</test>
+			<test checkSource="org.testsuite.checksource.CheckSource">TestCheckSource</test>
 		</testSuite>
 		<testSuite>
 			<name>Tests the classes of informations</name>
 			<package>tests.testsuite.checksource</package>
 			<test checkSource="org.testsuite.checksource.CSMethod">TestCSMethod</test>
-			<test checksource="org.testsuite.checksource.CSParameter">TestCSParameter</test>
-			<test checksource="org.testsuite.checksource.MessageColor">TestMessageColor</test>
+			<test checkSource="org.testsuite.checksource.CSParameter">TestCSParameter</test>
+			<test checkSource="org.testsuite.checksource.MessageColor">TestMessageColor</test>
 		</testSuite>
 		<testSuite>
 			<name>Tests the classes for read the source files</name>

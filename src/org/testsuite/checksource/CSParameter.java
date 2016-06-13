@@ -88,5 +88,4 @@ public class CSParameter {
 			throw new IllegalArgumentException();
 		_name = name;
 	}
-
 }

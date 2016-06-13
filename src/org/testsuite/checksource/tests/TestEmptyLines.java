@@ -80,5 +80,4 @@ public class TestEmptyLines implements SourceTest {
 		}
 		return true;
 	}
-
 }

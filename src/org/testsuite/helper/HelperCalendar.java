@@ -133,7 +133,6 @@ public class HelperCalendar {
 			
 		case 11:
 			return "December";
-		
 		}
 		
 		// Standard Rückgabe

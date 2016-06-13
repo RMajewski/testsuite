@@ -48,40 +48,44 @@
 		<testSuite>
 			<name>Test org.testsuite.App</name>
 			<package>tests.testsuite.app</package>
-			<test>TestAppTreeModel</test>
-			<test>TestDlgConfig</test>
-			<test>TestValidationEvent</test>
+			<test checkSource="org.testsuite.app.AppTreeModel">TestAppTreeModel</test>
+			<test checkSource="org.testsuite.app.DlgConfig">TestDlgConfig</test>
+			<test checkSource="org.testsuite.app.ValidationEvent">TestValidationEvent</test>
 		</testSuite>
 		<testSuite>
 			<name>Test org.testsuite.Core</name>
 			<package>tests.testsuite.core</package>
-			<test>TestConfigParser</test>
-			<test>TestConfigSaver</test>
-			<test>TestTestRunner</test>
-			<test>TestFitTestRunner</test>
-			<test>TestJemmyTestRunner</test>
-			<test>TestJunitTestRunner</test>
-			<test>TestHtmlOut</test>
-			<test>TestTestCore</test>
-			<test>TestTestsRun</test>
+			<test checkSource="org.testsuite.core.ConfigParser">TestConfigParser</test>
+			<test checkSource="org.testsuite.core.ConfigSaver">TestConfigSaver</test>
+			<test checkSource="org.testsuite.core.TestRunner">TestTestRunner</test>
+			<test checkSource="org.testsuite.core.FitTestRunner">TestFitTestRunner</test>
+			<test checkSource="org.testsuite.core.JemmyTestRunner">TestJemmyTestRunner</test>
+			<test checkSource="org.testsuite.core.JunitTestRunner">TestJunitTestRunner</test>
+			<test checkSource="org.testsuite.core.HtmlOut">TestHtmlOut</test>
+			<test checkSource="org.testsuite.core.TestCore">TestTestCore</test>
+			<test checkSource="org.testsuite.core.TestsRun">TestTestsRun</test>
 		</testSuite>
 		<testSuite>
 			<name>Test org.testsuite.Data</name>
 			<package>tests.testsuite.data</package>
-			<test>TestConfig</test>
-			<test>TestTestEvent</test>
-			<test>TestTestEventListener</test>
-			<test>TestData</test>
-			<test>TestFitData</test>
-			<test>TestJunitData</test>
-			<test>TestLibrary</test>
-			<test>TestTest</test>
-			<test>TestTestSuite</test>
+			<test checkSource="org.testsuite.data.Config">TestConfig</test>
+			<test checkSource="org.testsuite.data.TestEvent">TestTestEvent</test>
+			<test checkSource="org.testsuite.data.TestSelectEvent">TestTestSelectEvent</test>
+			<test checkSource="org.testsuite.data.TestEventListener">TestTestEventListener</test>
+			<test checkSource="org.testsuite.data.Data">TestData</test>
+			<test checkSource="org.testsuite.data.Fit">TestFitData</test>
+			<test checkSource="org.testsuite.data.Junit">TestJunitData</test>
+			<test checkSource="org.testsuite.data.Library">TestLibrary</test>
+			<test checkSource="org.testsuite.data.Test">TestTest</test>
+			<test checkSource="org.testsuite.data.TestSuite">TestTestSuite</test>
 		</testSuite>
 		<testSuite>
 			<name>Test org.testsuite.Helper</name>
 			<package>tests.testsuite.helper</package>
-			<test>TestHelperCalendar</test>
+			<test checkSource="org.testsuite.helper.HelperCalendar">TestHelperCalendar</test>
+			<test checkSource="org.testsuite.helper.HelperHtml">TestHelperHtml</test>
+			<test checkSource="org.testsuite.helper.HelperHtmlCodeJava">TestHelperHtmlCodeJava</test>
+			<test checkSource="org.testsuite.helper.HelperUsedColor">TestHelperUsedColor</test>
 		</testSuite>
 		<testSuite>
 			<name>Tests the English language files</name>
@@ -96,6 +100,8 @@
 			<test>TestTestCore</test>
 			<test>TestTestRunner</test>
 			<test>TestValidationEventRenderer</test>
+			<test>TestChecksourceHtmlOut</test>
+			<test>TestChecksourceTests</test>
 		</testSuite>
 		<testSuite>
 			<name>Tests the German language files</name>
@@ -110,6 +116,38 @@
 			<test>TestTestCore_de</test>
 			<test>TestTestRunner_de</test>
 			<test>TestValidationEventRenderer_de</test>
+			<test>TestChecksourceHtmlOut_de</test>
+			<test>TestChecksourceTests_de</test>
+		</testSuite>
+		<testSuite>
+			<name>Tests the annotations</name>
+			<package>tests.testsuite.checksource.annotation</package>
+			<test checkSource="org.testsuite.checksource.CheckSource">TestCheckSource</test>
+		</testSuite>
+		<testSuite>
+			<name>Tests for check source tests</name>
+			<package>tests.testsuite.checksource.tests</package>
+			<test checkSource="org.testsuite.checksource.tests.SourceTest">TestSourceTest</test>
+			<test checkSource="org.testsuite.checksource.tests.TestEmptyLines">TestTestEmptyLines</test>
+			<test checkSource="org.testsuite.checksource.tests.TestEmptyMethod">TestTestEmptyMethod</test>
+			<test checkSource="org.testsuite.checksource.tests.TestUnusedImports">TestTestUnusedImports</test>
+			<test checkSource="org.testsuite.checksource.tests.TestJavadoc">TestTestJavadoc</test>
+		</testSuite>
+		<testSuite>
+			<name>Tests the check source</name>
+			<package>tests.testsuite.checksource</package>
+			<test checkSource="org.testsuite.checksource.CSMethod">TestCSMethod</test>
+			<test checkSource="org.testsuite.checksource.CSParameter">TestCSParameter</test>
+			<test checkSource="org.testsuite.checksource.MessageColor">TestMessageColor</test>
+			<test checkSource="org.testsuite.checksource.Read">TestRead</test>
+			<test checkSource="org.testsuite.checksource.ReadSource">TestReadSource</test>
+			<test checkSource="org.testsuite.checksource.ReadTest">TestReadTest</test>
+			<test checkSource="org.testsuite.checksource.SourceLine">TestSourceLine</test>
+			<test checkSource="org.testsuite.checksource.SourceFile">TestSourceFile</test>
+			<test checkSource="org.testsuite.checksource.CheckSource">TestCheckSource</test>
+			<test checkSource="org.testsuite.checksource.Html">TestHtml</test>
+			<test checkSource="org.testsuite.checksource.HtmlOut">TestHtmlOut</test>
+			<test checkSource="org.testsuite.checksource.HtmlOutOverview">TestHtmlOutOverview</test>
 		</testSuite>
 	</testGroup>
 	

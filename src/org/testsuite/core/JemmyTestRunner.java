@@ -243,7 +243,6 @@ public class JemmyTestRunner extends TestRunner {
 		ret.append("&nbsp;</td>");
 		ret.append(System.lineSeparator());
 		
-		
 		ret.append(td);
 		ret.append(_bundle.getString("createHtmlTableHead_ok"));
 		ret.append(": ");

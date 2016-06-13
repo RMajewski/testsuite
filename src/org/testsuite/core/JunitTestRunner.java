@@ -496,7 +496,6 @@ public class JunitTestRunner extends TestRunner {
 		return ret.toString();
 	}
 	
-	
 	/**
 	 * Detected from the console output was carried the test.
 	 * 

@@ -96,7 +96,6 @@ public class ReadTest implements Read {
 					}
 				}
 			}
-			
 		}
 	}
 

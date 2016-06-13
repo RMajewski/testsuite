@@ -69,5 +69,4 @@ public class TestUnusedImports implements SourceTest {
 		
 		return true;
 	}
-
 }
