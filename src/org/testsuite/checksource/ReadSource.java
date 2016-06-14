@@ -102,13 +102,16 @@ public class ReadSource implements Read {
 				readMethod(lineNumber - 1, _methodStarted.split(" "), list);
 				_methodStarted = null;
 			} else if (line.matches("^[\\s]*(private|protected|public)[\\s]?" +
-					"(class)[\\s\\w]*\\{$")) {
+					"(class)[\\s\\w]*\\{$") ||
+					line.matches("^[\\s]*(private|protected|public)[\\s]?" +
+							"(interface)[\\s\\w]*\\{$")) {
 				boolean name = false;
 				for (int i = 0; i < read.length; i++)
 					if (read[i].equals("extends") ||
 							read[i].equals("implements")) {
 						_className = read[i - 1];
 						name = true;
+						break;
 					}
 				if (!name)
 					_className = read[read.length - 1];

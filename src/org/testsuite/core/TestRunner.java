@@ -1191,6 +1191,8 @@ public abstract class TestRunner {
 				return;
 			}
 			
+			String sourcePath = file.getParent();
+			
 			String testFile = Config.getInstance().getPathSrc() + File.separator +
 					suite.getPackage().replaceAll("\\.", File.separator) + 
 					File.separator + test.getName() + ".java";
@@ -1202,7 +1204,7 @@ public abstract class TestRunner {
 			
 			String testResult = Config.getInstance().getPathResult() + 
 					File.separator + Config.getInstance().getPathSuitesResult() +
-					File.separator;
+					File.separator + sourcePath + File.separator;
 			
 			file = new File(testResult);
 			if (!file.exists())

@@ -20,6 +20,8 @@
 package tests.testsuite.checksource;
 
 import static org.junit.Assert.*;
+
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +61,251 @@ public class TestReadSource {
 	public void testImplementedReadInterface() {
 		assertEquals(Read.class.getName(), 
 				ReadSource.class.getInterfaces()[0].getName());
+	}
+
+	/**
+	 * Tests if the read() has read the right class name.
+	 */
+	@Test
+	public void testReadPublicClassName() throws Exception {
+		List<CSMethod> list = new ArrayList<CSMethod>();
+		
+		String className = "Test";
+		String line = "public class " + className + " {";
+		int lineNumber = 44;
+		
+		_source.read(lineNumber, line, list);
+		
+		assertTrue(list.isEmpty());
+
+		Field field = ReadSource.class.getDeclaredField("_className");
+		field.setAccessible(true);
+		assertEquals(className, String.valueOf(field.get(_source)));
+	}
+
+	/**
+	 * Tests if the read() has read the right class name.
+	 */
+	@Test
+	public void testReadPrivateClassName() throws Exception {
+		List<CSMethod> list = new ArrayList<CSMethod>();
+		
+		String className = "Test";
+		String line = "private class " + className + " {";
+		int lineNumber = 44;
+		
+		_source.read(lineNumber, line, list);
+		
+		assertTrue(list.isEmpty());
+
+		Field field = ReadSource.class.getDeclaredField("_className");
+		field.setAccessible(true);
+		assertEquals(className, String.valueOf(field.get(_source)));
+	}
+
+	/**
+	 * Tests if the read() has read the right class name.
+	 */
+	@Test
+	public void testReadProtectedClassName() throws Exception {
+		List<CSMethod> list = new ArrayList<CSMethod>();
+		
+		String className = "Test";
+		String line = "protected class " + className + " {";
+		int lineNumber = 44;
+		
+		_source.read(lineNumber, line, list);
+		
+		assertTrue(list.isEmpty());
+
+		Field field = ReadSource.class.getDeclaredField("_className");
+		field.setAccessible(true);
+		assertEquals(className, String.valueOf(field.get(_source)));
+	}
+
+	/**
+	 * Tests if the read() has read the right class name.
+	 */
+	@Test
+	public void testReadClassNameWithExtends() throws Exception {
+		List<CSMethod> list = new ArrayList<CSMethod>();
+		
+		String className = "Test";
+		String line = "private class " + className + " extends TestClass {";
+		int lineNumber = 44;
+		
+		_source.read(lineNumber, line, list);
+		
+		assertTrue(list.isEmpty());
+
+		Field field = ReadSource.class.getDeclaredField("_className");
+		field.setAccessible(true);
+		assertEquals(className, String.valueOf(field.get(_source)));
+	}
+
+	/**
+	 * Tests if the read() has read the right class name.
+	 */
+	@Test
+	public void testReadClassNameWithImplements() throws Exception {
+		List<CSMethod> list = new ArrayList<CSMethod>();
+		
+		String className = "Test";
+		String line = "private class " + className + 
+				" implements TestInterface {";
+		int lineNumber = 44;
+		
+		_source.read(lineNumber, line, list);
+		
+		assertTrue(list.isEmpty());
+
+		Field field = ReadSource.class.getDeclaredField("_className");
+		field.setAccessible(true);
+		assertEquals(className, String.valueOf(field.get(_source)));
+	}
+
+	/**
+	 * Tests if the read() has read the right class name.
+	 */
+	@Test
+	public void testReadClassNameWithExtendsAndImplements() throws Exception {
+		List<CSMethod> list = new ArrayList<CSMethod>();
+		
+		String className = "Test";
+		String line = "private class " + className + 
+				" extends TestClass implements TestInterface {";
+		int lineNumber = 44;
+		
+		_source.read(lineNumber, line, list);
+		
+		assertTrue(list.isEmpty());
+
+		Field field = ReadSource.class.getDeclaredField("_className");
+		field.setAccessible(true);
+		assertEquals(className, String.valueOf(field.get(_source)));
+	}
+
+	/**
+	 * Tests if the read() has read the right class name.
+	 */
+	@Test
+	public void testReadPublicInterfaceName() throws Exception {
+		List<CSMethod> list = new ArrayList<CSMethod>();
+		
+		String className = "Test";
+		String line = "public interface " + className + " {";
+		int lineNumber = 44;
+		
+		_source.read(lineNumber, line, list);
+		
+		assertTrue(list.isEmpty());
+
+		Field field = ReadSource.class.getDeclaredField("_className");
+		field.setAccessible(true);
+		assertEquals(className, String.valueOf(field.get(_source)));
+	}
+
+	/**
+	 * Tests if the read() has read the right class name.
+	 */
+	@Test
+	public void testReadPrivateInterfaceName() throws Exception {
+		List<CSMethod> list = new ArrayList<CSMethod>();
+		
+		String className = "Test";
+		String line = "private interface " + className + " {";
+		int lineNumber = 44;
+		
+		_source.read(lineNumber, line, list);
+		
+		assertTrue(list.isEmpty());
+
+		Field field = ReadSource.class.getDeclaredField("_className");
+		field.setAccessible(true);
+		assertEquals(className, String.valueOf(field.get(_source)));
+	}
+
+	/**
+	 * Tests if the read() has read the right class name.
+	 */
+	@Test
+	public void testReadProtectedInterfaceName() throws Exception {
+		List<CSMethod> list = new ArrayList<CSMethod>();
+		
+		String className = "Test";
+		String line = "protected interface " + className + " {";
+		int lineNumber = 44;
+		
+		_source.read(lineNumber, line, list);
+		
+		assertTrue(list.isEmpty());
+
+		Field field = ReadSource.class.getDeclaredField("_className");
+		field.setAccessible(true);
+		assertEquals(className, String.valueOf(field.get(_source)));
+	}
+
+	/**
+	 * Tests if the read() has read the right class name.
+	 */
+	@Test
+	public void testReadInterfaceNameWithExtends() throws Exception {
+		List<CSMethod> list = new ArrayList<CSMethod>();
+		
+		String className = "Test";
+		String line = "private interface " + className + " extends TestClass {";
+		int lineNumber = 44;
+		
+		_source.read(lineNumber, line, list);
+		
+		assertTrue(list.isEmpty());
+
+		Field field = ReadSource.class.getDeclaredField("_className");
+		field.setAccessible(true);
+		assertEquals(className, String.valueOf(field.get(_source)));
+	}
+
+	/**
+	 * Tests if the read() has read the right class name.
+	 */
+	@Test
+	public void testReadInterfaceNameWithImplements() throws Exception {
+		List<CSMethod> list = new ArrayList<CSMethod>();
+		
+		String className = "Test";
+		String line = "private interface " + className + 
+				" implements TestInterface {";
+		int lineNumber = 44;
+		
+		_source.read(lineNumber, line, list);
+		
+		assertTrue(list.isEmpty());
+
+		Field field = ReadSource.class.getDeclaredField("_className");
+		field.setAccessible(true);
+		assertEquals(className, String.valueOf(field.get(_source)));
+	}
+
+	/**
+	 * Tests if the read() has read the right class name.
+	 */
+	@Test
+	public void testReadInterfaceNameWithExtendsAndImplements() 
+			throws Exception {
+		List<CSMethod> list = new ArrayList<CSMethod>();
+		
+		String className = "Test";
+		String line = "private interface " + className + 
+				" extends TestClass implements TestInterface {";
+		int lineNumber = 44;
+		
+		_source.read(lineNumber, line, list);
+		
+		assertTrue(list.isEmpty());
+
+		Field field = ReadSource.class.getDeclaredField("_className");
+		field.setAccessible(true);
+		assertEquals(className, String.valueOf(field.get(_source)));
 	}
 
 	/**

@@ -259,7 +259,7 @@ public class HtmlOutOverview extends Html {
 		for (int link = 0; link <_resultFiles.size(); link++) {
 			File file = new File(_resultFiles.get(link));
 			if (file.exists()) {
-				String linkSrc = file.getName();
+				String linkSrc = file.getAbsolutePath();
 				String linkName = linkSrc.substring(linkSrc.indexOf("_") + 1);
 				String className = linkName.substring(
 						linkName.indexOf("Test") + 4, linkName.indexOf(".html"));

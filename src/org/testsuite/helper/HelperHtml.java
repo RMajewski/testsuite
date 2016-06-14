@@ -195,6 +195,8 @@ public class HelperHtml {
 	 * @param calls If the list of tested methods (true) or untested methods 
 	 * (false) are created?
 	 * 
+	 * @param file 
+	 * 
 	 * @return The list of methods.
 	 */
 	public static String createListOfMethods(String description, 
