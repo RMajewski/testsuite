@@ -20,6 +20,7 @@
 package org.testsuite.checksource;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
@@ -55,6 +56,10 @@ public class HtmlOut extends Html {
 		
 		try {
 			bw = new BufferedWriter(new FileWriter(_resultFile));
+			
+			for (int i = 0; i < methods.size(); i++)
+				methods.get(i).setHtmlOutputFile(
+						new File(_resultFile).getAbsolutePath());
 
 			String date = HelperCalendar.datetimeToString(new Date().getTime());
 			

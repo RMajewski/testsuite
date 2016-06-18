@@ -79,6 +79,11 @@ public class CSMethod {
 	 * Saves whether the method is deprecated.
 	 */
 	private boolean _deprecated;
+	
+	/**
+	 * Saves the name of the HTML output file
+	 */
+	private String _htmlOutput;
 
 	/**
 	 * Initialize the data
@@ -95,6 +100,7 @@ public class CSMethod {
 		_name = new String();
 		_className = new String();
 		_deprecated = false;
+		_htmlOutput = new String();
 	}
 	
 	/**
@@ -305,5 +311,23 @@ public class CSMethod {
 	 */
 	public void setDeprecated(boolean deprecated) {
 		_deprecated = deprecated;
+	}
+	
+	/**
+	 * Returns the name of HTML output file
+	 * 
+	 * @return The name of HTML output file
+	 */
+	public String getHtmlOutputFile() {
+		return _htmlOutput;
+	}
+	
+	/**
+	 * Sets the name of the HTML output file
+	 * 
+	 * @param name The new name of HTML output file
+	 */
+	public void setHtmlOutputFile(String name) {
+		_htmlOutput = name;
 	}
 }

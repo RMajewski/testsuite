@@ -26,10 +26,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.ResourceBundle;
-
 import org.testsuite.checksource.CSMethod;
-import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
 
 /**
@@ -223,9 +220,7 @@ public class HelperHtml {
 			String fileName = new String();
 			
 			if (file) {
-				fileName = ResourceBundle.getBundle(TestRunner.BUNDLE_FILE)
-						.getString("result_checksoure") + "_Test" + 
-						methods.get(method).getClassName() + ".html";
+				fileName = methods.get(method).getHtmlOutputFile();
 			}
 			
 			String linkSrc = "<a href=\"" + fileName + "#" + 

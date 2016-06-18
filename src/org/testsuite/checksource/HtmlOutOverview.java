@@ -280,7 +280,7 @@ public class HtmlOutOverview extends Html {
 				table.append(System.lineSeparator());
 				
 				table.append("\t\t\t\t\t\t<td>");
-				table.append(createMessages(className));
+				table.append(createMessages(className, linkSrc));
 				table.append("</td>");
 				table.append(System.lineSeparator());
 				
@@ -307,6 +307,8 @@ public class HtmlOutOverview extends Html {
 	 * @param className The name of class.
 	 * 
 	 * @return Messages for the specified class.
+	 * 
+	 * @deprecated Use {@link #createMessages(String, String)}
 	 */
 	private String createMessages(String className) {
 		StringBuilder ret = new StringBuilder();
@@ -332,6 +334,66 @@ public class HtmlOutOverview extends Html {
 								TestRunner.BUNDLE_FILE).getString(
 										"result_checksoure") + "_Test" +
 							_methods.get(method).getClassName() + ".html#";
+						if ((_methods.get(method).getClassName().equals(className)) && 
+								(_methods.get(method).getLine() == 
+								_sources.get(source).getLineNumber())) {
+							linkSrc = link + _methods.get(method).getName() + 
+									"\">";
+							linkEnd = "</a>";
+						} else { 
+							linkSrc = link + "Line_" + 
+									_methods.get(method).getLine() + "\">";
+							linkEnd = "</a>";
+						}
+					}
+					
+					ret.append("<span style=\"background: ");
+					ret.append(HelperHtmlCodeJava.getInstance()
+							.formatColor(_sources.get(source)
+									.getMessage(message).getColor()));
+					ret.append(";\" >");
+					ret.append(linkSrc);
+					ret.append(_sources.get(source)
+							.getMessage(message).getMessage());
+					ret.append(linkEnd);
+					ret.append("</span>");
+				}
+			}
+		}
+
+		return ret.toString();
+	}
+	
+	/**
+	 * Creates the messages for the specified class.
+	 * 
+	 * @param className The name of class.
+	 * 
+	 * @param src The link to the result file.
+	 * 
+	 * @return Messages for the specified class.
+	 */
+	private String createMessages(String className, String src) {
+		StringBuilder ret = new StringBuilder();
+		boolean first = true;
+		
+		if ((className == null) || className.isEmpty())
+			return ret.toString();
+		
+		for (int source = 0; source < _sources.size(); source++) {
+			if (_sources.get(source).getClassName().equals(className)) {
+				for (int message = 0; 
+						message <_sources.get(source).messageCount();
+						message++) {
+					if (!first)
+						ret.append("<br/>");
+					else
+						first = false;
+					String linkSrc = new String();
+					String linkEnd = new String();
+					
+					for (int method = 0; method < _methods.size(); method++) {
+						String link = "<a href=\"" + src + "#";
 						if ((_methods.get(method).getClassName().equals(className)) && 
 								(_methods.get(method).getLine() == 
 								_sources.get(source).getLineNumber())) {

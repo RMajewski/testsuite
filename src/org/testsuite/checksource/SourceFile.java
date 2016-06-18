@@ -285,7 +285,7 @@ public class SourceFile {
 			_source.get(_methods.get(i).getLine() - 1).setBeginMethod(true);
 			if (_methods.get(i).callsCount() >  0)
 				_source.get(_methods.get(i).getLine() - 1).setLineTested(true);
-			else  {
+			else  if (!_methods.get(i).isDeprecated()) {
 				Color color;
 				if (_methods.get(i).getModifier().equals("public"))
 					color = HelperUsedColor.ERROR;
