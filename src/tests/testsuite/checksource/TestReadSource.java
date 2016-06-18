@@ -127,6 +127,26 @@ public class TestReadSource {
 	 * Tests if the read() has read the right class name.
 	 */
 	@Test
+	public void testReadAbstractClassName() throws Exception {
+		List<CSMethod> list = new ArrayList<CSMethod>();
+		
+		String className = "Test";
+		String line = "protected abstract class " + className + " {";
+		int lineNumber = 44;
+		
+		_source.read(lineNumber, line, list);
+		
+		assertTrue(list.isEmpty());
+
+		Field field = ReadSource.class.getDeclaredField("_className");
+		field.setAccessible(true);
+		assertEquals(className, String.valueOf(field.get(_source)));
+	}
+
+	/**
+	 * Tests if the read() has read the right class name.
+	 */
+	@Test
 	public void testReadClassNameWithExtends() throws Exception {
 		List<CSMethod> list = new ArrayList<CSMethod>();
 		
@@ -392,5 +412,23 @@ public class TestReadSource {
 		assertEquals(3, list.get(0).getLastLineNumber());
 		
 		assertEquals(0, list.get(0).parametersCount());
+	}
+	
+	@Test
+	public void testReadClassTwoLines() throws Exception {
+		List<CSMethod> list = new ArrayList<CSMethod>();
+		
+		String line1 = "  public class ToolBarMain extends JToolBar ";
+		String line2 = "      implements InternalFrameListener, ToolBarDbElementListener {";
+		
+		_source.read(1, line1.trim(), list);
+		_source.read(2, line2.trim(), list);
+
+		assertEquals(0, list.size());
+		assertTrue(list.isEmpty());
+		
+		Field field = ReadSource.class.getDeclaredField("_className");
+		field.setAccessible(true);
+		assertEquals("ToolBarMain", String.valueOf(field.get(_source)));
 	}
 }

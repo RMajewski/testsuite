@@ -101,10 +101,10 @@ public class ReadSource implements Read {
 				_methodStarted += line;
 				readMethod(lineNumber - 1, _methodStarted.split(" "), list);
 				_methodStarted = null;
-			} else if (line.matches("^[\\s]*(private|protected|public)[\\s]?" +
-					"(class)[\\s\\w]*\\{$") ||
+			} else if (line.matches("^[\\s]*(private|protected|public)" + 
+					"[\\s\\w]*(class)[\\s\\w]*\\{?$") ||
 					line.matches("^[\\s]*(private|protected|public)[\\s]?" +
-							"(interface)[\\s\\w]*\\{$")) {
+							"(interface)[\\s\\w]*\\{?$")) {
 				boolean name = false;
 				for (int i = 0; i < read.length; i++)
 					if (read[i].equals("extends") ||
