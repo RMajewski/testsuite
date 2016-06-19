@@ -268,7 +268,12 @@ public class HtmlOutOverview extends Html {
 				StringBuilder table = new StringBuilder("\t\t\t\t\t<tr>");
 				table.append(System.lineSeparator());
 				
-				table.append("\t\t\t\t\t\t<td>");
+				Color background = getMessageColor(className);
+				
+				table.append("\t\t\t\t\t\t<td style=\"background: ");
+				table.append(HelperHtmlCodeJava.getInstance()
+						.formatColor(background));
+				table.append(";\" >");
 				table.append("<a href=\"");
 				table.append(linkSrc);
 				table.append("\">");
@@ -276,13 +281,30 @@ public class HtmlOutOverview extends Html {
 				table.append("</a></td>");
 				table.append(System.lineSeparator());
 				
-				table.append("\t\t\t\t\t\t<td>");
+				table.append("\t\t\t\t\t\t<td style=\"background: ");
+				table.append(HelperHtmlCodeJava.getInstance()
+						.formatColor(background));
+				table.append(";\" >");
 				table.append(className);
 				table.append("</td>");
 				table.append(System.lineSeparator());
 				
-				table.append("\t\t\t\t\t\t<td>");
-				table.append(createMessages(className, linkSrc));
+				table.append("\t\t\t\t\t\t<td style=\"background: ");
+				table.append(HelperHtmlCodeJava.getInstance()
+						.formatColor(background));
+				table.append(";\" >");
+				
+				if (!background.equals(HelperUsedColor.PASS)) {
+					table.append("<a href=\"");
+					table.append(linkSrc);
+					table.append("\">");
+					table.append(ResourceBundle.getBundle(HtmlOut.BUNDLE_FILE)
+							.getString("overview_table"));
+					table.append("</a>");
+				} else {
+					table.append("&nbsp;");
+				}
+				
 				table.append("</td>");
 				table.append(System.lineSeparator());
 				
@@ -304,6 +326,35 @@ public class HtmlOutOverview extends Html {
 	}
 	
 	/**
+	 * Returns the color for the HTML table row.
+	 * 
+	 * @param className The name of the class
+	 * 
+	 * @return Color for the HTML table row.
+	 */
+	private Color getMessageColor(String className) {
+		if ((className == null) || className.isEmpty())
+			throw new IllegalArgumentException();
+		
+		for (int source = 0; source < _sources.size(); source++) {
+			if (_sources.get(source).getClassName().equals(className)) {
+				for (int message = 0; 
+						message <_sources.get(source).messageCount();
+						message++) {
+					if (_sources.get(source).getMessage(message).getColor() ==
+							HelperUsedColor.ERROR)
+						return HelperUsedColor.ERROR;
+				}
+				
+				return HelperUsedColor.WARNING;
+			}
+		}
+		
+		// Returns green
+		return HelperUsedColor.PASS;
+	}
+
+	/**
 	 * Creates the messages for the specified class.
 	 * 
 	 * @param className The name of class.
@@ -312,6 +363,7 @@ public class HtmlOutOverview extends Html {
 	 * 
 	 * @deprecated Use {@link #createMessages(String, String)}
 	 */
+	@SuppressWarnings("unused")
 	private String createMessages(String className) {
 		StringBuilder ret = new StringBuilder();
 		boolean first = true;
@@ -374,13 +426,15 @@ public class HtmlOutOverview extends Html {
 	 * @param src The link to the result file.
 	 * 
 	 * @return Messages for the specified class.
+	 * 
+	 * @deprecated The method never used.
 	 */
+	@SuppressWarnings("unused")
 	private String createMessages(String className, String src) {
-		StringBuilder ret = new StringBuilder();
-		
 		if ((className == null) || className.isEmpty())
-			return ret.toString();
+			return new String();
 		
+		StringBuilder ret = new StringBuilder();
 		boolean out = false;
 		String linkSrc = "<a href=\"" + src + "\">";
 		Color background = HelperUsedColor.WARNING;
