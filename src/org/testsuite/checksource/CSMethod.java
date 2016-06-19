@@ -81,6 +81,11 @@ public class CSMethod {
 	private boolean _deprecated;
 	
 	/**
+	 * Saves whether the method is ignored.
+	 */
+	private boolean _ignore;
+	
+	/**
 	 * Saves the name of the HTML output file
 	 */
 	private String _htmlOutput;
@@ -101,6 +106,7 @@ public class CSMethod {
 		_className = new String();
 		_deprecated = false;
 		_htmlOutput = new String();
+		_ignore = false;
 	}
 	
 	/**
@@ -329,5 +335,23 @@ public class CSMethod {
 	 */
 	public void setHtmlOutputFile(String name) {
 		_htmlOutput = name;
+	}
+	
+	/**
+	 * Returns if the method ignored.
+	 * 
+	 * @return If the method ignored?
+	 */
+	public boolean isIgnore() {
+		return _ignore;
+	}
+	
+	/**
+	 * Sets if the method ignored.
+	 * 
+	 * @param deprecated If the method ignored?
+	 */
+	public void setIgnore(boolean ignore) {
+		_ignore = ignore;
 	}
 }

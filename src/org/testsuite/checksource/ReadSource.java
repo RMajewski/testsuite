@@ -45,6 +45,11 @@ public class ReadSource implements Read {
 	private boolean _deprecated;
 	
 	/**
+	 * Saves if the next method is ignored
+	 */
+	private boolean _ignored;
+	
+	/**
 	 * Saves if the method started.
 	 */
 	private String _methodStarted;
@@ -57,6 +62,7 @@ public class ReadSource implements Read {
 		_className = null;
 		_methodStarted = null;
 		_deprecated = false;
+		_ignored = false;
 	}
 
 	/**
@@ -115,7 +121,11 @@ public class ReadSource implements Read {
 					}
 				if (!name)
 					_className = read[read.length - 1];
+			} else if (line.matches("^\\s*@CheckSource\\s*\\({1}\\s*ignored" +
+					"\\s*=\\s*true\\){1}\\s*$")) {
+				_ignored = true;
 			}
+
 			
 				// TODO Calls
 			
@@ -179,9 +189,11 @@ public class ReadSource implements Read {
 		}
 		
 		method.setDeprecated(_deprecated);
+		method.setIgnore(_ignored);
 		list.add(method);
 		
 		_deprecated = false;
+		_ignored = false;
 	}
 	
 	/**

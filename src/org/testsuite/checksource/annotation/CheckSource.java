@@ -49,4 +49,11 @@ public @interface CheckSource {
 	 * @return The list of methods that will be tested.
 	 */
 	String[] methodList() default {};
+	
+	/**
+	 * Specifies that the method should be ignored.
+	 * 
+	 * @return If the method should be ignored?
+	 */
+	boolean ignored() default false;
 }
