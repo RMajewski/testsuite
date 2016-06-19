@@ -19,6 +19,7 @@
 
 package org.testsuite.checksource;
 
+import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -34,6 +35,7 @@ import org.testsuite.data.Config;
 import org.testsuite.helper.HelperCalendar;
 import org.testsuite.helper.HelperHtml;
 import org.testsuite.helper.HelperHtmlCodeJava;
+import org.testsuite.helper.HelperUsedColor;
 
 public class HtmlOutOverview extends Html {
 	/**
@@ -375,50 +377,37 @@ public class HtmlOutOverview extends Html {
 	 */
 	private String createMessages(String className, String src) {
 		StringBuilder ret = new StringBuilder();
-		boolean first = true;
 		
 		if ((className == null) || className.isEmpty())
 			return ret.toString();
+		
+		boolean out = false;
+		String linkSrc = "<a href=\"" + src + "\">";
+		Color background = HelperUsedColor.WARNING;
 		
 		for (int source = 0; source < _sources.size(); source++) {
 			if (_sources.get(source).getClassName().equals(className)) {
 				for (int message = 0; 
 						message <_sources.get(source).messageCount();
 						message++) {
-					if (!first)
-						ret.append("<br/>");
-					else
-						first = false;
-					String linkSrc = new String();
-					String linkEnd = new String();
-					
-					for (int method = 0; method < _methods.size(); method++) {
-						String link = "<a href=\"" + src + "#";
-						if ((_methods.get(method).getClassName().equals(className)) && 
-								(_methods.get(method).getLine() == 
-								_sources.get(source).getLineNumber())) {
-							linkSrc = link + _methods.get(method).getName() + 
-									"\">";
-							linkEnd = "</a>";
-						} else { 
-							linkSrc = link + "Line_" + 
-									_methods.get(method).getLine() + "\">";
-							linkEnd = "</a>";
-						}
-					}
-					
-					ret.append("<span style=\"background: ");
-					ret.append(HelperHtmlCodeJava.getInstance()
-							.formatColor(_sources.get(source)
-									.getMessage(message).getColor()));
-					ret.append(";\" >");
-					ret.append(linkSrc);
-					ret.append(_sources.get(source)
-							.getMessage(message).getMessage());
-					ret.append(linkEnd);
-					ret.append("</span>");
+					if (_sources.get(source).getMessage(message).getColor() ==
+							HelperUsedColor.ERROR)
+						background = HelperUsedColor.ERROR;
+					out = true;
 				}
 			}
+		}
+		
+		if (out) {
+			ret.append("<span style=\"background: ");
+			ret.append(HelperHtmlCodeJava.getInstance()
+					.formatColor(background));
+			ret.append(";\" >");
+			ret.append(linkSrc);
+			ret.append(ResourceBundle.getBundle(HtmlOut.BUNDLE_FILE)
+					.getString("overview_table"));
+			ret.append("</a>");
+			ret.append("</span>");
 		}
 
 		return ret.toString();
