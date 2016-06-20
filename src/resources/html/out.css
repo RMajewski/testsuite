@@ -116,11 +116,21 @@
 	padding: 0px 10px;
 }
 
+.checksourceList ul {
+	overflow-y: scroll;
+	height: 300px;
+}
+
 .deprecatedList {
 	border: 1px dashed #000;
 	margin-top: 10px;
 	padding: 0px 10px;
 }
+
+.deprecatedList ul {
+	overflow-y: scroll;
+	height: 300px;
+}}
 
 .checksourceSource {
 	margin-top: 10px;
