@@ -186,7 +186,7 @@ public class HtmlOut extends Html {
 
 		ret.append("\t\t\t\t\t\t<th style=\"width:100px;\"></th>");
 		ret.append(System.lineSeparator());
-		ret.append("\t\t\t\t\t\t<th style=\"width:70%;\"></th>");
+		ret.append("\t\t\t\t\t\t<th style=\"width:65%;\"></th>");
 		ret.append(System.lineSeparator());
 		ret.append("\t\t\t\t\t\t<th style=\"width:*;\"></th>");
 		ret.append(System.lineSeparator());

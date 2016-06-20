@@ -151,12 +151,23 @@ public class HelperHtmlCodeJava {
 	private String formatKeywords(String source) {
 		StringBuilder ret = new StringBuilder();
 		
-		int start = 0;
-		
-		Matcher matcher = Pattern.compile("\\b").matcher(source);
+		int start = source.indexOf("//");
+
+		String comment = new String();
+		String src = new String();
+		if (start >= 0) {
+			comment = formatSpan(source.substring(start), COLOR_COMMENTS);
+			src = source.substring(0, start);
+			start = 0;
+		} else {
+			src = source;
+			start = 0;
+		}
+	
+		Matcher matcher = Pattern.compile("\\b").matcher(src);
 		while (matcher.find()) {
 			int end = matcher.start();
-			String sub = source.substring(start, end);
+			String sub = src.substring(start, end);
 			start = matcher.end();
 			
 			Color color = _instance._keywords.get(sub);
@@ -166,9 +177,12 @@ public class HelperHtmlCodeJava {
 				ret.append(sub);
 		}
 		
-		if (start < source.length())
-			ret.append(source.substring(start));
+		if (start < src.length())
+			ret.append(src.substring(start));
 
+		if (comment.length() > 0)
+			ret.append(comment);
+		
 		return ret.toString();
 	}
 	
