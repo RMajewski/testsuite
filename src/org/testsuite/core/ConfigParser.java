@@ -261,6 +261,12 @@ public class ConfigParser {
 										Boolean.parseBoolean(data));
 								break;
 								
+							case "lineWidth":
+								if (config)
+									Config.getInstance().setLineWidth(
+											Integer.parseInt(data));
+								break;
+								
 							case "property":
 								if (config)
 									Config.getInstance().addProperty(data);

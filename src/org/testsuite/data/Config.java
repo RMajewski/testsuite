@@ -91,6 +91,11 @@ public final class Config {
 	private long _maxDuration;
 	
 	/**
+	 * Saves the width of a source code line.
+	 */
+	private int _lineWidth;
+	
+	/**
 	 * The singleton instance
 	 */
 	private static Config _config;
@@ -104,6 +109,7 @@ public final class Config {
 		_listJavascript = new ArrayList<String>();
 		_listStylesheet = new ArrayList<String>();
 		_pathSuitesResult = new String();
+		_lineWidth = -1;
 		_classpath = new String();
 		clear();
 	}
@@ -538,6 +544,24 @@ public final class Config {
 				_pathSrc.isEmpty() && !_createHtml && (_maxDuration == 0) && 
 				_property.isEmpty() && _listClasspath.isEmpty() && 
 				_listJavascript.isEmpty() && _listStylesheet.isEmpty());
+	}
+	
+	/**
+	 * Returns the width of a source code line
+	 * 
+	 * @return Width of a source code line
+	 */
+	public int getLineWidth() {
+		return _lineWidth;
+	}
+	
+	/**
+	 * Sets the width of a source code line
+	 * 
+	 * @param width The width of a source code line
+	 */
+	public void setLineWidth(int width) {
+		_lineWidth = width;
 	}
 	
 	/**

@@ -135,6 +135,12 @@ public class ConfigSaver {
 		bw.write("</htmlOut>");
 		bw.newLine();
 		
+		if (Config.getInstance().getLineWidth() > 0) {
+			bw.write("\t\t<lineWidth>");
+			bw.write(Config.getInstance().getLineWidth());
+			bw.write("</lineWidth>");
+		}
+		
 		if (Config.getInstance().propertyCount() > 0) {
 			bw.write("\t\t<systemProperty>");
 			bw.newLine();

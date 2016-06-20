@@ -43,4 +43,9 @@ public final class HelperUsedColor {
 	 * Specified the color of passes.
 	 */
 	public static final Color PASS = new Color(0xCFFFCF);
+	
+	/**
+	 * Specified the color of ignore;
+	 */
+	public static final Color IGNORE = new Color(0xEFEFEF);
 }

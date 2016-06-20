@@ -19,51 +19,44 @@
 
 package org.testsuite.checksource.tests;
 
-import java.awt.Color;
 import java.util.List;
+import java.util.ResourceBundle;
 
+import org.testsuite.checksource.MessageColor;
 import org.testsuite.checksource.SourceLine;
+import org.testsuite.data.Config;
+import org.testsuite.helper.HelperUsedColor;
 
 /**
- * Defines the testing methods.
+ * Tests if the lines are too wide.
  * 
  * @author René Majewski
  *
  * @version 0.1
  */
-public interface SourceTest {
+public class TestToWideLines implements SourceTest {
+
 	/**
-	 * Is called to perform the test.
+	 * Looking into the source code files according to wide rows.
 	 * 
 	 * @param list The list of source lines.
 	 * 
 	 * @return True, if the test was successful. False if an error has occurred
 	 * in the line.
 	 */
-	public boolean test(List<SourceLine> list);
-	
-	/**
-	 * Specified the background color for a warning.
-	 * 
-	 * @deprecated Use {@link org.testsuite.helper.HelperUsedColor#WARNING}.
-	 */
-	Color COLOR_WARNING = new Color(0xFFFFCF);
-	
-	/**
-	 * Specified the background color for a exception
-	 * 
-	 * @deprecated Use {@link org.testsuite.helper.HelperUsedColor#ERROR}.
-	 */
-	Color COLOR_EXCEPTION = new Color(0xFFCFCF);
-	
-	/**
-	 * Saves the file name for resource bundle.
-	 */
-	String BUNDLE_FILE = "resources.lang.org.testsuite.checksource.tests.Tests";
-	
-	/**
-	 * Saves the list with all tests for check source.
-	 */
-	Class<?>[] TESTS = {TestEmptyLines.class, TestEmptyMethod.class, 
-			TestUnusedImports.class, TestJavadoc.class, TestToWideLines.class};
+	@Override
+	public boolean test(List<SourceLine> list) {
+		for (int line = 0; line < list.size(); line++)
+			if (list.get(line).getLine().length() > 
+					Config.getInstance().getLineWidth())
+				list.get(line).addMessage(new MessageColor(
+						ResourceBundle.getBundle(BUNDLE_FILE)
+							.getString("toWideLine").replace("?", 
+									String.valueOf(Config.getInstance()
+											.getLineWidth())),
+						HelperUsedColor.IGNORE));
+		
+		return false;
+	}
+
 }
