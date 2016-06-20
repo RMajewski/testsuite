@@ -116,6 +116,12 @@
 	padding: 0px 10px;
 }
 
+.deprecatedList {
+	border: 1px dashed #000;
+	margin-top: 10px;
+	padding: 0px 10px;
+}
+
 .checksourceSource {
 	margin-top: 10px;
 }

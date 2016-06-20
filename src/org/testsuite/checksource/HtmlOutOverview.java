@@ -159,6 +159,9 @@ public class HtmlOutOverview extends Html {
 					date + ")", _bundle.getString("overview_description") + 
 					" (" + date + ")"));
 			
+			// List of deprecated methods
+			bw.write(createListOfDeprecated());
+			
 			// List of methods without calls
 			bw.write(HelperHtml.createListOfMethods(
 					_bundle.getString("methods_without_calls"), _methods, 
@@ -182,6 +185,58 @@ public class HtmlOutOverview extends Html {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	/**
+	 * Creates the HTML list deprecated methods
+	 * 
+	 * @return HTML list of deprecated methods
+	 */
+	private String createListOfDeprecated() {
+		List<String> list = new ArrayList<String>();
+		
+		for (int method = 0; method < _methods.size(); method++)
+			if (_methods.get(method).isDeprecated()) {
+				StringBuilder li = new StringBuilder("\t\t\t\t\t<li>");
+				li.append("<a href=\"");
+				li.append(_methods.get(method).getHtmlOutputFile());
+				li.append("\">");
+				li.append(_methods.get(method).getClassName());
+				li.append(".");
+				li.append(_methods.get(method).getName());
+				li.append("</a></li>");
+				list.add(li.toString());
+			}
+		
+		Collections.sort(list);
+
+		StringBuilder ret = new StringBuilder();
+		
+		if (list.size() > 0) {
+			ret.append("\t\t\t<div class=\"deprecatedList\">");
+			ret.append(System.lineSeparator());
+			
+			ret.append("\t\t\t\t<p>");
+			ret.append(_bundle.getString("methods_deprecated"));
+			ret.append("</p>");
+			ret.append(System.lineSeparator());
+			
+			ret.append("\t\t\t\t<ul>");
+			ret.append(System.lineSeparator());
+			
+			for (int li = 0; li < list.size(); li++) {
+				ret.append(list.get(li));
+				ret.append(System.lineSeparator());
+			}
+			
+			ret.append("\t\t\t\t</ul>");
+			ret.append(System.lineSeparator());
+
+			ret.append("\t\t\t</div>");
+			ret.append(System.lineSeparator());
+		}
+
+		return ret.toString();
 	}
 
 	/**
@@ -298,8 +353,7 @@ public class HtmlOutOverview extends Html {
 					table.append("<a href=\"");
 					table.append(linkSrc);
 					table.append("\">");
-					table.append(ResourceBundle.getBundle(HtmlOut.BUNDLE_FILE)
-							.getString("overview_table"));
+					table.append(_bundle.getString("overview_table"));
 					table.append("</a>");
 				} else {
 					table.append("&nbsp;");
