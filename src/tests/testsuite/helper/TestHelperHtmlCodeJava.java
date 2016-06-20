@@ -81,60 +81,6 @@ public class TestHelperHtmlCodeJava {
 			(HashMap<String, Color>)field.get(HelperHtmlCodeJava.getInstance());
 		
 		assertEquals(53, keywords.size());
-		
-		assertTrue(keywords.containsKey("abstract"));
-		assertTrue(keywords.containsKey("assert"));
-		assertTrue(keywords.containsKey("assert"));
-		assertTrue(keywords.containsKey("break"));
-		assertTrue(keywords.containsKey("break"));
-		assertTrue(keywords.containsKey("case"));
-		assertTrue(keywords.containsKey("catch"));
-		assertTrue(keywords.containsKey("char"));
-		assertTrue(keywords.containsKey("class"));
-		assertTrue(keywords.containsKey("const"));
-		assertTrue(keywords.containsKey("continue"));
-		assertTrue(keywords.containsKey("default"));
-		assertTrue(keywords.containsKey("do"));
-		assertTrue(keywords.containsKey("double"));
-		assertTrue(keywords.containsKey("else"));
-		assertTrue(keywords.containsKey("enum"));
-		assertTrue(keywords.containsKey("extends"));
-		assertTrue(keywords.containsKey("final"));
-		assertTrue(keywords.containsKey("final"));
-		assertTrue(keywords.containsKey("float"));
-		assertTrue(keywords.containsKey("for"));
-		assertTrue(keywords.containsKey("goto"));
-		assertTrue(keywords.containsKey("if"));
-		assertTrue(keywords.containsKey("implements"));
-		assertTrue(keywords.containsKey("import"));
-		assertTrue(keywords.containsKey("instanceof"));
-		assertTrue(keywords.containsKey("int"));
-		assertTrue(keywords.containsKey("interface"));
-		assertTrue(keywords.containsKey("long"));
-		assertTrue(keywords.containsKey("native"));
-		assertTrue(keywords.containsKey("new"));
-		assertTrue(keywords.containsKey("package"));
-		assertTrue(keywords.containsKey("private"));
-		assertTrue(keywords.containsKey("protected"));
-		assertTrue(keywords.containsKey("public"));
-		assertTrue(keywords.containsKey("return"));
-		assertTrue(keywords.containsKey("short"));
-		assertTrue(keywords.containsKey("static"));
-		assertTrue(keywords.containsKey("strictfp"));
-		assertTrue(keywords.containsKey("super"));
-		assertTrue(keywords.containsKey("switch"));
-		assertTrue(keywords.containsKey("synchronized"));
-		assertTrue(keywords.containsKey("this"));
-		assertTrue(keywords.containsKey("throw"));
-		assertTrue(keywords.containsKey("throws"));
-		assertTrue(keywords.containsKey("transient"));
-		assertTrue(keywords.containsKey("try"));
-		assertTrue(keywords.containsKey("void"));
-		assertTrue(keywords.containsKey("volatile"));
-		assertTrue(keywords.containsKey("while"));
-		assertTrue(keywords.containsKey("false"));
-		assertTrue(keywords.containsKey("null"));
-		assertTrue(keywords.containsKey("true"));
 	}
 
 	/**

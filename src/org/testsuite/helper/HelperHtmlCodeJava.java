@@ -62,59 +62,9 @@ public class HelperHtmlCodeJava {
 	 */
 	private HelperHtmlCodeJava() {
 		_keywords = new HashMap<String, Color>();
-		_keywords.put("abstract", COLOR_KEYWORDS);
-		_keywords.put("assert", COLOR_KEYWORDS);
-		_keywords.put("boolean", COLOR_KEYWORDS);
-		_keywords.put("break", COLOR_KEYWORDS);
-		_keywords.put("byte", COLOR_KEYWORDS);
-		_keywords.put("case", COLOR_KEYWORDS);
-		_keywords.put("catch", COLOR_KEYWORDS);
-		_keywords.put("char", COLOR_KEYWORDS);
-		_keywords.put("class", COLOR_KEYWORDS);
-		_keywords.put("const", COLOR_KEYWORDS);
-		_keywords.put("continue", COLOR_KEYWORDS);
-		_keywords.put("default", COLOR_KEYWORDS);
-		_keywords.put("do", COLOR_KEYWORDS);
-		_keywords.put("double", COLOR_KEYWORDS);
-		_keywords.put("else", COLOR_KEYWORDS);
-		_keywords.put("enum", COLOR_KEYWORDS);
-		_keywords.put("extends", COLOR_KEYWORDS);
-		_keywords.put("false", COLOR_KEYWORDS);
-		_keywords.put("final", COLOR_KEYWORDS);
-		_keywords.put("finally", COLOR_KEYWORDS);
-		_keywords.put("float", COLOR_KEYWORDS);
-		_keywords.put("for", COLOR_KEYWORDS);
-		_keywords.put("goto", COLOR_KEYWORDS);
-		_keywords.put("if", COLOR_KEYWORDS);
-		_keywords.put("implements", COLOR_KEYWORDS);
-		_keywords.put("import", COLOR_KEYWORDS);
-		_keywords.put("instanceof", COLOR_KEYWORDS);
-		_keywords.put("int", COLOR_KEYWORDS);
-		_keywords.put("interface", COLOR_KEYWORDS);
-		_keywords.put("long", COLOR_KEYWORDS);
-		_keywords.put("native", COLOR_KEYWORDS);
-		_keywords.put("new", COLOR_KEYWORDS);
-		_keywords.put("null", COLOR_KEYWORDS);
-		_keywords.put("package", COLOR_KEYWORDS);
-		_keywords.put("private", COLOR_KEYWORDS);
-		_keywords.put("protected", COLOR_KEYWORDS);
-		_keywords.put("public", COLOR_KEYWORDS);
-		_keywords.put("return", COLOR_KEYWORDS);
-		_keywords.put("short", COLOR_KEYWORDS);
-		_keywords.put("static", COLOR_KEYWORDS);
-		_keywords.put("strictfp", COLOR_KEYWORDS);
-		_keywords.put("super", COLOR_KEYWORDS);
-		_keywords.put("switch", COLOR_KEYWORDS);
-		_keywords.put("synchronized", COLOR_KEYWORDS);
-		_keywords.put("this", COLOR_KEYWORDS);
-		_keywords.put("throw", COLOR_KEYWORDS);
-		_keywords.put("throws", COLOR_KEYWORDS);
-		_keywords.put("transient", COLOR_KEYWORDS);
-		_keywords.put("true", COLOR_KEYWORDS);
-		_keywords.put("try", COLOR_KEYWORDS);
-		_keywords.put("void", COLOR_KEYWORDS);
-		_keywords.put("volatile", COLOR_KEYWORDS);
-		_keywords.put("while", COLOR_KEYWORDS);
+		String[] words = HelperJavaKeywords.getAllKeywords();
+		for (int i = 0; i < words.length; i++)
+			_keywords.put(words[i], COLOR_KEYWORDS);
 	}
 	
 	public static String formatString(String source, boolean multilineComment,

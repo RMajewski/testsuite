@@ -301,5 +301,8 @@ public class SourceFile {
 		if (_methods.size() > 0)
 			for (int i = 0; i < _source.size(); i++)
 				_source.get(i).setClassName(_methods.get(0).getClassName());
+		
+		// Parse of source
+		Parser.parse(_methods, _source);
 	}
 }
