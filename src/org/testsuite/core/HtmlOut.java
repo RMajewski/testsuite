@@ -192,6 +192,10 @@ public class HtmlOut {
 		
 		_bw.write("\t\t<div class=\"include\">");
 		_bw.newLine();
+		_bw.write("\t\t\t<h3>testsuite ");
+		_bw.write(Version.getVersion());
+		_bw.write("</h3>");
+		_bw.newLine();
 		_bw.write("\t\t\t<p>");
 		_bw.newLine();
 		_bw.write(_bundle.getString("htmlHead_include"));

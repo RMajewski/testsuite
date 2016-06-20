@@ -41,7 +41,7 @@ public final class Version {
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					Version.class.getClassLoader().getResourceAsStream(
-							"version")));
+							"resources/version")));
 			String[] inp = br.readLine().split(" ");
 			ret[0] = Integer.valueOf(inp[0]);
 			ret[1] = Integer.valueOf(inp[1]);
