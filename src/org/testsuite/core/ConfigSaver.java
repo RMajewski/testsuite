@@ -156,6 +156,21 @@ public class ConfigSaver {
 			bw.newLine();
 		}
 		
+		if (Config.getInstance().toDoWordsCount() > 0) {
+			bw.write("\t\t<todo>");
+			bw.newLine();
+
+			for (int i = 0; i < Config.getInstance().toDoWordsCount(); i++) {
+				bw.write("\t\t\t<name>");
+				bw.write(Config.getInstance().getToDoWord(i));
+				bw.write("</name>");
+				bw.newLine();
+			}
+			
+			bw.write("\t\t</todo>");
+			bw.newLine();
+		}
+		
 		writeClassPath(bw, Config.getInstance().getClassPathList());
 		
 		bw.write("\t</config>");

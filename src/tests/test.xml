@@ -22,6 +22,10 @@
 		<javascript>
 			<file>resources/html/out.js</file>
 		</javascript>
+		<todo>
+			<name>OPT</name>
+			<name>FIX</name>
+		</todo>
 	</config>
 	
 	<testGroup>

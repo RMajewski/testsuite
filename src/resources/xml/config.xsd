@@ -33,6 +33,13 @@
 			<xsd:element name="classpath" minOccurs="0" type="classpathType" />
 			<xsd:element name="stylesheet" minOccurs="0" type="fileType" />
 			<xsd:element name="javascript" minOccurs="0" type="fileType" />
+			<xsd:element name="todo">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="name" maxOccurs="unbaunded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
 		

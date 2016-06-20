@@ -121,6 +121,20 @@
 	height: 300px;
 }
 
+.todoList {
+	border: 1px dashed #000;
+	margin-top: 10px;
+	padding: 0px 10px;
+}
+
+.todoList table {
+	border: 0px;	
+}
+
+.todoList table tr {
+	border: 0px;
+}
+
 .deprecatedList {
 	border: 1px dashed #000;
 	margin-top: 10px;

@@ -32,6 +32,7 @@ import java.util.ResourceBundle;
 
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
+import org.testsuite.data.TodoData;
 import org.testsuite.helper.HelperCalendar;
 import org.testsuite.helper.HelperHtml;
 import org.testsuite.helper.HelperHtmlCodeJava;
@@ -62,6 +63,11 @@ public class HtmlOutOverview extends Html {
 	 * Saves the list of none exists files.
 	 */
 	private List<String> _noneExists;
+	
+	/**
+	 * Saves the to do list
+	 */
+	private List<TodoData> _todo;
 
 	/**
 	 * Initialize this class
@@ -74,6 +80,7 @@ public class HtmlOutOverview extends Html {
 		_methods = new ArrayList<CSMethod>();
 		_sources = new ArrayList<SourceLine>();
 		_noneExists = new ArrayList<String>();
+		_todo = new ArrayList<TodoData>();
 	}
 	
 	/**
@@ -159,6 +166,9 @@ public class HtmlOutOverview extends Html {
 					date + ")", _bundle.getString("overview_description") + 
 					" (" + date + ")"));
 			
+			// To-do list
+			bw.write(createTodoList());
+			
 			// List of deprecated methods
 			bw.write(createListOfDeprecated());
 			
@@ -185,6 +195,94 @@ public class HtmlOutOverview extends Html {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	/**
+	 * Creates the HTML output for the to-do list
+	 * 
+	 * @return HTML output for the to-do list
+	 */
+	private String createTodoList() {
+		StringBuilder ret = new StringBuilder();
+		
+		if (_todo.size() > 0) {
+			ret.append("\t\t\t<div class=\"todoList\">");
+			ret.append(System.lineSeparator());
+
+			ret.append("\t\t\t\t<p>");
+			ret.append(_bundle.getString("todo_list"));
+			ret.append("</p>");
+			ret.append(System.lineSeparator());
+
+			ret.append("\t\t\t\t<table>");
+			ret.append(System.lineSeparator());
+			
+			String td = "\t\t\t\t\t\t<td>";
+			String trStart = "\t\t\t\t\t<tr>";
+			String trEnd = "\t\t\t\t\t</tr>"; 
+			
+			ret.append(trStart);
+			ret.append(System.lineSeparator());
+			
+			ret.append("\t\t\t\t\t\t<th style=\"width: 300px;\">");
+			ret.append(_bundle.getString("todo_file"));
+			ret.append("</th>");
+			ret.append(System.lineSeparator());
+			
+			ret.append("\t\t\t\t\t\t<th style=\"width: 140px;\">");
+			ret.append(_bundle.getString("todo_row"));
+			ret.append("</th>");
+			ret.append(System.lineSeparator());
+			
+			ret.append(td.replace("td", "th"));
+			ret.append(_bundle.getString("todo_source"));
+			ret.append("</th>");
+			ret.append(System.lineSeparator());
+			
+			ret.append(trEnd);
+			ret.append(System.lineSeparator());
+
+			for (int todo = 0; todo < _todo.size(); todo++) {
+				File file = new File(_todo.get(todo).getFileName());
+				if (file.exists()) {
+					String name = file.getName().substring(
+							file.getName().indexOf("Test") + 4);
+					
+					ret.append(trStart);
+					ret.append(System.lineSeparator());
+					
+					ret.append(td);
+					ret.append("<a href=\"");
+					ret.append(file.getAbsolutePath());
+					ret.append("\">");
+					ret.append(name);
+					ret.append("</a></td>");
+					ret.append(System.lineSeparator());
+					
+					ret.append(td);
+					ret.append(_todo.get(todo).getNumber());
+					ret.append("</td>");
+					ret.append(System.lineSeparator());
+					
+					ret.append(td);
+					ret.append(HelperHtmlCodeJava.formatString(
+							_todo.get(todo).getLine(), false, false, -1, null));
+					ret.append("</td>");
+					ret.append(System.lineSeparator());
+					
+					ret.append(trEnd);
+					ret.append(System.lineSeparator());
+				}
+			}
+			
+			ret.append("\t\t\t\t</table>");
+			ret.append(System.lineSeparator());
+			
+			ret.append("\t\t\t</div>");
+			ret.append(System.lineSeparator());
+		}
+		
+		return ret.toString();
 	}
 
 	/**
@@ -543,5 +641,34 @@ public class HtmlOutOverview extends Html {
 	 */
 	public String getResultFile() {
 		return _resultFile;
+	}
+	
+	/**
+	 * Added a to-do to the list
+	 * 
+	 * @param todo The todo that added to the list
+	 */
+	public void addTodo(TodoData todo) {
+		_todo.add(todo);
+	}
+	
+	/**
+	 * Returns the count of to-do list
+	 * 
+	 * @return Count of to-do list
+	 */
+	public int todoCount() {
+		return _todo.size();
+	}
+	
+	/**
+	 * Returns the specified to-do of to-do list
+	 * 
+	 * @param index The index for the to-do
+	 * 
+	 * @return The specified to-do
+	 */
+	public TodoData getTodo(int index) {
+		return _todo.get(index);
 	}
 }

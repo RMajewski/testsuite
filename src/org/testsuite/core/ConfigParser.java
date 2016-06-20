@@ -112,6 +112,7 @@ public class ConfigParser {
 			boolean libraries = false;
 			boolean classPath = false;
 			boolean testSuite = false;
+			boolean todo = false;
 			TestRunner runner = null;
 			Library library = null;
 			TestSuite suite = null;
@@ -203,6 +204,10 @@ public class ConfigParser {
 							case "stylesheet":
 								stylesheet = true;
 								break;
+								
+							case "todo":
+								todo = true;
+								break;
 						}
 						break;
 						
@@ -225,6 +230,10 @@ public class ConfigParser {
 								
 							case "stylesheet":
 								stylesheet = false;
+								break;
+								
+							case "todo":
+								todo = false;
 								break;
 								
 							case "testGroup":
@@ -337,6 +346,8 @@ public class ConfigParser {
 							case "name":
 								if (testSuite && (suite != null))
 									suite.setName(data);
+								else if (todo && (Config.getInstance() != null))
+									Config.getInstance().addToDoWord(data);
 								break;
 								
 							case "package":

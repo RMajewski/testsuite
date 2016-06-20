@@ -96,6 +96,11 @@ public final class Config {
 	private int _lineWidth;
 	
 	/**
+	 * Saves the words for to do list
+	 */
+	private List<String> _listTodo;
+	
+	/**
 	 * The singleton instance
 	 */
 	private static Config _config;
@@ -110,6 +115,7 @@ public final class Config {
 		_listStylesheet = new ArrayList<String>();
 		_pathSuitesResult = new String();
 		_lineWidth = -1;
+		_listTodo = new ArrayList<String>();
 		_classpath = new String();
 		clear();
 	}
@@ -562,6 +568,44 @@ public final class Config {
 	 */
 	public void setLineWidth(int width) {
 		_lineWidth = width;
+	}
+	
+	/**
+	 * Return the list of to do list words
+	 * 
+	 * @return List of to do list words
+	 */
+	public List<String> getToDoListWords() {
+		return _listTodo;
+	}
+	
+	/**
+	 * Returns the number of to do list words
+	 * 
+	 * @return Number of to do list words
+	 */
+	public int toDoWordsCount() {
+		return _listTodo.size();
+	}
+	
+	/**
+	 * Return the specified word of to do list
+	 * 
+	 * @param index The index of the to do list word
+	 * 
+	 * @return The specified word of to do list
+	 */
+	public String getToDoWord(int index) {
+		return _listTodo.get(index);
+	}
+	
+	/**
+	 * Added a word to the to do list
+	 * 
+	 * @param word The word that is to be added to the list.
+	 */
+	public void addToDoWord(String word) {
+		_listTodo.add(word);
 	}
 	
 	/**

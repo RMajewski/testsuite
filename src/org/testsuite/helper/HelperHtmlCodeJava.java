@@ -24,6 +24,10 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.testsuite.checksource.HtmlOutOverview;
+import org.testsuite.data.Config;
+import org.testsuite.data.TodoData;
+
 /**
  * Formats the Java source code for the HTML output.
  * 
@@ -117,8 +121,28 @@ public class HelperHtmlCodeJava {
 		_keywords.put("while", COLOR_KEYWORDS);
 	}
 	
+	/**
+	 * Formatted the source code line
+	 * 
+	 * @param The line of code that is to be formatted.
+	 * 
+	 * @param multilineComment It is the line to a multiline comment?
+	 * 
+	 * @param javadoc It is the line to a Javadoc comment?
+	 * 
+	 * @return The formatted source code line
+	 * 
+	 * @deprecated Use
+	 * {@link #formatString(String, boolean, boolean, int, String)}
+	 */
 	public static String formatString(String source, boolean multilineComment,
 			boolean javadoc) {
+		return formatString(source, multilineComment, javadoc, -1, null);
+	}
+	
+	
+	public static String formatString(String source, boolean multilineComment,
+			boolean javadoc, int lineNumber, String fileName) {
 		getInstance();
 		
 		if ((source == null) || source.isEmpty())
@@ -131,7 +155,7 @@ public class HelperHtmlCodeJava {
 		else if (javadoc)
 			ret.append(_instance.formatSpan(source, COLOR_JAVADOC));
 		else {
-			ret.append(_instance.formatKeywords(source));
+			ret.append(_instance.formatKeywords(source, lineNumber, fileName));
 		}
 		
 		return ret.toString();
@@ -148,7 +172,22 @@ public class HelperHtmlCodeJava {
 		return _instance;
 	}
 	
+	/**
+	 * Search for keywords and formats.
+	 * 
+	 * @param source The source code line
+	 * 
+	 * @return Formatted source code line
+	 * 
+	 * @deprecated use {@link #formatKeywords(String, int, String)}
+	 */
+	@SuppressWarnings("unused")
 	private String formatKeywords(String source) {
+		return formatKeywords(source, -1, null);
+	}
+
+	private String formatKeywords(String source, int lineNumber, 
+			String fileName) {
 		StringBuilder ret = new StringBuilder();
 		
 		int start = source.indexOf("//");
@@ -156,7 +195,34 @@ public class HelperHtmlCodeJava {
 		String comment = new String();
 		String src = new String();
 		if (start >= 0) {
-			comment = formatSpan(source.substring(start), COLOR_COMMENTS);
+			String tmp = source.substring(start);
+			if (Config.getInstance().toDoWordsCount() > 0) {
+				int end = 0;
+				for (int i = 0; i < Config.getInstance().toDoWordsCount(); i++) {
+					int s = tmp.indexOf(Config.getInstance().getToDoWord(i), 
+							end);
+					if (s > 0) {
+						if ((fileName != null) && (lineNumber > 0))
+							HtmlOutOverview.getInstance().addTodo(new TodoData(
+								source, lineNumber, fileName));
+						if (end > 0)
+							src += tmp.substring(end, s);
+						else
+							src = tmp.substring(0, s);
+
+						src += "<span style=\"color: " + 
+								formatColor(COLOR_JAVADOC) + ";\"><b>" +
+								Config.getInstance().getToDoWord(i) + 
+								"</b></span>";
+						end = s + Config.getInstance().getToDoWord(i)
+								.length();
+					}
+				}
+				src += source.substring(end);
+			} else {
+				src = source.substring(start);
+			}
+			comment = formatSpan(src, COLOR_COMMENTS);
 			src = source.substring(0, start);
 			start = 0;
 		} else {

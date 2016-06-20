@@ -170,6 +170,8 @@ public class HtmlOut extends Html {
 	 * 
 	 * @param lines The list of source lines.
 	 * 
+	 * @param methods The list of methods.
+	 * 
 	 * @return The HTML output for the source code.
 	 */
 	private String sourceCode(List<SourceLine> lines, List<CSMethod> methods) {
@@ -224,7 +226,8 @@ public class HtmlOut extends Html {
 			String line = HelperHtml.replaceHtmlEntities(lines.get(i).getLine());
 			line = HelperHtmlCodeJava.formatString(line,
 					lines.get(i).isMultiLineComment(),
-					lines.get(i).isJavadoc());
+					lines.get(i).isJavadoc(), lines.get(i).getLineNumber(), 
+					_resultFile);
 			line = HelperHtml.replaceTabWidthSpaces(line, 4);
 
 			String ankerBegin = new String();
