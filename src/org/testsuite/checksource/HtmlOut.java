@@ -79,13 +79,13 @@ public class HtmlOut extends Html {
 			if (methods.size() > 0)
 				bw.write(HelperHtml.createListOfMethods(
 						_bundle.getString("methods_calls"), methods, true, 
-						false));
+						false, source));
 			
 			// List of method without calls
 			if (methods.size() > 0)
 				bw.write(HelperHtml.createListOfMethods(
 						_bundle.getString("methods_without_calls"), methods, 
-						false, false));
+						false, false, source));
 			
 			// Source code
 			if (source.size() > 0)
@@ -208,6 +208,10 @@ public class HtmlOut extends Html {
 						HelperHtmlCodeJava.getInstance()
 						.formatColor(lines.get(i).getMessage(0).getColor()) + 
 						";\" ";
+			} else if (!lines.get(i).isLineTested()) { 
+				background = " style=\"background: " +
+						HelperHtmlCodeJava.getInstance()
+						.formatColor(HelperUsedColor.IGNORE) + ";\" ";
 			}
 			
 			ret.append("\t\t\t\t\t\t<td");

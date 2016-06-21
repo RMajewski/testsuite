@@ -34,6 +34,7 @@ import org.testsuite.data.Config;
 import org.testsuite.helper.HelperCalendar;
 import org.testsuite.helper.HelperHtml;
 import org.testsuite.helper.HelperHtmlCodeJava;
+import org.testsuite.helper.HelperUsedColor;
 
 public class HtmlOutOverview extends Html {
 	/**
@@ -160,7 +161,7 @@ public class HtmlOutOverview extends Html {
 			// List of methods without calls
 			bw.write(HelperHtml.createListOfMethods(
 					_bundle.getString("methods_without_calls"), _methods, 
-					false, true));
+					false, true, null));
 			
 			// List of none exists files
 			bw.write(createNoneExistsList());
@@ -247,6 +248,11 @@ public class HtmlOutOverview extends Html {
 		ret.append(System.lineSeparator());
 		
 		ret.append("\t\t\t\t\t\t<th>");
+		ret.append(_bundle.getString("overview_methods"));
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append("\t\t\t\t\t\t<th>");
 		ret.append(_bundle.getString("overview_messages"));
 		ret.append("</th>");
 		ret.append(System.lineSeparator());
@@ -280,6 +286,11 @@ public class HtmlOutOverview extends Html {
 				table.append(System.lineSeparator());
 				
 				table.append("\t\t\t\t\t\t<td>");
+				table.append(testedMethods(className));
+				table.append("</td>");
+				table.append(System.lineSeparator());
+				
+				table.append("\t\t\t\t\t\t<td>");
 				table.append(createMessages(className, linkSrc));
 				table.append("</td>");
 				table.append(System.lineSeparator());
@@ -302,6 +313,38 @@ public class HtmlOutOverview extends Html {
 	}
 	
 	/**
+	 * Creates the a string with tested methods and counts of methods 
+	 * 
+	 * @param className The name of class
+	 * 
+	 * @return String with tested methods and counts of methods
+	 */
+	private String testedMethods(String className) {
+		int count = 0;
+		int tested = 0;
+		
+		for (int method = 0; method < _methods.size(); method++) {
+			if (_methods.get(method).getClassName().equals(className)) {
+				count++;
+				
+				if (_methods.get(method).callsCount() > 0)
+					tested++;
+			}
+		}
+		
+		String color = new String();
+		if (tested == count)
+			color = HelperHtmlCodeJava.getInstance().formatColor(
+					HelperUsedColor.PASS);
+		else
+			color = HelperHtmlCodeJava.getInstance().formatColor(
+					HelperUsedColor.ERROR);
+		
+		return "<span style=\"background: " + color + ";\">" + 
+		String.valueOf(tested) + " / " + String.valueOf(count) + "<span>";
+	}
+
+	/**
 	 * Creates the messages for the specified class.
 	 * 
 	 * @param className The name of class.
@@ -310,6 +353,7 @@ public class HtmlOutOverview extends Html {
 	 * 
 	 * @deprecated Use {@link #createMessages(String, String)}
 	 */
+	@SuppressWarnings("unused")
 	private String createMessages(String className) {
 		StringBuilder ret = new StringBuilder();
 		boolean first = true;

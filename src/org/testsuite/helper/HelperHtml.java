@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.testsuite.checksource.CSMethod;
+import org.testsuite.checksource.SourceLine;
 import org.testsuite.data.Config;
 
 /**
@@ -195,9 +196,33 @@ public class HelperHtml {
 	 * @param file 
 	 * 
 	 * @return The list of methods.
+	 * 
+	 * @deprecated Use {@link #createListOfMethods(String, List, boolean, boolean, List)}
 	 */
 	public static String createListOfMethods(String description, 
 			List<CSMethod> methods, boolean calls, boolean file) {
+		return createListOfMethods(description, methods, calls, file, null);
+	}
+	
+	/**
+	 * Create the list of methods.
+	 * 
+	 * @param description The description for the list.
+	 * 
+	 * @param methods List of methods
+	 * 
+	 * @param calls If the list of tested methods (true) or untested methods 
+	 * (false) are created?
+	 * 
+	 * @param file 
+	 * 
+	 * @param lines The source lines
+	 * 
+	 * @return The list of methods.
+	 */
+	public static String createListOfMethods(String description, 
+			List<CSMethod> methods, boolean calls, boolean file, 
+			List<SourceLine> lines) {
 		StringBuilder ret = new StringBuilder();
 		
 		ret.append("\t\t\t<div class=\"checksourceList\">");
@@ -232,10 +257,10 @@ public class HelperHtml {
 			
 			if (calls && (methods.get(method).callsCount() > 0)) {
 				listItem = createListEntry(methods.get(method), linkSrc, 
-						linkEnd, true);
+						linkEnd, true, lines);
 			} else if (!calls && (methods.get(method).callsCount() == 0)) {
 				listItem = createListEntry(methods.get(method), linkSrc,
-						linkEnd, false);
+						linkEnd, false, lines);
 			}
 			
 			list.add(listItem);
@@ -255,6 +280,43 @@ public class HelperHtml {
 	}
 	
 	/**
+	 * Creates a string with tested lines and count of lines from specified
+	 * method.
+	 * 
+	 * @param method The method where the tested lines are to be determined.
+	 * 
+	 * @param lines The source lines
+	 * 
+	 * @return String with tested lines and count of lines.
+	 */
+	private static String testedLines(CSMethod method, List<SourceLine> lines) {
+		if (lines == null)
+			return new String();
+		
+		int count = 0;
+		int tested = 0;
+		
+		for (int line = method.getLine(); line < method.getLastLineNumber();
+				line++) {
+			count++;
+			
+			if (lines.get(line).isLineTested())
+				tested++;
+		}
+		
+		String color = new String();
+		if (count == tested)
+			color = HelperHtmlCodeJava.getInstance().formatColor(
+					HelperUsedColor.PASS);
+		else
+			color = HelperHtmlCodeJava.getInstance().formatColor(
+					HelperUsedColor.ERROR);
+		
+		return " ( <span style=\"background: " + color + "\">" + 
+			String.valueOf(tested) + " / " + String.valueOf(count) + "</span> )";
+	}
+	
+	/**
 	 * Create a HTML list entry of a specified method.
 	 * 
 	 * @param method The method, which is to be output in the list.
@@ -267,9 +329,33 @@ public class HelperHtml {
 	 * (false) are created?
 	 * 
 	 * @return The created HTML list entry of the specified method.
+	 * 
+	 * @deprecated Use {@link #createListEntry(CSMethod, String, String, boolean, List)}
 	 */
+	@SuppressWarnings("unused")
 	private static String createListEntry(CSMethod method, String linkSrc, 
 			String linkEnd, boolean calls) {
+		return createListEntry(method, linkSrc, linkEnd, calls, null);
+	}
+	
+	/**
+	 * Create a HTML list entry of a specified method.
+	 * 
+	 * @param method The method, which is to be output in the list.
+	 * 
+	 * @param linkSrc Begin HTML link tag to the check source HTML result file.
+	 * 
+	 * @param linkEnd End HTML link tag to the check source HTML result file.
+	 * 
+	 * @param calls If the list of tested methods (true) or untested methods 
+	 * (false) are created?
+	 * 
+	 * @param lines The source lines
+	 * 
+	 * @return The created HTML list entry of the specified method.
+	 */
+	private static String createListEntry(CSMethod method, String linkSrc, 
+			String linkEnd, boolean calls, List<SourceLine> lines) {
 		
 		String colorBegin = new String();
 		String colorEnd = new String();
@@ -297,6 +383,7 @@ public class HelperHtml {
 		ret.append(method.getClassName());
 		ret.append(".");
 		ret.append(method.getName());
+		ret.append(testedLines(method, lines));
 		ret.append(linkEnd);
 		ret.append(colorEnd);
 		ret.append("</li>");
