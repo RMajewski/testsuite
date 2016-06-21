@@ -100,8 +100,6 @@ public class Parser {
 			List<SourceLine> lines, int number) {
 		int end = method.getLastLineNumber();
 		
-		System.out.println(word);
-		
 		switch(word) {
 			case "assert":
 				return end;
@@ -131,9 +129,6 @@ public class Parser {
 				return end;
 				
 			case "for":
-				return end;
-				
-			case "goto":
 				return end;
 				
 			case "if":

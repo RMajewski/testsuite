@@ -88,11 +88,11 @@ public class ReadTest implements Read {
 				readCheckSourceAnnotation(line, methods, i, lineNumber);
 			} else if ((line.indexOf(method.getClassName() + "." + method.getName()) > -1) ||
 				(line.indexOf("new " + method.getName() + "(") > -1)){
-				method.addCall(lineNumber);
+				method.addCall(new CSCall(lineNumber, true));
 			} else {
 				for (int j = 0; j < _variables.size(); j++) {
 					if (line.indexOf(_variables.get(j) + "." + method.getName()) > -1) {
-						method.addCall(lineNumber);
+						method.addCall(new CSCall(lineNumber, true));
 					}
 				}
 			}
@@ -121,7 +121,7 @@ public class ReadTest implements Read {
 					line.indexOf("\")"));
 			
 			if (methods.get(actual).getName().equals(name))
-				method.addCall(lineNumber);
+				method.addCall(new CSCall(lineNumber, true));
 		} else if (methodName.equals("methodList")) {
 			String[] names = line.substring(line.indexOf("={") + 2, line.
 					indexOf("}")).split(",");
@@ -129,7 +129,7 @@ public class ReadTest implements Read {
 				String name = names[i].substring(names[i].indexOf("\"") + 1,
 						names[i].lastIndexOf("\""));
 				if (methods.get(actual).getName().equals(name))
-					method.addCall(lineNumber);
+					method.addCall(new CSCall(lineNumber, true));
 			}
 		}
 	}

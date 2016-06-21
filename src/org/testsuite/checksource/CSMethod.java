@@ -63,7 +63,7 @@ public class CSMethod {
 	/**
 	 * Saves the the list of calls
 	 */
-	private List<Integer> _calls;
+	private List<CSCall> _calls;
 	
 	/**
 	 * Saves the name
@@ -101,7 +101,7 @@ public class CSMethod {
 		_value = new String();
 		_modifier = new String();
 		_type = new String();
-		_calls = new ArrayList<Integer>();
+		_calls = new ArrayList<CSCall>();
 		_name = new String();
 		_className = new String();
 		_deprecated = false;
@@ -245,8 +245,19 @@ public class CSMethod {
 	 * Added a call to the list of calls.
 	 * 
 	 * @param call The new call
+	 * 
+	 * @deprecated Use {@link #addCall(CSCall)}
 	 */
 	public void addCall(int call) {
+		addCall(new CSCall(call, true));
+	}
+	
+	/**
+	 * Added a call to the list of calls.
+	 * 
+	 * @param call The new Call
+	 */
+	public void addCall(CSCall call) {
 		_calls.add(call);
 	}
 	
@@ -257,7 +268,7 @@ public class CSMethod {
 	 * 
 	 * @return The specified call
 	 */
-	public int getCall(int index) {
+	public CSCall getCall(int index) {
 		return _calls.get(index);
 	}
 	

@@ -41,8 +41,11 @@ public class CSParameter {
 	 * Initialize the data of this class.
 	 */
 	public CSParameter(String type, String name) {
+		// OPT Replace by setType()
 		if ((type == null) || type.isEmpty())
 			throw new IllegalArgumentException();
+		
+		// OPT Replace by setName()
 		if ((name == null) || type.isEmpty())
 			throw new IllegalArgumentException();
 		_type = type;
