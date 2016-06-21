@@ -20,9 +20,11 @@
 package org.testsuite.checksource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * 
@@ -42,11 +44,23 @@ public class ReadTest implements Read {
 	private List<String> _variables;
 	
 	/**
+	 * If a multiline comment
+	 */
+	private boolean _multiComment;
+	
+	/**
+	 * Saves the multi line
+	 */
+	private String _line;
+	
+	/**
 	 * Initialize the data
 	 */
 	public ReadTest() {
 		_classNames = new HashSet<String>();
 		_variables = new ArrayList<String>();
+		_line = new String();
+		_multiComment = false;
 	}
 
 	/**
@@ -59,8 +73,31 @@ public class ReadTest implements Read {
 	 */
 	@Override
 	public void read(int lineNumber, String line, List<CSMethod> methods) {
-		if ((line.indexOf("class") > -1) || (line.indexOf("import") > -1))
+		if ((line.indexOf("class") > -1) || (line.indexOf("import") > -1) || 
+				(line.indexOf("package") > -1) || line.trim().isEmpty())
 				return;
+		
+		if (line.startsWith("\\s*/\\*")) {
+			_multiComment = true;
+			return;
+		}
+		
+		if (_multiComment && (line.indexOf("*/") > -1)) {
+			_multiComment = false;
+			return;
+		}
+		
+		if (_multiComment)
+			return;
+		
+		if ((line.indexOf(";") == -1) && 
+				!line.endsWith("\\{\\s*") && (line.indexOf("@") == -1))  {
+			_line += line;
+			return;
+		}
+		
+		if (line.indexOf(";") > -1)
+			_line += line.trim();
 		
 		for (Iterator<String> i = _classNames.iterator(); i.hasNext();) {
 			String cls = i.next();
@@ -69,15 +106,16 @@ public class ReadTest implements Read {
 				if (line.matches("^\\s*(public|private|protected)[\\w\\s]*(" +
 						cls + ")[\\w\\s]*;$")) {
 					_variables.add(
-							line.substring(line.indexOf(cls) + cls.length() + 1, 
-									line.indexOf(";")));
+							_line.substring(_line.indexOf(cls) + 
+									cls.length() + 1, _line.indexOf(";")));
 				}
 				
 				if(line.matches("^\\s*(" + cls + 
 						")[\\w\\s]*=[\\p{Graph}\\s]*;$")) {
 					_variables.add(
-							line.substring(line.indexOf(cls) + cls.length() + 1, 
-									line.indexOf("=")).trim());
+							_line.substring(_line.indexOf(cls) + 
+									cls.length() + 1, 
+									_line.indexOf("=")).trim());
 				}
 			}
 		}
@@ -86,17 +124,31 @@ public class ReadTest implements Read {
 			CSMethod method = methods.get(i);
 			if (line.matches("^\\s*@CheckSource[\\w\\s(=\")\\{\\},]*")) {
 				readCheckSourceAnnotation(line, methods, i, lineNumber);
-			} else if ((line.indexOf(method.getClassName() + "." + method.getName()) > -1) ||
-				(line.indexOf("new " + method.getName() + "(") > -1)){
-				method.addCall(new CSCall(lineNumber, true));
-			} else {
-				for (int j = 0; j < _variables.size(); j++) {
-					if (line.indexOf(_variables.get(j) + "." + method.getName()) > -1) {
-						method.addCall(new CSCall(lineNumber, true));
-					}
+			} else if (line.indexOf(";") > -1) {
+				StringBuilder test = new StringBuilder(method.getClassName());
+				
+				for (int var = 0; var < _variables.size(); var++) {
+					test.append("|");
+					test.append(_variables.get(var));
+				}
+				
+				if (_line.matches(".*(" + test.toString() + ")." + 
+						method.getName() + "\\([\\w\\s\\[\\]=\\{\\},\"]*\\).*")) {
+					addCall(method, lineNumber, _line.substring(
+							_line.indexOf(method.getName() + "(") + 
+							method.getName().length()));
+				} else if (_line.matches(".*new " + method.getClassName() + 
+						"\\([\\w\\s\\[\\]=\\{\\},\"]*\\).*") && 
+						method.getClassName().equals(method.getName())) {
+					addCall(method, lineNumber, _line.substring(
+							_line.indexOf(method.getName() + "(") +
+							method.getName().length()));
 				}
 			}
 		}
+		
+		if (_line.indexOf(";") > -1)
+			_line = new String();
 	}
 
 	/**
@@ -125,6 +177,7 @@ public class ReadTest implements Read {
 		} else if (methodName.equals("methodList")) {
 			String[] names = line.substring(line.indexOf("={") + 2, line.
 					indexOf("}")).split(",");
+			System.out.println(Arrays.toString(names));
 			for (int i = 0; i < names.length; i++) {
 				String name = names[i].substring(names[i].indexOf("\"") + 1,
 						names[i].lastIndexOf("\""));
@@ -132,6 +185,68 @@ public class ReadTest implements Read {
 					method.addCall(new CSCall(lineNumber, true));
 			}
 		}
+	}
+	
+	/**
+	 * Added a call to the specified method.
+	 * 
+	 * @param method The method to which a call is to be added.
+	 * 
+	 * @param lineNumber The number of source line
+	 * 
+	 * @param parameters The parameters passed
+	 */
+	private void addCall(CSMethod method, int lineNumber, String parameters) {
+		CSCall call = new CSCall(lineNumber, true);
+		
+		if ((parameters != null) && !parameters.isEmpty()) {
+			String[] tmp = readParameters(parameters);
+			for (int i = 0; i < tmp.length; i++)
+				call.addParameter(tmp[i].trim());
+		}
+		
+		if (call.parameterCount() == method.parametersCount())
+			method.addCall(call);
+	}
+	
+	private String[] readParameters(String src) {
+		List<String> ret = new ArrayList<String>();
+		
+		int level = 0;
+		int start = 1;
+		int end = 1;
+		boolean quote = false;
+		
+		for (int i = 0; i < src.length(); i++) {
+			if ((src.charAt(i) == '"') && !quote)
+				quote = true;
+			else  if (src.charAt(i) == '"' && quote) {
+				quote = false;
+				continue;
+			}
+			
+			if (quote) {
+				continue;
+			}
+			
+			if ((src.charAt(i) == '(') || (src.charAt(i) == '{') ||
+					(src.charAt(i) == '['))
+				level++;
+			else if ((src.charAt(i) == ')')  || (src.charAt(i) == '}') ||
+			(src.charAt(i) == ']'))
+				level--;
+			
+			if (((src.charAt(i) == ',') && (level == 1)) || 
+					((level == 0) && ((src.charAt(i) == ')') ||
+							(src.charAt(i) == '}') || (src.charAt(i) == ']')) &&
+					(end < i))) {
+				end = i;
+				ret.add(src.substring(start, end));
+				start = i + 1;
+			}
+		}
+		
+		return ret.toArray(new String[ret.size()]);
 	}
 
 	/**

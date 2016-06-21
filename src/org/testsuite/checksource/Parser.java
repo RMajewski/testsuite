@@ -69,7 +69,7 @@ public class Parser {
 						int key = searchKeywords(word, methods.get(method),
 								lines, line);
 						if (key > 0) {
-							line += key - 1;
+							line = key;
 							tested = false;
 							break;
 						}
@@ -154,7 +154,7 @@ public class Parser {
 				return end;
 			
 			case "try":
-				return 1;
+				return number + 1;
 				
 			case "while":
 				return end;

@@ -58,6 +58,17 @@ public class CSCall {
 	}
 	
 	/**
+	 * Initialize the datas
+	 * 
+	 * @param number The Number of line
+	 * 
+	 * @param parameter The parameter
+	 */
+	public CSCall(int number, boolean call) {
+		this(number, call, new String[0]);
+	}
+	
+	/**
 	 * Returns the number of source line
 	 * 
 	 * @return The number of source line
@@ -93,6 +104,15 @@ public class CSCall {
 	 */
 	public void addParameter(String parameter) {
 		_parameter.add(parameter);
+	}
+	
+	/**
+	 * Returns the count of parameters.
+	 * 
+	 * @return The count of parameters.
+	 */
+	public int parameterCount() {
+		return _parameter.size();
 	}
 
 	/**
