@@ -32,6 +32,11 @@ import java.util.regex.Pattern;
  */
 public class Parser {
 	/**
+	 * Saves the number of line of end loop
+	 */
+	private static int _endLoop = -1;
+	
+	/**
 	 * Parse the source code
 	 * 
 	 * @param methods The methods of the class
@@ -48,6 +53,10 @@ public class Parser {
 					String source = new String();
 					
 					if ((next > -1) && (line <= next))
+						continue;
+					
+					if (lines.get(line).isJavadoc() || 
+							lines.get(line).isMultiLineComment())
 						continue;
 					
 					if (lines.get(line).getLine().indexOf("//") > -1)
@@ -99,68 +108,126 @@ public class Parser {
 	private static int searchKeywords(String word, CSMethod method,
 			List<SourceLine> lines, int number) {
 		int end = method.getLastLineNumber();
+		int endLoop = -1;
+		
+		if (lines.get(number).getLine().trim().endsWith("{")) {
+			int level = 1;
+			for (int line = number + 1; line < method.getLastLineNumber(); 
+					line++) {
+				if (lines.get(line).getLine().trim().endsWith("{"))
+					level++;
+				else if (lines.get(line).getLine().trim().startsWith("}"))
+					level--;
+				if (level == 0) {
+					endLoop = line;
+					break;
+				}
+			}
+		}
 		
 		switch(word) {
 			case "assert":
-				return end;
+				lines.get(number).setLineTested(true);
+				return number + 1;
 				
 			case "break":
+				lines.get(number).setLineTested(true);
+				if (_endLoop > -1) {
+					int ret = _endLoop;
+					_endLoop = -1;
+					return ret + 1;
+				}
 				return end;
 				
 			case "case":
-				return end;
+				lines.get(number).setLineTested(true);
+				return number +1;
 				
 			case "catch":
-				return end;
+				lines.get(number).setLineTested(true);
+				if (endLoop > -1)
+					_endLoop = endLoop;
+				return number + 1;
 				
 			case "continue":
+				lines.get(number).setLineTested(true);
+				if (_endLoop > -1)
+					return _endLoop;
 				return end;
 				
 			case "default":
-				return end;
+				lines.get(number).setLineTested(true);
+				return number + 1;
 				
 			case "do":
-				return end;
+				lines.get(number).setLineTested(true);
+				if (endLoop > number)
+					_endLoop = endLoop;
+				else
+					return -1;
+				return number + 1;
 				
 			case "else":
-				return end;
+				if (lines.get(number).getLine().indexOf("if") == -1) {
+					lines.get(number).setLineTested(true);
+					if (endLoop > -1)
+						_endLoop = endLoop;
+					else {
+						lines.get(number + 1).setLineTested(true);
+						return number + 2;
+					}
+					return number + 1; 
+				}
+				return -1;
 				
 			case "finally":
-				return end;
+				lines.get(number).setLineTested(true);
+				if (endLoop > -1)
+					_endLoop = endLoop;
+				return number + 1;
 				
 			case "for":
-				return end;
+				return endLoop;
 				
 			case "if":
+				if (endLoop != -1)
+					return endLoop;
 				return end;
-				
-			case "instanceof":
-				return -1;
-				
-			case "new":
-				return -1;
 				
 			case "return":
 				lines.get(number).setLineTested(true);
 				if (lines.get(number + 1).getLine().trim().equals("}"))
 					lines.get(number + 1).setLineTested(true);
+				if (_endLoop > -1)
+					_endLoop = -1;
 				return end;
 				
 			case "switch":
-				return end;
+				lines.get(number).setLineTested(true);
+				if (endLoop > -1)
+					_endLoop = endLoop;
+				return number + 1;
 				
 			case "throw":
 				lines.get(number).setLineTested(true);
 				return end;
 			
 			case "try":
+				lines.get(number).setLineTested(true);
+				if (endLoop > -1)
+					_endLoop = endLoop;
 				return number + 1;
 				
 			case "while":
+				if (_endLoop == number) {
+					_endLoop = -1;
+					lines.get(number).setLineTested(true);
+					return number + 1;
+				}
 				return end;
 		}
 		
 		// Standard return value
-		return -1;
+		return -10;
 	}
 }
