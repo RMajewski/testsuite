@@ -26,8 +26,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
@@ -535,7 +533,27 @@ public class TestParser {
 	 */
 	@Test
 	public void testKeywordFor() throws Exception {
-		fail("The test is not yet implemented.");
+		int lastLine = 100;
+		int actualLine = 0;
+		
+		CSMethod method = mock(CSMethod.class);
+		when(method.getLastLineNumber()).thenReturn(lastLine);
+		
+		List<SourceLine> lines = new ArrayList<SourceLine>();
+		
+		SourceLine line1 = mock(SourceLine.class);
+		when(line1.getLine()).thenReturn("for (int i; i < 10; i++) {");
+		lines.add(line1);
+		
+		SourceLine line2 = mock(SourceLine.class);
+		when(line2.getLine()).thenReturn("}");
+		lines.add(line2);
+		
+		assertEquals(actualLine + 1, searchKeywords("for", method, lines, 
+				actualLine));
+		assertEquals(1, endLoop());
+		verify(line1).setLineTested(true);
+		verify(line2, never()).setLineTested(Matchers.anyBoolean());
 	}
 	
 	/**
@@ -543,7 +561,27 @@ public class TestParser {
 	 */
 	@Test
 	public void testKeywordIfWithoutSquareBracket() throws Exception {
-		fail("The test is not yet implemented.");
+		int lastLine = 100;
+		int actualLine = 0;
+		
+		CSMethod method = mock(CSMethod.class);
+		when(method.getLastLineNumber()).thenReturn(lastLine);
+		
+		List<SourceLine> lines = new ArrayList<SourceLine>();
+		
+		SourceLine line1 = mock(SourceLine.class);
+		when(line1.getLine()).thenReturn("if (test) {");
+		lines.add(line1);
+		
+		SourceLine line2 = mock(SourceLine.class);
+		when(line2.getLine()).thenReturn("}");
+		lines.add(line2);
+		
+		assertEquals(actualLine + 1, searchKeywords("if", method, lines, 
+				actualLine));
+		assertEquals(1, endLoop());
+		verify(line1).setLineTested(true);
+		verify(line2, never()).setLineTested(Matchers.anyBoolean());
 	}
 	
 	/**
@@ -551,7 +589,27 @@ public class TestParser {
 	 */
 	@Test
 	public void testKeywordIfWithSquareBracket() throws Exception {
-		fail("The test is not yet implemented.");
+		int lastLine = 100;
+		int actualLine = 0;
+		
+		CSMethod method = mock(CSMethod.class);
+		when(method.getLastLineNumber()).thenReturn(lastLine);
+		
+		List<SourceLine> lines = new ArrayList<SourceLine>();
+		
+		SourceLine line1 = mock(SourceLine.class);
+		when(line1.getLine()).thenReturn("if (test) {");
+		lines.add(line1);
+		
+		SourceLine line2 = mock(SourceLine.class);
+		when(line2.getLine()).thenReturn("}");
+		lines.add(line2);
+		
+		assertEquals(actualLine + 1, searchKeywords("if", method, lines, 
+				actualLine));
+		assertEquals(1, endLoop());
+		verify(line1).setLineTested(true);
+		verify(line2, never()).setLineTested(Matchers.anyBoolean());
 	}
 	
 	/**
@@ -559,7 +617,27 @@ public class TestParser {
 	 */
 	@Test
 	public void testKeywordIfOverSeveralLines() throws Exception {
-		fail("The test is not yet implemented.");
+		int lastLine = 100;
+		int actualLine = 0;
+		
+		CSMethod method = mock(CSMethod.class);
+		when(method.getLastLineNumber()).thenReturn(lastLine);
+		
+		List<SourceLine> lines = new ArrayList<SourceLine>();
+		
+		SourceLine line1 = mock(SourceLine.class);
+		when(line1.getLine()).thenReturn("if (test) {");
+		lines.add(line1);
+		
+		SourceLine line2 = mock(SourceLine.class);
+		when(line2.getLine()).thenReturn("}");
+		lines.add(line2);
+		
+		assertEquals(actualLine + 1, searchKeywords("if", method, lines, 
+				actualLine));
+		assertEquals(1, endLoop());
+		verify(line1).setLineTested(true);
+		verify(line2, never()).setLineTested(Matchers.anyBoolean());
 	}
 	
 	/**
@@ -913,6 +991,26 @@ public class TestParser {
 	 */
 	@Test
 	public void testKeywordWhile() throws Exception {
-		fail("The test is not yet implemented.");
+		int lastLine = 100;
+		int actualLine = 0;
+		
+		CSMethod method = mock(CSMethod.class);
+		when(method.getLastLineNumber()).thenReturn(lastLine);
+		
+		List<SourceLine> lines = new ArrayList<SourceLine>();
+		
+		SourceLine line1 = mock(SourceLine.class);
+		when(line1.getLine()).thenReturn("while(test) {");
+		lines.add(line1);
+		
+		SourceLine line2 = mock(SourceLine.class);
+		when(line2.getLine()).thenReturn("}");
+		lines.add(line2);
+		
+		assertEquals(actualLine + 1, searchKeywords("while", method, lines, 
+				actualLine));
+		assertEquals(1, endLoop());
+		verify(line1).setLineTested(true);
+		verify(line2, never()).setLineTested(Matchers.anyBoolean());
 	}
 }

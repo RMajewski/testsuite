@@ -187,12 +187,16 @@ public class Parser {
 				return number + 1;
 				
 			case "for":
-				return endLoop;
+				lines.get(number).setLineTested(true);
+				if (endLoop > -1)
+					_endLoop = endLoop;
+				return number + 1;
 				
 			case "if":
-				if (endLoop != -1)
-					return endLoop;
-				return end;
+				lines.get(number).setLineTested(true);
+				if (endLoop > -1)
+					_endLoop = endLoop;
+				return number + 1;
 				
 			case "return":
 				lines.get(number).setLineTested(true);
@@ -224,7 +228,10 @@ public class Parser {
 					lines.get(number).setLineTested(true);
 					return number + 1;
 				}
-				return end;
+				lines.get(number).setLineTested(true);
+				if (endLoop > -1)
+					_endLoop = endLoop;
+				return number + 1;
 		}
 		
 		// Standard return value
