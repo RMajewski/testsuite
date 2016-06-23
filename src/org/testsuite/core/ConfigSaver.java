@@ -223,7 +223,7 @@ public class ConfigSaver {
 		writeClassPath(bw, runner.getClassPathList());
 
 		if (runner.testSuiteCount() > 0)
-			for (int i = 0; i < runner.classPathCount(); i++)
+			for (int i = 0; i < runner.testSuiteCount(); i++)
 				writeTestSuite(bw, runner.getTestSuite(i));
 		
 		bw.write("\t</testGroup>");
