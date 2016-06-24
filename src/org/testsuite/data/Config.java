@@ -101,6 +101,16 @@ public final class Config {
 	private List<String> _listTodo;
 	
 	/**
+	 * Saves the path for the source files.
+	 */
+	private String _noneListedPath;
+	
+	/**
+	 * Saves whether for files to be searched, which were not tested.
+	 */
+	private boolean _nonListedFiles;
+	
+	/**
 	 * The singleton instance
 	 */
 	private static Config _config;
@@ -606,6 +616,43 @@ public final class Config {
 	 */
 	public void addToDoWord(String word) {
 		_listTodo.add(word);
+	}
+	
+	/**
+	 * Returns whether for files to be searched, which were not tested.
+	 * 
+	 * @return Target for files to be searched, which have not been tested?
+	 */
+	public boolean isListNoneTestedFiles() {
+		return _nonListedFiles;
+	}
+	
+	/**
+	 * Sets whether for files to be searched, which were not tested.
+	 * 
+	 * @param listed Target for files to be searched, which have not been
+	 * tested?
+	 */
+	public void setListNoneTestedFiles(boolean listed) {
+		_nonListedFiles = listed;
+	}
+	
+	/**
+	 * Returns the path, where to look for untested files.
+	 * 
+	 * @returns The path, where to look for untested files.
+	 */
+	public String getNoneListedPath() {
+		return _noneListedPath;
+	}
+	
+	/**
+	 * Sets the path, where to look for untested files.
+	 * 
+	 * @param path The path, where to look for untested files.
+	 */
+	public void setNoneListedPath(String path) {
+		_noneListedPath = path;
 	}
 	
 	/**

@@ -46,14 +46,16 @@ public class TestToWideLines implements SourceTest {
 	 */
 	@Override
 	public boolean test(List<SourceLine> list) {
+		int wide = Config.getInstance().getLineWidth();
+		if (wide < 0)
+			wide = 80;
+		
 		for (int line = 0; line < list.size(); line++)
-			if (list.get(line).getLine().length() > 
-					Config.getInstance().getLineWidth())
+			if (list.get(line).getLine().length() > wide)
 				list.get(line).addMessage(new MessageColor(
 						ResourceBundle.getBundle(BUNDLE_FILE)
 							.getString("toWideLine").replace("?", 
-									String.valueOf(Config.getInstance()
-											.getLineWidth())),
+									String.valueOf(wide)),
 						HelperUsedColor.IGNORE));
 		
 		return false;

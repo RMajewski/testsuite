@@ -26,6 +26,7 @@
 			<name>OPT</name>
 			<name>FIX</name>
 		</todo>
+		<noneTestedList path="src/org">true</noneTestedList>
 	</config>
 	
 	<testGroup>

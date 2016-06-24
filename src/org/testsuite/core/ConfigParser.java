@@ -137,6 +137,14 @@ public class ConfigParser {
 								config = true;
 								break;
 								
+							case "noneTestedList":
+								Attribute atr = (Attribute)element
+									.getAttributes().next();
+								if (atr.getName().toString().equals("path"))
+									Config.getInstance().setNoneListedPath(
+											atr.getValue());
+								break;
+								
 							case "testGroup":
 								testGroup = true;
 								break;
@@ -149,7 +157,7 @@ public class ConfigParser {
 								library = new Library();
 								for (Iterator<?> atrs = element.getAttributes(); 
 										atrs.hasNext();) {
-									Attribute atr = (Attribute)atrs.next();
+									atr = (Attribute)atrs.next();
 									switch (atr.getName().toString()) {
 										case "version":
 											library.setVersion(atr.getValue());
@@ -180,7 +188,7 @@ public class ConfigParser {
 							case "test":
 								for (Iterator<?> atrs = element.getAttributes();
 										atrs.hasNext();) {
-									Attribute atr = (Attribute) atrs.next();
+									atr = (Attribute) atrs.next();
 									
 									if (atr.getName().toString().equals(
 											"executed"))
@@ -268,6 +276,12 @@ public class ConfigParser {
 								if (config)
 									Config.getInstance().setCreateHtml(
 										Boolean.parseBoolean(data));
+								break;
+								
+							case "noneTestedList":
+								if (config)
+									Config.getInstance().setListNoneTestedFiles(
+											Boolean.parseBoolean(data));
 								break;
 								
 							case "lineWidth":

@@ -22,7 +22,7 @@
 			<xsd:element name="libPath" minOccurs="0" type="xsd:string"/>
 			<xsd:element name="maxDuration" minOccurs="0" type="xsd:long"/>
 			<xsd:element name="htmlOut" minOccurs="0" type="xsd:boolean"/>
-			<xsd:element name="lineWidh" minOccurs="0" type="xsd:int"/>
+			<xsd:element name="lineWidth" minOccurs="0" type="xsd:int"/>
 			<xsd:element name="systemProperty" minOccurs="0">
 				<xsd:complexType>
 					<xsd:sequence>
@@ -36,8 +36,17 @@
 			<xsd:element name="todo">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="name" maxOccurs="unbaunded" />
+						<xsd:element name="name" type="xsd:string" maxOccurs="unbounded" />
 					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name ="noneTestedList" minOccurs="0">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:extension base="xsd:boolean">
+							<xsd:attribute name="path" type="xsd:string" />
+						</xsd:extension>
+					</xsd:simpleContent>
 				</xsd:complexType>
 			</xsd:element>
 		</xsd:sequence>
@@ -92,7 +101,7 @@
 						<xsd:extension base="xsd:string">
 							<xsd:attribute name="executed" type="xsd:boolean"/>
 							<xsd:attribute name="jvm" type="xsd:boolean"/>
-							<xsd:attribute name="checkSource" type="xsd:String"/>
+							<xsd:attribute name="checkSource" type="xsd:string"/>
 						</xsd:extension>
 					</xsd:simpleContent>
 				</xsd:complexType>

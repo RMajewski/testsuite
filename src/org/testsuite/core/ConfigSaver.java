@@ -139,6 +139,24 @@ public class ConfigSaver {
 			bw.write("\t\t<lineWidth>");
 			bw.write(Config.getInstance().getLineWidth());
 			bw.write("</lineWidth>");
+			bw.newLine();
+		}
+		
+		if (Config.getInstance().isListNoneTestedFiles() || 
+				!Config.getInstance().getNoneListedPath().isEmpty()) {
+			bw.write("\t\t<noneTestedList");
+			
+			if (!Config.getInstance().getNoneListedPath().isEmpty()) {
+				bw.write(" path=\"");
+				bw.write(Config.getInstance().getNoneListedPath());
+				bw.write("\"");
+			}
+			
+			bw.write(">");
+			bw.write(String.valueOf(
+					Config.getInstance().isListNoneTestedFiles()));
+			bw.write("</noneTestedList>");
+			bw.newLine();
 		}
 		
 		if (Config.getInstance().propertyCount() > 0) {

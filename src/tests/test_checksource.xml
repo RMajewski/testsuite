@@ -9,6 +9,7 @@
 		<libPath>..</libPath>
 		<maxDuration>30000</maxDuration>
 		<htmlOut>true</htmlOut>
+		<noneTestedList path="src/org">true</noneTestedList>
 		<systemProperty>
 			<property>testing="true"</property>
 		</systemProperty>

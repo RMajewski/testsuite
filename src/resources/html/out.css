@@ -121,6 +121,17 @@
 	height: 300px;
 }
 
+.noneList {
+	border: 1px dashed #000;
+	margin-top: 10px;
+	padding: 0px 10px;
+}
+
+.noneList ul {
+	overflow-y: scroll;
+	height: 300px;
+}
+
 .todoList {
 	border: 1px dashed #000;
 	margin-top: 10px;

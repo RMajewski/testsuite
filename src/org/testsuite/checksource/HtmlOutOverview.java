@@ -34,6 +34,7 @@ import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
 import org.testsuite.data.TodoData;
 import org.testsuite.helper.HelperCalendar;
+import org.testsuite.helper.HelperFile;
 import org.testsuite.helper.HelperHtml;
 import org.testsuite.helper.HelperHtmlCodeJava;
 import org.testsuite.helper.HelperUsedColor;
@@ -169,6 +170,12 @@ public class HtmlOutOverview extends Html {
 			// To-do list
 			bw.write(createTodoList());
 			
+			// List of none tested files
+			bw.write(createNoneTestedList());
+			
+			// List of none exists files
+			bw.write(createNoneExistsList());
+			
 			// List of deprecated methods
 			bw.write(createListOfDeprecated());
 			
@@ -176,9 +183,6 @@ public class HtmlOutOverview extends Html {
 			bw.write(HelperHtml.createListOfMethods(
 					_bundle.getString("methods_without_calls"), _methods, 
 					false, true));
-			
-			// List of none exists files
-			bw.write(createNoneExistsList());
 			
 			// Table with links
 			bw.write(createHtmlLink());
@@ -195,6 +199,64 @@ public class HtmlOutOverview extends Html {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	/**
+	 * Generates a list of the files have not been tested.
+	 * 
+	 * @return The HTML list of the files have not been tested.
+	 */
+	private String createNoneTestedList() {
+		StringBuilder ret = new StringBuilder();
+		
+		if (Config.getInstance().isListNoneTestedFiles()) {
+			List<String> none = new ArrayList<String>();
+			List<File> list = HelperFile.getSourceFiles(
+					Config.getInstance().getNoneListedPath(), "(.*\\.java$)");
+			for (int file = 0; file < list.size(); file++) {
+				String name = list.get(file).getName();
+				name = name.substring(0, name.lastIndexOf("."));
+				boolean available = false;
+				for (int rs = 0; rs < _resultFiles.size(); rs++)
+					if (_resultFiles.get(rs).indexOf(name) > -1)
+						available = true;
+				
+				if (!available && (!name.equals("package-info")))
+					none.add(list.get(file).getAbsolutePath().substring(
+							list.get(file).getAbsolutePath().indexOf(
+									Config.getInstance().getNoneListedPath())));
+			}
+			
+			if (none.size() > 0) {
+				Collections.sort(none);
+				
+				ret.append("\t\t\t<div class=\"noneList\">");
+				ret.append(System.lineSeparator());
+
+				ret.append("\t\t\t\t<p>");
+				ret.append(_bundle.getString("none_list"));
+				ret.append("</p>");
+				ret.append(System.lineSeparator());
+				
+				ret.append("\t\t\t\t<ul>");
+				ret.append(System.lineSeparator());
+				
+				for (int i = 0; i < none.size(); i++) {
+					ret.append("\t\t\t\t\t<li>");
+					ret.append(none.get(i));
+					ret.append("</li>");
+					ret.append(System.lineSeparator());
+				}
+				
+				ret.append("\t\t\t\t</ul>");
+				ret.append(System.lineSeparator());
+
+				ret.append("\t\t\t</div>");
+				ret.append(System.lineSeparator());
+			}
+		}
+		
+		return ret.toString();
 	}
 
 	/**
