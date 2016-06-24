@@ -471,7 +471,8 @@ public class HtmlOutOverview extends Html {
 		ret.append("\t\t\t\t\t</tr>");
 		ret.append(System.lineSeparator());
 		
-		List<String> links = new ArrayList<String>();
+		Collections.sort(_resultFiles);
+		String path = new String();
 		
 		for (int link = 0; link <_resultFiles.size(); link++) {
 			File file = new File(_resultFiles.get(link));
@@ -480,58 +481,71 @@ public class HtmlOutOverview extends Html {
 				String linkName = linkSrc.substring(linkSrc.indexOf("_") + 1);
 				String className = linkName.substring(
 						linkName.indexOf("Test") + 4, linkName.indexOf(".html"));
-				StringBuilder table = new StringBuilder("\t\t\t\t\t<tr>");
-				table.append(System.lineSeparator());
+
+				if (!path.equals(linkSrc.substring(linkSrc.indexOf(
+						Config.getInstance().getPathSrc()),
+						linkSrc.lastIndexOf("/")))) {
+					path = linkSrc.substring(
+							linkSrc.indexOf(Config.getInstance().getPathSrc()), 
+							linkSrc.lastIndexOf("/"));
+					ret.append("\t\t\t\t\t<tr>");
+					ret.append(System.lineSeparator());
+					
+					ret.append("\t\t\t\t\t\t<td colspan=\"3\" class=\"newPath\">");
+					ret.append(path);
+					ret.append("</td>");
+					ret.append(System.lineSeparator());
+
+					ret.append("\t\t\t\t\t</tr>");
+					ret.append(System.lineSeparator());
+				}
+				
+				ret.append("\t\t\t\t\t<tr>");
+				ret.append(System.lineSeparator());
 				
 				Color background = getMessageColor(className);
 				
-				table.append("\t\t\t\t\t\t<td style=\"background: ");
-				table.append(HelperHtmlCodeJava.getInstance()
+				ret.append("\t\t\t\t\t\t<td style=\"background: ");
+				ret.append(HelperHtmlCodeJava.getInstance()
 						.formatColor(background));
-				table.append(";\" >");
-				table.append("<a href=\"");
-				table.append(linkSrc);
-				table.append("\">");
-				table.append(linkName);
-				table.append("</a></td>");
-				table.append(System.lineSeparator());
+				ret.append(";\" >");
+				ret.append("<a href=\"");
+				ret.append(linkSrc);
+				ret.append("\">");
+				ret.append(linkName);
+				ret.append("</a></td>");
+				ret.append(System.lineSeparator());
 				
-				table.append("\t\t\t\t\t\t<td style=\"background: ");
-				table.append(HelperHtmlCodeJava.getInstance()
+				ret.append("\t\t\t\t\t\t<td style=\"background: ");
+				ret.append(HelperHtmlCodeJava.getInstance()
 						.formatColor(background));
-				table.append(";\" >");
-				table.append(className);
-				table.append("</td>");
-				table.append(System.lineSeparator());
+				ret.append(";\" >");
+				ret.append(className);
+				ret.append("</td>");
+				ret.append(System.lineSeparator());
 				
-				table.append("\t\t\t\t\t\t<td style=\"background: ");
-				table.append(HelperHtmlCodeJava.getInstance()
+				ret.append("\t\t\t\t\t\t<td style=\"background: ");
+				ret.append(HelperHtmlCodeJava.getInstance()
 						.formatColor(background));
-				table.append(";\" >");
+				ret.append(";\" >");
 				
 				if (!background.equals(HelperUsedColor.PASS)) {
-					table.append("<a href=\"");
-					table.append(linkSrc);
-					table.append("\">");
-					table.append(_bundle.getString("overview_table"));
-					table.append("</a>");
+					ret.append("<a href=\"");
+					ret.append(linkSrc);
+					ret.append("\">");
+					ret.append(_bundle.getString("overview_table"));
+					ret.append("</a>");
 				} else {
-					table.append("&nbsp;");
+					ret.append("&nbsp;");
 				}
 				
-				table.append("</td>");
-				table.append(System.lineSeparator());
+				ret.append("</td>");
+				ret.append(System.lineSeparator());
 				
-				table.append("\t\t\t\t\t</tr>");
-				table.append(System.lineSeparator());
-				
-				links.add(table.toString());
+				ret.append("\t\t\t\t\t</tr>");
+				ret.append(System.lineSeparator());
 			}
 		}
-		
-		Collections.sort(links);
-		for (int i = 0; i < links.size(); i++)
-			ret.append(links.get(i));
 		
 		ret.append("\t\t\t\t</table>");
 		ret.append(System.lineSeparator());

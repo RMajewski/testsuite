@@ -177,6 +177,12 @@
 	margin-top: 10px;
 }
 
+.checksourceLinks .newPath {
+	padding-top: 20px;
+	font-weight: 900;
+	color: #505050;
+}
+
 .checksourceLinks table {
 	border: 1px solid #000;
 }
