@@ -9,7 +9,6 @@
 		<libPath>..</libPath>
 		<maxDuration>30000</maxDuration>
 		<htmlOut>true</htmlOut>
-		<lineWidth>80</lineWidth>
 		<systemProperty>
 			<property>testing="true"</property>
 		</systemProperty>

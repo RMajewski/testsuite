@@ -92,6 +92,8 @@ public final class Config {
 	
 	/**
 	 * Saves the width of a source code line.
+	 * 
+	 * @deprecated
 	 */
 	private int _lineWidth;
 	
@@ -102,11 +104,15 @@ public final class Config {
 	
 	/**
 	 * Saves the path for the source files.
+	 * 
+	 * @deprecated
 	 */
 	private String _noneListedPath;
 	
 	/**
 	 * Saves whether for files to be searched, which were not tested.
+	 * 
+	 * @deprecated
 	 */
 	private boolean _nonListedFiles;
 	
@@ -566,6 +572,8 @@ public final class Config {
 	 * Returns the width of a source code line
 	 * 
 	 * @return Width of a source code line
+	 * 
+	 * @deprecated Use {@link org.testsuite.checksource.CSConfig#getLineWidth()}
 	 */
 	public int getLineWidth() {
 		return _lineWidth;
@@ -575,6 +583,8 @@ public final class Config {
 	 * Sets the width of a source code line
 	 * 
 	 * @param width The width of a source code line
+	 * 
+	 * @deprecated Use {@link org.testsuite.checksource.CSConfig#setLineWidth(int)}
 	 */
 	public void setLineWidth(int width) {
 		_lineWidth = width;
@@ -622,6 +632,8 @@ public final class Config {
 	 * Returns whether for files to be searched, which were not tested.
 	 * 
 	 * @return Target for files to be searched, which have not been tested?
+	 * 
+	 * @deprecated Use {@link org.testsuite.checksource.CSConfig#isListNoneTestedFiles()}
 	 */
 	public boolean isListNoneTestedFiles() {
 		return _nonListedFiles;
@@ -632,6 +644,8 @@ public final class Config {
 	 * 
 	 * @param listed Target for files to be searched, which have not been
 	 * tested?
+	 * 
+	 * @deprecated {@link org.testsuite.checksource.CSConfig#setListNoneTestedFiles(boolean)}
 	 */
 	public void setListNoneTestedFiles(boolean listed) {
 		_nonListedFiles = listed;
@@ -641,6 +655,8 @@ public final class Config {
 	 * Returns the path, where to look for untested files.
 	 * 
 	 * @returns The path, where to look for untested files.
+	 * 
+	 * @deprecated Use {@link org.testsuite.checksource.CSConfig#getNoneListedPath()}
 	 */
 	public String getNoneListedPath() {
 		return _noneListedPath;
@@ -650,6 +666,8 @@ public final class Config {
 	 * Sets the path, where to look for untested files.
 	 * 
 	 * @param path The path, where to look for untested files.
+	 * 
+	 * @deprecated Use {@link org.testsuite.checksource.CSConfig#setNoneListedPath(String)}
 	 */
 	public void setNoneListedPath(String path) {
 		_noneListedPath = path;

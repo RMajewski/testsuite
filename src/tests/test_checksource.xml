@@ -9,7 +9,6 @@
 		<libPath>..</libPath>
 		<maxDuration>30000</maxDuration>
 		<htmlOut>true</htmlOut>
-		<noneTestedList path="src/org">true</noneTestedList>
 		<systemProperty>
 			<property>testing="true"</property>
 		</systemProperty>
@@ -22,6 +21,20 @@
 		<javascript>
 			<file>resources/html/out.js</file>
 		</javascript>
+		<todo>
+			<name>OPT</name>
+			<name>FIX</name>
+		</todo>
+		<checkSourceConfig>
+			<noneTestedList path="src/org">true</noneTestedList>
+			<lineWidth>80</lineWidth>
+			<path>org/testsuite.checksource.tests</path>
+			<test>TestEmptyLines</test>
+			<test>TestEmptyMethod</test>
+			<test>TestJavadoc</test>
+			<test>TestToWideLines</test>
+			<test>TestUnusedImports</test>
+		</checkSourceConfig>
 	</config>
 	
 	<testGroup>

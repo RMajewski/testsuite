@@ -63,6 +63,9 @@ public interface SourceTest {
 	
 	/**
 	 * Saves the list with all tests for check source.
+	 * 
+	 * @deprecated Use the list of test in {@link org.testsuite.checksource.CSConfig#getTestName(int)}
+	 * and {@link org.testsuite.checksource.CSConfig#testCount()} 
 	 */
 	Class<?>[] TESTS = {TestEmptyLines.class, TestEmptyMethod.class, 
 			TestUnusedImports.class, TestJavadoc.class, TestToWideLines.class};
