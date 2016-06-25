@@ -24,11 +24,12 @@
 		<todo>
 			<name>OPT</name>
 			<name>FIX</name>
+			<name>TODO</name>
 		</todo>
 		<checkSourceConfig>
 			<noneTestedList path="src/org">true</noneTestedList>
 			<lineWidth>80</lineWidth>
-			<path>org/testsuite.checksource.tests</path>
+			<path>org.testsuite.checksource.tests</path>
 			<test>TestEmptyLines</test>
 			<test>TestEmptyMethod</test>
 			<test>TestJavadoc</test>
