@@ -141,6 +141,21 @@ public class HelperHtmlCodeJava {
 	}
 	
 	
+	/**
+	 * Formatted the source code line
+	 * 
+	 * @param The line of code that is to be formatted.
+	 * 
+	 * @param multilineComment It is the line to a multiline comment?
+	 * 
+	 * @param javadoc It is the line to a Javadoc comment?
+	 * 
+	 * @param lineNumber The number of source code line.
+	 * 
+	 * @param fileName The name of source file.
+	 * 
+	 * @return The formatted source code line.
+	 */
 	public static String formatString(String source, boolean multilineComment,
 			boolean javadoc, int lineNumber, String fileName) {
 		getInstance();
@@ -214,8 +229,7 @@ public class HelperHtmlCodeJava {
 								formatColor(COLOR_JAVADOC) + ";\"><b>" +
 								Config.getInstance().getToDoWord(i) + 
 								"</b></span>";
-						end = s + Config.getInstance().getToDoWord(i)
-								.length();
+						end = s + Config.getInstance().getToDoWord(i).length();
 					}
 				}
 				src += source.substring(end);

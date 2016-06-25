@@ -328,7 +328,8 @@ public class HtmlOutOverview extends Html {
 					
 					ret.append(td);
 					ret.append(HelperHtmlCodeJava.formatString(
-							_todo.get(todo).getLine(), false, false, -1, null));
+							_todo.get(todo).getLine().trim(), false, false, -1,
+							null));
 					ret.append("</td>");
 					ret.append(System.lineSeparator());
 					
