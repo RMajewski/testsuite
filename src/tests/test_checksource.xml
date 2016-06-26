@@ -73,7 +73,7 @@
 		<testSuite>
 			<name>Tests the annotations</name>
 			<package>tests.testsuite.checksource.annotation</package>
-			<test checkSource="org.testsuite.checksource.CheckSource">TestCheckSource</test>
+			<test checkSource="org.testsuite.checksource.annotation.CheckSource">TestCheckSource</test>
 		</testSuite>
 		<testSuite>
 			<name>Tests the classes of informations</name>

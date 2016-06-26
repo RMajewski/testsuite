@@ -209,10 +209,10 @@ public class HtmlOutOverview extends Html {
 	private String createNoneTestedList() {
 		StringBuilder ret = new StringBuilder();
 		
-		if (Config.getInstance().isListNoneTestedFiles()) {
+		if (CSConfig.getInstance().isListNoneTestedFiles()) {
 			List<String> none = new ArrayList<String>();
 			List<File> list = HelperFile.getSourceFiles(
-					Config.getInstance().getNoneListedPath(), "(.*\\.java$)");
+					CSConfig.getInstance().getNoneListedPath(), "(.*\\.java$)");
 			for (int file = 0; file < list.size(); file++) {
 				String name = list.get(file).getName();
 				name = name.substring(0, name.lastIndexOf("."));
@@ -224,7 +224,7 @@ public class HtmlOutOverview extends Html {
 				if (!available && (!name.equals("package-info")))
 					none.add(list.get(file).getAbsolutePath().substring(
 							list.get(file).getAbsolutePath().indexOf(
-									Config.getInstance().getNoneListedPath())));
+									CSConfig.getInstance().getNoneListedPath())));
 			}
 			
 			if (none.size() > 0) {
@@ -567,15 +567,16 @@ public class HtmlOutOverview extends Html {
 		
 		for (int source = 0; source < _sources.size(); source++) {
 			if (_sources.get(source).getClassName().equals(className)) {
-				for (int message = 0; 
-						message <_sources.get(source).messageCount();
-						message++) {
-					if (_sources.get(source).getMessage(message).getColor() ==
-							HelperUsedColor.ERROR)
-						return HelperUsedColor.ERROR;
+				int messages = _sources.get(source).messageCount();
+				if (messages > 0) {
+					for (int message = 0; message < messages; message++) {
+						if (_sources.get(source).getMessage(message)
+								.getColor() == HelperUsedColor.ERROR)
+							return HelperUsedColor.ERROR;
+					}
+					
+					return HelperUsedColor.WARNING;
 				}
-				
-				return HelperUsedColor.WARNING;
 			}
 		}
 		

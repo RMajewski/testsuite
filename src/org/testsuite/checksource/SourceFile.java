@@ -260,7 +260,10 @@ public class SourceFile {
 				} else if (line.matches("^[*\\s]*(@deprecated|@Deprecated)" +
 						"[\\p{Graph}\\s]*$")) {
 					readSource.setDeprecated(true);
-				}
+				} else if (readSource.isDeprecated() && (line.matches(
+						"^[*\\s]*(@deprecated|@Deprecated)" +
+						"[\\p{Graph}\\s]*$")))
+					readSource.setDeprecated(true);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -82,7 +82,7 @@ public class TestJavadoc implements SourceTest {
 				
 				// Annotation
 				if (list.get(i).getLine().matches("^[\\s\\w]*@[\\w\\s(){}=]*$"))
-					_end = list.get(i).getLineNumber();
+					_annotation = true;
 				
 				// Class
 				else if (list.get(i).getLine().matches(
@@ -92,6 +92,20 @@ public class TestJavadoc implements SourceTest {
 						list.get(i).addMessage(new MessageColor(
 								ResourceBundle.getBundle(BUNDLE_FILE)
 								.getString("emptyJavadocClass"), 
+								HelperUsedColor.WARNING));
+						_begin = -1;
+						_end = -1;
+						_annotation = false;
+					}
+				}
+				
+				// Interface
+				else if (list.get(i).getLine().matches(
+						"^[\\s\\w]*(interface)[\\s\\w{}]*$")) {
+					if (test1 || !test2) {
+						list.get(i).addMessage(new MessageColor(
+								ResourceBundle.getBundle(BUNDLE_FILE)
+								.getString("emptyJavadocInterface"), 
 								HelperUsedColor.WARNING));
 						_begin = -1;
 						_end = -1;

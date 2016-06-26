@@ -204,4 +204,13 @@ public class ReadSource implements Read {
 	public void setDeprecated(boolean deprecated) {
 		_deprecated = true;
 	}
+
+	/**
+	 * Returns that deprecated annotation was found.
+	 * 
+	 * @return If deprecated annotation was found?
+	 */
+	public boolean isDeprecated() {
+		return _deprecated;
+	}
 }
