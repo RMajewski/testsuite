@@ -28,7 +28,7 @@
 		</todo>
 		<checkSourceConfig>
 			<noneTestedList path="src/org">true</noneTestedList>
-			<lineWidth>80</lineWidth>
+			<lineWidth tabSpace="4">80</lineWidth>
 			<path>org.testsuite.checksource.tests</path>
 			<test>TestEmptyLines</test>
 			<test>TestEmptyMethod</test>

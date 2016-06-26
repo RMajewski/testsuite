@@ -22,9 +22,9 @@ package org.testsuite.checksource.tests;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.testsuite.checksource.CSConfig;
 import org.testsuite.checksource.MessageColor;
 import org.testsuite.checksource.SourceLine;
-import org.testsuite.data.Config;
 import org.testsuite.helper.HelperUsedColor;
 
 /**
@@ -46,17 +46,24 @@ public class TestToWideLines implements SourceTest {
 	 */
 	@Override
 	public boolean test(List<SourceLine> list) {
-		int wide = Config.getInstance().getLineWidth();
+		int wide = CSConfig.getInstance().getLineWidth();
 		if (wide < 0)
 			wide = 80;
 		
-		for (int line = 0; line < list.size(); line++)
-			if (list.get(line).getLine().length() > wide)
+		String spaces = new String();
+		if (CSConfig.getInstance().getTabSpace() > 0)
+			for (int i = 0; i < CSConfig.getInstance().getTabSpace(); i++)
+				spaces += " ";
+		
+		for (int line = 0; line < list.size(); line++) {
+			String source = list.get(line).getLine().replaceAll("\t", spaces);
+			if (source.length() > wide)
 				list.get(line).addMessage(new MessageColor(
 						ResourceBundle.getBundle(BUNDLE_FILE)
 							.getString("toWideLine").replace("?", 
 									String.valueOf(wide)),
 						HelperUsedColor.IGNORE));
+		}
 		
 		return false;
 	}

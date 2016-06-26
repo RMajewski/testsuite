@@ -61,6 +61,11 @@ public class CSConfig {
 	private int _lineWidth;
 	
 	/**
+	 * Saves the number of spaces for tab.
+	 */
+	private int _tabSpace;
+	
+	/**
 	 * Initialize the datas
 	 */
 	private CSConfig() {
@@ -69,6 +74,7 @@ public class CSConfig {
 		_noneListedFiles = false;
 		_noneListedPath = new String();
 		_lineWidth = -1;
+		_tabSpace = -1;
 	}
 	
 	/**
@@ -182,5 +188,23 @@ public class CSConfig {
 	 */
 	public void setLineWidth(int width) {
 		_lineWidth = width;
+	}
+	
+	/**
+	 * Returns the number of spaces for a tab
+	 * 
+	 * @return Number of spaces for a tab
+	 */
+	public int getTabSpace() {
+		return _tabSpace;
+	}
+	
+	/**
+	 * Sets the number of spaces for a tab
+	 * 
+	 * @param width The number of spaces for a tab
+	 */
+	public void setTabSpace(int spaces) {
+		_tabSpace = spaces;
 	}
 }

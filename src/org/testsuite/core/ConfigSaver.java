@@ -187,7 +187,15 @@ public class ConfigSaver {
 		bw.newLine();
 		
 		if (CSConfig.getInstance().getLineWidth() > 0) {
-			bw.write("\t\t\t<lineWidth>");
+			bw.write("\t\t\t<lineWidth");
+			
+			if (CSConfig.getInstance().getTabSpace() > -1) {
+				bw.write(" tabSpace=\"");
+				bw.write(String.valueOf(CSConfig.getInstance().getTabSpace()));
+				bw.write("\"");
+			}
+			
+			bw.write(">");
 			bw.write(CSConfig.getInstance().getLineWidth());
 			bw.write("</lineWidth>");
 			bw.newLine();

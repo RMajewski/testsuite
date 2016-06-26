@@ -149,6 +149,18 @@ public class ConfigParser {
 								}
 								break;
 								
+							case "lineWidth":
+								if (checkSourceConfig) {
+									Attribute atr = (Attribute)element
+											.getAttributes().next();
+									if (atr.getName().toString()
+											.equals("tabSpace"))
+										CSConfig.getInstance().setTabSpace(
+												Integer.parseInt(
+														atr.getValue()));
+								}
+								break;
+								
 							case "testGroup":
 								testGroup = true;
 								break;
