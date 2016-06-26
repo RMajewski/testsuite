@@ -77,7 +77,8 @@ public class TestJavadoc implements SourceTest {
 				_end = list.get(i).getLineNumber();
 			else {
 				boolean test1 = (_begin == -1) && (_end == -1);
-				boolean test2 = (_begin > -1) && (_end > -1) && (_end == (list.get(i).getLineNumber()) - 1);
+				boolean test2 = (_begin > -1) && (_end > -1) && 
+						(_end == (list.get(i).getLineNumber()) - 1);
 				
 				// Annotation
 				if (list.get(i).getLine().matches("^[\\s\\w]*@[\\w\\s(){}=]*$"))

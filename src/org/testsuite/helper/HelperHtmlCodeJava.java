@@ -140,7 +140,6 @@ public class HelperHtmlCodeJava {
 		return formatString(source, multilineComment, javadoc, -1, null);
 	}
 	
-	
 	/**
 	 * Formatted the source code line
 	 * 
@@ -294,6 +293,7 @@ public class HelperHtmlCodeJava {
 	 * @return The converted color as a string for the HTML output.
 	 */
 	public String formatColor(Color color) {
-		return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+		return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(),
+				color.getBlue());
 	}
 }

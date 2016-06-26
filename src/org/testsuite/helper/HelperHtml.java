@@ -108,7 +108,8 @@ public class HelperHtml {
 		ret.append(System.lineSeparator());
 		ret.append("\t\t</style>"); ret.append(System.lineSeparator());
 		
-		ret.append("\t\t<script type=\"text/javascript\">"); ret.append(System.lineSeparator());
+		ret.append("\t\t<script type=\"text/javascript\">"); 
+				ret.append(System.lineSeparator());
 		
 		if (Config.getInstance().javascriptFileCount() > 0)
 			for (int i = 0; i < Config.getInstance().javascriptFileCount(); i++)

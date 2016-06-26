@@ -29,6 +29,7 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
+import org.testsuite.checksource.annotation.CheckSource;
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
 import org.testsuite.data.TestSuite;
@@ -391,6 +392,7 @@ public class AppTreeModel implements TreeModel {
 	/**
 	 * Is not needed.
 	 */
+	@CheckSource(ignored=true)
 	@Override
 	public void valueForPathChanged(TreePath path, Object newValue) {
 	}

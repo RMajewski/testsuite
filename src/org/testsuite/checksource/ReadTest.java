@@ -86,12 +86,14 @@ public class ReadTest implements Read {
 			CSMethod method = methods.get(i);
 			if (line.matches("^\\s*@CheckSource[\\w\\s(=\")\\{\\},]*")) {
 				readCheckSourceAnnotation(line, methods, i, lineNumber);
-			} else if ((line.indexOf(method.getClassName() + "." + method.getName()) > -1) ||
-				(line.indexOf("new " + method.getName() + "(") > -1)){
+			} else if ((line.indexOf(method.getClassName() + "." + 
+					method.getName()) > -1) ||
+					(line.indexOf("new " + method.getName() + "(") > -1)){
 				method.addCall(lineNumber);
 			} else {
 				for (int j = 0; j < _variables.size(); j++) {
-					if (line.indexOf(_variables.get(j) + "." + method.getName()) > -1) {
+					if (line.indexOf(_variables.get(j) + "." +
+							method.getName()) > -1) {
 						method.addCall(lineNumber);
 					}
 				}

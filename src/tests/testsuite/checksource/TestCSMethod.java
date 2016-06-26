@@ -51,7 +51,7 @@ public class TestCSMethod {
 	 * Tests if was correctly initialized.
 	 */
 	@Test
-	public void testCSConst() {
+	public void testCSMethod() {
 		assertEquals(-1, _cs.getLine());
 		assertEquals(new String(), _cs.getValue());
 		assertEquals(new String(), _cs.getType());
@@ -61,6 +61,8 @@ public class TestCSMethod {
 		assertEquals(new String(), _cs.getName());
 		assertEquals(new String(), _cs.getClassName());
 		assertFalse(_cs.isDeprecated());
+		assertEquals(new String(), _cs.getHtmlOutputFile());
+		assertFalse(_cs.isIgnore());
 	}
 	
 	/**
@@ -327,4 +329,38 @@ public class TestCSMethod {
 		assertTrue(_cs.isDeprecated());
 	}
 	
+	/**
+	 * Tests if ignored method is returned correctly.
+	 */
+	@Test
+	public void testIsIgnore() {
+		assertFalse(_cs.isIgnore());
+	}
+	
+	/**
+	 * Test if ignored method is returned correctly.
+	 */
+	@Test
+	public void testSetIgnore() {
+		_cs.setIgnore(true);
+		assertTrue(_cs.isIgnore());
+	}
+	
+	/**
+	 * Test if returns the name of result file is correctly.
+	 */
+	@Test
+	public void testGetHtmlOutputFile() {
+		assertEquals(new String(), _cs.getHtmlOutputFile());
+	}
+	
+	/**
+	 * Test if sets the name of result file is correctly.
+	 */
+	@Test
+	public void testSetHtmlOutputFile() {
+		String test = "test";
+		_cs.setHtmlOutputFile(test);
+		assertEquals(test, _cs.getHtmlOutputFile());
+	}
 }

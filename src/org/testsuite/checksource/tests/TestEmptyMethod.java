@@ -88,5 +88,4 @@ public class TestEmptyMethod implements SourceTest {
 		}
 		return true;
 	}
-
 }
