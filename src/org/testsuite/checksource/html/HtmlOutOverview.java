@@ -475,8 +475,8 @@ public class HtmlOutOverview extends Html {
 			if (file.exists()) {
 				String linkSrc = file.getAbsolutePath();
 				String linkName = linkSrc.substring(linkSrc.indexOf("_") + 1);
-				String className = linkName.substring(
-						linkName.indexOf("Test") + 4, linkName.indexOf(".html"));
+				String className = linkName.substring(0, 
+						linkName.indexOf(".html"));
 
 				if (!path.equals(linkSrc.substring(linkSrc.indexOf(
 						Config.getInstance().getPathSrc()),
@@ -566,6 +566,7 @@ public class HtmlOutOverview extends Html {
 		for (int source = 0; source < _sources.size(); source++) {
 			if (_sources.get(source).getClassName().equals(className)) {
 				int messages = _sources.get(source).messageCount();
+				
 				if (messages > 0) {
 					for (int message = 0; message < messages; message++) {
 						if (_sources.get(source).getMessage(message)

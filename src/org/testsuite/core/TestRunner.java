@@ -1215,7 +1215,8 @@ public abstract class TestRunner {
 				file.mkdirs();
 			
 			testResult += _bundle.getString("result_checksoure") + "_" + 
-					test.getName() + ".html";
+					test.getName().substring(test.getName().indexOf("Test") + 4) 
+					+ ".html";
 			
 			CheckSource cs = new CheckSource(sourceFile, testFile, testResult);
 			cs.run();

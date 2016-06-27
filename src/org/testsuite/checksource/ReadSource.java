@@ -110,9 +110,7 @@ public class ReadSource implements Read {
 				readMethod(lineNumber - 1, _methodStarted.split(" "), list);
 				_methodStarted = null;
 			} else if (line.matches("^[\\s]*(private|protected|public)" + 
-					"[\\s\\w]*(class)[\\s\\w]*\\{?$") ||
-					line.matches("^[\\s]*(private|protected|public)[\\s]?" +
-							"(interface)[\\s\\w]*\\{?$")) {
+					"[\\s\\w]*(class|interface)[\\s\\w]*\\{?$")) {
 				boolean name = false;
 				for (int i = 0; i < read.length; i++)
 					if (read[i].equals("extends") ||
@@ -218,5 +216,14 @@ public class ReadSource implements Read {
 	 */
 	public boolean isDeprecated() {
 		return _deprecated;
+	}
+	
+	/**
+	 * Returns the name of class
+	 * 
+	 * @return The name of class
+	 */
+	public String getClassName() {
+		return _className;
 	}
 }

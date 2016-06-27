@@ -266,6 +266,12 @@ public class SourceFile {
 						"[\\p{Graph}\\s]*$")))
 					readSource.setDeprecated(true);
 			}
+			
+			for (int i = 0; i < _source.size(); i++) {
+				if (!test && (readSource.getClassName() != null) && 
+						!readSource.getClassName().isEmpty())
+					_source.get(i).setClassName(readSource.getClassName());
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -302,8 +308,5 @@ public class SourceFile {
 										"sourceMethodNotTested") ,color));
 			}
 		}
-		if (_methods.size() > 0)
-			for (int i = 0; i < _source.size(); i++)
-				_source.get(i).setClassName(_methods.get(0).getClassName());
 	}
 }
