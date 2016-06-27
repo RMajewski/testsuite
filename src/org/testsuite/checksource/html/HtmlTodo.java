@@ -71,7 +71,7 @@ public class HtmlTodo extends Html {
 	}
 
 	/**
-	 * Generate the HTML output for the overview file.
+	 * Generate the HTML output for the to-do list file.
 	 */
 	public void createHtml() {
 		// Generate the File

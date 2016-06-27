@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import org.testsuite.checksource.html.HtmlOutOverview;
+import org.testsuite.checksource.html.HtmlNoneExistFile;
 import org.testsuite.checksource.tests.SourceTest;
 import org.testsuite.helper.HelperUsedColor;
 
@@ -189,7 +189,7 @@ public class SourceFile {
 			return false;
 		
 		if (!test && !new File(_fileName).exists()) {
-			HtmlOutOverview.getInstance().addNoneExistsFileName(_fileName);
+			HtmlNoneExistFile.getInstance().addNoneExistsFileName(_fileName);
 			return false;
 		}
 		
@@ -197,7 +197,7 @@ public class SourceFile {
 			return false;
 		
 		if (test && !new File(testName).exists()) {
-			HtmlOutOverview.getInstance().addNoneExistsFileName(testName);
+			HtmlNoneExistFile.getInstance().addNoneExistsFileName(testName);
 			return false;
 		}
 		

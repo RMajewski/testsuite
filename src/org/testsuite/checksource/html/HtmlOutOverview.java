@@ -65,6 +65,8 @@ public class HtmlOutOverview extends Html {
 	
 	/**
 	 * Saves the list of none exists files.
+	 * 
+	 * @deprecated
 	 */
 	private List<String> _noneExists;
 	
@@ -143,6 +145,8 @@ public class HtmlOutOverview extends Html {
 	 * Added a file name to the list of none exists files.
 	 * 
 	 * @param name The name of none exists files.
+	 * 
+	 * @deprecated Use {@link HtmlNoneExistFile#addNoneExistsFileName(String)}
 	 */
 	public void addNoneExistsFileName(String name) {
 		_noneExists.add(name);
@@ -166,16 +170,8 @@ public class HtmlOutOverview extends Html {
 			// List of none tested files
 			bw.write(createNoneTestedList());
 			
-			// List of none exists files
-			bw.write(createNoneExistsList());
-			
 			// List of deprecated methods
 			bw.write(createListOfDeprecated());
-			
-			// List of methods without calls
-			bw.write(HelperHtml.createListOfMethods(
-					_bundle.getString("methods_without_calls"), _methods, 
-					false, true));
 			
 			// Table with links
 			bw.write(createHtmlLink());
@@ -400,7 +396,10 @@ public class HtmlOutOverview extends Html {
 	 * Creates the HTML list of none exists files.
 	 * 
 	 * @return The HTML list of none exists files.
+	 * 
+	 * @deprecated
 	 */
+	@SuppressWarnings("unused")
 	private String createNoneExistsList() {
 		StringBuilder ret = new StringBuilder();
 		
@@ -741,5 +740,14 @@ public class HtmlOutOverview extends Html {
 	 */
 	public TodoData getTodo(int index) {
 		return _todo.get(index);
+	}
+	
+	/**
+	 * Returns the list of methods.
+	 * 
+	 * @return List of methods
+	 */
+	public List<CSMethod> getMethodList() {
+		return _methods;
 	}
 }
