@@ -21,6 +21,7 @@ package org.testsuite.checksource;
 
 import java.util.List;
 
+import org.testsuite.checksource.html.HtmlOut;
 import org.testsuite.checksource.tests.SourceTest;
 
 /**

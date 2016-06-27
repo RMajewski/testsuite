@@ -32,7 +32,8 @@ import java.util.ResourceBundle;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.testsuite.checksource.HtmlOutOverview;
+import org.testsuite.checksource.html.HtmlOutOverview;
+import org.testsuite.checksource.html.HtmlTodo;
 import org.testsuite.data.Config;
 
 /**
@@ -148,6 +149,8 @@ public class TestCore {
 			} // for suite
 		} // for runner
 		
+		// Create HTML output files
+		HtmlTodo.getInstance().createHtml();
 		HtmlOutOverview.getInstance().createHtml();
 	}
 	

@@ -17,7 +17,7 @@
 * sind dem Lizenztext zu entnehmen.
 */
 
-package org.testsuite.checksource;
+package org.testsuite.checksource.html;
 
 import java.awt.Color;
 import java.io.BufferedWriter;
@@ -30,6 +30,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.testsuite.checksource.CSConfig;
+import org.testsuite.checksource.CSMethod;
+import org.testsuite.checksource.SourceLine;
 import org.testsuite.core.TestRunner;
 import org.testsuite.data.Config;
 import org.testsuite.data.TodoData;
@@ -67,6 +70,8 @@ public class HtmlOutOverview extends Html {
 	
 	/**
 	 * Saves the to do list
+	 * 
+	 * @deprecated Use HtmlTodo
 	 */
 	private List<TodoData> _todo;
 
@@ -82,6 +87,8 @@ public class HtmlOutOverview extends Html {
 		_sources = new ArrayList<SourceLine>();
 		_noneExists = new ArrayList<String>();
 		_todo = new ArrayList<TodoData>();
+		_resultBundle = "result_checksoure";
+		_resultBundleFile = TestRunner.BUNDLE_FILE;
 	}
 	
 	/**
@@ -145,30 +152,16 @@ public class HtmlOutOverview extends Html {
 	 * Generate the HTML output for the overview file.
 	 */
 	public void createHtml() {
-		_resultFile = Config.getInstance().getPathResult() + File.separator +
-				Config.getInstance().getPathSuitesResult();
-		File file = new File(_resultFile);
-		
-		if (!file.exists())
-			file.mkdirs();
-		
-		_resultFile += File.separator + 
-				ResourceBundle.getBundle(TestRunner.BUNDLE_FILE).getString(
-						"result_checksoure") + ".html";
-		
 		// Generate the File
 		BufferedWriter bw = null;
 		try {
-			bw = new BufferedWriter(new FileWriter(_resultFile));
+			bw = new BufferedWriter(new FileWriter(getPathAndResultFile()));
 
 			String date = HelperCalendar.datetimeToString(new Date().getTime());
 
 			bw.write(HelperHtml.head(_bundle.getString("overview_head") + " (" +
 					date + ")", _bundle.getString("overview_description") + 
 					" (" + date + ")"));
-			
-			// To-do list
-			bw.write(createTodoList());
 			
 			// List of none tested files
 			bw.write(createNoneTestedList());
@@ -263,7 +256,10 @@ public class HtmlOutOverview extends Html {
 	 * Creates the HTML output for the to-do list
 	 * 
 	 * @return HTML output for the to-do list
+	 * 
+	 * @deprecated Use {@link HtmlTodo}.
 	 */
+	@SuppressWarnings("unused")
 	private String createTodoList() {
 		StringBuilder ret = new StringBuilder();
 		
@@ -713,18 +709,11 @@ public class HtmlOutOverview extends Html {
 	}
 	
 	/**
-	 * Returns the name of result file
-	 * 
-	 * @return The name of result file
-	 */
-	public String getResultFile() {
-		return _resultFile;
-	}
-	
-	/**
 	 * Added a to-do to the list
 	 * 
 	 * @param todo The todo that added to the list
+	 * 
+	 * @deprecated Use {@link HtmlTodo#addTodo(TodoData)}
 	 */
 	public void addTodo(TodoData todo) {
 		_todo.add(todo);
@@ -734,6 +723,8 @@ public class HtmlOutOverview extends Html {
 	 * Returns the count of to-do list
 	 * 
 	 * @return Count of to-do list
+	 * 
+	 * @deprecated {@link HtmlTodo#todoCount()}
 	 */
 	public int todoCount() {
 		return _todo.size();
@@ -745,6 +736,8 @@ public class HtmlOutOverview extends Html {
 	 * @param index The index for the to-do
 	 * 
 	 * @return The specified to-do
+	 * 
+	 * @deprecated Use {@link HtmlTodo#getTodo(int)}
 	 */
 	public TodoData getTodo(int index) {
 		return _todo.get(index);

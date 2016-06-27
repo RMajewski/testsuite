@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.testsuite.checksource.HtmlOutOverview;
+import org.testsuite.checksource.html.HtmlTodo;
 import org.testsuite.data.Config;
 import org.testsuite.data.TodoData;
 
@@ -217,8 +217,8 @@ public class HelperHtmlCodeJava {
 							end);
 					if (s > 0) {
 						if ((fileName != null) && (lineNumber > 0))
-							HtmlOutOverview.getInstance().addTodo(new TodoData(
-								source, lineNumber, fileName));
+							HtmlTodo.getInstance().addTodo(new TodoData(source,
+									lineNumber, fileName));
 						if (end > 0)
 							src += tmp.substring(end, s);
 						else

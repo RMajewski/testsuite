@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.testsuite.checksource.html.HtmlOutOverview;
 import org.testsuite.checksource.tests.SourceTest;
 import org.testsuite.helper.HelperUsedColor;
 

@@ -29,7 +29,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-import org.testsuite.checksource.HtmlOutOverview;
+import org.testsuite.checksource.html.HtmlOutOverview;
 import org.testsuite.data.Config;
 import org.testsuite.helper.HelperCalendar;
 import org.testsuite.helper.HelperHtml;
@@ -220,7 +220,7 @@ public class HtmlOut {
 		_bw.write("\t\t\t<ul>");
 		_bw.newLine();
 		
-		String link = HtmlOutOverview.getInstance().getResultFile();
+		String link = HtmlOutOverview.getInstance().getPathAndResultFile();
 		
 		if (!link.isEmpty()) {
 			_bw.write("\t\t\t<li><a href=\"");

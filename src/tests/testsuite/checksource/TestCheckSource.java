@@ -32,9 +32,9 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.testsuite.checksource.CSMethod;
 import org.testsuite.checksource.CheckSource;
-import org.testsuite.checksource.HtmlOut;
 import org.testsuite.checksource.SourceFile;
 import org.testsuite.checksource.SourceLine;
+import org.testsuite.checksource.html.HtmlOut;
 
 /**
  * Tests for the class {@link org.testsuite.checksource.CheckSource}.

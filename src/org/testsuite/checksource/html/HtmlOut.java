@@ -17,7 +17,7 @@
 * sind dem Lizenztext zu entnehmen.
 */ 
 
-package org.testsuite.checksource;
+package org.testsuite.checksource.html;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -25,6 +25,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+
+import org.testsuite.checksource.CSMethod;
+import org.testsuite.checksource.SourceLine;
 import org.testsuite.helper.HelperCalendar;
 import org.testsuite.helper.HelperHtml;
 import org.testsuite.helper.HelperHtmlCodeJava;

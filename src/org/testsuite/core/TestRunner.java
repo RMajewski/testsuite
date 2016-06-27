@@ -35,7 +35,7 @@ import java.util.Vector;
 import javax.swing.Timer;
 
 import org.testsuite.checksource.CheckSource;
-import org.testsuite.checksource.HtmlOutOverview;
+import org.testsuite.checksource.html.HtmlOutOverview;
 import org.testsuite.data.Config;
 import org.testsuite.data.Library;
 import org.testsuite.data.Test;
