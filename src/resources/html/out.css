@@ -105,95 +105,14 @@
 	padding: 0px;
 }
 
-.checksource {
-	border: 1px solid #000;
-	padding: 0px 10px;
+.footer {
+	border-top: 1px solid #000;
+	width: 100%;
+	float: left;
+	margin-top: 50px;
+	font-size: 75%;
 }
 
-.checksourceList {
-	border: 1px dashed #000;
-	margin-top: 10px;
-	padding: 0px 10px;
-}
-
-.checksourceList ul {
-	overflow-y: scroll;
-	height: 300px;
-}
-
-.noneList {
-	border: 1px dashed #000;
-	margin-top: 10px;
-	padding: 0px 10px;
-}
-
-.noneList ul {
-	overflow-y: scroll;
-	height: 300px;
-}
-
-.todoList {
-	border: 1px dashed #000;
-	margin-top: 10px;
-	padding: 0px 10px;
-}
-
-.todoList table {
-	border: 0px;	
-}
-
-.todoList table tr {
-	border: 0px;
-}
-
-.deprecatedList {
-	border: 1px dashed #000;
-	margin-top: 10px;
-	padding: 0px 10px;
-}
-
-.deprecatedList ul {
-	overflow-y: scroll;
-	height: 300px;
-}}
-
-.checksourceSource {
-	margin-top: 10px;
-}
-
-.checksourceSource table {
-	border: 1px solid #000;
-}
-
-.checksourceSource table tr {
-	border: 0px;
-}
-
-.checksourceSource table td {
-	padding: 0px 10px;
-}
-
-.checksourceLinks {
-	margin-top: 10px;
-}
-
-.checksourceLinks .newPath {
-	padding-top: 20px;
-	font-weight: 900;
-	color: #505050;
-}
-
-.checksourceLinks table {
-	border: 1px solid #000;
-}
-
-.checksourceLinks table tr {
-	border: 1px dashes #000;
-}
-
-.checksourceLinks table td {
-	padding: 0px 10px;
-}
 
 table {
 	width: 100%;

@@ -73,9 +73,12 @@ public class HtmlDeprecated extends Html {
 			bw = new BufferedWriter(new FileWriter(getPathAndResultFile()));
 			
 			bw.write(HelperHtml.head(_bundle.getString("deprecate_head"),
-					_bundle.getString("deprecate_description")));
-			
+					_bundle.getString("deprecate_description"), 
+					HtmlMenu.DEPRECATED_LIST));
 			bw.write(createListOfDeprecated());
+			
+			// HTML end
+			bw.write(HelperHtml.footer());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

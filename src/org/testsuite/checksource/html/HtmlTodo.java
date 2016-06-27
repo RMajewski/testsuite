@@ -80,9 +80,12 @@ public class HtmlTodo extends Html {
 			bw = new BufferedWriter(new FileWriter(getPathAndResultFile()));
 			
 			bw.write(HelperHtml.head(_bundle.getString("todo_head"),
-					_bundle.getString("todo_description")));
+					_bundle.getString("todo_description"), HtmlMenu.TODO_LIST));
 			
 			bw.write(createTodoList());
+			
+			// HTML end
+			bw.write(HelperHtml.footer());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.testsuite.checksource.CSMethod;
+import org.testsuite.checksource.html.HtmlMenu;
+import org.testsuite.core.Version;
 import org.testsuite.data.Config;
 
 /**
@@ -80,8 +82,25 @@ public class HelperHtml {
 	 * @param description Description of the HTML file.
 	 * 
 	 * @return Head of HTML output file
+	 * 
+	 * @deprecated Use {@link #head(String, String, String)}
 	 */
 	public static String head(String head, String description) {
+		return head(head, description, null);
+	}
+		
+	/**
+	 * Generates the head of HTML output file
+	 * 
+	 * @param head Headline
+	 * 
+	 * @param description Description of the HTML file.
+	 * 
+	 * @param menu Menu String
+	 * 
+	 * @return Head of HTML output file
+	 */
+	public static String head(String head, String description, String menu) {
 		StringBuilder ret = new StringBuilder();
 		
 		ret.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 ");
@@ -120,6 +139,10 @@ public class HelperHtml {
 		
 		ret.append("\t</head>"); ret.append(System.lineSeparator());
 		ret.append("\t<body>"); ret.append(System.lineSeparator());
+		
+		if ((menu != null) && !menu.isEmpty())
+			ret.append(HtmlMenu.createMenu(menu));
+		
 		ret.append("\t\t<h1>");
 		ret.append(head);
 		ret.append("</h1>"); ret.append(System.lineSeparator());
@@ -137,7 +160,10 @@ public class HelperHtml {
 	 * @return Generates the footer of HTML output file
 	 */
 	public static String footer() {
-		StringBuilder ret = new StringBuilder();
+		StringBuilder ret = new StringBuilder("\t\t<div ");
+		ret.append("class=\"footer\">Version: ");
+		ret.append(Version.getVersion());
+		ret.append("</div>");
 		
 		ret.append("\t</body>");
 		ret.append(System.lineSeparator());

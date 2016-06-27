@@ -17,6 +17,7 @@
 		</classpath>
 		<stylesheet>
 			<file>resources/html/out.css</file>
+			<file>resources/html/checksource.css</file>
 		</stylesheet>
 		<javascript>
 			<file>resources/html/out.js</file>

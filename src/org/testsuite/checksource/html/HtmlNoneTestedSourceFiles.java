@@ -74,9 +74,13 @@ public class HtmlNoneTestedSourceFiles extends Html {
 			
 			bw.write(HelperHtml.head(
 					_bundle.getString("none_tested_source_head"),
-					_bundle.getString("none_tested_source_description")));
+					_bundle.getString("none_tested_source_description"),
+					HtmlMenu.NONE_SOURCE_FILES));
 			
 			bw.write(createNoneTestedList());
+			
+			// HTML end
+			bw.write(HelperHtml.footer());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

@@ -165,7 +165,7 @@ public class HtmlOutOverview extends Html {
 
 			bw.write(HelperHtml.head(_bundle.getString("overview_head") + " (" +
 					date + ")", _bundle.getString("overview_description") + 
-					" (" + date + ")"));
+					" (" + date + ")", HtmlMenu.OVERVIEW));
 			
 			// Table with links
 			bw.write(createHtmlLink());
@@ -544,6 +544,9 @@ public class HtmlOutOverview extends Html {
 		}
 		
 		ret.append("\t\t\t\t</table>");
+		ret.append(System.lineSeparator());
+		
+		ret.append("\t\t\t</div>");
 		ret.append(System.lineSeparator());
 		
 		return ret.toString();

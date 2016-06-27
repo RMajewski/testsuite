@@ -20,16 +20,8 @@
 package org.testsuite.checksource.html;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.testsuite.checksource.CSConfig;
-import org.testsuite.checksource.CSMethod;
-import org.testsuite.helper.HelperFile;
 import org.testsuite.helper.HelperHtml;
 
 /**
@@ -75,12 +67,16 @@ public class HtmlNoneTestedMethods extends Html {
 			
 			bw.write(HelperHtml.head(_bundle.getString(
 					"none_tested_method_head"),
-					_bundle.getString("none_tested_method_description")));
+					_bundle.getString("none_tested_method_description"),
+					HtmlMenu.NONE_METHODS));
 			
 			bw.write(HelperHtml.createListOfMethods(
 					_bundle.getString("methods_without_calls"),
 					HtmlOutOverview.getInstance().getMethodList(), false, 
 					true));
+			
+			// HTML end
+			bw.write(HelperHtml.footer());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

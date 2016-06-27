@@ -85,9 +85,13 @@ public class HtmlNoneExistFile extends Html {
 			bw = new BufferedWriter(new FileWriter(getPathAndResultFile()));
 			
 			bw.write(HelperHtml.head(_bundle.getString("none_exist_head"),
-					_bundle.getString("none_exist_description")));
+					_bundle.getString("none_exist_description"),
+					HtmlMenu.NONE_EXISTS_FILES));
 			
 			bw.write(createNoneExistsList());
+			
+			// HTML end
+			bw.write(HelperHtml.footer());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

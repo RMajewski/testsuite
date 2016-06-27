@@ -19,6 +19,7 @@
 
 package org.testsuite.checksource.html;
 
+import java.io.File;
 import java.util.ResourceBundle;
 
 /**
@@ -32,32 +33,41 @@ public class HtmlMenu extends Html {
 	/**
 	 * Specified the menu string for overview in the menu.
 	 */
-	public static String overview = ResourceBundle.getBundle(BUNDLE_FILE)
+	public static final String OVERVIEW = ResourceBundle.getBundle(BUNDLE_FILE)
 			.getString("menu_overview");
 	
 	/**
 	 * Specified the menu string for none tested methods
 	 */
-	public static String none_methods = ResourceBundle.getBundle(BUNDLE_FILE)
+	public static final String NONE_METHODS =
+			ResourceBundle.getBundle(BUNDLE_FILE)
 			.getString("menu_noneTestedMethod");
 	
 	/**
 	 * Specified the menu string for none tested source files
 	 */
-	public static String none_sourceFiles = ResourceBundle
+	public static final String NONE_SOURCE_FILES = ResourceBundle
 			.getBundle(BUNDLE_FILE).getString("menu_noneTestedSource");
 	
 	/**
 	 * Specified the menu string for to-do list
 	 */
-	public static String todo_list = ResourceBundle.getBundle(BUNDLE_FILE)
+	public static final String TODO_LIST = ResourceBundle.getBundle(BUNDLE_FILE)
 			.getString("menu_todoList");
 	
 	/**
 	 * Specified the menu string for deprecated list.
 	 */
-	public static String deprecated_list = ResourceBundle.getBundle(BUNDLE_FILE)
+	public static final String DEPRECATED_LIST = 
+			ResourceBundle.getBundle(BUNDLE_FILE)
 			.getString("menu_deprecatedList");
+	
+	/**
+	 * Specified the menu string for none exists files.
+	 */
+	public static final String NONE_EXISTS_FILES = 
+			ResourceBundle.getBundle(BUNDLE_FILE)
+			.getString("menu_noneExistFiles");
 	
 	/**
 	 * Initialize the class
@@ -73,9 +83,53 @@ public class HtmlMenu extends Html {
 	 * @return
 	 */
 	public static String createMenu(String actual) {
-		StringBuilder ret = new StringBuilder();
+		StringBuilder ret = new StringBuilder("\t\t<div ");
+		ret.append("class=\"checkSourceMenu\">");
+		ret.append(System.lineSeparator());
 		
+		ret.append("\t\t\t<ul>");
+		ret.append(System.lineSeparator());
+
+		ret.append(menuEntry(OVERVIEW, actual, 
+				HtmlOutOverview.getInstance().getPathAndResultFile()));
+
+		ret.append(menuEntry(NONE_METHODS, actual, 
+				HtmlNoneTestedMethods.getInstance().getPathAndResultFile()));
+
+		ret.append(menuEntry(NONE_SOURCE_FILES, actual, 
+				HtmlNoneTestedSourceFiles.getInstance()
+				.getPathAndResultFile()));
+
+		ret.append(menuEntry(NONE_EXISTS_FILES, actual, 
+				HtmlNoneExistFile.getInstance().getPathAndResultFile()));
+
+		ret.append(menuEntry(TODO_LIST, actual, 
+				HtmlTodo.getInstance().getPathAndResultFile()));
+
+		ret.append(menuEntry(DEPRECATED_LIST, actual, 
+				HtmlDeprecated.getInstance().getPathAndResultFile()));
 		
+		ret.append("\t\t\t</ul>");
+		ret.append(System.lineSeparator());
+		
+		ret.append("\t\t</div>");
+		ret.append(System.lineSeparator());
+		
+		return ret.toString();
+	}
+
+	private static String menuEntry(String entry, String actual, String file) {
+		StringBuilder ret = new StringBuilder("\t\t\t\t<li");
+		
+		if (entry.equals(actual))
+			ret.append(" class=\"actual\"");
+		
+		ret.append("><a href=\"");
+		ret.append(new File(file).getAbsolutePath());
+		ret.append("\">");
+		ret.append(entry);
+		ret.append("</a></li>");
+		ret.append(System.lineSeparator());
 		
 		return ret.toString();
 	}

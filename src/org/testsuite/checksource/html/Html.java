@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.io.File;
 import java.util.ResourceBundle;
 
+import org.testsuite.core.Version;
 import org.testsuite.data.Config;
 
 /**
@@ -105,5 +106,17 @@ public class Html {
 				ResourceBundle.getBundle(_resultBundleFile).getString(
 						_resultBundle) + ".html";
 		return result;
+	}
+	
+	/**
+	 * Create the footer
+	 * 
+	 * @return The string of footer
+	 * 
+	 * @deprecated Use {@link org.testsuite.helper.HelperHtml#footer()}
+	 */
+	protected String footer() {
+		return "\t\t<div class=\"checkSourceFooter\">Version: " + 
+				Version.getVersion() + "</div>";
 	}
 }
