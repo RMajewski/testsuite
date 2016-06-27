@@ -167,12 +167,6 @@ public class HtmlOutOverview extends Html {
 					date + ")", _bundle.getString("overview_description") + 
 					" (" + date + ")"));
 			
-			// List of none tested files
-			bw.write(createNoneTestedList());
-			
-			// List of deprecated methods
-			bw.write(createListOfDeprecated());
-			
 			// Table with links
 			bw.write(createHtmlLink());
 			
@@ -194,7 +188,10 @@ public class HtmlOutOverview extends Html {
 	 * Generates a list of the files have not been tested.
 	 * 
 	 * @return The HTML list of the files have not been tested.
+	 * 
+	 * @deprecated use {@link HtmlNoneTestedSourceFiles}
 	 */
+	@SuppressWarnings("unused")
 	private String createNoneTestedList() {
 		StringBuilder ret = new StringBuilder();
 		
@@ -344,7 +341,10 @@ public class HtmlOutOverview extends Html {
 	 * Creates the HTML list deprecated methods
 	 * 
 	 * @return HTML list of deprecated methods
+	 * 
+	 * @deprecated Use {@link HtmlDeprecated}
 	 */
+	@SuppressWarnings("unused")
 	private String createListOfDeprecated() {
 		List<String> list = new ArrayList<String>();
 		
@@ -749,5 +749,14 @@ public class HtmlOutOverview extends Html {
 	 */
 	public List<CSMethod> getMethodList() {
 		return _methods;
+	}
+	
+	/**
+	 * Returns the list of result files.
+	 * 
+	 * @return List of result files.
+	 */
+	public List<String> getResultFileList() {
+		return _resultFiles;
 	}
 }
