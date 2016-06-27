@@ -180,6 +180,13 @@ public class TestCore {
 				} // for test
 			} // for suite
 		} // for runner
+		
+		// Create HTML output files
+		HtmlTodo.getInstance().createHtml();
+		HtmlNoneExistFile.getInstance().createHtml();
+		HtmlNoneTestedMethods.getInstance().createHtml();
+		HtmlNoneTestedSourceFiles.getInstance().createHtml();
+		HtmlDeprecated.getInstance().createHtml();
 		HtmlOutOverview.getInstance().createHtml();
 	}
 	

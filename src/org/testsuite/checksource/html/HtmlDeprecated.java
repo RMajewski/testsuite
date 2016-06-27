@@ -44,11 +44,17 @@ public class HtmlDeprecated extends Html {
 	private static HtmlDeprecated _instance;
 	
 	/**
+	 * Saves the list of deprecated classes.
+	 */
+	private List<String> _class;
+	
+	/**
 	 * Initialize this class.
 	 */
 	private HtmlDeprecated() {
 		super(null);
 		_resultBundle = "deprecate_result_file";
+		_class = new ArrayList<String>();
 	}
 	
 	/**
@@ -113,6 +119,9 @@ public class HtmlDeprecated extends Html {
 				list.add(li.toString());
 			}
 		
+		for (int i = 0; i < _class.size(); i++)
+			list.add("\t\t\t\t\t<li>" + _class.get(i) + "</li>");
+		
 		Collections.sort(list);
 
 		StringBuilder ret = new StringBuilder();
@@ -144,4 +153,12 @@ public class HtmlDeprecated extends Html {
 		return ret.toString();
 	}
 
+	/**
+	 * Added a name of class to the list of deprecated classes.
+	 * 
+	 * @param name The name of deprecated class
+	 */
+	public void addDeprecatedClass(String name) {
+		_class.add("class " + name);
+	}
 }

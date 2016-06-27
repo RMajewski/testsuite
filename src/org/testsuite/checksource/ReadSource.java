@@ -21,6 +21,8 @@ package org.testsuite.checksource;
 
 import java.util.List;
 
+import org.testsuite.checksource.html.HtmlDeprecated;
+
 /**
  * Reads the source code and determines the individual declarations.
  * 
@@ -121,6 +123,10 @@ public class ReadSource implements Read {
 					}
 				if (!name)
 					_className = read[read.length - 1];
+				if (_deprecated) {
+					HtmlDeprecated.getInstance().addDeprecatedClass(_className);
+					_deprecated = false;
+				}
 			} else if (line.matches("^\\s*@CheckSource\\s*\\({1}\\s*ignored" +
 					"\\s*=\\s*true\\){1}\\s*$")) {
 				_ignored = true;
