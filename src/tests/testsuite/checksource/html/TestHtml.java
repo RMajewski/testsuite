@@ -17,7 +17,7 @@
 * sind dem Lizenztext zu entnehmen.
 */ 
 
-package tests.testsuite.checksource;
+package tests.testsuite.checksource.html;
 
 import static org.junit.Assert.*;
 

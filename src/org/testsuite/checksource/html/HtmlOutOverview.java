@@ -460,6 +460,11 @@ public class HtmlOutOverview extends Html {
 		ret.append(System.lineSeparator());
 		
 		ret.append("\t\t\t\t\t\t<th>");
+		ret.append(_bundle.getString("overview_methods"));
+		ret.append("</th>");
+		ret.append(System.lineSeparator());
+		
+		ret.append("\t\t\t\t\t\t<th>");
 		ret.append(_bundle.getString("overview_messages"));
 		ret.append("</th>");
 		ret.append(System.lineSeparator());
@@ -487,7 +492,7 @@ public class HtmlOutOverview extends Html {
 					ret.append("\t\t\t\t\t<tr>");
 					ret.append(System.lineSeparator());
 					
-					ret.append("\t\t\t\t\t\t<td colspan=\"3\" class=\"newPath\">");
+					ret.append("\t\t\t\t\t\t<td colspan=\"4\" class=\"newPath\">");
 					ret.append(path);
 					ret.append("</td>");
 					ret.append(System.lineSeparator());
@@ -523,6 +528,14 @@ public class HtmlOutOverview extends Html {
 				ret.append("\t\t\t\t\t\t<td style=\"background: ");
 				ret.append(HelperHtmlCodeJava.getInstance()
 						.formatColor(background));
+				ret.append("\">");
+				ret.append(testedMethods(className));
+				ret.append("</td>");
+				ret.append(System.lineSeparator());
+				
+				ret.append("\t\t\t\t\t\t<td style=\"background: ");
+				ret.append(HelperHtmlCodeJava.getInstance()
+						.formatColor(background));
 				ret.append(";\" >");
 				
 				if (!background.equals(HelperUsedColor.PASS)) {
@@ -550,6 +563,38 @@ public class HtmlOutOverview extends Html {
 		ret.append(System.lineSeparator());
 		
 		return ret.toString();
+	}
+	
+	/**
+	 * Creates the a string with tested methods and counts of methods 
+	 * 
+	 * @param className The name of class
+	 * 
+	 * @return String with tested methods and counts of methods
+	 */
+	private String testedMethods(String className) {
+		int count = 0;
+		int tested = 0;
+		
+		for (int method = 0; method < _methods.size(); method++) {
+			if (_methods.get(method).getClassName().equals(className)) {
+				count++;
+				
+				if (_methods.get(method).callsCount() > 0)
+					tested++;
+			}
+		}
+		
+		String color = new String();
+		if (tested == count)
+			color = HelperHtmlCodeJava.getInstance().formatColor(
+					HelperUsedColor.PASS);
+		else
+			color = HelperHtmlCodeJava.getInstance().formatColor(
+					HelperUsedColor.ERROR);
+		
+		return "<span style=\"background: " + color + ";\">" + 
+		String.valueOf(tested) + " / " + String.valueOf(count) + "<span>";
 	}
 	
 	/**

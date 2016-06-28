@@ -22,6 +22,13 @@ package org.testsuite.checksource;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Saves a call of a method.
+ * 
+ * @author René Majewski
+ *
+ * @version 0.1
+ */
 public class CSCall {
 	/**
 	 * Saves the number of line
@@ -45,7 +52,7 @@ public class CSCall {
 	 * 
 	 * @param parameter The parameter
 	 * 
-	 * @param call Originates the call from the text file?
+	 * @param call Originates the call from the test file?
 	 */
 	public CSCall(int number, boolean call, String... parameter) {
 		_number = number;

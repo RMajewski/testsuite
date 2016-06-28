@@ -87,6 +87,7 @@
 			<test checkSource="org.testsuite.checksource.CSMethod">TestCSMethod</test>
 			<test checkSource="org.testsuite.checksource.CSParameter">TestCSParameter</test>
 			<test checkSource="org.testsuite.checksource.MessageColor">TestMessageColor</test>
+			<test checkSource="org.testsuite.checksource.CSCall">TestCSCall</test>
 		</testSuite>
 		<testSuite>
 			<name>Tests the classes for read the source files</name>

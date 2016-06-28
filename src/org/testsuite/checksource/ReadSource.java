@@ -94,17 +94,17 @@ public class ReadSource implements Read {
 			String[] read = line.substring(startIndex, endIndex).split(" ");
 			
 			if (line.matches("^[\\s]*(private|protected|public)[\\w\\s<>,"+ 
-					"\\[\\]]*\\([\\w\\ſ, <>\\[\\]]*\\)[\\p{Graph}\\s]*\\{$"))
+					"\\[\\]]*\\([\\w\\ſ, .<>\\[\\]]*\\)[\\p{Graph}\\s]*\\{$"))
 				readMethod(lineNumber, read, list);
 			else if (line.matches("^[\\s]*(private|protected|public)" + 
-					"[\\w\\s<>,]*\\([\\w\\ſ, <>\\[\\]]*\\)[\\p{Graph}\\s]*$") ||
+					"[\\w\\s<>,]*\\([\\w\\ſ, .<>\\[\\]]*\\)[\\p{Graph}\\s]*$") ||
 					line.matches("^[\\s]*(private|protected|public)" + 
-					"[\\w\\s<>,]*\\([\\w\\ſ, <>\\[\\]]*\\)*$") ||
+					"[\\w\\s<>,]*\\([\\w\\ſ, .<>\\[\\]]*\\)*$") ||
 					line.matches("^[\\s]*(private|protected|public)" + 
-					"[\\w\\s<>,]*\\([\\w\\ſ, <>\\[\\]]*$")) 
+					"[\\w\\s<>,]*\\([\\w\\ſ, .<>\\[\\]]*$")) 
 				_methodStarted = line;
 			else if ((_methodStarted != null) && (
-					( line.matches("^[\\w\\ſ, <>\\[\\]]*\\)[\\s\\w]*\\{$")) || 
+					( line.matches("^[\\w\\ſ, .<>\\[\\]]*\\)[\\s\\w]*\\{$")) || 
 					line.matches("^\\s*[\\w\\s<>,\\[\\]]*\\{$") )) {
 				_methodStarted += line;
 				readMethod(lineNumber - 1, _methodStarted.split(" "), list);
