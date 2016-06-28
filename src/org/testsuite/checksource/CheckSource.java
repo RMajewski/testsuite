@@ -21,6 +21,7 @@ package org.testsuite.checksource;
 
 import java.util.List;
 
+import org.testsuite.checksource.html.HtmlOut;
 import org.testsuite.checksource.tests.SourceTest;
 
 /**
@@ -170,9 +171,13 @@ public class CheckSource {
 		_source.readFile(true, _nameTest);
 		
 		// Run tests
-		for (int i = 0; i < SourceTest.TESTS.length; i++) {
+		for (int i = 0; i < CSConfig.getInstance().testCount(); i++) {
 			try {
-				SourceTest test = (SourceTest)SourceTest.TESTS[i].newInstance();
+				SourceTest test = (SourceTest)getClass().getClassLoader()
+						.loadClass(CSConfig.getInstance()
+								.getPathCheckSourceTests()+ "." + 
+								CSConfig.getInstance().getTestName(i))
+						.newInstance();
 				test.test(_source.getSourceList());
 			} catch (Exception e) {
 				e.printStackTrace();

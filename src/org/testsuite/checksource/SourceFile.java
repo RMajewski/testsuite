@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.testsuite.checksource.html.HtmlNoneExistFile;
 import org.testsuite.checksource.tests.SourceTest;
 import org.testsuite.helper.HelperUsedColor;
 
@@ -188,7 +189,7 @@ public class SourceFile {
 			return false;
 		
 		if (!test && !new File(_fileName).exists()) {
-			HtmlOutOverview.getInstance().addNoneExistsFileName(_fileName);
+			HtmlNoneExistFile.getInstance().addNoneExistsFileName(_fileName);
 			return false;
 		}
 		
@@ -196,7 +197,7 @@ public class SourceFile {
 			return false;
 		
 		if (test && !new File(testName).exists()) {
-			HtmlOutOverview.getInstance().addNoneExistsFileName(testName);
+			HtmlNoneExistFile.getInstance().addNoneExistsFileName(testName);
 			return false;
 		}
 		
@@ -260,7 +261,16 @@ public class SourceFile {
 				} else if (line.matches("^[*\\s]*(@deprecated|@Deprecated)" +
 						"[\\p{Graph}\\s]*$")) {
 					readSource.setDeprecated(true);
-				}
+				} else if (readSource.isDeprecated() && (line.matches(
+						"^[*\\s]*(@deprecated|@Deprecated)" +
+						"[\\p{Graph}\\s]*$")))
+					readSource.setDeprecated(true);
+			}
+			
+			for (int i = 0; i < _source.size(); i++) {
+				if (!test && (readSource.getClassName() != null) && 
+						!readSource.getClassName().isEmpty())
+					_source.get(i).setClassName(readSource.getClassName());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -298,9 +308,6 @@ public class SourceFile {
 										"sourceMethodNotTested") ,color));
 			}
 		}
-		if (_methods.size() > 0)
-			for (int i = 0; i < _source.size(); i++)
-				_source.get(i).setClassName(_methods.get(0).getClassName());
 		
 		// Parse of source
 		Parser.parse(_methods, _source);

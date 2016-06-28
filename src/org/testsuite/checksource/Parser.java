@@ -1,3 +1,4 @@
+package org.testsuite.checksource;
 /* 
 * Copyright 2016 René Majewski
 *  
@@ -16,8 +17,6 @@
 * Die sprachspezifischen Genehmigungen und Beschränkungen unter der Lizenz
 * sind dem Lizenztext zu entnehmen.
 */ 
-
-package org.testsuite.checksource;
 
 import java.util.List;
 import java.util.regex.Matcher;

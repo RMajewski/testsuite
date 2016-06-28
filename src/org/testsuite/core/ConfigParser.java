@@ -35,6 +35,7 @@ import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.testsuite.checksource.CSConfig;
 import org.testsuite.data.Config;
 import org.testsuite.data.Library;
 import org.testsuite.data.TestSuite;
@@ -112,6 +113,8 @@ public class ConfigParser {
 			boolean libraries = false;
 			boolean classPath = false;
 			boolean testSuite = false;
+			boolean todo = false;
+			boolean checkSourceConfig = false;
 			TestRunner runner = null;
 			Library library = null;
 			TestSuite suite = null;
@@ -134,6 +137,28 @@ public class ConfigParser {
 						switch (element.getName().getLocalPart()) {
 							case "config":
 								config = true;
+								break;
+								
+							case "noneTestedList":
+								if (checkSourceConfig) {
+									Attribute atr = (Attribute)element
+										.getAttributes().next();
+									if (atr.getName().toString().equals("path"))
+										CSConfig.getInstance().setNoneListedPath(
+												atr.getValue());
+								}
+								break;
+								
+							case "lineWidth":
+								if (checkSourceConfig) {
+									Attribute atr = (Attribute)element
+											.getAttributes().next();
+									if (atr.getName().toString()
+											.equals("tabSpace"))
+										CSConfig.getInstance().setTabSpace(
+												Integer.parseInt(
+														atr.getValue()));
+								}
 								break;
 								
 							case "testGroup":
@@ -203,6 +228,14 @@ public class ConfigParser {
 							case "stylesheet":
 								stylesheet = true;
 								break;
+								
+							case "todo":
+								todo = true;
+								break;
+								
+							case "checkSourceConfig":
+								checkSourceConfig = true;
+								break;
 						}
 						break;
 						
@@ -225,6 +258,14 @@ public class ConfigParser {
 								
 							case "stylesheet":
 								stylesheet = false;
+								break;
+								
+							case "todo":
+								todo = false;
+								break;
+								
+							case "checkSourceConfig":
+								checkSourceConfig = false;
 								break;
 								
 							case "testGroup":
@@ -259,6 +300,18 @@ public class ConfigParser {
 								if (config)
 									Config.getInstance().setCreateHtml(
 										Boolean.parseBoolean(data));
+								break;
+								
+							case "noneTestedList":
+								if (checkSourceConfig)
+									CSConfig.getInstance().setListNoneTestedFiles(
+											Boolean.parseBoolean(data));
+								break;
+								
+							case "lineWidth":
+								if (checkSourceConfig)
+									CSConfig.getInstance().setLineWidth(
+											Integer.parseInt(data));
 								break;
 								
 							case "property":
@@ -317,6 +370,10 @@ public class ConfigParser {
 									runner.addClassPath(data);
 								else if (classPath && config)
 									Config.getInstance().addClassPath(data);
+								else if (checkSourceConfig) {
+									CSConfig.getInstance()
+										.setPathCheckSourceTests(data);
+								}
 								break;
 								
 							// The TestSuite
@@ -331,6 +388,8 @@ public class ConfigParser {
 							case "name":
 								if (testSuite && (suite != null))
 									suite.setName(data);
+								else if (todo && (Config.getInstance() != null))
+									Config.getInstance().addToDoWord(data);
 								break;
 								
 							case "package":
@@ -340,18 +399,21 @@ public class ConfigParser {
 								
 							// The Test
 							case "test":
-								if (testSuite && (suite != null) &&
-										(runner != null)) {
-									org.testsuite.data.Test test = 
-											runner.newTest(data, testId++);
-									test.setExecuted(executed);
-									test.setJvm(jvm);
-									test.setCheckSource(checkSource);
-									suite.addTest(test);
+								if (testSuite) {
+									if ((suite != null) && (runner != null)) {
+										org.testsuite.data.Test test = 
+												runner.newTest(data, testId++);
+										test.setExecuted(executed);
+										test.setJvm(jvm);
+										test.setCheckSource(checkSource);
+										suite.addTest(test);
+									}
+									jvm = true;
+									executed = true;
+									checkSource = new String();
+								} else if (checkSourceConfig) {
+									CSConfig.getInstance().addTestName(data);
 								}
-								jvm = true;
-								executed = true;
-								checkSource = new String();
 								break;
 						}
 						break;

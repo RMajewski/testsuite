@@ -7,7 +7,7 @@
 }
 
 .ignore {
-	background-color: #CFCFCF;
+	background-color: #EFEFEF;
 }
 
 .exception {
@@ -105,48 +105,14 @@
 	padding: 0px;
 }
 
-.checksource {
-	border: 1px solid #000;
-	padding: 0px 10px;
+.footer {
+	border-top: 1px solid #000;
+	width: 100%;
+	float: left;
+	margin-top: 50px;
+	font-size: 75%;
 }
 
-.checksourceList {
-	border: 1px dashed #000;
-	margin-top: 10px;
-	padding: 0px 10px;
-}
-
-.checksourceSource {
-	margin-top: 10px;
-}
-
-.checksourceSource table {
-	border: 1px solid #000;
-}
-
-.checksourceSource table tr {
-	border: 0px;
-}
-
-.checksourceSource table td {
-	padding: 0px 10px;
-}
-
-.checksourceLinks {
-	margin-top: 10px;
-}
-
-.checksourceLinks table {
-	border: 1px solid #000;
-}
-
-.checksourceLinks table tr {
-	border: 1px dashes #000;
-}
-
-.checksourceLinks table td {
-	padding: 0px 10px;
-}
 
 table {
 	width: 100%;

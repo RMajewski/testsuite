@@ -39,16 +39,16 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.testsuite.checksource.CSMethod;
-import org.testsuite.checksource.HtmlOutOverview;
 import org.testsuite.checksource.MessageColor;
 import org.testsuite.checksource.SourceLine;
 import org.testsuite.checksource.annotation.CheckSource;
+import org.testsuite.checksource.html.HtmlOutOverview;
 import org.testsuite.core.TestRunner;
 import org.testsuite.helper.HelperHtmlCodeJava;
 import org.testsuite.helper.HelperUsedColor;
 
 /**
- * Tests for the class {@link org.testsuite.checksource.HtmlOutOverview}.
+ * Tests for the class {@link org.testsuite.checksource.html.HtmlOutOverview}.
  * 
  * @author René Majewski
  *

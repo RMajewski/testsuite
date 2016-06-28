@@ -27,10 +27,10 @@ import java.util.ResourceBundle;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.testsuite.checksource.Html;
+import org.testsuite.checksource.html.Html;
 
 /**
- * Tests for class {@link org.testsuite.checksource.Html}.
+ * Tests for class {@link org.testsuite.checksource.html.Html}.
  * 
  * @author René Majewski
  *

@@ -32,7 +32,12 @@ import java.util.ResourceBundle;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.testsuite.checksource.HtmlOutOverview;
+import org.testsuite.checksource.html.HtmlDeprecated;
+import org.testsuite.checksource.html.HtmlNoneExistFile;
+import org.testsuite.checksource.html.HtmlNoneTestedMethods;
+import org.testsuite.checksource.html.HtmlNoneTestedSourceFiles;
+import org.testsuite.checksource.html.HtmlOutOverview;
+import org.testsuite.checksource.html.HtmlTodo;
 import org.testsuite.data.Config;
 
 /**
@@ -148,6 +153,12 @@ public class TestCore {
 			} // for suite
 		} // for runner
 		
+		// Create HTML output files
+		HtmlTodo.getInstance().createHtml();
+		HtmlNoneExistFile.getInstance().createHtml();
+		HtmlNoneTestedMethods.getInstance().createHtml();
+		HtmlNoneTestedSourceFiles.getInstance().createHtml();
+		HtmlDeprecated.getInstance().createHtml();
 		HtmlOutOverview.getInstance().createHtml();
 	}
 	
@@ -169,6 +180,13 @@ public class TestCore {
 				} // for test
 			} // for suite
 		} // for runner
+		
+		// Create HTML output files
+		HtmlTodo.getInstance().createHtml();
+		HtmlNoneExistFile.getInstance().createHtml();
+		HtmlNoneTestedMethods.getInstance().createHtml();
+		HtmlNoneTestedSourceFiles.getInstance().createHtml();
+		HtmlDeprecated.getInstance().createHtml();
 		HtmlOutOverview.getInstance().createHtml();
 	}
 	

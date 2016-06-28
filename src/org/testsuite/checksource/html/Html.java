@@ -17,10 +17,14 @@
 * sind dem Lizenztext zu entnehmen.
 */ 
 
-package org.testsuite.checksource;
+package org.testsuite.checksource.html;
 
 import java.awt.Color;
+import java.io.File;
 import java.util.ResourceBundle;
+
+import org.testsuite.core.Version;
+import org.testsuite.data.Config;
 
 /**
  * From this class, the class HtmlOut and HtmlOutOverview be derived.
@@ -47,6 +51,16 @@ public class Html {
 	protected String _resultFile;
 	
 	/**
+	 * Saves the bundle name of result file.
+	 */
+	protected String _resultBundle;
+	
+	/**
+	 * Saves the name of bundle file for the name of result file.
+	 */
+	protected String _resultBundleFile;
+	
+	/**
 	 * Specifies the background color for tested lines.
 	 * 
 	 * @deprecated Use {@link org.testsuite.helper.HelperUsedColor#PASS}.
@@ -61,5 +75,48 @@ public class Html {
 	public Html(String resultFile) {
 		_resultFile = resultFile;
 		_bundle = ResourceBundle.getBundle(BUNDLE_FILE);
+		_resultBundle = new String();
+		_resultBundleFile = BUNDLE_FILE;
+	}
+	
+	/**
+	 * Returns the name of result file
+	 * 
+	 * @return The name of result file
+	 */
+	public String getResultFile() {
+		return _resultFile;
+	}
+	
+	/**
+	 * Gets the name of the HTML result file. If not already exist, the path for
+	 * the HTML files, so it is with created.
+	 * 
+	 * @return The name of HTML result file.
+	 */
+	public String getPathAndResultFile() {
+		String result = Config.getInstance().getPathResult() + File.separator +
+				Config.getInstance().getPathSuitesResult();
+		File file = new File(result);
+		
+		if (!file.exists())
+			file.mkdirs();
+		
+		result += File.separator + 
+				ResourceBundle.getBundle(_resultBundleFile).getString(
+						_resultBundle) + ".html";
+		return result;
+	}
+	
+	/**
+	 * Create the footer
+	 * 
+	 * @return The string of footer
+	 * 
+	 * @deprecated Use {@link org.testsuite.helper.HelperHtml#footer()}
+	 */
+	protected String footer() {
+		return "\t\t<div class=\"checkSourceFooter\">Version: " + 
+				Version.getVersion() + "</div>";
 	}
 }

@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.testsuite.checksource.HtmlOut;
+import org.testsuite.checksource.html.HtmlOut;
 
 /**
  * Tests the English language file for the HtmlOut class on completeness.

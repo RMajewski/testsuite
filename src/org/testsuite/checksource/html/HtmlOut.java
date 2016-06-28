@@ -17,7 +17,7 @@
 * sind dem Lizenztext zu entnehmen.
 */ 
 
-package org.testsuite.checksource;
+package org.testsuite.checksource.html;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -25,6 +25,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+
+import org.testsuite.checksource.CSMethod;
+import org.testsuite.checksource.SourceLine;
 import org.testsuite.helper.HelperCalendar;
 import org.testsuite.helper.HelperHtml;
 import org.testsuite.helper.HelperHtmlCodeJava;
@@ -170,6 +173,8 @@ public class HtmlOut extends Html {
 	 * 
 	 * @param lines The list of source lines.
 	 * 
+	 * @param methods The list of methods.
+	 * 
 	 * @return The HTML output for the source code.
 	 */
 	private String sourceCode(List<SourceLine> lines, List<CSMethod> methods) {
@@ -186,7 +191,7 @@ public class HtmlOut extends Html {
 
 		ret.append("\t\t\t\t\t\t<th style=\"width:100px;\"></th>");
 		ret.append(System.lineSeparator());
-		ret.append("\t\t\t\t\t\t<th style=\"width:70%;\"></th>");
+		ret.append("\t\t\t\t\t\t<th style=\"width:65%;\"></th>");
 		ret.append(System.lineSeparator());
 		ret.append("\t\t\t\t\t\t<th style=\"width:*;\"></th>");
 		ret.append(System.lineSeparator());
@@ -228,7 +233,8 @@ public class HtmlOut extends Html {
 			String line = HelperHtml.replaceHtmlEntities(lines.get(i).getLine());
 			line = HelperHtmlCodeJava.formatString(line,
 					lines.get(i).isMultiLineComment(),
-					lines.get(i).isJavadoc());
+					lines.get(i).isJavadoc(), lines.get(i).getLineNumber(), 
+					_resultFile);
 			line = HelperHtml.replaceTabWidthSpaces(line, 4);
 
 			String ankerBegin = new String();

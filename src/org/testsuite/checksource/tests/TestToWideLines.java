@@ -19,54 +19,53 @@
 
 package org.testsuite.checksource.tests;
 
-import java.awt.Color;
 import java.util.List;
+import java.util.ResourceBundle;
 
+import org.testsuite.checksource.CSConfig;
+import org.testsuite.checksource.MessageColor;
 import org.testsuite.checksource.SourceLine;
+import org.testsuite.helper.HelperUsedColor;
 
 /**
- * Defines the testing methods.
+ * Tests if the lines are too wide.
  * 
  * @author René Majewski
  *
  * @version 0.1
  */
-public interface SourceTest {
+public class TestToWideLines implements SourceTest {
+
 	/**
-	 * Is called to perform the test.
+	 * Looking into the source code files according to wide rows.
 	 * 
 	 * @param list The list of source lines.
 	 * 
 	 * @return True, if the test was successful. False if an error has occurred
 	 * in the line.
 	 */
-	public boolean test(List<SourceLine> list);
-	
-	/**
-	 * Specified the background color for a warning.
-	 * 
-	 * @deprecated Use {@link org.testsuite.helper.HelperUsedColor#WARNING}.
-	 */
-	Color COLOR_WARNING = new Color(0xFFFFCF);
-	
-	/**
-	 * Specified the background color for a exception
-	 * 
-	 * @deprecated Use {@link org.testsuite.helper.HelperUsedColor#ERROR}.
-	 */
-	Color COLOR_EXCEPTION = new Color(0xFFCFCF);
-	
-	/**
-	 * Saves the file name for resource bundle.
-	 */
-	String BUNDLE_FILE = "resources.lang.org.testsuite.checksource.tests.Tests";
-	
-	/**
-	 * Saves the list with all tests for check source.
-	 * 
-	 * @deprecated Use the list of test in {@link org.testsuite.checksource.CSConfig#getTestName(int)}
-	 * and {@link org.testsuite.checksource.CSConfig#testCount()} 
-	 */
-	Class<?>[] TESTS = {TestEmptyLines.class, TestEmptyMethod.class, 
-			TestUnusedImports.class, TestJavadoc.class, TestToWideLines.class};
+	@Override
+	public boolean test(List<SourceLine> list) {
+		int wide = CSConfig.getInstance().getLineWidth();
+		if (wide < 0)
+			wide = 80;
+		
+		String spaces = new String();
+		if (CSConfig.getInstance().getTabSpace() > 0)
+			for (int i = 0; i < CSConfig.getInstance().getTabSpace(); i++)
+				spaces += " ";
+		
+		for (int line = 0; line < list.size(); line++) {
+			String source = list.get(line).getLine().replaceAll("\t", spaces);
+			if (source.length() > wide)
+				list.get(line).addMessage(new MessageColor(
+						ResourceBundle.getBundle(BUNDLE_FILE)
+							.getString("toWideLine").replace("?", 
+									String.valueOf(wide)),
+						HelperUsedColor.IGNORE));
+		}
+		
+		return false;
+	}
+
 }

@@ -1,0 +1,127 @@
+
+.checksource {
+	border: 1px solid #000;
+	padding: 0px 10px;
+}
+
+.checksourceList {
+	border: 1px dashed #000;
+	margin-top: 10px;
+	padding: 0px 10px;
+}
+
+.checksourceList ul {
+	overflow-y: scroll;
+	height: 300px;
+}
+
+.noneList {
+	border: 1px dashed #000;
+	margin-top: 10px;
+	padding: 0px 10px;
+}
+
+.noneList ul {
+	overflow-y: scroll;
+	height: 300px;
+}
+
+.todoList {
+	border: 1px dashed #000;
+	margin-top: 10px;
+	padding: 0px 10px;
+}
+
+.todoList table {
+	border: 0px;	
+}
+
+.todoList table tr {
+	border: 0px;
+}
+
+.deprecatedList {
+	border: 1px dashed #000;
+	margin-top: 10px;
+	padding: 0px 10px;
+}
+
+.deprecatedList ul {
+	overflow-y: scroll;
+	height: 300px;
+}}
+
+.checksourceSource {
+	margin-top: 10px;
+}
+
+.checksourceSource table {
+	border: 1px solid #000;
+}
+
+.checksourceSource table tr {
+	border: 0px;
+}
+
+.checksourceSource table td {
+	padding: 0px 10px;
+}
+
+.checksourceLinks {
+	margin-top: 10px;
+}
+
+.checksourceLinks .newPath {
+	padding-top: 20px;
+	font-weight: 900;
+	color: #505050;
+}
+
+.checksourceLinks table {
+	border: 1px solid #000;
+}
+
+.checksourceLinks table tr {
+	border: 1px dashes #000;
+}
+
+.checksourceLinks table td {
+	padding: 0px 10px;
+}
+
+.checkSourceMenu {
+	border-bottom: 1px solid #000;
+	width: 100%;
+	float: left;
+	margin-bottom: 50px;
+}
+
+.checkSourceMenu ul {
+	list-style: none;
+	margin: 0;
+	padding: 10px 0 0 5px;
+	float: left;
+}
+
+.checkSourceMenu li {
+	float: left;
+	margin: 0;
+	padding: 0;
+}
+
+.checkSourceMenu a {
+	float: left;
+	display: block;
+	margin: 0 1px 0 0;
+	padding: 4px 8px;
+	color: #000;
+	text-decoration: none;
+	border: 1px solid #000;
+	border-bottom: none;
+	background: #FFF;
+	font-size: 85%;
+}
+
+.checkSourceMenu a:hover, .checkSourceMenu .actual a {
+	background: #EFEFEF;
+}

@@ -33,7 +33,7 @@ import org.mockito.Matchers;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.testsuite.checksource.HtmlOutOverview;
+import org.testsuite.checksource.html.HtmlOutOverview;
 import org.testsuite.core.ConfigParser;
 import org.testsuite.core.FitTestRunner;
 import org.testsuite.core.HtmlOut;

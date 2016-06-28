@@ -35,7 +35,8 @@ import java.util.Vector;
 import javax.swing.Timer;
 
 import org.testsuite.checksource.CheckSource;
-import org.testsuite.checksource.HtmlOutOverview;
+import org.testsuite.checksource.html.HtmlNoneExistFile;
+import org.testsuite.checksource.html.HtmlOutOverview;
 import org.testsuite.data.Config;
 import org.testsuite.data.Library;
 import org.testsuite.data.Test;
@@ -1187,6 +1188,8 @@ public abstract class TestRunner {
 			
 			File file = new File(sourceFile);
 			if (!file.exists()) {
+				HtmlNoneExistFile.getInstance().addNoneExistsFileName(
+						sourceFile);
 				System.out.println(_bundle.getString("checksource_no_source"));
 				return;
 			}
@@ -1199,6 +1202,7 @@ public abstract class TestRunner {
 			
 			file = new File(testFile);
 			if (!file.exists()) {
+				HtmlNoneExistFile.getInstance().addNoneExistsFileName(testFile);
 				System.out.println(_bundle.getString("checksource_no_test"));
 			}
 			
@@ -1211,7 +1215,8 @@ public abstract class TestRunner {
 				file.mkdirs();
 			
 			testResult += _bundle.getString("result_checksoure") + "_" + 
-					test.getName() + ".html";
+					test.getName().substring(test.getName().indexOf("Test") + 4) 
+					+ ".html";
 			
 			CheckSource cs = new CheckSource(sourceFile, testFile, testResult);
 			cs.run();

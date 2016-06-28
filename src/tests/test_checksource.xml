@@ -17,10 +17,26 @@
 		</classpath>
 		<stylesheet>
 			<file>resources/html/out.css</file>
+			<file>resources/html/checksource.css</file>
 		</stylesheet>
 		<javascript>
 			<file>resources/html/out.js</file>
 		</javascript>
+		<todo>
+			<name>OPT</name>
+			<name>FIX</name>
+			<name>TODO</name>
+		</todo>
+		<checkSourceConfig>
+			<noneTestedList path="src/org">true</noneTestedList>
+			<lineWidth tabSpace="4">80</lineWidth>
+			<path>org.testsuite.checksource.tests</path>
+			<test>TestEmptyLines</test>
+			<test>TestEmptyMethod</test>
+			<test>TestJavadoc</test>
+			<test>TestToWideLines</test>
+			<test>TestUnusedImports</test>
+		</checkSourceConfig>
 	</config>
 	
 	<testGroup>
@@ -58,7 +74,12 @@
 		<testSuite>
 			<name>Tests the annotations</name>
 			<package>tests.testsuite.checksource.annotation</package>
-			<test checkSource="org.testsuite.checksource.CheckSource">TestCheckSource</test>
+			<test checkSource="org.testsuite.checksource.annotation.CheckSource">TestCheckSource</test>
+		</testSuite>
+		<testSuite>
+			<name>Tests the classes of configuration</name>
+			<package>tests.testsuite.checksource</package>
+			<test checkSource="org.testsuite.checksource.CSConfig">TestCSConfig</test>
 		</testSuite>
 		<testSuite>
 			<name>Tests the classes of informations</name>
@@ -77,16 +98,27 @@
 			<test checkSource="org.testsuite.checksource.SourceFile">TestSourceFile</test>
 		</testSuite>
 		<testSuite>
+			<name>Tests the classes for parser</name>
+			<package>tests.testsuite.checksource</package>
+			<test checkSource="org.testsuite.checksource.Parser">TestParser</test>
+		</testSuite>
+		<testSuite>
 			<name>Tests the classes for check source</name>
 			<package>tests.testsuite.checksource</package>
 			<test checkSource="org.testsuite.checksource.CheckSource">TestCheckSource</test>
 		</testSuite>
 		<testSuite>
 			<name>Tests the output</name>
-			<package>tests.testsuite.checksource</package>
-			<test checkSource="org.testsuite.checksource.Html">TestHtml</test>
-			<test checkSource="org.testsuite.checksource.HtmlOut">TestHtmlOut</test>
-			<test checkSource="org.testsuite.checksource.HtmlOutOverview">TestHtmlOutOverview</test>
+			<package>tests.testsuite.checksource.html</package>
+			<test checkSource="org.testsuite.checksource.html.Html">TestHtml</test>
+			<test checkSource="org.testsuite.checksource.html.HtmlOut">TestHtmlOut</test>
+			<test checkSource="org.testsuite.checksource.html.HtmlOutOverview">TestHtmlOutOverview</test>
+			<test checkSource="org.testsuite.checksource.html.HtmlDeprecated">TestHtmlDeprecated</test>
+			<test checkSource="org.testsuite.checksource.html.HtmlMenu">TestHtmlMenu</test>
+			<test checkSource="org.testsuite.checksource.html.HtmlNoneExistFile">TestHtmlNoneExistFile</test>
+			<test checkSource="org.testsuite.checksource.html.HtmlNoneTestedMethods">TestHtmlNoneTestedMethods</test>
+			<test checkSource="org.testsuite.checksource.html.HtmlNoneTestedSourceFiles">TestHtmlNoneTestedSourceFiles</test>
+			<test checkSource="org.testsuite.checksource.html.HtmlTodo">TestHtmlTodo</test>
 		</testSuite>
 		<testSuite>
 			<name>Tests for check source tests</name>
@@ -96,6 +128,7 @@
 			<test checkSource="org.testsuite.checksource.tests.TestEmptyMethod">TestTestEmptyMethod</test>
 			<test checkSource="org.testsuite.checksource.tests.TestUnusedImports">TestTestUnusedImports</test>
 			<test checkSource="org.testsuite.checksource.tests.TestJavadoc">TestTestJavadoc</test>
+			<test checkSource="org.testsuite.checksource.tests.TestToWideLines">TestTestToWideLines</test>
 		</testSuite>
 	</testGroup>
 </configurationFile>

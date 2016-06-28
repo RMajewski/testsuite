@@ -17,35 +17,11 @@
 * sind dem Lizenztext zu entnehmen.
 */ 
 
-package org.testsuite.helper;
-
-import java.awt.Color;
-
 /**
- * Saves the colors are used.
+ * In this package, the class for the HTML output are summarized.
  * 
  * @author René Majewski
  *
  * @version 0.1
  */
-public final class HelperUsedColor {
-	/**
-	 * Specified the color of warnings.
-	 */
-	public static final Color WARNING = new Color(0xFFFFCF);
-	
-	/**
-	 * Specified the color of errors.
-	 */
-	public static final Color ERROR = new Color(0xFFCFCF);
-	
-	/**
-	 * Specified the color of passes.
-	 */
-	public static final Color PASS = new Color(0xCFFFCF);
-	
-	/**
-	 * Specified the color of ignore;
-	 */
-	public static final Color IGNORE = new Color(0xEFEFEF);
-}
+package org.testsuite.checksource.html;

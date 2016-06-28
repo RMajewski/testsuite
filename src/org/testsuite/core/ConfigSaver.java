@@ -25,6 +25,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+import org.testsuite.checksource.CSConfig;
 import org.testsuite.data.Config;
 import org.testsuite.data.TestSuite;
 
@@ -150,12 +151,89 @@ public class ConfigSaver {
 			bw.newLine();
 		}
 		
+		if (Config.getInstance().toDoWordsCount() > 0) {
+			bw.write("\t\t<todo>");
+			bw.newLine();
+
+			for (int i = 0; i < Config.getInstance().toDoWordsCount(); i++) {
+				bw.write("\t\t\t<name>");
+				bw.write(Config.getInstance().getToDoWord(i));
+				bw.write("</name>");
+				bw.newLine();
+			}
+			
+			bw.write("\t\t</todo>");
+			bw.newLine();
+		}
+		
+		writeCheckSourceConfig(bw);
+		
 		writeClassPath(bw, Config.getInstance().getClassPathList());
 		
 		bw.write("\t</config>");
 		bw.newLine();
 	}
 	
+	/**
+	 * Writes the configuration for the check source tests in the configuration
+	 * file.
+	 * 
+	 * @param bw BufferedWriter to write the configuration to the configuration
+	 * file. 
+	 */
+	private static void writeCheckSourceConfig(BufferedWriter bw)
+			throws IOException {
+		bw.write("\t\t<checkSourceConfiguration>");
+		bw.newLine();
+		
+		if (CSConfig.getInstance().getLineWidth() > 0) {
+			bw.write("\t\t\t<lineWidth");
+			
+			if (CSConfig.getInstance().getTabSpace() > -1) {
+				bw.write(" tabSpace=\"");
+				bw.write(String.valueOf(CSConfig.getInstance().getTabSpace()));
+				bw.write("\"");
+			}
+			
+			bw.write(">");
+			bw.write(CSConfig.getInstance().getLineWidth());
+			bw.write("</lineWidth>");
+			bw.newLine();
+		}
+		
+		if (CSConfig.getInstance().isListNoneTestedFiles() || 
+				!CSConfig.getInstance().getNoneListedPath().isEmpty()) {
+			bw.write("\t\t\t<noneTestedList");
+			
+			if (!CSConfig.getInstance().getNoneListedPath().isEmpty()) {
+				bw.write(" path=\"");
+				bw.write(CSConfig.getInstance().getNoneListedPath());
+				bw.write("\"");
+			}
+			
+			bw.write(">");
+			bw.write(String.valueOf(
+					CSConfig.getInstance().isListNoneTestedFiles()));
+			bw.write("</noneTestedList>");
+			bw.newLine();
+		}
+		
+		bw.write("\t\t\t<path>");
+		bw.write(CSConfig.getInstance().getPathCheckSourceTests());
+		bw.write("</path>");
+		bw.newLine();
+		
+		for (int i = 0; i < CSConfig.getInstance().testCount(); i++) {
+			bw.write("\t\t\t<test>");
+			bw.write(CSConfig.getInstance().getTestName(i));
+			bw.write("</test>");
+			bw.newLine();
+		}
+		
+		bw.write("\t\t</checkSourceConfiguration>");
+		bw.newLine();
+	}
+
 	/**
 	 * Writes the list of test runner into the buffered writer
 	 *  
@@ -202,7 +280,7 @@ public class ConfigSaver {
 		writeClassPath(bw, runner.getClassPathList());
 
 		if (runner.testSuiteCount() > 0)
-			for (int i = 0; i < runner.classPathCount(); i++)
+			for (int i = 0; i < runner.testSuiteCount(); i++)
 				writeTestSuite(bw, runner.getTestSuite(i));
 		
 		bw.write("\t</testGroup>");

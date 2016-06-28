@@ -91,6 +91,32 @@ public final class Config {
 	private long _maxDuration;
 	
 	/**
+	 * Saves the width of a source code line.
+	 * 
+	 * @deprecated
+	 */
+	private int _lineWidth;
+	
+	/**
+	 * Saves the words for to do list
+	 */
+	private List<String> _listTodo;
+	
+	/**
+	 * Saves the path for the source files.
+	 * 
+	 * @deprecated
+	 */
+	private String _noneListedPath;
+	
+	/**
+	 * Saves whether for files to be searched, which were not tested.
+	 * 
+	 * @deprecated
+	 */
+	private boolean _nonListedFiles;
+	
+	/**
 	 * The singleton instance
 	 */
 	private static Config _config;
@@ -104,6 +130,8 @@ public final class Config {
 		_listJavascript = new ArrayList<String>();
 		_listStylesheet = new ArrayList<String>();
 		_pathSuitesResult = new String();
+		_lineWidth = -1;
+		_listTodo = new ArrayList<String>();
 		_classpath = new String();
 		clear();
 	}
@@ -538,6 +566,111 @@ public final class Config {
 				_pathSrc.isEmpty() && !_createHtml && (_maxDuration == 0) && 
 				_property.isEmpty() && _listClasspath.isEmpty() && 
 				_listJavascript.isEmpty() && _listStylesheet.isEmpty());
+	}
+	
+	/**
+	 * Returns the width of a source code line
+	 * 
+	 * @return Width of a source code line
+	 * 
+	 * @deprecated Use {@link org.testsuite.checksource.CSConfig#getLineWidth()}
+	 */
+	public int getLineWidth() {
+		return _lineWidth;
+	}
+	
+	/**
+	 * Sets the width of a source code line
+	 * 
+	 * @param width The width of a source code line
+	 * 
+	 * @deprecated Use {@link org.testsuite.checksource.CSConfig#setLineWidth(int)}
+	 */
+	public void setLineWidth(int width) {
+		_lineWidth = width;
+	}
+	
+	/**
+	 * Return the list of to do list words
+	 * 
+	 * @return List of to do list words
+	 */
+	public List<String> getToDoListWords() {
+		return _listTodo;
+	}
+	
+	/**
+	 * Returns the number of to do list words
+	 * 
+	 * @return Number of to do list words
+	 */
+	public int toDoWordsCount() {
+		return _listTodo.size();
+	}
+	
+	/**
+	 * Return the specified word of to do list
+	 * 
+	 * @param index The index of the to do list word
+	 * 
+	 * @return The specified word of to do list
+	 */
+	public String getToDoWord(int index) {
+		return _listTodo.get(index);
+	}
+	
+	/**
+	 * Added a word to the to do list
+	 * 
+	 * @param word The word that is to be added to the list.
+	 */
+	public void addToDoWord(String word) {
+		_listTodo.add(word);
+	}
+	
+	/**
+	 * Returns whether for files to be searched, which were not tested.
+	 * 
+	 * @return Target for files to be searched, which have not been tested?
+	 * 
+	 * @deprecated Use {@link org.testsuite.checksource.CSConfig#isListNoneTestedFiles()}
+	 */
+	public boolean isListNoneTestedFiles() {
+		return _nonListedFiles;
+	}
+	
+	/**
+	 * Sets whether for files to be searched, which were not tested.
+	 * 
+	 * @param listed Target for files to be searched, which have not been
+	 * tested?
+	 * 
+	 * @deprecated {@link org.testsuite.checksource.CSConfig#setListNoneTestedFiles(boolean)}
+	 */
+	public void setListNoneTestedFiles(boolean listed) {
+		_nonListedFiles = listed;
+	}
+	
+	/**
+	 * Returns the path, where to look for untested files.
+	 * 
+	 * @returns The path, where to look for untested files.
+	 * 
+	 * @deprecated Use {@link org.testsuite.checksource.CSConfig#getNoneListedPath()}
+	 */
+	public String getNoneListedPath() {
+		return _noneListedPath;
+	}
+	
+	/**
+	 * Sets the path, where to look for untested files.
+	 * 
+	 * @param path The path, where to look for untested files.
+	 * 
+	 * @deprecated Use {@link org.testsuite.checksource.CSConfig#setNoneListedPath(String)}
+	 */
+	public void setNoneListedPath(String path) {
+		_noneListedPath = path;
 	}
 	
 	/**

@@ -32,6 +32,39 @@
 			<xsd:element name="classpath" minOccurs="0" type="classpathType" />
 			<xsd:element name="stylesheet" minOccurs="0" type="fileType" />
 			<xsd:element name="javascript" minOccurs="0" type="fileType" />
+			<xsd:element name="todo">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="name" type="xsd:string" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="checkSourceConfig" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="noneTestedList" minOccurs="0">
+							<xsd:complexType>
+								<xsd:simpleContent>
+									<xsd:extension base="xsd:boolean">
+										<xsd:attribute name="path" type="xsd:string" />
+									</xsd:extension>
+								</xsd:simpleContent>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="lineWidth" minOccurs="1">
+							<xsd:complexType>
+								<xsd:simpleContent>
+									<xsd:extension base="xsd:int">
+										<xsd:attribute name="tabSpace" type="xsd:int" />
+									</xsd:extension>
+								</xsd:simpleContent>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="path" type="xsd:string" minOccurs="1" />
+						<xsd:element name="test" type="xsd:string" minOccurs="1" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
 		
@@ -84,7 +117,7 @@
 						<xsd:extension base="xsd:string">
 							<xsd:attribute name="executed" type="xsd:boolean"/>
 							<xsd:attribute name="jvm" type="xsd:boolean"/>
-							<xsd:attribute name="checkSource" type="xsd:String"/>
+							<xsd:attribute name="checkSource" type="xsd:string"/>
 						</xsd:extension>
 					</xsd:simpleContent>
 				</xsd:complexType>

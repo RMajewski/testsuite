@@ -21,6 +21,11 @@
 		<javascript>
 			<file>resources/html/out.js</file>
 		</javascript>
+		<todo>
+			<name>OPT</name>
+			<name>FIX</name>
+		</todo>
+		<noneTestedList path="src/org">true</noneTestedList>
 	</config>
 	
 	<testGroup>
@@ -73,8 +78,8 @@
 			<test checkSource="org.testsuite.data.TestSelectEvent">TestTestSelectEvent</test>
 			<test checkSource="org.testsuite.data.TestEventListener">TestTestEventListener</test>
 			<test checkSource="org.testsuite.data.Data">TestData</test>
-			<test checkSource="org.testsuite.data.Fit">TestFitData</test>
-			<test checkSource="org.testsuite.data.Junit">TestJunitData</test>
+			<test checkSource="org.testsuite.data.Fit">TestFit</test>
+			<test checkSource="org.testsuite.data.Junit">TestJunit</test>
 			<test checkSource="org.testsuite.data.Library">TestLibrary</test>
 			<test checkSource="org.testsuite.data.Test">TestTest</test>
 			<test checkSource="org.testsuite.data.TestSuite">TestTestSuite</test>
@@ -122,7 +127,7 @@
 		<testSuite>
 			<name>Tests the annotations</name>
 			<package>tests.testsuite.checksource.annotation</package>
-			<test checkSource="org.testsuite.checksource.CheckSource">TestCheckSource</test>
+			<test checkSource="org.testsuite.checksource.annotation.CheckSource">TestCheckSource</test>
 		</testSuite>
 		<testSuite>
 			<name>Tests for check source tests</name>
