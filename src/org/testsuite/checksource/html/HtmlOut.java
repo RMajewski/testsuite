@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.testsuite.checksource.CSMethod;
+import org.testsuite.checksource.ListMethod;
 import org.testsuite.checksource.SourceLine;
 import org.testsuite.helper.HelperCalendar;
 import org.testsuite.helper.HelperHtml;
@@ -41,6 +42,15 @@ import org.testsuite.helper.HelperUsedColor;
  * @version 0.1
  */
 public class HtmlOut extends Html {
+	/**
+	 * Saves the color for a not tested method.
+	 */
+	private String _color;
+	
+	/**
+	 * Saves the end of a not tested method.
+	 */
+	private int _endMethod;
 
 	/**
 	 * Initialize the class
@@ -49,12 +59,14 @@ public class HtmlOut extends Html {
 	 */
 	public HtmlOut(String result) {
 		super(result);
+		_color = null;
+		_endMethod = -1;
 	}
 
 	/**
 	 * Create the HTML output
 	 */
-	public void createHtml(List<SourceLine> source, List<CSMethod> methods) {
+	public void createHtml(List<SourceLine> source, ListMethod methods) {
 		BufferedWriter bw = null;
 		
 		try {
@@ -73,22 +85,22 @@ public class HtmlOut extends Html {
 			bw.write(HelperHtml.head(_bundle.getString("htmlHead_head")
 					.replace("?", sourceClass) + " (" + date  +")", 
 					_bundle.getString("htmlHead_description").replace("?", 
-							sourceClass)));
+							sourceClass), HtmlMenu.OVERVIEW));
 			
-			bw.write("\t\t<div class=\"checksource\">");
+			bw.write("\t\t<div class=\"checkSource\">");
 			bw.write(System.lineSeparator());
 			
 			// List of method calls
 			if (methods.size() > 0)
 				bw.write(HelperHtml.createListOfMethods(
-						_bundle.getString("methods_calls"), methods, true, 
-						false, source));
+						_bundle.getString("methods_calls"), methods.list(),
+						true, false, source));
 			
 			// List of method without calls
 			if (methods.size() > 0)
 				bw.write(HelperHtml.createListOfMethods(
-						_bundle.getString("methods_without_calls"), methods, 
-						false, false, source));
+						_bundle.getString("methods_without_calls"),
+						methods.list(), false, false, source));
 			
 			// Source code
 			if (source.size() > 0)
@@ -130,7 +142,7 @@ public class HtmlOut extends Html {
 			boolean calls) {
 		StringBuilder ret = new StringBuilder();
 		
-		ret.append("\t\t\t<div class=\"checksourceList\">");
+		ret.append("\t\t\t<div class=\"checkSourceList\">");
 		ret.append(System.lineSeparator());
 		
 		ret.append("\t\t\t\t<p>");
@@ -177,10 +189,10 @@ public class HtmlOut extends Html {
 	 * 
 	 * @return The HTML output for the source code.
 	 */
-	private String sourceCode(List<SourceLine> lines, List<CSMethod> methods) {
+	private String sourceCode(List<SourceLine> lines, ListMethod methods) {
 		StringBuilder ret = new StringBuilder();
 		
-		ret.append("\t\t\t<div class=\"checksourceSource\">");
+		ret.append("\t\t\t<div class=\"checkSourceSource\">");
 		ret.append(System.lineSeparator());
 		
 		ret.append("\t\t\t\t<table>");
@@ -191,7 +203,7 @@ public class HtmlOut extends Html {
 
 		ret.append("\t\t\t\t\t\t<th style=\"width:100px;\"></th>");
 		ret.append(System.lineSeparator());
-		ret.append("\t\t\t\t\t\t<th style=\"width:65%;\"></th>");
+		ret.append("\t\t\t\t\t\t<th style=\"width:61%; min-width:771px;\"></th>");
 		ret.append(System.lineSeparator());
 		ret.append("\t\t\t\t\t\t<th style=\"width:*;\"></th>");
 		ret.append(System.lineSeparator());
@@ -204,7 +216,14 @@ public class HtmlOut extends Html {
 			ret.append(System.lineSeparator());
 			
 			String background = new String();
-			if (lines.get(i).isLineTested()) {
+			if ((_endMethod > -1) && (i <= _endMethod)) {
+				background = _color;
+				
+				if ((i + 1) == _endMethod) {
+					_color = new String();
+					_endMethod = -1;
+				}
+			} else if (lines.get(i).isLineTested()) {
 				background = " style=\"background: " + 
 						HelperHtmlCodeJava.getInstance()
 						.formatColor(HelperUsedColor.PASS) + ";\" ";
@@ -213,6 +232,12 @@ public class HtmlOut extends Html {
 						HelperHtmlCodeJava.getInstance()
 						.formatColor(lines.get(i).getMessage(0).getColor()) + 
 						";\" ";
+				if (methods.determineMethod(lines.get(i).getLineNumber()) != 
+						null) {
+					_color = background;
+					_endMethod = methods.determineMethod(
+							lines.get(i).getLineNumber()).getLastLineNumber();
+				}
 			} else if (!lines.get(i).isLineTested()) { 
 				background = " style=\"background: " +
 						HelperHtmlCodeJava.getInstance()
@@ -241,15 +266,11 @@ public class HtmlOut extends Html {
 			String ankerEnd = new String();
 			boolean deprecated = false;
 			if (lines.get(i).isBeginMethod()) {
-				String ankerName = new String();
-				for (int j = 0; j < methods.size(); j++) {
-					if (lines.get(i).getLineNumber() == methods.get(j).getLine()) {
-						ankerName = methods.get(j).getClassName() + "." +
-								methods.get(j).getName();
-						deprecated = methods.get(j).isDeprecated();
-						break;
-					}
-				}
+				CSMethod method = methods.determineMethod(
+						lines.get(i).getLineNumber());
+				String ankerName = method.getClassName() + "." +
+						method.getName();
+				deprecated = method.isDeprecated();
 				ankerBegin = "<a name=\"" + ankerName + "\">";
 				ankerEnd = "</a>";
 			}

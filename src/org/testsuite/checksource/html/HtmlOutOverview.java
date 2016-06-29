@@ -404,7 +404,7 @@ public class HtmlOutOverview extends Html {
 		StringBuilder ret = new StringBuilder();
 		
 		if (_noneExists.size() > 0) {
-			ret.append("\t\t\t<div class=\"checksourceList\">");
+			ret.append("\t\t\t<div class=\"checkSourceList\">");
 			ret.append(System.lineSeparator());
 			
 			ret.append("\t\t\t\t<p>");
@@ -440,7 +440,7 @@ public class HtmlOutOverview extends Html {
 	private String createHtmlLink() {
 		StringBuilder ret = new StringBuilder();
 		
-		ret.append("\t\t\t<div class=\"checksourceLinks\">");
+		ret.append("\t\t\t<div class=\"checkSourceLinks\">");
 		ret.append(System.lineSeparator());
 		
 		ret.append("\t\t\t\t<table>");
@@ -541,7 +541,7 @@ public class HtmlOutOverview extends Html {
 				if (!background.equals(HelperUsedColor.PASS)) {
 					ret.append("<a href=\"");
 					ret.append(linkSrc);
-					ret.append("\">");
+					ret.append("\" class=\"message\">");
 					ret.append(_bundle.getString("overview_table"));
 					ret.append("</a>");
 				} else {

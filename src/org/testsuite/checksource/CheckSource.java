@@ -194,7 +194,8 @@ public class CheckSource {
 	public void createHtmlOut() {
 		if (isCreateHtml()) {
 			HtmlOut html = new HtmlOut(_nameResult);
-			html.createHtml(_source.getSourceList(), _source.getMethodList());
+			html.createHtml(_source.getSourceList(), ListMethod.convertFromList(
+					_source.getMethodList()));
 		}
 	}
 	

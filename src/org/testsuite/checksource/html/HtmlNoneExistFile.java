@@ -113,7 +113,7 @@ public class HtmlNoneExistFile extends Html {
 		StringBuilder ret = new StringBuilder();
 		
 		if (_noneExists.size() > 0) {
-			ret.append("\t\t\t<div class=\"checksourceList\">");
+			ret.append("\t\t\t<div class=\"checkSourceList\">");
 			ret.append(System.lineSeparator());
 			
 			ret.append("\t\t\t\t<p>");

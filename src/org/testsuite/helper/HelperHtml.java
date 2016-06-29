@@ -252,7 +252,7 @@ public class HelperHtml {
 			List<SourceLine> lines) {
 		StringBuilder ret = new StringBuilder();
 		
-		ret.append("\t\t\t<div class=\"checksourceList\">");
+		ret.append("\t\t\t<div class=\"checkSourceList\">");
 		ret.append(System.lineSeparator());
 		
 		ret.append("\t\t\t\t<p>");

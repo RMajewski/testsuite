@@ -106,6 +106,7 @@ public class Parser {
 	 */
 	private static int searchKeywords(String word, CSMethod method,
 			List<SourceLine> lines, int number) {
+		
 		int end = method.getLastLineNumber();
 		int endLoop = -1;
 		
@@ -193,8 +194,8 @@ public class Parser {
 				
 			case "if":
 				lines.get(number).setLineTested(true);
-				if (endLoop > -1)
-					_endLoop = endLoop;
+//				if (endLoop > -1)
+//					_endLoop = endLoop;
 				return number + 1;
 				
 			case "return":

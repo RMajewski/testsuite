@@ -131,19 +131,20 @@ public class ReadSource implements Read {
 			}
 
 			
-				// TODO Calls
-			
-			if (line.indexOf("{") > -1)
-				_blocks++;
-			else if (line.indexOf("}") > -1) {
-				_blocks--;
-				if ((_blocks == 1) && !list.isEmpty()) {
-					CSMethod method = list.get(list.size() -1);
-					method.setLastLineNumber(lineNumber);
-				}
-			}
+			// TODO Calls
 			
 			startIndex = endIndex + 1;
+		}
+		
+		if (line.endsWith("{"))
+			_blocks++;
+		
+		if (line.startsWith("}")) {
+			_blocks--;
+			if ((_blocks == 1) && !list.isEmpty()) {
+				CSMethod method = list.get(list.size() -1);
+				method.setLastLineNumber(lineNumber);
+			}
 		}
 	}
 

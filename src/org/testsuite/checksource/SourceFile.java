@@ -308,7 +308,7 @@ public class SourceFile {
 										"sourceMethodNotTested") ,color));
 			}
 		}
-		
+
 		// Parse of source
 		Parser.parse(_methods, _source);
 	}
