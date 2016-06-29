@@ -6,7 +6,7 @@
 	<config>
 		<resultPath>result</resultPath>
 		<srcPath>src</srcPath>
-		<libPath>..</libPath>
+		<libPath>lib</libPath>
 		<maxDuration>30000</maxDuration>
 		<htmlOut>true</htmlOut>
 		<systemProperty>
