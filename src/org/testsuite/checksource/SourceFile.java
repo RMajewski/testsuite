@@ -306,6 +306,7 @@ public class SourceFile {
 						new MessageColor(ResourceBundle.getBundle(
 								SourceTest.BUNDLE_FILE).getString(
 										"sourceMethodNotTested") ,color));
+				System.out.println(_source.get(_methods.get(i).getLine() - 1).getClassName());
 			}
 		}
 	}

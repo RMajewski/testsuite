@@ -73,7 +73,7 @@ public class HtmlOut extends Html {
 			bw.write(HelperHtml.head(_bundle.getString("htmlHead_head")
 					.replace("?", sourceClass) + " (" + date  +")", 
 					_bundle.getString("htmlHead_description").replace("?", 
-							sourceClass)));
+							sourceClass), HtmlMenu.OVERVIEW));
 			
 			bw.write("\t\t<div class=\"checksource\">");
 			bw.write(System.lineSeparator());
