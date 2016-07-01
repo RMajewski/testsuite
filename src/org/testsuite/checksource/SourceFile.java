@@ -307,6 +307,7 @@ public class SourceFile {
 								SourceTest.BUNDLE_FILE).getString(
 										"sourceMethodNotTested") ,color));
 				System.out.println(_source.get(_methods.get(i).getLine() - 1).getClassName());
+				System.out.println(_methods.get(i).getClassName());
 			}
 		}
 	}

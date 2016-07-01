@@ -89,6 +89,11 @@ public class CSMethod {
 	 * Saves the name of the HTML output file
 	 */
 	private String _htmlOutput;
+	
+	/**
+	 * Saves the breakpoint for the method.
+	 */
+	private int _breakpoint;
 
 	/**
 	 * Initialize the data
@@ -353,5 +358,23 @@ public class CSMethod {
 	 */
 	public void setIgnore(boolean ignore) {
 		_ignore = ignore;
+	}
+	
+	/**
+	 * Returns the breakpoint for the method.
+	 * 
+	 * @return The breakpoint for the method.
+	 */
+	public int getBreakpoint() {
+		return _breakpoint;
+	}
+	
+	/**
+	 * Sets the breakpoint for the method.
+	 * 
+	 * @param breakpoint The new breakpoint for the method.
+	 */
+	public void setBreakpoint(int breakpoint) {
+		_breakpoint = breakpoint;
 	}
 }

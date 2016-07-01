@@ -95,7 +95,7 @@ public class ReadSource implements Read {
 			
 			if (line.matches("^[\\s]*(private|protected|public)[\\w\\s<>,"+ 
 					"\\[\\]]*\\([\\w\\ſ, <>\\[\\]]*\\)[\\p{Graph}\\s]*\\{$"))
-				readMethod(lineNumber, read, list);
+				readMethod(lineNumber, read, list, lineNumber + 1);
 			else if (line.matches("^[\\s]*(private|protected|public)" + 
 					"[\\w\\s<>,]*\\([\\w\\ſ, <>\\[\\]]*\\)[\\p{Graph}\\s]*$") ||
 					line.matches("^[\\s]*(private|protected|public)" + 
@@ -107,7 +107,8 @@ public class ReadSource implements Read {
 					( line.matches("^[\\w\\ſ, <>\\[\\]]*\\)[\\s\\w]*\\{$")) || 
 					line.matches("^\\s*[\\w\\s<>,\\[\\]]*\\{$") )) {
 				_methodStarted += line;
-				readMethod(lineNumber - 1, _methodStarted.split(" "), list);
+				readMethod(lineNumber - 1, _methodStarted.split(" "), list,
+						lineNumber +1);
 				_methodStarted = null;
 			} else if (line.matches("^[\\s]*(private|protected|public)" + 
 					"[\\s\\w]*(class|interface)[\\s\\w]*\\{?$")) {
@@ -146,13 +147,28 @@ public class ReadSource implements Read {
 			startIndex = endIndex + 1;
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @param lineNumber
+	 * @param read
+	 * @param list
+	 * 
+	 * @deprecated
+	 */
+	@SuppressWarnings("unused")
 	private void readMethod(int lineNumber, String[] read, List<CSMethod> list) {
+		readMethod(lineNumber, read, list, lineNumber + 1);
+	}
+	
+	private void readMethod(int lineNumber, String[] read, List<CSMethod> list,
+			int breakpoint) {
 		CSMethod method = new CSMethod();
 		if ((_className != null) && !_className.isEmpty())
 			method.setClassName(_className);
 		method.setModifier(read[0]);
 		method.setLine(lineNumber);
+		method.setBreakpoint(breakpoint);
 
 		int startAttribut = -1;
 		String artType = new String();
