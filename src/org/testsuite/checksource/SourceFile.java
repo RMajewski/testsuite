@@ -24,7 +24,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -201,90 +207,260 @@ public class SourceFile {
 			return false;
 		}
 		
-		BufferedReader bf = null;
-		try {
-			if (!test)
-				bf = new BufferedReader(new FileReader(_fileName));
-			else
-				bf = new BufferedReader(new FileReader(testName));
-			
-			ReadSource readSource = new ReadSource();
-			
-			String line;
-			int count = 0;
-			boolean multicomment = false;
-			boolean javadoc = false;
-			while ((line = bf.readLine()) != null) {
-				count++;
+		// Read source code
+		if (!test) {
+			BufferedReader bf = null;
+			try {
+//				if (!test)
+					bf = new BufferedReader(new FileReader(_fileName));
+				/*else
+					bf = new BufferedReader(new FileReader(testName));*/
 				
-				// create Source instance
-				SourceLine source = new SourceLine();
-				source.setLine(line);
-				source.setLineNumber(count);
+//				ReadSource readSource = new ReadSource();
 				
-				// Multiline comment?
-				if ((line.indexOf("/**") > -1) && 
-						(line.indexOf("*/") == -1))
-					javadoc = true;
-				else if ((line.indexOf("/*") > -1) && (line.indexOf("*/") == -1))
-					multicomment = true;
-				else if (multicomment && (line.indexOf("*/") > -1)) {
-					multicomment = false;
-					source.setMultiLineComment(true);
-				} else if (javadoc && (line.indexOf("*/") > -1)) {
-					javadoc = false;
-					source.setJavadoc(true);
+				String line;
+				int count = 0;
+				boolean multicomment = false;
+				boolean javadoc = false;
+				while ((line = bf.readLine()) != null) {
+					count++;
+					
+					// create Source instance
+					SourceLine source = new SourceLine();
+					source.setLine(line);
+					source.setLineNumber(count);
+					
+					// Multiline comment?
+					if ((line.indexOf("/**") > -1) && 
+							(line.indexOf("*/") == -1))
+						javadoc = true;
+					else if ((line.indexOf("/*") > -1) && (line.indexOf("*/") == -1))
+						multicomment = true;
+					else if (multicomment && (line.indexOf("*/") > -1)) {
+						multicomment = false;
+						source.setMultiLineComment(true);
+					} else if (javadoc && (line.indexOf("*/") > -1)) {
+						javadoc = false;
+						source.setJavadoc(true);
+					}
+					
+					if (multicomment)
+						source.setMultiLineComment(true);
+					
+					if (javadoc)
+						source.setJavadoc(true);
+					
+					// add Source to list
+//					if (!test)
+						_source.add(source);
+					
+					// read source code
+					/*if (!multicomment && !javadoc) {
+						line = line.trim();
+						if (!test) {
+							int methods = _methods.size();
+							readSource.read(count, line, _methods);
+							if (methods < _methods.size())
+								_readTest.addClassName(
+										_methods.get(_methods.size() -1)
+										.getClassName());
+						} else
+							_readTest.read(count, line, _methods);
+					} else if (line.matches("^[*\\s]*(@deprecated|@Deprecated)" +
+							"[\\p{Graph}\\s]*$")) {
+						readSource.setDeprecated(true);
+					} else if (readSource.isDeprecated() && (line.matches(
+							"^[*\\s]*(@deprecated|@Deprecated)" +
+							"[\\p{Graph}\\s]*$")))
+						readSource.setDeprecated(true);*/
 				}
 				
-				if (multicomment)
-					source.setMultiLineComment(true);
-				
-				if (javadoc)
-					source.setJavadoc(true);
-				
-				// add Source to list
-				if (!test)
-					_source.add(source);
-				
-				// read source code
-				if (!multicomment && !javadoc) {
-					line = line.trim();
-					if (!test) {
-						int methods = _methods.size();
-						readSource.read(count, line, _methods);
-						if (methods < _methods.size())
-							_readTest.addClassName(
-									_methods.get(_methods.size() -1)
-									.getClassName());
-					} else
-						_readTest.read(count, line, _methods);
-				} else if (line.matches("^[*\\s]*(@deprecated|@Deprecated)" +
-						"[\\p{Graph}\\s]*$")) {
-					readSource.setDeprecated(true);
-				} else if (readSource.isDeprecated() && (line.matches(
-						"^[*\\s]*(@deprecated|@Deprecated)" +
-						"[\\p{Graph}\\s]*$")))
-					readSource.setDeprecated(true);
-			}
-			
-			for (int i = 0; i < _source.size(); i++) {
-				if (!test && (readSource.getClassName() != null) && 
-						!readSource.getClassName().isEmpty())
-					_source.get(i).setClassName(readSource.getClassName());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		finally {
-			try {
-				if (bf != null)
-					bf.close();
-			} catch (IOException e) {
+//				for (int i = 0; i < _source.size(); i++) {
+//					if (!test && (readSource.getClassName() != null) && 
+//							!readSource.getClassName().isEmpty())
+//						_source.get(i).setClassName(readSource.getClassName());
+//				}
+			} catch (Exception e) {
 				e.printStackTrace();
+			}
+			finally {
+				try {
+					if (bf != null)
+						bf.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		
+		// Methods
+		Class<?> c;
+		String file;
+		if (test)
+			file = testName;
+		else
+			file = _fileName;
+		
+		file = file.replaceAll(File.separator, ".");
+		String className = file.substring(file.indexOf(".") + 1,
+				file.indexOf(".java"));
+		try {
+			c = getClass().getClassLoader().loadClass(className);
+			
+			// Constructors
+			readMethodArray(c.getConstructors(), className);
+			readMethodArray(c.getDeclaredConstructors(), className);
+			
+			// Methods
+			readMethodArray(c.getMethods(), className);
+			readMethodArray(c.getDeclaredMethods(), className);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		// Returns
 		return true;
+	}
+	
+	private void readMethodArray(Member[] methods, String className) {
+		for (int i = 0; i < methods.length; i++) {
+			if (className.startsWith("test") ||
+					!methods[i].getDeclaringClass().getName().equals(className))
+				continue;
+			
+			CSMethod method = new CSMethod();
+			method.setName(methods[i].getName());
+			method.setClassName(methods[i].getDeclaringClass().getName());
+			method.setModifier(Modifier.toString(methods[i].getModifiers()));
+			
+			if (methods[i] instanceof Method) {
+				method.setType(((Method)methods[i]).getReturnType().getName());
+				method.addParameterList(readParameters(
+						((Method)methods[i]).getParameterTypes()));
+				if (isDeprecated(((Method)methods[i]).getAnnotations()))
+					method.setDeprecated(true);
+			} else if (methods[i] instanceof Constructor) {
+				method.setName(methods[i].getName().substring(
+						methods[i].getName().lastIndexOf(".") + 1));
+				method.addParameterList(readParameters(
+						((Constructor<?>)methods[i]).getParameterTypes()));
+				if (isDeprecated(((Constructor<?>)methods[i]).getAnnotations()))
+					method.setDeprecated(true);
+			}
+			
+			method.setLine(detectFirstLineNumber(method));
+			
+			_methods.add(method);
+		}
+	}
+	
+	private int detectFirstLineNumber(CSMethod method) {
+		for (int i = 0; i < _source.size(); i++) {
+			if (method.getClassName().startsWith("test"))
+				continue;
+
+			StringBuilder matches = new StringBuilder();
+			matches.append("^\\s*");
+			matches.append(method.getModifier());
+			matches.append("\\s*");
+			
+			if (!method.getType().isEmpty()) {
+				matches.append("(");
+				matches.append(createType(method.getType()));
+				matches.append(")\\s*");
+			}
+			
+			matches.append(method.getName());
+			matches.append("\\s*\\(");
+			
+			for (int j = 0; j < method.parametersCount(); j++) {
+				if (j > 0)
+					matches.append(",\\s*");
+				matches.append("(");
+				matches.append(createType(method.getParameter(j).getType()));
+				matches.append(")\\s*[\\w]*");
+			}
+			
+			matches.append("\\)\\s*\\{$");
+			
+//			System.out.println(matches.toString());
+			
+			String line = _source.get(i).getLine();
+			
+			if (((line.indexOf("public") > -1) || 
+				 (line.indexOf("private") > -1) ||
+				 (line.indexOf("protected") > -1)) && 
+				(line.indexOf("{") == -1)) {
+				for (int j = i + 1; j < _source.size(); j++) {
+					line += " " + _source.get(j).getLine().trim();
+//					System.out.println(line);
+					if ((line.indexOf("{") > -1) || (line.indexOf(";") > -1)) {
+//						System.out.println();
+//						System.out.println(matches.toString());
+//						System.out.println(line);
+						break;
+					}
+				}
+			}
+			
+			if (_source.get(i).getLine().matches(matches.toString())) {
+				return _source.get(i).getLineNumber();
+			}
+		}
+			
+		return -1;
+	}
+	
+	private String createType(String type) {
+		String t1 = type;
+		if (t1.startsWith("[")) {
+			if (t1.indexOf("[B") > -1)
+				t1 = "byte";
+			else if (t1.indexOf("[C") > -1)
+				t1 = "char";
+			else if (t1.indexOf("[D") > -1)
+				t1 = "double";
+			else if (t1.indexOf("[F") > -1)
+				t1 = "float";
+			else if (t1.indexOf("[I") > -1)
+				t1 = "int";
+			else if (t1.indexOf("[J") > -1)
+				t1 = "long";
+			else if (t1.indexOf("[S") > -1)
+				t1 = "short";
+			else if (t1.indexOf("[Z") > -1)
+				t1 = "boolean";
+			else if (t1.indexOf("[L") > -1)
+				t1 = t1.substring(2, t1.indexOf(";"));
+			
+			for (int i = 0; i < (type.lastIndexOf("[") + 1); i++)
+				t1 += "\\[\\]";
+		} else if (t1.indexOf("List") > -1) {
+			t1 += "[\\w<>]*";
+		}
+		
+		String t2 = new String();
+		if (t1.lastIndexOf(".") > -1)
+			t2 = "|" + t1.substring(t1.lastIndexOf(".") + 1);
+		
+		return t1 + t2;
+	}
+
+	private List<CSParameter> readParameters(Class<?>[] parameters) {
+		List<CSParameter> ret = new ArrayList<CSParameter>();
+		
+		for (int i = 0; i < parameters.length; i++)
+			ret.add(new CSParameter(parameters[i].getName()));
+		
+		return ret;
+	}
+	
+	private boolean isDeprecated(Annotation[] annotations) {
+		for (int i = 0; i < annotations.length; i++)
+			if (annotations[i].equals("@deprecated"))
+				return true;
+		
+		return false;
 	}
 	
 	/**
@@ -292,23 +468,27 @@ public class SourceFile {
 	 */
 	public void prepaireSource() {
 		for (int i = 0; i < _methods.size(); i++) {
+			if (_methods.get(i).getLine() == -1)
+				continue;
+			
 			_source.get(_methods.get(i).getLine() - 1).setBeginMethod(true);
-			if (_methods.get(i).callsCount() >  0)
-				_source.get(_methods.get(i).getLine() - 1).setLineTested(true);
-			else  if (!_methods.get(i).isDeprecated() && 
-					!_methods.get(i).isIgnore()) {
-				Color color;
-				if (_methods.get(i).getModifier().equals("public"))
-					color = HelperUsedColor.ERROR;
-				else
-					color = HelperUsedColor.WARNING;
-				_source.get(_methods.get(i).getLine() -1).addMessage(
-						new MessageColor(ResourceBundle.getBundle(
-								SourceTest.BUNDLE_FILE).getString(
-										"sourceMethodNotTested") ,color));
-				System.out.println(_source.get(_methods.get(i).getLine() - 1).getClassName());
-				System.out.println(_methods.get(i).getClassName());
-			}
+			_source.get(_methods.get(i).getLine() - 1).setLineTested(true);
+//			if (_methods.get(i).callsCount() >  0)
+//				_source.get(_methods.get(i).getLine() - 1).setLineTested(true);
+//			if (!_methods.get(i).isDeprecated() && 
+//					!_methods.get(i).isIgnore()) {
+//				Color color;
+//				if (_methods.get(i).getModifier().equals("public"))
+//					color = HelperUsedColor.ERROR;
+//				else
+//					color = HelperUsedColor.WARNING;
+//				_source.get(_methods.get(i).getLine() -1).addMessage(
+//						new MessageColor(ResourceBundle.getBundle(
+//								SourceTest.BUNDLE_FILE).getString(
+//										"sourceMethodNotTested") ,color));
+//				System.out.println(_source.get(_methods.get(i).getLine() - 1).getClassName());
+//				System.out.println(_methods.get(i).getClassName());
+//			}
 		}
 	}
 }

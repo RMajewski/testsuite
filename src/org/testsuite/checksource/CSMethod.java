@@ -37,6 +37,8 @@ public class CSMethod {
 	
 	/**
 	 * Saves the last line of this method.
+	 * 
+	 * @deprecated Is no longer needed.
 	 */
 	private int _lastLine;
 	
@@ -62,6 +64,8 @@ public class CSMethod {
 	
 	/**
 	 * Saves the the list of calls
+	 * 
+	 * @deprecated Is no longer needed.
 	 */
 	private List<Integer> _calls;
 	
@@ -130,6 +134,11 @@ public class CSMethod {
 		_parameter.add(parameter);
 	}
 	
+	public void addParameterList(List<CSParameter> list) {
+		for (int i = 0; i < list.size(); i++)
+			_parameter.add(list.get(i));
+	}
+	
 	/**
 	 * Returns the specified parameter from the list of parameters.
 	 * 
@@ -145,6 +154,8 @@ public class CSMethod {
 	 * Return the number of last line.
 	 * 
 	 * @return The number of last line.
+	 * 
+	 * @deprecated Is no longer needed.
 	 */
 	public int getLastLineNumber() {
 		return _lastLine;
@@ -154,6 +165,8 @@ public class CSMethod {
 	 * Sets the number of last line.
 	 * 
 	 * @param last The new number of last line
+	 * 
+	 * @deprecated Is no longer needed.
 	 */
 	public void setLastLineNumber(int last) {
 		_lastLine = last;
@@ -241,6 +254,8 @@ public class CSMethod {
 	 * Returns the number of calls
 	 * 
 	 * @return The Number of calls
+	 * 
+	 * @deprecated Is no longer needed.
 	 */
 	public int callsCount() {
 		return _calls.size();
@@ -250,6 +265,8 @@ public class CSMethod {
 	 * Added a call to the list of calls.
 	 * 
 	 * @param call The new call
+	 * 
+	 * @deprecated Is no longer needed.
 	 */
 	public void addCall(int call) {
 		_calls.add(call);
@@ -261,6 +278,8 @@ public class CSMethod {
 	 * @param index The index of the call.
 	 * 
 	 * @return The specified call
+	 * 
+	 * @deprecated Is no longer needed.
 	 */
 	public int getCall(int index) {
 		return _calls.get(index);
