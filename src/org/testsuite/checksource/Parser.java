@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /* 
@@ -41,6 +42,12 @@ public class Parser {
 	private static final int RUN_JDB = 2;
 	
 	private static final int RUN_RUN = 3; 
+	
+	private static final int RUN_NEXT = 4;
+	
+	private static final int RUN_CONT = 5;
+	
+	private static final int RUN_CLEAR_BREAKPOINTS = 6;
 	
 	/**
 	 * Saves the BufferedWriter
@@ -83,6 +90,16 @@ public class Parser {
 	private List<String> _input;
 	
 	/**
+	 * Saves the number of breakpoint
+	 */
+	private int _breakpointNumber;
+	
+	/**
+	 * Saves, which is to be executed. 
+	 */
+	private boolean _run;
+	
+	/**
 	 * Initialize the parser
 	 */
 	public Parser(String testFile, String sourceFile, List<SourceLine> lines) {
@@ -93,6 +110,8 @@ public class Parser {
 		_source = lines;
 		_className = _sourceFile.replaceAll(File.separator, ".").substring(4, 
 				_sourceFile.replaceAll(File.separator, ".").indexOf(".java"));
+		_breakpointNumber = -1;
+		_run = false;
 	}
 	
 	/**
@@ -108,10 +127,12 @@ public class Parser {
 		if (!new File(_testFile).exists())
 			return;
 
-		System.out.println(methods.size());
-		for (int method = 0; method < methods.size(); method++)
-			_breakpoints.add(_className + ":" + String.valueOf(
-							methods.get(method).getBreakpoint()));
+		for (int method = 0; method < methods.size(); method++) {
+			int pb = methods.get(method).getBreakpoint();
+			if (_source.get(pb - 1).getLine().matches("^\\s*$"))
+				pb++;
+			_breakpoints.add(_className + ":" + String.valueOf(pb));
+		}
 		
 		try {
 			Process p = Runtime.getRuntime().exec("jdb -classpath bin:" +
@@ -135,6 +156,13 @@ public class Parser {
 		
 	}
 	
+	/**
+	 * 
+	 * @return
+	 * @throws IOException
+	 * 
+	 * @deprecated
+	 */
 	private String read() throws IOException {
 		char[] buffer = new char[1024];
 		String ret = new String();
@@ -154,12 +182,54 @@ public class Parser {
 		return ret;
 	}
 	
+	private String[] readArray() throws IOException {
+		List<String> ret = new ArrayList<String>();
+		char[] buffer = new char[1];
+		String read = new String();
+		boolean loop = true;
+		while (loop) {
+			while(_reader.ready()) {
+				if (_reader.read(buffer) == 1) {
+					read += String.valueOf(buffer);
+					if (read.endsWith(System.lineSeparator())) {
+						ret.add(read.substring(0, read.indexOf(
+								System.lineSeparator())));
+						read = new String();
+					}
+					
+					if (read.indexOf("The application exited") > -1) {
+						loop = false;
+					} else if (read.indexOf("Nothing suspended") > -1) {
+						loop = false;
+					}
+				}
+			}
+			
+			if (read.isEmpty() && !_reader.ready())
+				loop = false;
+			else if (read.startsWith("> ") && !_run && !_reader.ready()) {
+				ret.add(read);
+				loop = false;
+			} else if ((read.indexOf("[") > -1) && read.endsWith("] ") && 
+					_run && !_reader.ready()) {
+				ret.add(read);
+				loop = false;
+			}
+		}
+		
+		System.out.println(Arrays.toString(ret.toArray()));
+		
+		return ret.toArray(new String[ret.size()]);
+	}
+	
 	private void stopAtList() throws IOException {
-		for (int bp = 0; bp < _breakpoints.size(); bp++) {
+		if ((_breakpointNumber > -1) && (_breakpoints.size() > 0)) {
 			_writer.write("stop at ");
-			_writer.write(_breakpoints.get(bp));
+			_writer.write(_breakpoints.get(_breakpointNumber));
 			_writer.newLine();
 			_writer.flush();
+			System.err.println("stop at " + _breakpoints.get(_breakpointNumber));
+			_breakpointNumber++;
 		}
 	}
 	
@@ -170,20 +240,24 @@ public class Parser {
 								".java")));
 		_writer.newLine();
 		_writer.flush();
+		System.err.println("run org.junit.runner.JUnitCore ");
 	}
 	
 	private void next() throws IOException {
 		_writer.write("next");
 		_writer.newLine();
 		_writer.flush();
+		System.err.println("next");
 	}
 	
 	private void clearBreakpoints() throws IOException {
-		for (int i = 0; i < _breakpoints.size(); i++) {
+		if ((_breakpointNumber > -1) && (_breakpoints.size() > 0)) {
 			_writer.write("clear ");
-			_writer.write(_breakpoints.get(i));
+			_writer.write(_breakpoints.get(_breakpointNumber));
 			_writer.newLine();
 			_writer.flush();
+			System.err.println("clear " + _breakpoints.get(_breakpointNumber));
+			_breakpointNumber++;
 		}
 	}
 	
@@ -191,6 +265,7 @@ public class Parser {
 		_writer.write("cont");
 		_writer.newLine();
 		_writer.flush();
+		System.err.println("cont");
 	}
 	
 	private void run() throws IOException {
@@ -204,30 +279,57 @@ public class Parser {
 		String methodName = new String();
 		boolean breakpoint = false;
 		int line = -1;
+		int back = -1;
 		while (loop)  {
 			while (!_reader.ready()) {
 			}
-			String[] read = read().split(System.lineSeparator());
+			String[] read = readArray();
 			for (int i = 0; i < read.length; i++) {
 				_input.add(read[i]);
-				System.err.println(read[i]);
-				if ((read[i].indexOf(">") > -1) && 
+				if (((read[i].indexOf(">") > -1) || 
+						(read[i].indexOf(threadName + "[") > -1)) && 
 						(run == RUN_SET_BREAKPOINTS)) {
+					if (_breakpointNumber == -1)
+						_breakpointNumber = 0;
 					stopAtList();
-					run = RUN_JDB;
+					if (_breakpointNumber == _breakpoints.size()) {
+						if (back > -1)
+							run = back;
+						else
+							run = RUN_JDB;
+						_breakpointNumber = -1;
+					}
 				} else if ((read[i].indexOf(">") > -1) && (run == RUN_JDB)) {
 					jdb();
-					run = RUN_RUN;
+					_run = true;
+					run = RUN_NEXT;
 				} else if ((read[i].indexOf(threadName + "[") > -1) && 
-						(run == RUN_RUN)) {
-					if (breakpoint)
+						(run == RUN_NEXT) && breakpoint) {
 						next();
-				} else if ((read[i].startsWith("Breakpoint hit:"))) {
+				} else if ((read[i].indexOf(threadName + "[") > -1) &&
+						(run == RUN_CONT) && !breakpoint) {
+					cont();
+					run = RUN_NEXT;
+				} else if ((read[i].indexOf(threadName + "[") > -1) && 
+						(run == RUN_CLEAR_BREAKPOINTS)) {
+					if (_breakpointNumber == -1)
+						_breakpointNumber = 0;
+					clearBreakpoints();
+					if (_breakpointNumber == _breakpoints.size()) {
+						run = RUN_NEXT;
+						_breakpointNumber = -1;
+					}
+				} else if (read[i].indexOf("Breakpoint hit:") > -1) {
 					breakpoint = true;
-					clearBreakpoints(); // clear breakpoint list
+					run = RUN_CLEAR_BREAKPOINTS;
 				} else if (read[i].indexOf("The application exited") > -1) {
 					breakpoint = false;
 					loop = false;
+					_run = false;
+				} else if (read[i].indexOf("Nothing suspended") > -1) {
+					breakpoint = false;
+					loop = false;
+					_run = false;
 				}
 				
 				if (breakpoint && (read[i]).indexOf("\"thread=") > -1) {
@@ -243,12 +345,13 @@ public class Parser {
 					else if (!methodName.equals(str[1])) {
 						methodName = new String();
 						breakpoint = false;
-						stopAtList();
-						cont();
-					} else if (_className.equals(className)) {
+						back = RUN_CONT;
+						run = RUN_SET_BREAKPOINTS;
+					}
+					
+					if (_className.equals(className)) {
 //						if (_source.get(line - 1).getClassName().indexOf(
 //								className) > -1)
-						System.out.println(line + ": tested");
 						_source.get(line - 1).setLineTested(true);
 					}
 				}
@@ -280,13 +383,13 @@ public class Parser {
 	public static void main(String[] args) {
 		List<CSMethod> methods = new ArrayList<CSMethod>();
 
-//		CSMethod method = new CSMethod();
-//		method.setBreakpoint(69);
-//		methods.add(method);
-		
 		CSMethod method = new CSMethod();
-		method.setBreakpoint(82);
+		method.setBreakpoint(69);
 		methods.add(method);
+		
+//		CSMethod method = new CSMethod();
+//		method.setBreakpoint(82);
+//		methods.add(method);
 		
 		List<SourceLine> lines = new ArrayList<SourceLine>();
 		

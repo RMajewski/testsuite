@@ -168,8 +168,12 @@ public class ReadSource implements Read {
 			method.setClassName(_className);
 		method.setModifier(read[0]);
 		method.setLine(lineNumber);
-		method.setBreakpoint(breakpoint);
-
+		
+		if (read.length == 0)
+			method.setBreakpoint(breakpoint + 1);
+		else
+			method.setBreakpoint(breakpoint);
+		
 		int startAttribut = -1;
 		String artType = new String();
 		String artName = new String();

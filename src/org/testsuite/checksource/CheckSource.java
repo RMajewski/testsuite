@@ -173,24 +173,24 @@ public class CheckSource {
 		// Parse source code
 		Parser parser = new Parser(_nameTest, _nameSrc, _source.getSourceList());
 		parser.parse(_source.getMethodList());
-		parser.debug();
+//		parser.debug();
 		
 		// Run tests
-//		for (int i = 0; i < CSConfig.getInstance().testCount(); i++) {
-//			try {
-//				SourceTest test = (SourceTest)getClass().getClassLoader()
-//						.loadClass(CSConfig.getInstance()
-//								.getPathCheckSourceTests()+ "." + 
-//								CSConfig.getInstance().getTestName(i))
-//						.newInstance();
-//				test.test(_source.getSourceList());
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		
-//		// Prepare lines of source code for output.
-//		_source.prepaireSource();
+		for (int i = 0; i < CSConfig.getInstance().testCount(); i++) {
+			try {
+				SourceTest test = (SourceTest)getClass().getClassLoader()
+						.loadClass(CSConfig.getInstance()
+								.getPathCheckSourceTests()+ "." + 
+								CSConfig.getInstance().getTestName(i))
+						.newInstance();
+				test.test(_source.getSourceList());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		// Prepare lines of source code for output.
+		_source.prepaireSource();
 	}
 	
 	/**
