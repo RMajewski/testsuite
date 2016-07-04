@@ -62,6 +62,8 @@ public class SourceFile {
 	
 	/**
 	 * Saves the instance of ReadTest
+	 * 
+	 * @deprecated Is no longer needed.
 	 */
 	private ReadTest _readTest;
 	
@@ -308,11 +310,9 @@ public class SourceFile {
 			c = getClass().getClassLoader().loadClass(className);
 			
 			// Constructors
-			readMethodArray(c.getConstructors(), className);
 			readMethodArray(c.getDeclaredConstructors(), className);
 			
 			// Methods
-			readMethodArray(c.getMethods(), className);
 			readMethodArray(c.getDeclaredMethods(), className);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -337,28 +337,84 @@ public class SourceFile {
 				method.setType(((Method)methods[i]).getReturnType().getName());
 				method.addParameterList(readParameters(
 						((Method)methods[i]).getParameterTypes()));
-				if (isDeprecated(((Method)methods[i]).getAnnotations()))
+				if (isDeprecatedAnnontation(
+						((Method)methods[i]).getAnnotations()))
 					method.setDeprecated(true);
 			} else if (methods[i] instanceof Constructor) {
 				method.setName(methods[i].getName().substring(
 						methods[i].getName().lastIndexOf(".") + 1));
 				method.addParameterList(readParameters(
 						((Constructor<?>)methods[i]).getParameterTypes()));
-				if (isDeprecated(((Constructor<?>)methods[i]).getAnnotations()))
+				if (isDeprecatedAnnontation(
+						((Constructor<?>)methods[i]).getAnnotations()))
 					method.setDeprecated(true);
 			}
 			
 			method.setLine(detectFirstLineNumber(method));
+			method.setLastLineNumber(detectLastLineNumber(method));
+			method.setBreakpoint(detectBreakpoint(method));
+			
+			if (!method.isDeprecated() && 
+					isDeprecatedJavadoc(method.getLine())) {
+				method.setDeprecated(true);
+			}
 			
 			_methods.add(method);
 		}
 	}
-	
-	private int detectFirstLineNumber(CSMethod method) {
-		for (int i = 0; i < _source.size(); i++) {
-			if (method.getClassName().startsWith("test"))
-				continue;
 
+	private boolean isDeprecatedJavadoc(int line) {
+		int i = line - 2;
+		while ((i > 0) && _source.get(i).isJavadoc()) {
+			if (_source.get(i).getLine().indexOf("@deprecated") > -1) {
+				return true;
+			}
+			
+			i--;
+		}
+		
+		return false;
+	}
+
+	private int detectBreakpoint(CSMethod method) {
+		if ((method.getClassName().startsWith("test")) || 
+				(method.getLine() == -1) || (method.getLastLineNumber() == -1))
+			return -1;
+		
+		for (int line = (method.getLine() - 1); 
+				line < (method.getLastLineNumber() - 1); line++) {
+			if (_source.get(line).getLine().trim().endsWith("{"))
+				return _source.get(line).getLineNumber() + 1;
+		}
+		
+		return -1;
+	}
+	
+	private int detectLastLineNumber(CSMethod method) {
+		if ((method.getClassName().startsWith("test")) || 
+				(method.getLine() == -1))
+			return -1;
+		
+		int blocks = 0;
+		
+		for (int line = (method.getLine() - 1); line < _source.size(); line ++) {
+			if (_source.get(line).getLine().trim().endsWith("{"))
+				blocks++;
+			else if (_source.get(line).getLine().trim().endsWith("}"))
+				blocks--;
+			
+			if ((line > (method.getLine() - 1)) && (blocks == 0))
+					return line + 1;
+		}
+		
+		return -1;
+	}
+
+	private int detectFirstLineNumber(CSMethod method) {
+		if (method.getClassName().startsWith("test"))
+			return -1;
+
+		for (int i = 0; i < _source.size(); i++) {
 			StringBuilder matches = new StringBuilder();
 			matches.append("^\\s*");
 			matches.append(method.getModifier());
@@ -383,8 +439,6 @@ public class SourceFile {
 			
 			matches.append("\\)\\s*\\{$");
 			
-//			System.out.println(matches.toString());
-			
 			String line = _source.get(i).getLine();
 			
 			if (((line.indexOf("public") > -1) || 
@@ -393,11 +447,7 @@ public class SourceFile {
 				(line.indexOf("{") == -1)) {
 				for (int j = i + 1; j < _source.size(); j++) {
 					line += " " + _source.get(j).getLine().trim();
-//					System.out.println(line);
 					if ((line.indexOf("{") > -1) || (line.indexOf(";") > -1)) {
-//						System.out.println();
-//						System.out.println(matches.toString());
-//						System.out.println(line);
 						break;
 					}
 				}
@@ -455,10 +505,12 @@ public class SourceFile {
 		return ret;
 	}
 	
-	private boolean isDeprecated(Annotation[] annotations) {
+	
+	private boolean isDeprecatedAnnontation(Annotation[] annotations) {
 		for (int i = 0; i < annotations.length; i++)
-			if (annotations[i].equals("@deprecated"))
+			if (annotations[i].equals("@java.lang.Deprecated()")) {
 				return true;
+			}
 		
 		return false;
 	}
@@ -472,23 +524,36 @@ public class SourceFile {
 				continue;
 			
 			_source.get(_methods.get(i).getLine() - 1).setBeginMethod(true);
-			_source.get(_methods.get(i).getLine() - 1).setLineTested(true);
+			_methods.get(i).setIsTested(methodIsTested(_methods.get(i)));
 //			if (_methods.get(i).callsCount() >  0)
 //				_source.get(_methods.get(i).getLine() - 1).setLineTested(true);
-//			if (!_methods.get(i).isDeprecated() && 
-//					!_methods.get(i).isIgnore()) {
-//				Color color;
-//				if (_methods.get(i).getModifier().equals("public"))
-//					color = HelperUsedColor.ERROR;
-//				else
-//					color = HelperUsedColor.WARNING;
-//				_source.get(_methods.get(i).getLine() -1).addMessage(
-//						new MessageColor(ResourceBundle.getBundle(
-//								SourceTest.BUNDLE_FILE).getString(
-//										"sourceMethodNotTested") ,color));
-//				System.out.println(_source.get(_methods.get(i).getLine() - 1).getClassName());
-//				System.out.println(_methods.get(i).getClassName());
-//			}
+			if (!_methods.get(i).isDeprecated() && 
+					!_methods.get(i).isIgnore() && 
+					!_methods.get(i).isTested()) {
+				Color color;
+				if (_methods.get(i).getModifier().startsWith("public"))
+					color = HelperUsedColor.ERROR;
+				else
+					color = HelperUsedColor.WARNING;
+				_source.get(_methods.get(i).getLine() -1).addMessage(
+						new MessageColor(ResourceBundle.getBundle(
+								SourceTest.BUNDLE_FILE).getString(
+										"sourceMethodNotTested") ,color));
+			}
 		}
+	}
+
+	private boolean methodIsTested(CSMethod method) {
+		if ((method.getLastLineNumber() == -1) || 
+				method.getName().startsWith("test"))
+			return false;
+		
+		for (int line = (method.getLine() - 1); 
+				line < (method.getLastLineNumber() -1); line++) {
+			if (_source.get(line).isLineTested())
+				return true;
+		}
+		
+		return false;
 	}
 }

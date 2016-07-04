@@ -37,8 +37,6 @@ public class CSMethod {
 	
 	/**
 	 * Saves the last line of this method.
-	 * 
-	 * @deprecated Is no longer needed.
 	 */
 	private int _lastLine;
 	
@@ -98,6 +96,11 @@ public class CSMethod {
 	 * Saves the breakpoint for the method.
 	 */
 	private int _breakpoint;
+	
+	/**
+	 * Saves if the method is tested.
+	 */
+	private boolean _tested;
 
 	/**
 	 * Initialize the data
@@ -116,6 +119,7 @@ public class CSMethod {
 		_deprecated = false;
 		_htmlOutput = new String();
 		_ignore = false;
+		_tested = false;
 	}
 	
 	/**
@@ -154,8 +158,6 @@ public class CSMethod {
 	 * Return the number of last line.
 	 * 
 	 * @return The number of last line.
-	 * 
-	 * @deprecated Is no longer needed.
 	 */
 	public int getLastLineNumber() {
 		return _lastLine;
@@ -165,8 +167,6 @@ public class CSMethod {
 	 * Sets the number of last line.
 	 * 
 	 * @param last The new number of last line
-	 * 
-	 * @deprecated Is no longer needed.
 	 */
 	public void setLastLineNumber(int last) {
 		_lastLine = last;
@@ -395,5 +395,23 @@ public class CSMethod {
 	 */
 	public void setBreakpoint(int breakpoint) {
 		_breakpoint = breakpoint;
+	}
+	
+	/**
+	 * Returns if the method is tested.
+	 * 
+	 * @return If the method is tested?
+	 */
+	public boolean isTested() {
+		return _tested;
+	}
+	
+	/**
+	 * Sets if the method is tested.
+	 * 
+	 * @param tested If the method is tested?
+	 */
+	public void setIsTested(boolean tested) {
+		_tested = tested;
 	}
 }

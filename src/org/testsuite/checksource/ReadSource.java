@@ -29,6 +29,8 @@ import org.testsuite.checksource.html.HtmlDeprecated;
  * @author René Majewski
  *
  * @version 0.1
+ * 
+ * @deprecated Is no longer needed.
  */
 public class ReadSource implements Read {
 	/**
