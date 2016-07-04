@@ -520,6 +520,11 @@ public class SourceFile {
 	 */
 	public void prepaireSource() {
 		for (int i = 0; i < _methods.size(); i++) {
+			if (_methods.get(i).getType().isEmpty() && 
+					(_methods.get(i).getLine() == -1)) {
+				_methods.get(i).setIgnore(true);
+			}
+			
 			if (_methods.get(i).getLine() == -1)
 				continue;
 			
