@@ -38,6 +38,7 @@ import org.testsuite.checksource.annotation.CheckSource;
  * 
  * @author René Majewski
  *
+ * @deprecated
  */
 public class TestReadTest {
 	/**

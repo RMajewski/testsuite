@@ -33,6 +33,8 @@ import org.testsuite.checksource.Read;
  * @author René Majewski
  *
  * @version 0.1
+ * 
+ * @deprecated
  */
 public class TestRead {
 

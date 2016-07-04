@@ -128,9 +128,9 @@ public class Parser {
 			return;
 
 		for (int method = 0; method < methods.size(); method++) {
+			if (methods.get(method).getBreakpoint() == -1)
+				continue;
 			int pb = methods.get(method).getBreakpoint();
-			if (_source.get(pb - 1).getLine().matches("^\\s*$"))
-				pb++;
 			_breakpoints.add(_className + ":" + String.valueOf(pb));
 		}
 		
