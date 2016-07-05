@@ -171,9 +171,17 @@ public class CheckSource {
 		_source.readFile(true, _nameTest);
 		
 		// Parse source code
-//		Parser parser = new Parser(_nameTest, _nameSrc, _source.getSourceList());
-//		parser.parse(_source.getMethodList());
-//		parser.debug();
+		if (CSConfig.getInstance().getParserParse()) {
+			Parser parser;
+			
+			if (CSConfig.getInstance().getParserName().equals(
+					JdbParser.class.getName()))
+				parser = new JdbParser(_nameTest, _nameSrc,
+						_source.getSourceList());
+			else
+				parser = CSConfig.getInstance().getParser();
+			parser.parse(_source.getMethodList());
+		}
 		
 		// Run tests
 		for (int i = 0; i < CSConfig.getInstance().testCount(); i++) {

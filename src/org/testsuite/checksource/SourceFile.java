@@ -30,10 +30,10 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.testsuite.checksource.annotation.CheckSource;
 import org.testsuite.checksource.html.HtmlNoneExistFile;
 import org.testsuite.checksource.tests.SourceTest;
 import org.testsuite.helper.HelperUsedColor;
@@ -213,12 +213,8 @@ public class SourceFile {
 		if (!test) {
 			BufferedReader bf = null;
 			try {
-//				if (!test)
-					bf = new BufferedReader(new FileReader(_fileName));
-				/*else
-					bf = new BufferedReader(new FileReader(testName));*/
+				bf = new BufferedReader(new FileReader(_fileName));
 				
-//				ReadSource readSource = new ReadSource();
 				
 				String line;
 				int count = 0;
@@ -253,35 +249,8 @@ public class SourceFile {
 						source.setJavadoc(true);
 					
 					// add Source to list
-//					if (!test)
-						_source.add(source);
-					
-					// read source code
-					/*if (!multicomment && !javadoc) {
-						line = line.trim();
-						if (!test) {
-							int methods = _methods.size();
-							readSource.read(count, line, _methods);
-							if (methods < _methods.size())
-								_readTest.addClassName(
-										_methods.get(_methods.size() -1)
-										.getClassName());
-						} else
-							_readTest.read(count, line, _methods);
-					} else if (line.matches("^[*\\s]*(@deprecated|@Deprecated)" +
-							"[\\p{Graph}\\s]*$")) {
-						readSource.setDeprecated(true);
-					} else if (readSource.isDeprecated() && (line.matches(
-							"^[*\\s]*(@deprecated|@Deprecated)" +
-							"[\\p{Graph}\\s]*$")))
-						readSource.setDeprecated(true);*/
+					_source.add(source);
 				}
-				
-//				for (int i = 0; i < _source.size(); i++) {
-//					if (!test && (readSource.getClassName() != null) && 
-//							!readSource.getClassName().isEmpty())
-//						_source.get(i).setClassName(readSource.getClassName());
-//				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -340,6 +309,9 @@ public class SourceFile {
 				if (isDeprecatedAnnontation(
 						((Method)methods[i]).getAnnotations()))
 					method.setDeprecated(true);
+				method.setIgnore(isIgnoredAnnontation(
+						((Method)methods[i]).getAnnotation(
+					org.testsuite.checksource.annotation.CheckSource.class)));
 			} else if (methods[i] instanceof Constructor) {
 				method.setName(methods[i].getName().substring(
 						methods[i].getName().lastIndexOf(".") + 1));
@@ -348,6 +320,9 @@ public class SourceFile {
 				if (isDeprecatedAnnontation(
 						((Constructor<?>)methods[i]).getAnnotations()))
 					method.setDeprecated(true);
+				method.setIgnore(isIgnoredAnnontation(
+						((Constructor<?>)methods[i]).getAnnotation(
+					org.testsuite.checksource.annotation.CheckSource.class)));
 			}
 			
 			method.setLine(detectFirstLineNumber(method));
@@ -361,6 +336,14 @@ public class SourceFile {
 			
 			_methods.add(method);
 		}
+	}
+
+	private boolean isIgnoredAnnontation(CheckSource checkSource) {
+		if (checkSource != null) {
+			return checkSource.ignored();
+		}
+		
+		return false;
 	}
 
 	private boolean isDeprecatedJavadoc(int line) {
@@ -530,8 +513,6 @@ public class SourceFile {
 			
 			_source.get(_methods.get(i).getLine() - 1).setBeginMethod(true);
 			_methods.get(i).setIsTested(methodIsTested(_methods.get(i)));
-//			if (_methods.get(i).callsCount() >  0)
-//				_source.get(_methods.get(i).getLine() - 1).setLineTested(true);
 			if (!_methods.get(i).isDeprecated() && 
 					!_methods.get(i).isIgnore() && 
 					!_methods.get(i).isTested()) {

@@ -218,6 +218,15 @@ public class ConfigSaver {
 			bw.newLine();
 		}
 		
+		bw.write("\t\t\t<parser timeout=\"");
+		bw.write(String.valueOf(CSConfig.getInstance().getParserTimeout()));
+		bw.write("\" parse=\"");
+		bw.write(String.valueOf(CSConfig.getInstance().getParserParse()));
+		bw.write("\">");
+		bw.write(CSConfig.getInstance().getParserName());
+		bw.write("</parser>");
+		bw.newLine();
+		
 		bw.write("\t\t\t<path>");
 		bw.write(CSConfig.getInstance().getPathCheckSourceTests());
 		bw.write("</path>");

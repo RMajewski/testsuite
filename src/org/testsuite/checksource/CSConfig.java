@@ -66,6 +66,21 @@ public class CSConfig {
 	private int _tabSpace;
 	
 	/**
+	 * Saves the name of parser
+	 */
+	private String _parserName;
+	
+	/**
+	 * Saves the timeout for parser
+	 */
+	private long _parserTimeout;
+	
+	/**
+	 * Saves whether to parse. 
+	 */
+	private boolean _parserParse;
+	
+	/**
 	 * Initialize the datas
 	 */
 	private CSConfig() {
@@ -75,6 +90,9 @@ public class CSConfig {
 		_noneListedPath = new String();
 		_lineWidth = -1;
 		_tabSpace = -1;
+		_parserName = null;
+		_parserTimeout = 20000;
+		_parserParse = false;
 	}
 	
 	/**
@@ -206,5 +224,78 @@ public class CSConfig {
 	 */
 	public void setTabSpace(int spaces) {
 		_tabSpace = spaces;
+	}
+	
+	/**
+	 * Returns the name of parser
+	 * 
+	 * @return The nome of parser
+	 */
+	public String getParserName() {
+		return _parserName;
+	}
+	
+	/**
+	 * Returns a instance of parser
+	 * 
+	 * @return A instance of parser
+	 */
+	public Parser getParser() {
+		if ((_parserName == null) || _parserName.isEmpty())
+			return null;
+		
+		Parser parser = null;
+		try {
+			parser = (Parser)getClass().getClassLoader()
+					.loadClass(_parserName).newInstance();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return parser;
+	}
+	
+	/**
+	 * Sets the name of parser
+	 * 
+	 * @param name The new name of parser
+	 */
+	public void setParserName(String name) {
+		_parserName = name;
+	}
+	
+	/**
+	 * Returns the timeout of parser.
+	 * 
+	 * @return The timeout of parser
+	 */
+	public long getParserTimeout() {
+		return _parserTimeout;
+	}
+	
+	/**
+	 * Sets the timeout of parser
+	 * 
+	 * @param timeout The new time for the parser in milliseconds.
+	 */
+	public void setParserTimeout(long timeout) {
+		_parserTimeout = timeout;
+	}
+	
+	/**
+	 * Returns whether to parse.
+	 * 
+	 * @return Should be parsed?
+	 */
+	public boolean getParserParse() {
+		return _parserParse;
+	}
+	
+	/**
+	 * Sets whether to parse.
+	 * 
+	 * @param parse Should be parsed?
+	 */
+	public void setParserParse(boolean parse) {
+		_parserParse = parse;
 	}
 }
