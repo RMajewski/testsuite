@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
  *
  * @version 0.1
  */
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Target(ElementType.METHOD)
 public @interface CheckSource {

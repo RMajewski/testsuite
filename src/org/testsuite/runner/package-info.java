@@ -17,42 +17,11 @@
 * sind dem Lizenztext zu entnehmen.
 */ 
 
-package tests.testsuite.checksource;
-
-import static org.junit.Assert.*;
-
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.testsuite.checksource.Read;
-
 /**
- * Tests the interface {@link org.testsuite.checksource.Read}.
+ * In this package all test runner classes are summarized.
  * 
  * @author René Majewski
- *
- * @version 0.1
  * 
- * @deprecated
+ * @version 0.1
  */
-public class TestRead {
-
-	/**
-	 * Tests if there is an interface.
-	 */
-	@Test
-	public void testIsInterface() {
-		assertTrue(Read.class.isInterface());
-	}
-	
-	/**
-	 * Test if it has a method named read.
-	 */
-	@Test
-	public void testHasAMethodRead() throws Exception {
-		assertEquals("read", Read.class.getMethod("read", int.class, 
-				String.class, List.class).getName());
-	}
-
-}
+package org.testsuite.runner;

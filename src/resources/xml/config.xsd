@@ -60,6 +60,16 @@
 								</xsd:simpleContent>
 							</xsd:complexType>
 						</xsd:element>
+						<xsd:element name="parser" minOccurs="1">
+							<xsd:complexType>
+								<xsd:simpleContent>
+									<xsd:extension base="xsd:string">
+									<xsd:attribute name="timeout" type="xsd:long"/>
+									<xsd:attribute name="parse" type="xsd:boolean"/>
+									</xsd:extension>
+								</xsd:simpleContent>
+							</xsd:complexType>
+						</xsd:element>
 						<xsd:element name="path" type="xsd:string" minOccurs="1" />
 						<xsd:element name="test" type="xsd:string" minOccurs="1" maxOccurs="unbounded" />
 					</xsd:sequence>

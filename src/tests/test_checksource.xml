@@ -30,6 +30,7 @@
 		<checkSourceConfig>
 			<noneTestedList path="src/org">true</noneTestedList>
 			<lineWidth tabSpace="4">80</lineWidth>
+			<parser timeout="20000" parse="true">org.testsuite.checksource.JdbParser</parser>
 			<path>org.testsuite.checksource.tests</path>
 			<test>TestEmptyLines</test>
 			<test>TestEmptyMethod</test>
@@ -102,6 +103,7 @@
 			<name>Tests the classes for parser</name>
 			<package>tests.testsuite.checksource</package>
 			<test checkSource="org.testsuite.checksource.Parser">TestParser</test>
+			<test checkSource="org.testsuite.checksource.JdbParser">TestJdbParser</test>
 		</testSuite>
 		<testSuite>
 			<name>Tests the classes for check source</name>

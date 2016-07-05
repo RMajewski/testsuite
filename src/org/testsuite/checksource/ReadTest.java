@@ -31,6 +31,8 @@ import java.util.regex.Pattern;
  * @author René Majewski
  *
  * @version 0.1
+ * 
+ * @deprecated Is no longer needed.
  */
 public class ReadTest implements Read {
 	/**

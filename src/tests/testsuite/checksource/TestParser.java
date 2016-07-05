@@ -30,11 +30,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
 import org.testsuite.checksource.CSMethod;
-import org.testsuite.checksource.Parser;
+import org.testsuite.checksource.SimpleParser;
 import org.testsuite.checksource.SourceLine;
 
 /**
- * Tests the class {@link org.testsuite.checksource.Parser}.
+ * Tests the class {@link org.testsuite.checksource.SimpleParser}.
  * 
  * @author René Majewski
  * 
@@ -46,7 +46,7 @@ public class TestParser {
 	 */
 	@Before
 	public void setUp() throws Exception{
-		Field field = Parser.class.getDeclaredField("_endLoop");
+		Field field = SimpleParser.class.getDeclaredField("_endLoop");
 		field.setAccessible(true);
 		field.set(null, -1);
 	}
@@ -57,7 +57,7 @@ public class TestParser {
 	 * @return That which is in the "_endLoop".
 	 */
 	private int endLoop() throws Exception{
-		Field field = Parser.class.getDeclaredField("_endLoop");
+		Field field = SimpleParser.class.getDeclaredField("_endLoop");
 		field.setAccessible(true);
 		return (int)field.get(null);
 	}
@@ -77,7 +77,7 @@ public class TestParser {
 	 */
 	private int searchKeywords(String word, CSMethod method, 
 			List<SourceLine> lines, int number) throws Exception {
-		Method result = Parser.class.getDeclaredMethod("searchKeywords", 
+		Method result = SimpleParser.class.getDeclaredMethod("searchKeywords", 
 				String.class, CSMethod.class, List.class, int.class);
 		result.setAccessible(true);
 		return (int)result.invoke(null, word, method, lines, number);

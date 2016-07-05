@@ -170,6 +170,15 @@ public class CheckSource {
 		_source.readFile(false, null);
 		_source.readFile(true, _nameTest);
 		
+		// Parse source code
+		if (CSConfig.getInstance().getParserParse()) {
+			SimpleParser parser = CSConfig.getInstance().getParser();
+			parser.setTestFileName(_nameTest);
+			parser.setSourceFileName(_nameSrc);
+			parser.setSources(_source.getSourceList());
+			parser.parse(_source.getMethodList());
+		}
+		
 		// Run tests
 		for (int i = 0; i < CSConfig.getInstance().testCount(); i++) {
 			try {

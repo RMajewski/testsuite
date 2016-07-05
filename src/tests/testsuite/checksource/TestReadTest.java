@@ -43,6 +43,7 @@ import org.testsuite.checksource.ReadTest;
  * 
  * @author René Majewski
  *
+ * @deprecated
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ReadTest.class})

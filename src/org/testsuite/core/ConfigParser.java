@@ -75,6 +75,7 @@ public class ConfigParser {
 	 * @deprecated Use {@link #ConfigParser(String)}
 	 */
 	public ConfigParser(Config config, String configFile) {
+		this(configFile);
 	}
 	
 	/**
@@ -220,6 +221,28 @@ public class ConfigParser {
 										checkSource = atr.getValue();
 								}
 								break;
+								
+							case "parser":
+								if (checkSourceConfig) {
+									for (Iterator<?> atrs = element.getAttributes();
+											atrs.hasNext();) {
+										Attribute atr = (Attribute)atrs.next();
+										
+										if (atr.getName().toString().equals(
+												"timeout"))
+											CSConfig.getInstance()
+											.setParserTimeout(
+												Long.parseLong(atr.getValue()
+													.toString()));
+										else if (atr.getName().toString()
+												.equals("parse"))
+											CSConfig.getInstance()
+											.setParserParse(
+												Boolean.parseBoolean(
+													atr.getValue().toString()));
+									}
+								}
+								break;
 							
 							case "javascript":
 								javascript = true;
@@ -312,6 +335,11 @@ public class ConfigParser {
 								if (checkSourceConfig)
 									CSConfig.getInstance().setLineWidth(
 											Integer.parseInt(data));
+								break;
+								
+							case "parser":
+								if (checkSourceConfig)
+									CSConfig.getInstance().setParserName(data);
 								break;
 								
 							case "property":

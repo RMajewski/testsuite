@@ -62,6 +62,8 @@ public class CSMethod {
 	
 	/**
 	 * Saves the the list of calls
+	 * 
+	 * @deprecated Is no longer needed.
 	 */
 	private List<CSCall> _calls;
 	
@@ -89,6 +91,16 @@ public class CSMethod {
 	 * Saves the name of the HTML output file
 	 */
 	private String _htmlOutput;
+	
+	/**
+	 * Saves the breakpoint for the method.
+	 */
+	private int _breakpoint;
+	
+	/**
+	 * Saves if the method is tested.
+	 */
+	private boolean _tested;
 
 	/**
 	 * Initialize the data
@@ -107,6 +119,7 @@ public class CSMethod {
 		_deprecated = false;
 		_htmlOutput = new String();
 		_ignore = false;
+		_tested = false;
 	}
 	
 	/**
@@ -123,6 +136,11 @@ public class CSMethod {
 	 */
 	public void addParameter(CSParameter parameter) {
 		_parameter.add(parameter);
+	}
+	
+	public void addParameterList(List<CSParameter> list) {
+		for (int i = 0; i < list.size(); i++)
+			_parameter.add(list.get(i));
 	}
 	
 	/**
@@ -236,6 +254,8 @@ public class CSMethod {
 	 * Returns the number of calls
 	 * 
 	 * @return The Number of calls
+	 * 
+	 * @deprecated Is no longer needed.
 	 */
 	public int callsCount() {
 		return _calls.size();
@@ -246,7 +266,7 @@ public class CSMethod {
 	 * 
 	 * @param call The new call
 	 * 
-	 * @deprecated Use {@link #addCall(CSCall)}
+	 * @deprecated Is no longer needed.
 	 */
 	public void addCall(int call) {
 		addCall(new CSCall(call, true));
@@ -256,6 +276,8 @@ public class CSMethod {
 	 * Added a call to the list of calls.
 	 * 
 	 * @param call The new Call
+	 * 
+	 * @deprecated Is no longer needed.
 	 */
 	public void addCall(CSCall call) {
 		_calls.add(call);
@@ -267,6 +289,8 @@ public class CSMethod {
 	 * @param index The index of the call.
 	 * 
 	 * @return The specified call
+	 * 
+	 * @deprecated Is no longer needed.
 	 */
 	public CSCall getCall(int index) {
 		return _calls.get(index);
@@ -364,5 +388,41 @@ public class CSMethod {
 	 */
 	public void setIgnore(boolean ignore) {
 		_ignore = ignore;
+	}
+	
+	/**
+	 * Returns the breakpoint for the method.
+	 * 
+	 * @return The breakpoint for the method.
+	 */
+	public int getBreakpoint() {
+		return _breakpoint;
+	}
+	
+	/**
+	 * Sets the breakpoint for the method.
+	 * 
+	 * @param breakpoint The new breakpoint for the method.
+	 */
+	public void setBreakpoint(int breakpoint) {
+		_breakpoint = breakpoint;
+	}
+	
+	/**
+	 * Returns if the method is tested.
+	 * 
+	 * @return If the method is tested?
+	 */
+	public boolean isTested() {
+		return _tested;
+	}
+	
+	/**
+	 * Sets if the method is tested.
+	 * 
+	 * @param tested If the method is tested?
+	 */
+	public void setIsTested(boolean tested) {
+		_tested = tested;
 	}
 }

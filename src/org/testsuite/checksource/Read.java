@@ -21,6 +21,14 @@ package org.testsuite.checksource;
 
 import java.util.List;
 
+/**
+ * 
+ * @author René Majewski
+ *
+ * @version 0.1
+ * 
+ * @deprecated Is no longer needed.
+ */
 public interface Read {
 	public void read(int lineNumber, String line, List<CSMethod> list);
 }

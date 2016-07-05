@@ -17,42 +17,19 @@
 * sind dem Lizenztext zu entnehmen.
 */ 
 
-package tests.testsuite.checksource;
+package org.testsuite.runner;
 
-import static org.junit.Assert.*;
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Request;
+import org.junit.runner.Result;
 
-import java.util.List;
+public class SingleTestRunner {
 
-import org.junit.Before;
-import org.junit.Test;
-import org.testsuite.checksource.Read;
-
-/**
- * Tests the interface {@link org.testsuite.checksource.Read}.
- * 
- * @author René Majewski
- *
- * @version 0.1
- * 
- * @deprecated
- */
-public class TestRead {
-
-	/**
-	 * Tests if there is an interface.
-	 */
-	@Test
-	public void testIsInterface() {
-		assertTrue(Read.class.isInterface());
-	}
-	
-	/**
-	 * Test if it has a method named read.
-	 */
-	@Test
-	public void testHasAMethodRead() throws Exception {
-		assertEquals("read", Read.class.getMethod("read", int.class, 
-				String.class, List.class).getName());
+	public static void main(String[] args) throws ClassNotFoundException {
+		Request request = Request.method(Class.forName(args[0].split("#")[0]), 
+				args[0].split("#")[1]);
+		Result result = new JUnitCore().run(request);
+		System.exit(result.wasSuccessful() ? 0 : 1);
 	}
 
 }

@@ -217,14 +217,12 @@ public class HelperHtml {
 	 * 
 	 * @param methods List of methods
 	 * 
-	 * @param calls If the list of tested methods (true) or untested methods 
+	 * @param tested If the list of tested methods (true) or untested methods 
 	 * (false) are created?
 	 * 
 	 * @param file 
 	 * 
 	 * @return The list of methods.
-	 * 
-	 * @deprecated Use {@link #createListOfMethods(String, List, boolean, boolean, List)}
 	 */
 	public static String createListOfMethods(String description, 
 			List<CSMethod> methods, boolean calls, boolean file) {
@@ -238,7 +236,7 @@ public class HelperHtml {
 	 * 
 	 * @param methods List of methods
 	 * 
-	 * @param calls If the list of tested methods (true) or untested methods 
+	 * @param tested If the list of tested methods (true) or untested methods 
 	 * (false) are created?
 	 * 
 	 * @param file 
@@ -248,7 +246,7 @@ public class HelperHtml {
 	 * @return The list of methods.
 	 */
 	public static String createListOfMethods(String description, 
-			List<CSMethod> methods, boolean calls, boolean file, 
+			List<CSMethod> methods, boolean tested, boolean file, 
 			List<SourceLine> lines) {
 		StringBuilder ret = new StringBuilder();
 		
@@ -266,7 +264,8 @@ public class HelperHtml {
 		List<String> list = new ArrayList<String>();
 		
 		for (int method = 0; method < methods.size(); method++) {
-			if (methods.get(method).isDeprecated())
+			if (methods.get(method).isDeprecated() || 
+					methods.get(method).isIgnore())
 				continue;
 			
 			String fileName = new String();
@@ -282,10 +281,10 @@ public class HelperHtml {
 			
 			String listItem = new String();
 			
-			if (calls && (methods.get(method).callsCount() > 0)) {
+			if (tested && methods.get(method).isTested()) {
 				listItem = createListEntry(methods.get(method), linkSrc, 
 						linkEnd, true, lines);
-			} else if (!calls && (methods.get(method).callsCount() == 0)) {
+			} else if (!tested && !methods.get(method).isTested()) {
 				listItem = createListEntry(methods.get(method), linkSrc,
 						linkEnd, false, lines);
 			}

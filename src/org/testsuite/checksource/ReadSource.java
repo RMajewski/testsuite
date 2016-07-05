@@ -29,6 +29,8 @@ import org.testsuite.checksource.html.HtmlDeprecated;
  * @author René Majewski
  *
  * @version 0.1
+ * 
+ * @deprecated Is no longer needed.
  */
 public class ReadSource implements Read {
 	/**
@@ -94,8 +96,8 @@ public class ReadSource implements Read {
 			String[] read = line.substring(startIndex, endIndex).split(" ");
 			
 			if (line.matches("^[\\s]*(private|protected|public)[\\w\\s<>,"+ 
-					"\\[\\]]*\\([\\w\\ſ, .<>\\[\\]]*\\)[\\p{Graph}\\s]*\\{$"))
-				readMethod(lineNumber, read, list);
+					"\\[\\]]*\\([\\w\\ſ, <>\\[\\]]*\\)[\\p{Graph}\\s]*\\{$"))
+				readMethod(lineNumber, read, list, lineNumber + 1);
 			else if (line.matches("^[\\s]*(private|protected|public)" + 
 					"[\\w\\s<>,]*\\([\\w\\ſ, .<>\\[\\]]*\\)[\\p{Graph}\\s]*$") ||
 					line.matches("^[\\s]*(private|protected|public)" + 
@@ -107,7 +109,8 @@ public class ReadSource implements Read {
 					( line.matches("^[\\w\\ſ, .<>\\[\\]]*\\)[\\s\\w]*\\{$")) || 
 					line.matches("^\\s*[\\w\\s<>,\\[\\]]*\\{$") )) {
 				_methodStarted += line;
-				readMethod(lineNumber - 1, _methodStarted.split(" "), list);
+				readMethod(lineNumber - 1, _methodStarted.split(" "), list,
+						lineNumber +1);
 				_methodStarted = null;
 			} else if (line.matches("^[\\s]*(private|protected|public)" + 
 					"[\\s\\w]*(class|interface)[\\s\\w]*\\{?$")) {
@@ -147,14 +150,33 @@ public class ReadSource implements Read {
 			}
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @param lineNumber
+	 * @param read
+	 * @param list
+	 * 
+	 * @deprecated
+	 */
+	@SuppressWarnings("unused")
 	private void readMethod(int lineNumber, String[] read, List<CSMethod> list) {
+		readMethod(lineNumber, read, list, lineNumber + 1);
+	}
+	
+	private void readMethod(int lineNumber, String[] read, List<CSMethod> list,
+			int breakpoint) {
 		CSMethod method = new CSMethod();
 		if ((_className != null) && !_className.isEmpty())
 			method.setClassName(_className);
 		method.setModifier(read[0]);
 		method.setLine(lineNumber);
-
+		
+		if (read.length == 0)
+			method.setBreakpoint(breakpoint + 1);
+		else
+			method.setBreakpoint(breakpoint);
+		
 		int startAttribut = -1;
 		String artType = new String();
 		String artName = new String();
