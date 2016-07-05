@@ -1,5 +1,7 @@
 package org.testsuite.checksource;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -9,6 +11,8 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.swing.Timer;
 
 /* 
 * Copyright 2016 René Majewski
@@ -100,6 +104,11 @@ public class JdbParser implements Parser{
 	private boolean _run;
 	
 	/**
+	 * Saves, this is to be canceled.
+	 */
+	private boolean _canceled;
+	
+	/**
 	 * Initialize the parser
 	 */
 	public JdbParser(String testFile, String sourceFile, List<SourceLine> lines) {
@@ -112,6 +121,7 @@ public class JdbParser implements Parser{
 				_sourceFile.replaceAll(File.separator, ".").indexOf(".java"));
 		_breakpointNumber = -1;
 		_run = false;
+		_canceled = false;
 	}
 	
 	/**
@@ -136,7 +146,7 @@ public class JdbParser implements Parser{
 		}
 		
 		try {
-			Process p = Runtime.getRuntime().exec("jdb -classpath bin:" +
+			final Process p = Runtime.getRuntime().exec("jdb -classpath bin:" +
 					"/usr/share/eclipse/plugins/org.junit_4.12.0.v201504281640/" +
 					"junit.jar:lib/mockito-all-1.10.19.jar:lib/powermock-mockito" +
 					"-1.6.3-full.jar:lib/cglib-nodep-2.2.2.jar:lib/javassist-" +
@@ -144,10 +154,23 @@ public class JdbParser implements Parser{
 					"plugins//org.hamcrest.core_1.3.0.v201303031735.jar " +
 					"-Dtesting=\"true\" -sourcepath src");
 			
+			Timer timer = new Timer(
+					(int)CSConfig.getInstance().getParserTimeout(),
+					new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent ae) {
+							_canceled = true;
+						}
+			});
+			
 			_writer = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
 			_reader = new InputStreamReader(p.getInputStream());
 			
+			timer.start();
+			
 			run();
+			
+			timer.stop();
 			
 			_writer.close();
 			_reader.close();
@@ -188,7 +211,7 @@ public class JdbParser implements Parser{
 		char[] buffer = new char[1];
 		String read = new String();
 		boolean loop = true;
-		while (loop) {
+		while (loop && !_canceled) {
 			while(_reader.ready()) {
 				if (_reader.read(buffer) == 1) {
 					read += String.valueOf(buffer);
@@ -203,6 +226,9 @@ public class JdbParser implements Parser{
 					} else if (read.indexOf("Nothing suspended") > -1) {
 						loop = false;
 					}
+					
+					if (_canceled)
+						loop = false;
 				}
 			}
 			
@@ -216,6 +242,9 @@ public class JdbParser implements Parser{
 				ret.add(read);
 				loop = false;
 			}
+			
+			if (_canceled)
+				loop = false;
 		}
 		
 		return ret.toArray(new String[ret.size()]);
@@ -276,7 +305,7 @@ public class JdbParser implements Parser{
 		boolean breakpoint = false;
 		int line = -1;
 		int back = -1;
-		while (loop)  {
+		while (loop && !_canceled)  {
 			String[] read = readArray();
 			for (int i = 0; i < read.length; i++) {
 				_input.add(read[i]);

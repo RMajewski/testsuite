@@ -102,6 +102,7 @@
 			<name>Tests the classes for parser</name>
 			<package>tests.testsuite.checksource</package>
 			<test checkSource="org.testsuite.checksource.Parser">TestParser</test>
+			<test checkSource="org.testsuite.checksource.JdbParser">TestJdbParser</test>
 		</testSuite>
 		<testSuite>
 			<name>Tests the classes for check source</name>
