@@ -258,13 +258,6 @@ public class HelperHtml {
 			
 			String listItem = new String();
 			
-//			if (calls && (methods.get(method).callsCount() > 0)) {
-//				listItem = createListEntry(methods.get(method), linkSrc, 
-//						linkEnd, true);
-//			} else if (!calls && (methods.get(method).callsCount() == 0)) {
-//				listItem = createListEntry(methods.get(method), linkSrc,
-//						linkEnd, false);
-//			}
 			if (tested && methods.get(method).isTested()) {
 				listItem = createListEntry(methods.get(method), linkSrc, 
 						linkEnd, true);
