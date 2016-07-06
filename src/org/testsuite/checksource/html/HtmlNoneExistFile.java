@@ -72,7 +72,8 @@ public class HtmlNoneExistFile extends Html {
 	 * @param name The name of none exists files.
 	 */
 	public void addNoneExistsFileName(String name) {
-		_noneExists.add(name);
+		if (_noneExists.indexOf(name) == -1)
+			_noneExists.add(name);
 	}
 	
 	/**
@@ -139,6 +140,15 @@ public class HtmlNoneExistFile extends Html {
 		}
 		
 		return ret.toString();
+	}
+	
+	public boolean isNoneTestedFile(String name) {
+		for (int file = 0; file < _noneExists.size(); file++) {
+			if (_noneExists.get(file).indexOf(name) > -1)
+				return true;
+		}
+		
+		return false;
 	}
 
 }

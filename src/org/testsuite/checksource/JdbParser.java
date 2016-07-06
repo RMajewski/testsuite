@@ -84,6 +84,11 @@ public class JdbParser implements Parser{
 	private List<SourceLine> _source;
 	
 	/**
+	 * Saves the list of methods
+	 */
+	private List<CSMethod> _methods;
+	
+	/**
 	 * Saves the class name
 	 */
 	private String _className;
@@ -136,11 +141,17 @@ public class JdbParser implements Parser{
 		_breakpointNumber = -1;
 		_run = false;
 		_canceled = false;
+		_methods = new ArrayList<CSMethod>();
 	}
 
 	@Override
 	public void setSources(List<SourceLine> sources) {
 		_source = sources;
+	}
+	
+	@Override
+	public void setMethods(List<CSMethod> methods) {
+		_methods = methods;
 	}
 	
 	@Override
@@ -162,17 +173,17 @@ public class JdbParser implements Parser{
 	 * @param sourceFile
 	 */
 	@Override
-	public void parse(List<CSMethod> methods) {
+	public void parse() {
 		if (!new File(_sourceFile).exists())
 			return;
 		
 		if (!new File(_testFile).exists())
 			return;
 
-		for (int method = 0; method < methods.size(); method++) {
-			if (methods.get(method).getBreakpoint() == -1)
+		for (int method = 0; method < _methods.size(); method++) {
+			if (_methods.get(method).getBreakpoint() == -1)
 				continue;
-			int pb = methods.get(method).getBreakpoint();
+			int pb = _methods.get(method).getBreakpoint();
 			_breakpoints.add(_className + ":" + String.valueOf(pb));
 		}
 		
@@ -431,6 +442,45 @@ public class JdbParser implements Parser{
 					bw.close();
 			} catch (IOException e) {
 				e.printStackTrace();
+			}
+		}
+	}
+	
+	@Override
+	public void prepaireSource() {
+		for (int method = 0; method < _methods.size(); method++) {
+			if ((_methods.get(method).getLine() == -1) || 
+					(_methods.get(method).getLastLineNumber() == -1))
+				continue;
+			
+			int start = _methods.get(method).getLine() - 1;
+			int start2 = -1;
+			boolean tested = false;
+			
+			for (int ln = start; 
+					ln < (_methods.get(method).getLastLineNumber()); ln++) {
+				String line = _source.get(ln).getLine().trim();
+				if ((start2 == -1) && line.endsWith("{"))
+					start2 = ln;
+				
+				if (!tested && _source.get(ln).isLineTested())
+					tested = true;
+				
+				boolean prev = _source.get(ln - 1).isLineTested();
+				if ((line.endsWith("}") || line.isEmpty()) && prev)
+					_source.get(ln).setLineTested(true);
+				
+				if (((line.indexOf("try") > -1) || 
+						(line.indexOf("finally") > -1)) && prev)
+						_source.get(ln).setLineTested(true);
+			}
+			
+			if (tested && (start > -1) && (start2 > -1)) {
+				int line = start;
+				do {
+					_source.get(line).setLineTested(true);
+					line++;
+				} while (line <= start2);
 			}
 		}
 	}

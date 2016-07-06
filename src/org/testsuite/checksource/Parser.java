@@ -22,9 +22,11 @@ package org.testsuite.checksource;
 import java.util.List;
 
 public interface Parser {
-	public void parse(List<CSMethod> methods);
+	public void parse();
+	public void prepaireSource();
 	
 	public void setSources(List<SourceLine> sources);
+	public void setMethods(List<CSMethod> methods);
 	
 	public void setSourceFileName(String name);
 	public void setTestFileName(String name);

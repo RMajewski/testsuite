@@ -172,11 +172,13 @@ public class CheckSource {
 		
 		// Parse source code
 		if (CSConfig.getInstance().getParserParse()) {
-			SimpleParser parser = CSConfig.getInstance().getParser();
+			Parser parser = CSConfig.getInstance().getParser();
 			parser.setTestFileName(_nameTest);
 			parser.setSourceFileName(_nameSrc);
 			parser.setSources(_source.getSourceList());
-			parser.parse(_source.getMethodList());
+			parser.setMethods(_source.getMethodList());
+			parser.parse();
+			parser.prepaireSource();
 		}
 		
 		// Run tests

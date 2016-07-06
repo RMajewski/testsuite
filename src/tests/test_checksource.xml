@@ -71,6 +71,7 @@
 			<test checkSource="org.testsuite.helper.HelperHtml">TestHelperHtml</test>
 			<test checkSource="org.testsuite.helper.HelperHtmlCodeJava">TestHelperHtmlCodeJava</test>
 			<test checkSource="org.testsuite.helper.HelperUsedColor">TestHelperUsedColor</test>
+			<test checkSource="org.testsuite.helper.HelperFile">TestHelperFile</test>
 		</testSuite>
 		<testSuite>
 			<name>Tests the annotations</name>
@@ -89,6 +90,7 @@
 			<test checkSource="org.testsuite.checksource.CSParameter">TestCSParameter</test>
 			<test checkSource="org.testsuite.checksource.MessageColor">TestMessageColor</test>
 			<test checkSource="org.testsuite.checksource.CSCall">TestCSCall</test>
+			<test checkSource="org.testsuite.checksource.ListMethod">TestListMethod</test>
 		</testSuite>
 		<testSuite>
 			<name>Tests the classes for read the source files</name>
@@ -104,6 +106,7 @@
 			<package>tests.testsuite.checksource</package>
 			<test checkSource="org.testsuite.checksource.Parser">TestParser</test>
 			<test checkSource="org.testsuite.checksource.JdbParser">TestJdbParser</test>
+			<test checkSource="org.testsuite.checksource.SimpleParser">TestSimpleParser</test>
 		</testSuite>
 		<testSuite>
 			<name>Tests the classes for check source</name>

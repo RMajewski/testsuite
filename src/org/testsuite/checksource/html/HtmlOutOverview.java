@@ -480,9 +480,12 @@ public class HtmlOutOverview extends Html {
 			if (file.exists()) {
 				String linkSrc = file.getAbsolutePath();
 				String linkName = linkSrc.substring(linkSrc.indexOf("_") + 1);
-				String className = linkName.substring(0, 
+				String name = linkName.substring(0, 
 						linkName.indexOf(".html"));
-
+				String className = path.substring(path.indexOf(File.separator) +
+						File.separator.length()).replaceAll(File.separator, 
+								".") + "." + name;
+				
 				if (!path.equals(linkSrc.substring(linkSrc.indexOf(
 						Config.getInstance().getPathSrc()),
 						linkSrc.lastIndexOf("/")))) {
@@ -521,7 +524,7 @@ public class HtmlOutOverview extends Html {
 				ret.append(HelperHtmlCodeJava.getInstance()
 						.formatColor(background));
 				ret.append(";\" >");
-				ret.append(className);
+				ret.append(name);
 				ret.append("</td>");
 				ret.append(System.lineSeparator());
 				
@@ -580,13 +583,16 @@ public class HtmlOutOverview extends Html {
 			if (_methods.get(method).getClassName().equals(className)) {
 				count++;
 				
-				if (_methods.get(method).callsCount() > 0)
+				if (_methods.get(method).isTested())
 					tested++;
 			}
 		}
 		
 		String color = new String();
-		if (tested == count)
+		if ((tested == 0) && (count == 0))
+			color = HelperHtmlCodeJava.getInstance().formatColor(
+					HelperUsedColor.IGNORE);
+		else if (tested == count)
 			color = HelperHtmlCodeJava.getInstance().formatColor(
 					HelperUsedColor.PASS);
 		else
@@ -608,6 +614,12 @@ public class HtmlOutOverview extends Html {
 		if ((className == null) || className.isEmpty())
 			throw new IllegalArgumentException();
 		
+		if (HtmlNoneExistFile.getInstance().isNoneTestedFile(
+				className.substring(className.lastIndexOf(".") + 1)))
+			return HelperUsedColor.IGNORE;
+		
+		Color ret = HelperUsedColor.PASS;
+		
 		for (int source = 0; source < _sources.size(); source++) {
 			if (_sources.get(source).getClassName().equals(className)) {
 				int messages = _sources.get(source).messageCount();
@@ -619,13 +631,13 @@ public class HtmlOutOverview extends Html {
 							return HelperUsedColor.ERROR;
 					}
 					
-					return HelperUsedColor.WARNING;
+					ret = HelperUsedColor.WARNING;
 				}
 			}
 		}
 		
 		// Returns green
-		return HelperUsedColor.PASS;
+		return ret;
 	}
 
 	/**

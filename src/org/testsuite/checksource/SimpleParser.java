@@ -35,9 +35,14 @@ import org.testsuite.checksource.annotation.CheckSource;
  */
 public class SimpleParser implements Parser{
 	/**
-	 * Saves thes source lines
+	 * Saves the list source lines
 	 */
 	private List<SourceLine> _source;
+	
+	/**
+	 * Saves the list of methods
+	 */
+	private List<CSMethod> _methods;
 	
 	/**
 	 * Saves the number of line of end loop
@@ -52,13 +57,13 @@ public class SimpleParser implements Parser{
 	 * @param lines Sources lines from source file
 	 */
 	@Override
-	public void parse(List<CSMethod> methods) {
-		for (int method = 0; method < methods.size(); method++) {
-			if (!methods.get(method).isIgnore() && 
-					methods.get(method).isTested()) {
+	public void parse() {
+		for (int method = 0; method < _methods.size(); method++) {
+			if (!_methods.get(method).isIgnore() && 
+					_methods.get(method).isTested()) {
 				int next = -1;
-				for (int line = methods.get(method).getLine(); 
-						line < methods.get(method).getLastLineNumber(); line++) {
+				for (int line = _methods.get(method).getLine(); 
+						line < _methods.get(method).getLastLineNumber(); line++) {
 					String source = new String();
 					
 					if ((next > -1) && (line <= next))
@@ -84,7 +89,7 @@ public class SimpleParser implements Parser{
 								end);
 						start = end;
 						
-						int key = searchKeywords(word, methods.get(method),
+						int key = searchKeywords(word, _methods.get(method),
 								_source, line);
 						if (key > 0) {
 							line = key;
@@ -103,6 +108,11 @@ public class SimpleParser implements Parser{
 	@Override
 	public void setSources(List<SourceLine> sources) {
 		_source = sources;
+	}
+	
+	@Override
+	public void setMethods(List<CSMethod> methods) {
+		_methods = methods;
 	}
 
 	@CheckSource(ignored=true)
@@ -261,5 +271,9 @@ public class SimpleParser implements Parser{
 		
 		// Standard return value
 		return -10;
+	}
+	
+	@Override
+	public void prepaireSource() {
 	}
 }

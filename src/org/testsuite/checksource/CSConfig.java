@@ -240,13 +240,13 @@ public class CSConfig {
 	 * 
 	 * @return A instance of parser
 	 */
-	public SimpleParser getParser() {
+	public Parser getParser() {
 		if ((_parserName == null) || _parserName.isEmpty())
 			return null;
 		
-		SimpleParser parser = null;
+		Parser parser = null;
 		try {
-			parser = (SimpleParser)getClass().getClassLoader()
+			parser = (Parser)getClass().getClassLoader()
 					.loadClass(_parserName).newInstance();
 		} catch (Exception e) {
 			e.printStackTrace();

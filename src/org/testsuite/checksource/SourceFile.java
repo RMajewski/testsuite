@@ -278,6 +278,10 @@ public class SourceFile {
 		try {
 			c = getClass().getClassLoader().loadClass(className);
 			
+			if (!test)
+				for (int source = 0; source < _source.size(); source++)
+					_source.get(source).setClassName(c.getName());
+				
 			// Constructors
 			readMethodArray(c.getDeclaredConstructors(), className);
 			
@@ -436,7 +440,7 @@ public class SourceFile {
 				}
 			}
 			
-			if (_source.get(i).getLine().matches(matches.toString())) {
+			if (line.matches(matches.toString())) {
 				return _source.get(i).getLineNumber();
 			}
 		}
