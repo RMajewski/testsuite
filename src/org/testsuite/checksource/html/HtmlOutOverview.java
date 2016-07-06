@@ -24,6 +24,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -76,6 +77,16 @@ public class HtmlOutOverview extends Html {
 	 * @deprecated Use HtmlTodo
 	 */
 	private List<TodoData> _todo;
+	
+	/**
+	 * Saves the absolute path to the interface png file
+	 */
+	private String _pngInterface;
+	
+	/**
+	 * Saves the absolute path to the class png file
+	 */
+	private String _pngClass;
 
 	/**
 	 * Initialize this class
@@ -91,6 +102,8 @@ public class HtmlOutOverview extends Html {
 		_todo = new ArrayList<TodoData>();
 		_resultBundle = "result_checksoure";
 		_resultBundleFile = TestRunner.BUNDLE_FILE;
+		_pngInterface = null;
+		_pngClass = null;
 	}
 	
 	/**
@@ -156,6 +169,26 @@ public class HtmlOutOverview extends Html {
 	 * Generate the HTML output for the overview file.
 	 */
 	public void createHtml() {
+		// Copy images
+		URL png = getClass().getClassLoader().getResource(
+				"resources/img/class.png");
+		String pngPath = Config.getInstance().getPathResult() + File.separator +
+				"img" + File.separator;
+		
+		if ((png != null) && !png.getPath().isEmpty()) {
+			HelperFile.copyIfTargetNotExists(png.getPath(), pngPath + 
+					"class.png");
+			_pngClass = new File(pngPath + "class.png").getAbsolutePath();
+		}
+		
+		png = getClass().getClassLoader().getResource(
+				"resources/img/interface.png");
+		if ((png != null) && !png.getPath().isEmpty()) {
+			HelperFile.copyIfTargetNotExists(png.getPath(), pngPath + 
+					"interface.png");
+			_pngInterface = new File(pngPath + "interface.png").getAbsolutePath();
+		}
+		
 		// Generate the File
 		BufferedWriter bw = null;
 		try {
@@ -524,6 +557,9 @@ public class HtmlOutOverview extends Html {
 				ret.append(HelperHtmlCodeJava.getInstance()
 						.formatColor(background));
 				ret.append(";\" >");
+				ret.append("<img src=\"");
+				ret.append(getPngName(path, name));
+				ret.append("\" width=\15\" height=\"15\" align=\"middle\"/> ");
 				ret.append(name);
 				ret.append("</td>");
 				ret.append(System.lineSeparator());
@@ -568,6 +604,23 @@ public class HtmlOutOverview extends Html {
 		return ret.toString();
 	}
 	
+	private Object getPngName(String path, String name) {
+		String result = _pngClass;
+		
+		String src = path.substring(path.indexOf(File.separator) + 1).
+				replaceAll(File.separator, ".") + "." + name;
+		
+		try {
+			Class<?> c = getClass().getClassLoader().loadClass(src);
+			if (c.isInterface())
+				result = _pngInterface;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
 	/**
 	 * Creates the a string with tested methods and counts of methods 
 	 * 

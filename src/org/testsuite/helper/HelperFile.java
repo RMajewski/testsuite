@@ -20,6 +20,9 @@
 package org.testsuite.helper;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -63,4 +66,39 @@ public class HelperFile {
 		return ret;
 	}
 
+	public static void copyIfTargetNotExists(String src, String target) {
+		if (!new File(src).exists())
+			return;
+		
+		File file = new File(target);
+		if (file.exists())
+			return;
+		
+		if (!file.getParentFile().exists())
+			file.getParentFile().mkdirs();
+		
+		FileInputStream in = null;
+		FileOutputStream out = null;
+		
+		try {
+			in = new FileInputStream(src);
+			out = new FileOutputStream(target);
+			byte[] buffer = new byte[0xFFFF];
+			for (int len; (len = in.read(buffer)) != -1;)
+				out.write(buffer, 0, len);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if (in != null)
+					in.close();
+				
+				if (out != null)
+					out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

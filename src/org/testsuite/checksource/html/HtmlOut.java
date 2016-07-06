@@ -90,13 +90,13 @@ public class HtmlOut extends Html {
 			bw.write("\t\t<div class=\"checkSource\">");
 			bw.write(System.lineSeparator());
 			
-			// List of method calls
+			// List of method with tested
 			if (methods.size() > 0)
 				bw.write(HelperHtml.createListOfMethods(
 						_bundle.getString("methods_calls"), methods.list(),
 						true, false, source));
 			
-			// List of method without calls
+			// List of method without tested
 			if (methods.size() > 0)
 				bw.write(HelperHtml.createListOfMethods(
 						_bundle.getString("methods_without_calls"),
@@ -223,10 +223,6 @@ public class HtmlOut extends Html {
 					_color = new String();
 					_endMethod = -1;
 				}
-			} else if (lines.get(i).isLineTested()) {
-				background = " style=\"background: " + 
-						HelperHtmlCodeJava.getInstance()
-						.formatColor(HelperUsedColor.PASS) + ";\" ";
 			} else if (lines.get(i).messageCount() > 0) {
 				background = " style=\"background: " +
 						HelperHtmlCodeJava.getInstance()
@@ -242,7 +238,11 @@ public class HtmlOut extends Html {
 				background = " style=\"background: " +
 						HelperHtmlCodeJava.getInstance()
 						.formatColor(HelperUsedColor.IGNORE) + ";\" ";
-			}
+			} else if (lines.get(i).isLineTested()) {
+				background = " style=\"background: " + 
+						HelperHtmlCodeJava.getInstance()
+						.formatColor(HelperUsedColor.PASS) + ";\" ";
+			} 
 			
 			ret.append("\t\t\t\t\t\t<td");
 			ret.append(background);
@@ -305,7 +305,7 @@ public class HtmlOut extends Html {
 			
 			for (int j = 0; j < lines.get(i).messageCount(); j++) {
 				if (j > 0)
-					ret.append(", ");
+					ret.append("<br/>");
 				ret.append(lines.get(i).getMessage(j).getMessage());
 			}
 			

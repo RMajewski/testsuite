@@ -126,8 +126,8 @@ td {
 	text-align: left;
 	vertical-align: text-top;
 	padding: 5px;
-	word-break: break-all;
-	word-wrap: break-word;
+	word-break: keep-all;
+	word-wrap: normal;
 }
 
 th {
