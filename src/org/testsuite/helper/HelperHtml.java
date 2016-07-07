@@ -386,13 +386,13 @@ public class HelperHtml {
 		String colorBegin = new String();
 		String colorEnd = new String();
 		if (!calls) {
-			if (method.getModifier().equals("public")) {
+			if (method.getModifier().startsWith("public")) {
 				colorBegin = "<span style=\"background:" + 
 						HelperHtmlCodeJava.getInstance()
 						.formatColor(HelperUsedColor.ERROR) + ";\">";
 				colorEnd = "</span>";
-			} else if (method.getModifier().equals("private") ||
-					 method.getModifier().equals("protected")) {
+			} else if (method.getModifier().startsWith("private") ||
+					 method.getModifier().startsWith("protected")) {
 				colorBegin = "<span style=\"background:" + 
 						HelperHtmlCodeJava.getInstance()
 						.formatColor(HelperUsedColor.WARNING) + ";\">";
@@ -409,6 +409,15 @@ public class HelperHtml {
 		ret.append(method.getClassName());
 		ret.append(".");
 		ret.append(method.getName());
+		ret.append("(");
+		
+		for (int type = 0; type < method.parametersCount(); type++) {
+			if (type > 0)
+				ret.append(", ");
+			ret.append(method.getParameter(type).getType());
+		}
+		
+		ret.append(")");
 		ret.append(testedLines(method, lines));
 		ret.append(linkEnd);
 		ret.append(colorEnd);

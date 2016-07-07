@@ -307,7 +307,8 @@ public class SourceFile {
 			method.setModifier(Modifier.toString(methods[i].getModifiers()));
 			
 			if (methods[i] instanceof Method) {
-				method.setType(((Method)methods[i]).getReturnType().getName());
+				method.setType(getType(((Method)methods[i]).getReturnType()
+						.getName()));
 				method.addParameterList(readParameters(
 						((Method)methods[i]).getParameterTypes()));
 				if (isDeprecatedAnnontation(
@@ -352,7 +353,8 @@ public class SourceFile {
 
 	private boolean isDeprecatedJavadoc(int line) {
 		int i = line - 2;
-		while ((i > 0) && _source.get(i).isJavadoc()) {
+		while ((i > 0) && (_source.get(i).isJavadoc() || 
+				_source.get(i).getLine().indexOf("@") > -1)) {
 			if (_source.get(i).getLine().indexOf("@deprecated") > -1) {
 				return true;
 			}
@@ -449,45 +451,49 @@ public class SourceFile {
 	}
 	
 	private String createType(String type) {
-		String t1 = type;
-		if (t1.startsWith("[")) {
-			if (t1.indexOf("[B") > -1)
-				t1 = "byte";
-			else if (t1.indexOf("[C") > -1)
-				t1 = "char";
-			else if (t1.indexOf("[D") > -1)
-				t1 = "double";
-			else if (t1.indexOf("[F") > -1)
-				t1 = "float";
-			else if (t1.indexOf("[I") > -1)
-				t1 = "int";
-			else if (t1.indexOf("[J") > -1)
-				t1 = "long";
-			else if (t1.indexOf("[S") > -1)
-				t1 = "short";
-			else if (t1.indexOf("[Z") > -1)
-				t1 = "boolean";
-			else if (t1.indexOf("[L") > -1)
-				t1 = t1.substring(2, t1.indexOf(";"));
+		String t2 = new String();
+		if (type.lastIndexOf(".") > -1)
+			t2 = "|" + type.substring(type.lastIndexOf(".") + 1)
+			.replaceAll("\\[", "\\\\[").replaceAll("\\]", "\\\\]");
+		
+		return type.replaceAll("\\[", "\\\\[").replaceAll("\\]", "\\\\]") + t2;
+	}
+	
+	private String getType(String type) {
+		String result = type;
+		
+		if (type.startsWith("[")) {
+			if (type.indexOf("[B") > -1)
+				result = "byte";
+			else if (type.indexOf("[C") > -1)
+				result = "char";
+			else if (type.indexOf("[D") > -1)
+				result = "double";
+			else if (type.indexOf("[F") > -1)
+				result = "float";
+			else if (type.indexOf("[I") > -1)
+				result = "int";
+			else if (type.indexOf("[J") > -1)
+				result = "long";
+			else if (type.indexOf("[S") > -1)
+				result = "short";
+			else if (type.indexOf("[Z") > -1)
+				result = "boolean";
+			else if (type.indexOf("[L") > -1)
+				result = type.substring(2, type.indexOf(";"));
 			
 			for (int i = 0; i < (type.lastIndexOf("[") + 1); i++)
-				t1 += "\\[\\]";
-		} else if (t1.indexOf("List") > -1) {
-			t1 += "[\\w<>]*";
+				result += "[]";
 		}
 		
-		String t2 = new String();
-		if (t1.lastIndexOf(".") > -1)
-			t2 = "|" + t1.substring(t1.lastIndexOf(".") + 1);
-		
-		return t1 + t2;
+		return result;
 	}
 
 	private List<CSParameter> readParameters(Class<?>[] parameters) {
 		List<CSParameter> ret = new ArrayList<CSParameter>();
 		
 		for (int i = 0; i < parameters.length; i++)
-			ret.add(new CSParameter(parameters[i].getName()));
+			ret.add(new CSParameter(getType(parameters[i].getName())));
 		
 		return ret;
 	}

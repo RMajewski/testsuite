@@ -115,6 +115,16 @@ public class HtmlDeprecated extends Html {
 				li.append(methods.get(method).getClassName());
 				li.append(".");
 				li.append(methods.get(method).getName());
+				li.append("(");
+				
+				for (int type = 0; type < methods.get(method).parametersCount();
+						type++) {
+					if (type > 0)
+						li.append(", ");
+					li.append(methods.get(method).getParameter(type).getType());
+				}
+				
+				li.append(")");
 				li.append("</a></li>");
 				list.add(li.toString());
 			}

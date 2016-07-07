@@ -37,21 +37,32 @@ import org.testsuite.helper.HelperUsedColor;
 public class TestJavadoc implements SourceTest {
 	/**
 	 * Saves the begin of Javadoc comment
+	 * 
+	 * @deprecated No longer used.
 	 */
+	@SuppressWarnings("unused")
 	private int _begin;
 	
 	/**
 	 * Saves the end of Javadoc comment;
+	 * 
+	 * @deprecated No longer used.
 	 */
+	@SuppressWarnings("unused")
 	private int _end;
 	
 	/**
 	 * Saves the line is a annotation
+	 * 
+	 * @deprecated No longer used.
 	 */
+	@SuppressWarnings("unused")
 	private boolean _annotation;
 	
 	/**
 	 * Initialize the data
+	 * 
+	 * @deprecated No longer used.
 	 */
 	public TestJavadoc() {
 		_begin = -1;
@@ -70,19 +81,23 @@ public class TestJavadoc implements SourceTest {
 	 */
 	@Override
 	public boolean test(List<SourceLine> list) {
+		int annotation = 0;
+		int begin = -1;
+		int end = -1;
 		for (int i = 0; i < list.size(); i++) {
-			if ((_begin == -1) && list.get(i).isJavadoc())
-				_begin = list.get(i).getLineNumber();
+			if ((begin == -1) && list.get(i).isJavadoc())
+				begin = list.get(i).getLineNumber();
 			else if (list.get(i).isJavadoc())
-				_end = list.get(i).getLineNumber();
+				end = list.get(i).getLineNumber();
 			else {
-				boolean test1 = (_begin == -1) && (_end == -1);
-				boolean test2 = (_begin > -1) && (_end > -1) && 
-						(_end == (list.get(i).getLineNumber()) - 1);
+				boolean test1 = (begin == -1) && (end == -1);
+				boolean test2 = (begin > -1) && (end > -1) && 
+						(end == (list.get(i).getLineNumber() - 1 - annotation));
 				
 				// Annotation
-				if (list.get(i).getLine().matches("^[\\s\\w]*@[\\w\\s(){}=]*$"))
-					_annotation = true;
+				if (list.get(i).getLine().matches(
+						"^[\\s\\w]*@[\\w\\s(){}= \"]*$"))
+					annotation++;
 				
 				// Class
 				else if (list.get(i).getLine().matches(
@@ -93,9 +108,9 @@ public class TestJavadoc implements SourceTest {
 								ResourceBundle.getBundle(BUNDLE_FILE)
 								.getString("emptyJavadocClass"), 
 								HelperUsedColor.WARNING));
-						_begin = -1;
-						_end = -1;
-						_annotation = false;
+						begin = -1;
+						end = -1;
+						annotation = 0;
 					}
 				}
 				
@@ -107,9 +122,9 @@ public class TestJavadoc implements SourceTest {
 								ResourceBundle.getBundle(BUNDLE_FILE)
 								.getString("emptyJavadocInterface"), 
 								HelperUsedColor.WARNING));
-						_begin = -1;
-						_end = -1;
-						_annotation = false;
+						begin = -1;
+						end = -1;
+						annotation = 0;
 					}
 				}
 				
@@ -122,9 +137,9 @@ public class TestJavadoc implements SourceTest {
 								ResourceBundle.getBundle(BUNDLE_FILE)
 								.getString("emptyJavadocField"),
 								HelperUsedColor.WARNING));
-						_begin = -1;
-						_end = -1;
-						_annotation = false;
+						begin = -1;
+						end = -1;
+						annotation = 0;
 					}
 				}
 				
@@ -137,24 +152,22 @@ public class TestJavadoc implements SourceTest {
 								ResourceBundle.getBundle(BUNDLE_FILE)
 								.getString("emptyJavadocConst"),
 								HelperUsedColor.WARNING));
-						_begin = -1;
-						_end = -1;
-						_annotation = false;
+						begin = -1;
+						end = -1;
+						annotation = 0;
 					}
 				}
 				
 				// Method
-				else if (list.get(i).getLine().matches(
-						"^\\s*(private|public|protected)[\\s\\w\\[\\]\\(\\)]*\\{$")) {
-					
+				else if (list.get(i).isBeginMethod()) {
 					if (test1 || !test2) {
 						list.get(i).addMessage(new MessageColor(
 								ResourceBundle.getBundle(BUNDLE_FILE)
 								.getString("emptyJavadocMethod"),
 								HelperUsedColor.WARNING));
-						_begin = -1;
-						_end = -1;
-						_annotation = false;
+						begin = -1;
+						end = -1;
+						annotation = 0;
 					}
 				}
 			}
