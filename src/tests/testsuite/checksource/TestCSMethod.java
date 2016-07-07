@@ -20,8 +20,13 @@
 package tests.testsuite.checksource;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.testsuite.checksource.CSMethod;
 import org.testsuite.checksource.CSParameter;
@@ -63,10 +68,13 @@ public class TestCSMethod {
 		assertFalse(_cs.isDeprecated());
 		assertEquals(new String(), _cs.getHtmlOutputFile());
 		assertFalse(_cs.isIgnore());
+		assertEquals(-1, _cs.getBreakpoint());
 	}
 	
 	/**
 	 * Tests if returned the number of parameters correctly.
+	 * 
+	 * @deprecated The method is deprecated.
 	 */
 	@Test
 	public void testParamtersCount() {
@@ -216,6 +224,8 @@ public class TestCSMethod {
 	
 	/**
 	 * Tests if the number of calls returned correctly.
+	 * 
+	 * @deprecated The method is deprecated.
 	 */
 	@Test
 	public void testCallsCount() {
@@ -224,7 +234,11 @@ public class TestCSMethod {
 
 	/**
 	 * Tests if added a new call correctly to the list of calls.
+	 *
+	 * @deprecated The method
+	 * {@link org.testsuite.checksource.CSMethod#addCall(int)} is deprecated.
 	 */
+	@Ignore
 	@Test
 	public void testAddCall() {
 		int call = 100;
@@ -236,7 +250,11 @@ public class TestCSMethod {
 	
 	/**
 	 * Tests if returned a call correctly from the list of calls.
+	 * 
+	 * @deprecated The method
+	 * {@link org.testsuite.checksource.CSMethod#getCall(int)} is deprecated.
 	 */
+	@Ignore
 	@Test
 	public void testGetCall() {
 		int call = 100;
@@ -362,5 +380,58 @@ public class TestCSMethod {
 		String test = "test";
 		_cs.setHtmlOutputFile(test);
 		assertEquals(test, _cs.getHtmlOutputFile());
+	}
+	
+	/**
+	 * Test if added a list of parameters to the parameter list
+	 */
+	@Test
+	public void testAddParameterList() {
+		List<CSParameter> list = new ArrayList<CSParameter>();
+		CSParameter param1 = mock(CSParameter.class);
+		CSParameter param2 = mock(CSParameter.class);
+		CSParameter param3 = mock(CSParameter.class);
+		_cs.addParameter(param1);
+		list.add(param2);
+		list.add(param3);
+		_cs.addParameterList(list);
+		assertEquals(param1, _cs.getParameter(0));
+		assertEquals(param2, _cs.getParameter(1));
+		assertEquals(param3, _cs.getParameter(2));
+	}
+	
+	/**
+	 * If returned a the breakpoint correctly.
+	 */
+	@Test
+	public void testGetBreakpoint() {
+		assertEquals(-1, _cs.getBreakpoint());
+	}
+	
+	/**
+	 * If set the breakpoint correctly.
+	 */
+	@Test
+	public void testSetBreakpoint() {
+		int bp = 100;
+		_cs.setBreakpoint(bp);
+		assertEquals(bp, _cs.getBreakpoint());
+	}
+	
+	/**
+	 * Tests if the method was tested.
+	 */
+	@Test
+	public void testIsTested() {
+		assertFalse(_cs.isTested());
+	}
+	
+	/**
+	 * Tests if the method has been properly marked as tested.
+	 */
+	@Test
+	public void testSetTested() {
+		_cs.setIsTested(true);
+		assertTrue(_cs.isTested());
 	}
 }

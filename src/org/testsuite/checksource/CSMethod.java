@@ -120,6 +120,7 @@ public class CSMethod {
 		_htmlOutput = new String();
 		_ignore = false;
 		_tested = false;
+		_breakpoint = -1;
 	}
 	
 	/**
