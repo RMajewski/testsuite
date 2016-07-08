@@ -22,8 +22,11 @@ package org.testsuite.checksource.html;
 import java.io.File;
 import java.util.ResourceBundle;
 
+import org.testsuite.core.TestCore;
+import org.testsuite.data.Config;
+
 /**
- * 
+ * Generate the menu for HTML result files. 
  * 
  * @author René Majewski
  *
@@ -70,6 +73,12 @@ public class HtmlMenu extends Html {
 			.getString("menu_noneExistFiles");
 	
 	/**
+	 * Specified the menu string for the test HTML output
+	 */
+	public static final String TEST = ResourceBundle.getBundle(BUNDLE_FILE)
+			.getString("menu_tests");
+	
+	/**
 	 * Initialize the class
 	 */
 	public HtmlMenu() {
@@ -80,7 +89,8 @@ public class HtmlMenu extends Html {
 	 * Creates the menu for HTML result files.
 	 * 
 	 * @param actual The actual menu
-	 * @return
+	 * 
+	 * @return The menu for HTML result files.
 	 */
 	public static String createMenu(String actual) {
 		StringBuilder ret = new StringBuilder("\t\t<div ");
@@ -108,6 +118,12 @@ public class HtmlMenu extends Html {
 
 		ret.append(menuEntry(DEPRECATED_LIST, actual, 
 				HtmlDeprecated.getInstance().getPathAndResultFile()));
+		
+		ret.append(menuEntry(TEST, actual,
+				Config.getInstance().getPathResult() + File.separator +
+				ResourceBundle.getBundle(TestCore.BUNDLE_FILE)
+				.getString("html_result") + "_" + 
+				Config.getInstance().getPathSuitesResult() + ".html"));
 		
 		ret.append("\t\t\t</ul>");
 		ret.append(System.lineSeparator());
