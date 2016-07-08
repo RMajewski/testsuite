@@ -284,8 +284,8 @@ public class HtmlOut {
 		
 		if (testname != null) {
 			String testFile = HtmlOutOverview.getInstance()
-					.getResultFileFromTestName(testname);
-			if (!testname.isEmpty()) {
+					.getResultFileFromTestName(testname.substring(4));
+			if (!testFile.isEmpty()) {
 				ret.append("<a href=\"");
 				ret.append(new File(testFile).getAbsolutePath());
 				ret.append("\">CS</a> ");

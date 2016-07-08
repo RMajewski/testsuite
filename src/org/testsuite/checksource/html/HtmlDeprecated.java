@@ -111,6 +111,10 @@ public class HtmlDeprecated extends Html {
 				StringBuilder li = new StringBuilder("\t\t\t\t\t<li>");
 				li.append("<a href=\"");
 				li.append(methods.get(method).getHtmlOutputFile());
+				li.append("#");
+				li.append(methods.get(method).getClassName());
+				li.append(".");
+				li.append(methods.get(method).getName());
 				li.append("\">");
 				li.append(methods.get(method).getClassName());
 				li.append(".");
