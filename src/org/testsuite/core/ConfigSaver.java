@@ -221,7 +221,7 @@ public class ConfigSaver {
 		bw.write("\t\t\t<parser timeout=\"");
 		bw.write(String.valueOf(CSConfig.getInstance().getParserTimeout()));
 		bw.write("\" parse=\"");
-		bw.write(String.valueOf(CSConfig.getInstance().getParserParse()));
+		bw.write(String.valueOf(CSConfig.getInstance().isParserParse()));
 		bw.write("\">");
 		bw.write(CSConfig.getInstance().getParserName());
 		bw.write("</parser>");

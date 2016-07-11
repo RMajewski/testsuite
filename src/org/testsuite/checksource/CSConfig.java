@@ -286,7 +286,7 @@ public class CSConfig {
 	 * 
 	 * @return Should be parsed?
 	 */
-	public boolean getParserParse() {
+	public boolean isParserParse() {
 		return _parserParse;
 	}
 	
@@ -297,5 +297,20 @@ public class CSConfig {
 	 */
 	public void setParserParse(boolean parse) {
 		_parserParse = parse;
+	}
+	
+	/**
+	 * Clear the saved data.
+	 */
+	public void clear() {
+		_tests = new ArrayList<String>();
+		_pathTests = new String();
+		_noneListedFiles = false;
+		_noneListedPath = new String();
+		_lineWidth = -1;
+		_tabSpace = -1;
+		_parserName = null;
+		_parserTimeout = 20000;
+		_parserParse = false;
 	}
 }

@@ -28,6 +28,8 @@ import java.util.List;
  * @author René Majewski
  *
  * @version 0.1
+ * 
+ * @deprecated No longer used
  */
 public class CSCall {
 	/**

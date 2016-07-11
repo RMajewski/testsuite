@@ -171,7 +171,7 @@ public class CheckSource {
 		_source.readFile(true, _nameTest);
 		
 		// Parse source code
-		if (CSConfig.getInstance().getParserParse()) {
+		if (CSConfig.getInstance().isParserParse()) {
 			Parser parser = CSConfig.getInstance().getParser();
 			parser.setTestFileName(_nameTest);
 			parser.setSourceFileName(_nameSrc);
