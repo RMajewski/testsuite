@@ -85,6 +85,11 @@
 		</testSuite>
 		<testSuite>
 			<name>Tests the classes of informations</name>
+			<package>tests.testsuite.data</package>
+			<test checkSource="org.testsuite.data.TodoData">TestTodoData</test>
+		</testSuite>
+		<testSuite>
+			<name>Tests the classes of informations</name>
 			<package>tests.testsuite.checksource</package>
 			<test checkSource="org.testsuite.checksource.CSMethod">TestCSMethod</test>
 			<test checkSource="org.testsuite.checksource.CSParameter">TestCSParameter</test>

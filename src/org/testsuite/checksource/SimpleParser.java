@@ -19,7 +19,6 @@
 
 package org.testsuite.checksource;
 
-import java.io.File;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,7 +32,7 @@ import org.testsuite.checksource.annotation.CheckSource;
  *
  * @version 0.1
  */
-public class SimpleParser implements Parser{
+public class SimpleParser implements Parser {
 	/**
 	 * Saves the list source lines
 	 */
