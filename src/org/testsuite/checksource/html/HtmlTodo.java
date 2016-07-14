@@ -216,4 +216,11 @@ public class HtmlTodo extends Html {
 	public TodoData getTodo(int index) {
 		return _todo.get(index);
 	}
+	
+	/**
+	 * Clear the list.
+	 */
+	public void clear() {
+		_todo.clear();
+	}
 }

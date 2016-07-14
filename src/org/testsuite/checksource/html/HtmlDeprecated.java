@@ -175,4 +175,11 @@ public class HtmlDeprecated extends Html {
 	public void addDeprecatedClass(String name) {
 		_class.add("class " + name);
 	}
+	
+	/**
+	 * Clear the list
+	 */
+	public void clear() {
+		_class.clear();
+	}
 }

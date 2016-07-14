@@ -873,4 +873,13 @@ public class HtmlOutOverview extends Html {
 	public List<String> getResultFileList() {
 		return _resultFiles;
 	}
+	
+	/**
+	 * Clear the lists.
+	 */
+	public void clear() {
+		_methods.clear();
+		_resultFiles.clear();
+		_sources.clear();
+	}
 }
